@@ -1,0 +1,7 @@
+<div class="title black"><%=t(:"profile.title")%></div>
+<ul class="tabs">
+  <li <%= (params[:action]=='post'? "class='cur'" : "") %> ><%= link_to t(:"profile.post.post"), user_post_url %></li>
+  <%#<li <%= (params[:action]=='message'? "class='cur'" : "") %#> ><%= link_to t(:"profile.message.message"), user_message_url %#></li>%>
+  <li <%= (params[:action]=='profile'? "class='cur'" : "") %> ><%= link_to t(:"profile.personal information"), user_profile_url %></li>
+</ul>
+<div class="clear"></div>

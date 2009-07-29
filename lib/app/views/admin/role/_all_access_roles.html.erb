@@ -1,0 +1,44 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+<% if access  %>
+  <div class="admin-list">
+    <table>
+      <tr>
+        <th style="font-size:10px;width:auto;"><%=t(:"admin_role.title")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.all")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.read")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.write")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.change")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.destroy")%></th>
+      </tr>
+      <% for role in Admin::Role.find(:all,:conditions=>["name!=?",Admin::Role.admin]) %>
+        <div class="admin-list-row">
+          <tr>
+            <td>
+              <%= list_link :title=>role.name,:paging=>false, :controller=>"/admin/role",:id=>role.id,:params=>{:access=>true},:html=>{:class=>"admin-record"} %>
+            </td>
+            <td>
+              <input id="admin_role_checkbox_<%=access.id%>_<%=role.id%>" class="admin-new-button" type="checkbox" <%= change_main_relations(role,access) %> />
+              <script type="text/javascript">
+                //<![CDATA[
+                addAccessToggle('#admin_role_checkbox_<%=access.id%>_<%=role.id%>',<%=access.id%>,'<%=role.name%>',<%=role.id%>,'')
+                //]]>
+              </script>
+            </td>
+            <% disabled=!related?(role.name,access) %>
+            <% change_action_relations role,access,disabled do |element,id,perm|%>
+              <td>
+                <%= element%>
+                <script type="text/javascript">
+                  changeAccessPremission('<%=id%>',<%=access.id%>,'<%=role.name%>','<%=perm%>')
+                </script>
+              </td>
+            <%end%>
+          </tr>
+        </div>
+      <% end %>
+    </table>
+  </div>
+<% end %>

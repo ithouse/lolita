@@ -1,0 +1,42 @@
+<% content_for :stylesheet do %>
+  <%= stylesheet_link_tag 'public/form' %>
+<%end%>
+<% content_for :left do %>
+  <div class="left-bcol-wide">
+    <form class="classic" action="/signup" method="post">
+      <div class="title bg-matblue"><%= t(:"user.registration") %></div>
+      <h1><%=t(:"user.necessary information")%></h1>
+      <% if flash[:error] %>
+        <div class="err-info"><%=t(:"simple words.error")%>!<br />
+          <%=flash[:error]%>.
+        </div>
+      <%end%>
+      <% u_errors=error_fields_for(:user) %>
+      <% p_errors=error_fields_for(:profile) %>
+      <% if @user && !@public_registration %>
+        <input type="hidden" value="<%=@user.registration_code%>" name="code"/>
+      <% end %>
+      <div class="line text"><%=error_marker(u_errors,:email)%><label><%=field_title(:email)%>:</label><div class="input"><%=text_field :user,:email%></div><div class="clear"></div></div>
+      <p class="info"><%=t(:"public_user.form.email info")%></p>
+      <div class="splitter-light-gray"></div>
+      <div class="line text"><%=error_marker(u_errors,:login)%><label><%=field_title(:login)%>:</label><div class="input"><%=text_field :user,:login%></div><div class="clear"></div></div>
+      <div class="line text"><%=error_marker(u_errors,:password)%><label><%=field_title(:password)%>:</label><div class="input"><%=password_field :user,:password%></div><div class="clear"></div></div>
+      <div class="line text"><%=error_marker(u_errors,:password_confirmation)%><label><%=field_title(:password_confirmation)%>:</label><div class="input"><%=password_field :user,:password_confirmation%></div><div class="clear"></div></div>
+      <p class="info"><%=t(:"public_user.form.password info")%></p>
+      <div class="splitter-light-gray"></div>
+      <div class="line text"><%=error_marker(p_errors,:country_id)%><label><%=field_title(:country_id)%>:</label><div class="input"><%=select(:profile, :country_id, Cms::Country.find(:all).collect {|c| [ c.name, c.id ] }, {:include_blank =>t(:"notice.not_followed")})%></div><div class="clear"></div></div>
+      <% if !@user || @public_registration  %>
+        <div class="line text"><%=error_marker(u_errors,:human_control)%><label><%=t(:"simple words.human control")%>:</label><div class="input"><%= human_control %></div><div class="clear"></div></div>
+      <%end%>
+      <div class="splitter"></div>
+      <%
+      pp=Cms::TextPage.find_by_name("privacy policy")
+      tos=Cms::TextPage.find_by_name("terms of service")
+    %>
+      <div class="line checkbox-outside"><%=error_marker(u_errors,:privacy)%><div class="input"><input type="checkbox" name="user[privacy]"></div><label><%= t(:"terms.privacy policy") %> <%= pp ? link_to(t(:"public.privacy policy"),info_url(get_id(pp))) : ""%>.</label><div class="clear"></div></div>
+      <div class="line checkbox-outside"><%=error_marker(u_errors,:terms_of_service)%><div class="input"><input type="checkbox" name="user[terms_of_service]"></div><label><%= t(:"terms.terms of service") %> <%= tos ? link_to(tos.title,info_url(get_id(tos))) : "" %>.</label><div class="clear"></div></div>
+      <div class="splitter"></div>
+      <div class="buttons"><button type="submit" name="save" value="save" class="fl" ><span><%=t(:"actions.save")%></span></button><button type="submit" value="save-and-go" class="btn-green fr"><span><%=t(:"public_user.form.save info")%></span></button><div class="clear"></div></div>
+    </form>
+  </div>
+<%end%>

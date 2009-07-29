@@ -1,0 +1,11 @@
+<div class="fl">
+  <span class='brick' style="width:510px">
+    <% public=public || nil %>
+    <select name="<%=menu_select_name(namespace)%>" style="width:300px;float:left" onchange="<%= get_actions_js("admin_menu_select_actions",current_item_id,public) %>" id="admin_menu_select_tables">
+      <%= table_options %>
+    </select>&nbsp;
+    <select name="<%=menu_select_name(namespace,"action")%>" style="width:200px" id="admin_menu_select_actions">
+      <%= action_options %>
+    </select>
+  </span>
+</div>

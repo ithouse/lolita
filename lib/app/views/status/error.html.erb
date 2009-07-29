@@ -1,0 +1,28 @@
+<%#
+# Artūrs Meisters
+# SIA ITHouse
+%>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type"/><title><%=t(:"errors.template.title")%></title>
+<style type="text/css">
+  div.error_dialog {
+    width: 25em;
+    padding: 0 4em;
+    margin: 4em auto 0 auto;
+    border: 1px solid #ccc;
+    border-right-color: #999;
+    border-bottom-color: #999;
+    display:block;
+    height: 200px;
+  }
+  h1.error_title{
+    font-size: 12pt;
+    color:red;
+
+
+  }
+</style>
+<div class="error_dialog">
+  <h1 class="error_title"><%=t(:"errors.template.title")%></h1>
+  <p><%=t(:"errors.template.body")%></p>
+  <a href="/"><%=t(:"public.back to home")%></a>
+</div>

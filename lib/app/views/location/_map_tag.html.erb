@@ -1,0 +1,18 @@
+<% content_for :javascript do%>
+  <% if defined?(GMAPS_KEY) %>
+    <script  src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= GMAPS_KEY %>" type="text/javascript"></script>
+  <% end %>
+<% end %>
+<% content_for :body_functions do%>
+  <% if defined?(GMAPS_KEY) %>
+    onunload="GUnload()"
+  <% end %>
+<% end %>
+<% if defined?(GMAPS_KEY) %>
+  <div id="map" style="width:<%=options[0] || "400"%>px;height:<%=options[1] || "400"%>px;border:1px solid white">
+  </div>
+  <% location=Location.find_by_id(id) %>
+  <%= render :partial=>'/managed/public_map_script', :locals=>{:locations=>[
+      {:lat=>location ? location.lat : 56.7978704075,:lng=>location ? location.lng : 24.1009140015, :info=>options[2].to_b && location ? location.info : ""}
+  ]} %>
+<% end %>

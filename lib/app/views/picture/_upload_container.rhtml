@@ -1,0 +1,20 @@
+<% cfg=picture_cfg(upload_container) %>
+<% if upload_container[:parent] && upload_container[:parent_id] %>
+  <div id="picture-photos" class="picture-photos-container">
+    <script type="text/javascript">
+      //<![CDATA[
+      $(document).ready(function(){
+        ITH.Picture.init(<%=upload_container.to_json%>)
+      })
+      //]]>
+    </script>
+    <% unless upload_container[:read_only] %>
+      <%= render :partial=>'/picture/upload_field', :object=>cfg %>
+    <%end %>
+    <% if cfg[:main_image] %>
+      <%= render :partial=>'/picture/main_image_container', :object=>cfg %>
+    <% end %>
+    <%= render :partial=>'/picture/thumb_images_container', :object=>cfg %>
+  </div>
+<% end %>
+

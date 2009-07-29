@@ -1,0 +1,21 @@
+<% form_tag({:action=>"login",:controller=>"/admin/user"},{:class=>"dialog loginform"}) do %>
+  <div class="top">
+    <span class="big black"><%=Admin::Configuration.get_value_by_name("cms_name") || "ITHouse CMS"%></span>
+  </div>
+  <div class="pad">
+    <div class="big blue" style="<%= flash[:error].to_s.size>0 ? "margin-bottom:8px !important;" : "" %>"><%= t '.authorization' %></div>
+    <div style="color:red;font-weight:bold;"><%=flash[:error].is_a?(Symbol) ? t(flash[:error]) : ""%></div><%= flash[:error] ? "<br/>"  : "" %>
+    <label for="login">
+      <%= text_field_tag 'login',"",:class=>'txt',:style=>"margin-bottom:2px;" %>
+      <%=t(:".login name") %>:
+    </label>
+    <label for="password">
+      <%= password_field_tag 'password',"",:class=>'txt' %>
+      <%=t(:".password")%>:
+    </label>
+  </div>
+  <div class="footer">
+    <%=link_to "#{t(:".forgot password")}",{:controller=>"/admin/user",:action=>'forgot_password'}, {:class=>"forget"} %>
+    <input type="submit" class="btn" value="<%=t(:"user.login")%>" />
+  </div>
+<%end%><!--[if !IE]>dialog<![endif]-->

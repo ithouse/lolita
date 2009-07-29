@@ -1,0 +1,46 @@
+<% row=row||rand 
+   rec=rec||nil
+   existing=existing||false
+   number_index=(fields.key?(1))
+   if !rec
+     rec=[]
+     0.upto(fields.size-1){|i|
+       rec[i]={}
+     }
+   end
+    idx=1
+    for cell in rec %>
+        <div class='object-remote-list-cell' >
+        <%  
+          if number_index
+            value=fields[idx] 
+          else
+            value=fields[idx.to_s] 
+          end
+          type=value[:type]
+          value[:row]=row
+          value[:column]=idx
+          value[:value]=""
+          if !cell.nil? && cell[value[:table].to_sym]
+             value[:value]=cell[value[:table].to_sym]
+          end
+        %>
+        
+        <% (type == 'textarea' ? '<br />' : '')  %>
+        <% if read_only %>
+            <span class='object-field-content'><%= field_render_for_reading type,value %></span>
+        <% else %>
+            <% value[:class]="object-remote-list-input"%>
+            <%= remote_field_render type,value %>
+            
+            <% if existing && cell[(value[:table]+"_id").to_sym]
+              value[:value]=cell[(value[:table]+"_id").to_sym]%>
+              <%= remote_field_render 'hidden',value %>
+            <% end %>
+        <% end %>
+      </div>
+   <% idx+=1
+    end %>
+  
+<img class="object-remote-list-delete-row" src="/images/icons/button_cancel.png" onclick="el=this.parentNode;parent=this.parentNode.parentNode;parent.removeChild(el);"/>
+ 

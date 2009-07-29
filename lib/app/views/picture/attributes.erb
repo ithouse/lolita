@@ -1,0 +1,46 @@
+<%#
+# Artūrs Meisters ITHGroup
+# 12.10.2008
+%>
+<form method="post" id="pic_title_dialog_form" onsubmit="ITH.Picture.save_attributes(this,<%=@picture.id%>);return false;">
+  <div>
+    <%= label :picture,:position, "#{field_title(:position,"picture")}:" %>
+    <%= text_field  :picture,:position, :size=>41, :maxlength=>4 %>
+  </div>
+  <div class="clear"></div>
+  <div>
+    <label ><%=t(:"picture.tags")%>:</label>
+    <div style="margin-bottom:22px">
+      <input type="text" id="autocomplete_picture_tagi" name="picture[tagi]" value="<%=@picture.tagi%>" style="width:270px;"/>
+      <div id="autocomplete_container_picture_tagi"></div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div>
+    <%= label :picture,:alt,"#{field_title(:alt,"picture")}:" %>
+    <%= text_field :picture,:alt, :size=>41 %>
+  </div>
+  <div class="clear"></div>
+  <div>
+    <%= label :picture,:title, "#{field_title(:title,"picture")}:" %>
+    <%= text_field  :picture,:title, :size=>41 %>
+  </div>
+  <div class="clear"></div>
+  <div>
+    <%= label :picture,:caption, "#{field_title(:caption,"picture")}:" %>
+    <%= text_field  :picture,:caption, :size=>41 %>
+  </div>
+  <div class="clear"></div>
+  <div>
+    <%= label :picture,:source_id, "#{field_title(:source_id,"picture")}:" %>
+    <%= select(:picture, :source_id, Cms::Source.find(:all).collect {|s| [ s.name, s.id ] }, { :include_blank => true },{:style=>"width:275px;height:22px;"}) %>
+  </div>
+  <div class="clear"></div>
+  <input type="submit" class="btn dialog-button"  style="margin-left:110px" value="<%=t(:"actions.save")%>" />
+  <input type="button"  onclick="ITH.Picture.Dialog.hide()" class="btn dialog-button" value="<%=t(:"actions.cancel")%>" />
+</form>
+<script type="text/javascript">
+  //<![CDATA[
+  new ITH.Editor.AutoComplete("autocomplete_picture_tagi","autocomplete_container_picture_tagi","<%=url_for(:controller=>"/cms/tag",:action=>:filter)%>")
+  //]]>
+</script>

@@ -1,0 +1,73 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<div class="object-remote-list-container">
+<% read_only=read_only || false %>
+<% body_id=rand %>
+<%  if fields && fields.respond_to?('each') %>
+   <div class="object-remote-list">
+      <div class='object-remote-list-header' style="width:<%= fields.size*152 %>px;">
+      <% 1.upto(fields.size) do |idx| %>
+        <% value=fields[idx] %>
+        <% if (!value[:actions])||(value[:actions] && value[:actions].include?(@act.to_sym))%>
+            <% if value[:type]!='hidden' %>
+                <span class='object-remote-list-header-cell'><%= (value[:title])if value[:title] %></span>
+                <% value.delete(:title) %>
+            <% end %>
+        <% end %>
+      <% end %>
+     </div>
+     <div class="object-remote-list-body-container" >
+       <div class="object-remote-list-body" style="width:<%= fields.size*152 %>px;" id="object_remote_list_body_<%= body_id %>">
+        <%
+           
+           data_found=false
+           col=0
+           rec=[]
+           
+           1.upto(fields.size) do |idx| 
+             row=0     
+             rec[col]=[]
+             if  remote_data=get_remote_data(fields[idx][:table],parent,id) 
+               parentname=fields[idx][:table].to_sym
+               parentid=(fields[idx][:table]+"_id").to_sym
+               fieldname=fields[idx][:field]
+               data_found=true
+               for ieraksts in remote_data 
+                   rec[col][row]={}
+                   rec[col][row][parentname]=ieraksts.send(fieldname)
+                   rec[col][row][parentid]=ieraksts.id
+                   row+=1 
+               %>
+             <% end %>
+             <% col+=1 %>
+          <% end %>
+        <% end %>
+        <% if data_found 
+            row=0
+            col=0
+            while rec[col][row]
+              rinda=[]
+              0.upto(rec.size-1) do |col|
+                rinda<<rec[col][row]
+              end %>
+              <div class='object-remote-list-row' id='object_remote_list_row_<%= rand %>' style="width:<%=(fields.size*150+20)%>px;">
+                <%= render :partial=>'/managed/remote_list_row',:locals=>{:fields=>fields,:rec=>rinda,:read_only=>read_only,:existing=>true} %>
+               </div>
+              <%row+=1
+            end
+         end %>
+      </div>
+     </div>
+    </div>
+    <div class="object-list-footer">
+      <%= link_to_remote image_tag("icons/add.png",:alt=>"+"),
+          :url=>{:action=>'insert_row',:fields=>fields,:read_only=>read_only},
+          :complete=>"el=elementById('object_remote_list_body_"+body_id.to_s+"');row=document.createElement('div');row.className='object-remote-list-row'; row.id='object_remote_list_row_' + Math.random();row.style.width='"+(fields.size*150+20).to_s+"px';row.innerHTML=request.responseText;el.appendChild(row);",
+          :method=>"POST"
+      %>
+    </div>
+  <% end %>
+</div>

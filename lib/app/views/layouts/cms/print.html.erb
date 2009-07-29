@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <%= stylesheet_link_tag 'public/main' %>
+    <%= yield :stylesheet %>
+    <%= yield :javascript %>
+    <title><%= public_page_title %></title>
+    <meta name="description" content="<%= meta_description %>" />
+    <meta name="keywords" content="<%= meta_keywords %>" />
+    <meta name="title" content="<%= meta_title %>" />
+    <script type="text/javascript">
+      try{if(!ITH){ ITH={}}}catch(e){ITH={}}
+      ITH.CommentLimit=<%=Cms::Comment.votes_limit%>
+    </script>
+  </head>
+  <body>
+    <div id="headmain">
+      <%=image_tag("logo.png",:title=>"Telegraf")%>
+    </div>
+    <div id="big_black_line"></div>
+    <%= yield :top %>
+    <div id="body">
+      <div id="left_content" class="left-bcol-wide <%= yield :class_name %>">
+        <%= yield  %>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<div id="ith_media_dialog_header" class="ith-media-dialog-header">
+  <div class="ith-media-dialog-selectors">
+    <%= render :partial=>"header", :object=>{:media=>dialog[:media]} %>
+  </div>
+  <div class="ith-media-dialog-add-new">
+    <span onclick="ITH.Media.add_new()">Pievienot jaunu</span>
+  </div>
+</div>
+<div id="ith_media_dialog_body" class="ith-media-dialog-body">
+    <%= render :partial=>"#{dialog[:media]}_list_body" %>
+</div>
+<div id="ith_media_attributes" class="ith-media-attributes">
+</div>

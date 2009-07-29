@@ -1,0 +1,18 @@
+<% not_base_language do %>
+  <table summary="translate">
+    <tr>
+      <%= list_header_cell :width=>180, :title=>"Pamatteksts".t,:sort_column=>"tr_key" %>
+      <%= list_header_cell :width=>280, :title=>"Tulkojums".t,:sort_column=>"text" %>
+      <th style="width:30px"></th>
+    </tr>
+    <% for translation in form[:page] %>
+      <tr>
+        <td><%= translation.tr_key %></td>
+        <td id="translation_<%=translation.id%>" onclick='<%= translation_in_place_editor "translation_#{translation.id}", :action=>'set_translation_text',:controller=>'/admin/translate'%>'><%= translation.text %></td>
+        <td id="translation_<%=translation.id%>_sum"></td>
+      </tr>
+    <% end %>
+  </table>
+  <br />
+  <%= cms_pages form %>
+<%end%>

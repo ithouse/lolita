@@ -1,0 +1,31 @@
+<span class="brick"><input type="radio" name="relation_type" value="content" <%=current==:content ? "checked='checked'" : ""%> onchange="change_public_menus('content')"/></span>
+<div class="fl">
+  <span class='brick'>
+    <select name="<%=content[:name]%>" class="select" id="my_content_menu_tree_select" >
+      <%= content[:options]  %>
+    </select>
+  </span>
+</div>
+<span class="brick">
+  <input type="radio" name="relation_type" value="action" <%=current==:action ? "checked='checked'" : ""%> onchange="change_public_menus('action')"/>
+</span>
+<%= render :partial=>"admin_menu_select", :locals=>{
+  :table_options=>actions[:table_options],
+  :action_options=>actions[:action_options],
+  :namespace=>actions[:namespace],
+  :current_item_id=>actions[:current_item_id],
+  :public=>true
+}
+%>
+<span class="brick"><input type="radio" name="relation_type" value="url" <%=current==:url ? "checked='checked'" : "" %> onchange="change_public_menus('url')" /></span>
+<div class="fl">
+  <span class="brick">
+    <input type="text" class="txt" id="my_content_menu_tree_url_select" name="<%=menu_select_name(actions[:namespace],"url")%>" value="<%=url%>"/>
+  </span>
+</div>
+<script type="text/javascript">
+  //<![CDATA[
+  change_public_menus("<%=current==:content ? "content" : current==:url ? "url": "action"%>")
+  //]]>
+</script>
+

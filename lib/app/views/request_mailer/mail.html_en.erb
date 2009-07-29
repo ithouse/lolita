@@ -1,0 +1,11 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+<%= @data[:header] %>
+<% @data.delete(:header)
+  @data.each{|key,value|
+    if value.is_a? Hash %>
+<%= "#{value[:title]}: #{value[:value]}" %>
+  <% end 
+  }%>

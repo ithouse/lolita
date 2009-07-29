@@ -1,0 +1,24 @@
+<% content_for :stylesheet do %>
+  <%= stylesheet_link_tag 'public/form' %>
+  <%= stylesheet_link_tag 'public/profile' %>
+<%end%>
+<% content_for :left do %>
+    <div class="left-bcol-wide">
+      <div class="profile">
+        <%= render :partial=>'profile_menu'%>
+        <%= flash_public %>
+        <form class="classic" action="/admin/public_user/message" method="post">
+          <% if flash[:error] %>
+            <div class="err-info"><%=t(:"simple words.error")%>!<br />
+              <%=flash[:error]%>.
+            </div>
+          <%end%>
+          <div class="line text"><label><%=t(:"profile.message.subject")%>:</label><div class="input"><%=text_field :user_message, :subject%></div><div class="clear"></div></div>
+          <div class="line textarea"><label><%= t(:"profile.message.content") %></label><div class="input"><%= text_area(:user_message, :content) %></div><div class="clear"></div></div>
+          <div class="splitter"></div>
+
+          <div class="buttons"><button type="submit" value="save" class="fl"><span><%= t(:"actions.send") %></span></button><div class="clear"></div></div>
+        </form>
+      </div>
+    </div>
+<%end%>

@@ -1,0 +1,27 @@
+<div id="ajax-login">
+  <% unless Admin::User.access_to_area?(session) %>
+    <form action="/login" method="post" class="top-login" onsubmit="if(!allow_submit('#ajax_login_password')){alert('<%=t(:"public.password obligation")%>');return false;}">
+      <div class="line">
+        <input type="text" name="login" id="ajax_login_name" value="<%=t(:"user.login name")%>" />
+      </div>
+      <div  class="line">
+        <input id="ajax_login_password" type="password" name="password" value="" />
+      </div>
+      <div class="line">
+        <label for="remember_me"><%=t(:"public.remember me")%></label><input type="checkbox" class="remember-me" name="remember_me" id="remember_me"/>
+      </div>
+      <div>
+        <button type="submit"><span><%=t(:"user.login")%></span></button>
+        <a href="#" onclick="$('#ajax-login-container').hide();"><%= t(:"actions.cancel") %></a>
+      </div>
+    </form>
+    <script type="text/javascript">
+      //<![CDATA[
+      addFieldSyncListners("#ajax_login_name","#ajax_login_password")
+      addInputDefaultValueListeners("#ajax_login_name",'<%=t(:"user.login name")%>')
+      //]]>
+    </script>
+  <% else %>
+    You are allready signed in!
+  <%end%>
+</div>

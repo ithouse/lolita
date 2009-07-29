@@ -1,0 +1,13 @@
+<h1>Visas lapas</h1>
+<% level=0 %>
+<% for page in @pages %>
+  <% if page[:level]>level %>
+    <ul style="margin: 0; padding: 0 0 0 20px;">
+  <% end %>
+  <li><%= link_to page[:name],{:action=>:open, :id=>page[:name] } %></li>
+  <% if page[:level]<level %>
+    <%= "</ul>"*(level-page[:level]) %>
+  <%end%>
+  <%  level=page[:level]%>
+<% end %>
+<%= "</ul>"*(level) if level>0 %>

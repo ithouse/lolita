@@ -1,0 +1,23 @@
+<form method="POST" enctype="multipart/form-data"  id="<%=show_form[:media]%>_delete_thumb_form" >
+  <% cfg=file_cfg(show_form,:files=>show_form[:files]) %>
+  <% height=cfg[:configuration][:height] || 390%>
+  <div style="width:100%;display:block;height:<%= height %>px;overflow:scroll;margin-bottom:5px;" id="<%= cfg[:media] %>_list_container">
+    <%= render :partial=>"/#{cfg[:media]}/thumb_list", :object=>cfg %>
+  </div>
+  <input type="hidden" name="parent" value="<%= cfg[:parent] %>" />
+  <input type="hidden" name="parent_id" value="<%= cfg[:parent_id] %>" />
+  <input type="hidden" name="tempid" value="<%=   cfg[:tempid] %>" />
+  <input type="hidden" name="single" value="<%=  cfg[:single] %>" />
+  <input type="hidden" name="configuration" value="<%=  cfg[:configuration] %>" />
+  <input type="hidden" name="private" value="<%=  cfg[:private] %>" />
+  <input type="hidden" name="read_only" value="<%=  cfg[:read_only] %>" />
+  <input type="hidden" name="media" value="<%=cfg[:media]%>"
+   <% unless cfg[:read_only] %>
+    <div style="width:100%; float:left;text-align:right;">
+      <input type="button" value="<%=t(:"actions.destroy")%>" class="btn" id="<%=cfg[:media]%>_delete_thumb_submit" />
+    </div>
+  <% end %>
+</form>
+<% #if !read_only %>
+<%= auto_uploadable "/#{cfg[:media]}/destroy","#{cfg[:media]}_delete_thumb_form","#{cfg[:media]}_delete_thumb_submit",'click', "#{cfg[:media]}_list_container"%>
+<% # end %>

@@ -1,0 +1,36 @@
+<%#
+# Artūrs Meisters ITHGroup
+# 17.10.2008
+%>
+<div id="app_editable_menu_container" class="bigbox" style="display:none;">
+  <%= list_start_tags %>
+  <div id="app_editable_menu" class="editable-menu"></div>
+  <%= list_end_tags %>
+</div>
+<div id="web_editable_menu_container"  class="bigbox" style="display:none;">
+  <%= list_start_tags %>
+  <div id="web_editable_menu" class="editable-menu"></div>
+  <%= list_end_tags %>
+</div>
+<div id="app_menu" class="smallbox">
+  <%= list_start_tags %>
+  <div id="app_menu_items"><%=image_tag "cms/loading.gif" ,:style=>"margin-left:40%",:onclick=>"init_menus()"%> </div>
+  <%= list_end_tags %>
+</div>
+<% if Admin::Menu.web_menu(params[:controller].split("/").first) %>
+  <div id="web_menu" class="smallbox">
+    <%= list_start_tags %>
+    <div id="web_menu_items"></div>
+    <%= list_end_tags %>
+  </div>
+  <div id="public_menu_dialog" style="display:none">
+    <div class="hd"><%=t(:"menu.dialog.header")%></div>
+    <div class="bd">
+      <form method="POST" action="/admin/menu/add_public_menu">
+        <label for="name"><%=t(:"menu.dialog.menu name")%>:</label>
+        <input type="text" name="name" maxlength="255" size="30"/>
+        <input type="hidden" name="namespace" value="<%=params[:controller].split("/").first%>"/>
+      </form>
+    </div>
+  </div>
+<% end %>

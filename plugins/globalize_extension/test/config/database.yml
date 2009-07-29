@@ -1,0 +1,4 @@
+test:
+  adapter: mysql
+  database: globalize_test
+  username: root

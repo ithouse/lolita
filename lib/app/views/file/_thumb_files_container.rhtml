@@ -1,0 +1,6 @@
+
+<% get_all_parent_files(thumb_files_container) do |files| %>
+  <div id="<%=thumb_files_container[:media]%>-files-thumb-container" class="file-files-thumb-container">
+    <%= render :partial=>"/file/show_form", :object=>file_cfg(thumb_files_container,:files=>files) %>
+  </div>
+<% end %>

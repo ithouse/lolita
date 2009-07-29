@@ -1,0 +1,30 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+<table summary="user list">
+  <tr>
+    <%= list_header_cell :width=>450, :sort_column=>"login" %>
+    <%= list_header_cell :width=>70, :title=>t(:"list.options")%>
+  </tr>
+  <% for user in @page %>
+    <tr>
+      <td>
+        <% link=edit_link(:title=>user.login_name,:id=>user.id) %>
+        <%= toggable_link "user_subtree_#{user.id}",:title=>link,:opened=>user==@active_user,:action=>:all_roles,:controller=>"/admin/role",:id=>user.id %>
+        <div id="user_subtree_<%=user.id%>">
+          <% if @active_user %>
+            <%= render :partial=>'/admin/role/all_roles', :locals=>{:user=>@active_user}%>
+          <% end %>
+        </div>
+      </td>
+      <td>
+        <% list_options(user){|option| %>
+          <%= option %>&nbsp;
+        <% } %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= cms_pages list%>
+

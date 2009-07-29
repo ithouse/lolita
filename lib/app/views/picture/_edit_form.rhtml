@@ -1,0 +1,8 @@
+<form enctype="multipart/form-data"  id="picture_upload_form" >
+  <%= upload_column_field 'picture','picture', :class=>'upload_field'  %>
+  <% if edit_form[:pdf] %>
+    <br/><sup class='detail'><%=:"media.photo_files.allowed types" %></sup>
+  <%end%>
+  <%= picture_cfg_form_fields edit_form%>
+</form>
+<%= auto_uploadable '/picture/create','picture_upload_form','picture_picture',"change",'picture_list_container',{:type=>"picture"} %>

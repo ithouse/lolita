@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"/>
+    <meta HTTP-EQUIV="EXPIRES" CONTENT="01 Jan 1970 00:00:00 GMT"/>
+    <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"/>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title><%=Admin::Configuration.get_value_by_name('system_title')%></title>
+    <%= stylesheet_link_tag 'admin/default', 'cms' %>
+    <%= javascript_include_tag 'tiny_mce/tiny_mce.js' %>
+  </head>
+  <body>
+    <div id="body" >
+      <%= render :partial=>"cms/header" %>
+      <div class="bigbox" id="content">
+        <div id="flash"></div>
+        <%= yield  %>
+      </div>
+      <div class="wiki-menu">
+        <ul>
+          <li><%= link_to "Saturs", :action=>"list"%> </li>
+          <% if false && @page %>
+            <li><b>Saites</b>
+              <ul>
+                <% @page.links do |name| %>
+                  <li><%= link_to name, :action=>:open, :id=>name %></li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <%= render :partial=>"cms/footer" %>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <%= yield :stylesheet %>
+    <%= javascript_include_tag 'public.js' %>
+    <%= yield :javascript %>
+    <title><%= yield :title %></title>
+  </head>
+  <body>
+    <div id="container">
+      <div id="content">
+        <%= yield %>
+      </div>
+      <br class="clear" />
+      <div class="footer">
+        &copy; 2008 <%=Admin::Configuration.get_value_by_name("system_title") || "CMS"%>. Created by <a href="http://www.ithouse.lv/">IT House</a>.
+      </div>
+    </div>
+  </body>
+</html>

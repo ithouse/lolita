@@ -1,0 +1,23 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+<% if role  %>
+  <% users= Admin::SystemUser.find(:all)%>
+  <div class="admin-list">
+    <table>
+      <% for user in users %>
+        <div class="admin-list-row">
+          <tr><td style="width:100px;">
+              <%= list_link :title=>user.login_name,:controller=>"/admin/user",:id=>user.id,:paging=>false, :html=>{:class=>"admin-record"} %>
+            </td><td>
+              <input class="admin-new-button" type="checkbox" <%= check_user role,user.login %>
+                     onchange="simple_yui_request(this,{before:'config.url=object.checked ? \'/admin/user/add_role\' : \'/admin/user/remove_role\'',url:'',params:{role:'<%=role.name%>',user:<%=user.id%>}})"/>
+            </td>
+          </tr>
+        </div>
+      <% end %>
+    </table>
+  </div>
+<% end %>
+

@@ -1,0 +1,46 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+
+<%= list_start_tags %>
+<div class="box">
+  <div class="top">
+    <div class="fl big blue"><%="#{t(:"user.edit")} #{@user.login}"%></div>
+  </div>
+  <br class="clear" />
+  <div class="hr"></div>
+  <%= t(:"user.edit")%>
+  <br class="clear" /><br />
+  <div class="warnbox">
+    <%= error_messages_for_cms :user %>
+  </div>
+  <div class="tabsheet">
+    <div class="tabswitch">
+      <%= tab_header 'Saturs',:index=>0,:current=>true %>
+    </div><!--[if !IE]>tabswitch<![endif]-->
+    <div class="tabarea">
+      <% form_for(:user, @user,{:url=>{:action=>'edit_self'}}){ |f|%>
+        <div id="tab0container"  name="tab_content" style="display:block;">
+          <input type="hidden" name="id" value="<%=@user.id%>"/>
+          <span class="brick"><%= field_title("login") %></span>
+          <div class="fl"><%= f.text_field :login, :class=>'txt' %></div>
+          <span class="brick"><%= field_title("email")%></span>
+          <div class="fl"><%= f.text_field :email, :class=>'txt' %></div>
+          <span class="brick"><%= field_title(:"user.old password")%></span>
+          <div class="fl"><input type="password" name="user[old_pass]" class="txt" /></div>
+          <span class="brick"><%= field_title(:"user.new password")%></span>
+          <div class="fl"><%= f.password_field :password , :class=>'txt'%></div>
+          <span class="brick"><%= field_title(:"user.new password confirmation")%></span>
+          <div class="fl"><%= f.password_field :password_confirmation, :class=>'txt' %></div>
+          <br class="clear" />
+          <div><!--[if !IE]>for ie to expand height correctly<![endif]--></div>
+        </div><!--[if !IE]>banner area<![endif]-->
+        <input type="submit" class="btn" value="<%=t(:"actions.confirm")%>"  /> vai
+        <%= link_to t(:"actions.cancel"),:controller=>Admin::Configuration.get_value_by_name('start_page'),:html=>{:class=>"blue"}%>
+      <% } %>
+
+    </div><!--[if !IE]>tabarea<![endif]-->
+  </div><!--[if !IE]>tabsheet<![endif]-->
+</div><!--[if !IE]>box<![endif]-->
+<%= list_end_tags %>

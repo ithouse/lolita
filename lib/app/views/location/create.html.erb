@@ -1,0 +1,61 @@
+<div class="bigbox">
+  <%= list_start_tags %>
+  <div class="box">
+    <div class="top">
+      <div class="fl big blue"><%= "Sākuma lapa" %></div>
+    </div>
+    <br class="clear" />
+    <div class="hr"></div>
+    Kartes rediģēšana
+    <br class="clear" /><br />
+    <% if !flash[:notice].nil? %>
+      <div class="greenbox">
+        <div class="l">
+          <div class="r">
+            <%= flash[:notice] %>
+          </div>
+        </div>
+      </div>
+      <br class="clear" />
+    <% end %>
+    <div class="warnbox">
+      <%= error_messages_for_cms @errors %>
+    </div>
+    <br class="clear" />
+    <div class="tabsheet">
+      <div class="tabswitch">
+        <%= tab_header 'Saturs',:index=>0 %>
+        <%= tab_header 'Karte',:index=>1,:current=>true %>
+      </div><!--[if !IE]>tabswitch<![endif]-->
+      <div class="tabarea">
+        <% remote_form_for(:object, @object,{:complete=>"$('#content').html(request)",:url=>{:controller=>"/location",:action=>params[:action]},:html=>{:onsubmit=>on_submit_action}}){ |f|%>
+          <div id="tab0container"  name='tab_content' style="display:none;">
+            <% @config[:fields].each{|index,field| %>
+              <div class="managed-create-line">
+                <span class="brick"><%= field[:title] %></span>
+                <div class="fl">
+                  <%= field_render field[:type],field.dup %>
+                </div>
+              </div>
+            <%}%>                           
+          </div><!--[if !IE]>tab container<![endif]-->
+          <div id="tab1container"  name='tab_content' style="display:block;">
+            <div id="map" class="house-google-map" ></div>
+            <input type="hidden" value="<%=@object.id%>" name="id"/>
+            <input type="hidden" value="<%= @object.lat %>" name="object[lat]" id='object_map_lat'/>
+            <input type="hidden" value="<%= @object.lng %>" name="object[lng]" id='object_map_lng'/>
+          </div><!--[if !IE]>tab container<![endif]-->
+          <br class="clear"/>
+          <input type="submit" class="btn" value="<%='Saglabāt'%>" /> vai 
+          <%= link_to_remote("Atcelt",
+            :url=>{:action=>"list"},
+            :update=>"content") 
+        %>
+        <% }%>
+      </div><!--[if !IE]>tabarea<![endif]-->
+    </div><!--[if !IE]>tabsheet<![endif]-->
+  </div><!--[if !IE]>box<![endif]-->
+<%= list_end_tags %>
+<%= render :partial=>'map_script', :locals=>{:read_only=>@read_only||false,:lat=>@object.lat, :lng=>@object.lng} %>
+</div>
+<br class="clear" /><br />

@@ -1,0 +1,19 @@
+<%#
+# Artūrs Meisters ITHGroup 
+# 06.10.2008
+%>
+<div id="ith_media_status_container_<%=update_images[:id]%>" class="greenbox" style="display:none;">
+  <div class="l">
+    <div id="ith_media_status_<%=update_images[:id]%>" class="r"></div>
+  </div>
+</div>
+<form class="ith-media-attributes-form" method="post" onsubmit="ITH.Media.save_attributes(this,<%=update_images[:id]%>);return false;">
+    <%= label :image,:alt, "Alternatīvais teksts" %>
+    <%=text_field :image,:alt, :class=>"ith-media-text-field" %>
+    <%= label :image,:alt, "Virsraksts" %>
+    <%=text_field :image,:title, :class=>"ith-media-text-field" %>
+    <%= label :image,:alt, "Apraksts" %>
+    <%=text_field :image,:caption, :class=>"ith-media-text-field"%>
+    <input type="submit" class="btn" value="<%='Apstiprināt'%>"/>&nbsp;
+    <span class="blue" style="cursor:pointer;" onclick="ITH.Media.close_attributes()">Atcelt</span>
+</form>

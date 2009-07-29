@@ -1,0 +1,56 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+
+<% if role && role.name!=Admin::Role.admin %>
+  <div class="admin-list">
+    <table>
+      <tr>
+        <th style="font-size:10px;width:auto;"><%=t(:"admin_role.title")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.all")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.read")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.write")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.change")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.destroy")%></th>
+      </tr>
+      <% for access in Admin::Access.find(:all) %>
+        <div class="admin-list-row">
+          <tr>
+            <td>
+              <%= list_link(
+                :title=>table_title(access.name),
+                :paging=>false,
+                :controller=>"/admin/access",
+                :id=>access.id,:html=>{:class=>"admin-record"}
+              )%>
+            </td><td>
+              <input id="admin_checkbox_<%=access.id%>_<%=role.id%>" class="admin-new-button" type="checkbox" <%= change_main_relations role,access %> />
+              <script type="text/javascript">
+                //<![CDATA[
+    <% prefix="accesses"%>
+      addAccessToggle('#admin_checkbox_<%=access.id%>_<%=role.id%>',<%=access.id%>,'<%=role.name%>',<%=role.id%>,'<%=prefix%>')
+      //]]>
+              </script>
+            </td>
+            <% disabled=!related?(role.name,access) %>
+            <% change_action_relations(role,access,disabled,true) do |element,id,perm|%>
+              <td>
+                <%= element%>
+                <script type="text/javascript">
+                  //<![CDATA[
+                  changeAccessPremission('<%=id%>',<%=access.id%>,'<%=role.name%>','<%=perm%>')
+                  //]]>
+                </script>
+              </td>
+            <%end%>
+          </tr>
+        </div>
+      <% end %>
+    </table>
+  </div>
+<% else %>
+  <div class="admin-list">
+    <span style="color:red"><%=  t(:"admin_access.admin warning")%></span>
+  </div>
+<% end %>

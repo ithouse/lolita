@@ -1,0 +1,59 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+<table summary="user list">
+  <tr>
+    <%= list_header_cell :width=>450, :sort_column=>"name" %>
+    <%= list_header_cell :width=>70, :title=>t(:"list.options")%>
+  </tr>
+  <% for role in @page %>
+    <tr>
+      <td>
+        <% link=role.name!=Admin::Role.admin ? edit_link(:title=>role.name,:id=>role.id) : role.name %>
+        <%= toggable_link "role_subtree_#{role.id}",:container=>"role_subtree_#{role.id}_list",:title=>link,:opened=>role==@active_role,:action=>:all_users,:controller=>"/admin/user",:id=>role.id,:before=>"elementById(\"role_subtree_#{role.id}_user_switch\").className=\"current-role-tab\";elementById(\"role_subtree_#{role.id}_access_switch\").className=\"other-role-tab\";" %>
+        <div id="role_subtree_<%=role.id%>" style="display:<%=role==@active_role ? "block" : "none"%>">
+          <div class="role-tab">
+            <%= default_link(
+              :title=>(table_title("admin/user")),
+              :id=>role.id,
+              :action=>:all_users,
+              :container=>"role_subtree_#{role.id}_list",
+              :controller=>"/admin/user",
+              :html=>{:id=>"role_subtree_#{role.id}_user_switch",:class=>@show_users ? "current-role-tab" : "other-role-tab"},
+              :on_success=>"elementById(\"role_subtree_#{role.id}_access_switch\").className=\"other-role-tab\";object.className=\"current-role-tab\""
+            )%>
+          </div>
+          <div class="role-tab">
+            <%= default_link(
+              :title=>(table_title("admin/access")),
+              :id=>role.id,
+              :action=>:all_accesses,
+              :container=>"role_subtree_#{role.id}_list",
+              :controller=>"/admin/access",
+              :html=>{:id=>"role_subtree_#{role.id}_access_switch",:class=>!@show_users ? "current-role-tab" : "other-role-tab"},
+              :on_success=>"elementById(\"role_subtree_#{role.id}_user_switch\").className=\"other-role-tab\";object.className=\"current-role-tab\""
+            )%>
+          </div>
+          <br style="clear:both;"/>
+          <div id="role_subtree_<%=role.id%>_list">
+            <% if @active_role %>
+              <% if @show_users %>
+                <%= render :partial=>"/admin/user/all_users", :locals=>{:role=>@active_role}%>
+              <% else %>
+                <%= render :partial=>'/admin/access/all_accesses', :locals=>{:role=>@active_role}%>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </td>
+      <td>
+        <% unless role.name==Admin::Role.admin %>
+          <% list_options(role){|option| %>
+            <%= option %>&nbsp;
+          <% } %>
+        <%end%>
+      </td>
+    </tr>
+  <% end %>
+</table>

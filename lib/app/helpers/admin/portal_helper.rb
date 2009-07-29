@@ -1,0 +1,2 @@
+module Admin::PortalHelper
+end

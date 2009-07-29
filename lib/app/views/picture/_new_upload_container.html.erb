@@ -1,0 +1,37 @@
+<% cfg=picture_cfg(new_upload_container) %>
+<% if new_upload_container[:parent] && new_upload_container[:parent_id] %>
+  <div id="picture-photos" class="picture-photos-container">
+    <div style="float:right">
+      <input type="file" name="fileInput" id="fileInput" />
+      <script type="text/javascript">
+        //<![CDATA[
+        loadjscssfile("/stylesheets/admin/uploadify.css","css")
+        $(document).ready(function() {
+          ITH.Picture.init(<%=new_upload_container.to_json%>)
+          $('#fileInput').fileUpload({
+            'uploader': '/swf/uploader.swf',
+            'script': '/picture/new_create',
+            'cancelImg': '/images/cms/cancel.png',
+            'simUploadLimit':1,
+            'multi':true,
+            'scriptData':{'sid':'<%=  session.session_id %>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>},
+            'displayData':'speed',
+            'onError':function(){
+              alert("Error!\n Try again or Reload page (Ctrl+R)!")
+            },
+            'onAllComplete':function(fu,err,a,speed){
+              ITH.Picture.refresh_list()
+            }
+          });
+        });
+        //]]>
+      </script>
+      <a href="javascript:$('#fileInput').fileUploadStart();" ><%=t(:"picture.upload file")%></a><br/>
+      <a href="javascript:$('#fileInput').fileUploadClearQueue()"><%=t(:"actions.clear").chars.capitalize%></a>
+    </div>
+    <% if cfg[:main_image] %>
+      <%= render :partial=>'/picture/main_image_container', :object=>cfg %>
+    <% end %>
+    <%= render :partial=>'/picture/thumb_images_container', :object=>cfg %>
+  </div>
+<% end %>

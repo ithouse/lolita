@@ -1,0 +1,7 @@
+<%#
+# Artūrs Meisters
+# ITHGroup 06.10.2008
+%>
+<% Media::TYPES.each{|media,title| %>
+  <span class="media-selector <%= header[:media]==media ? "active-media" : ""%>" onclick="ITH.Media.change_to('<%=media%>',this)"><%= title %></span>
+<% } %>

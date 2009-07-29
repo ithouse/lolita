@@ -1,0 +1,91 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+# script for google maps using with ruby
+%>
+<script type="text/javascript">
+  //<![CDATA[
+  var map,marker,current_zoom ;
+  function mapLoad(){
+   // alert(lat + ","+lng);
+   
+    var lat=<%= lat||0 %>;
+    var lng=<%= lng||0 %>;
+    var read_only=<%= read_only||false %>;
+    if ((!lat || !lng)||(lat==0 || lng==0)){
+        lat=56.9444123864;
+        lng=24.1009140015;
+        //Rīgas koordinātas
+    }
+    if (GBrowserIsCompatible()){// Do Map if Compatible Browser only
+       //if(!map){
+        map = new GMap2(elementById("map"));
+       //}
+       map.enableScrollWheelZoom();
+       map.addControl(new GLargeMapControl());
+       map.addControl(new GMapTypeControl());
+       map.addControl(new GScaleControl()) ;
+       map.addControl(new GOverviewMapControl()) ;
+      
+      var icon = new GIcon();
+      icon.image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
+      icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
+      icon.iconSize = new GSize(12, 20);
+      icon.shadowSize = new GSize(22, 20);
+      icon.iconAnchor = new GPoint(6, 20);
+      
+      
+     // alert(lat,lng);
+      // alert(icon.iconSize);
+       
+       var start = new GLatLng(lat, lng);//new GLatLng(56.945348705799276, 24.100570678710938) ; // Rīga
+       try{
+        map.setCenter(start,11);
+       }catch(e){}
+      // alert(start);
+       marker=new GMarker(start,{icon:icon,draggable: !read_only});
+       map.addOverlay(marker);
+     //  alert(marker);
+       if (!read_only){
+       GEvent.addListener(map, 'click', function(overlay, point){
+              if (overlay){
+              }else if (point){
+                marker.setPoint(point)
+                current_zoom=map.getZoom();
+                changecenter()
+              }
+       });
+      }
+      
+      if (!read_only){
+        marker.enableDragging()
+        GEvent.addListener(marker,'dragend',function() {changecenter()});
+      }
+      //$('tab3container').style.display='none';
+    }else{
+        elementById("map").innerHTML = "<div style='color: grey'>Neizdevās parādīt Google Maps.</div>" ;
+    }
+
+  }
+  function changecenter(){
+    
+    map.setCenter(marker.getPoint(),current_zoom);//map.getZoom()
+    point=marker.getLatLng();
+    $('#object_map_lat').val(point.lat());
+    $('#object_map_lng').val(point.lng());
+  }
+  function changelocation(lat,lng){
+    point=new GLatLng(lat, lng);
+    alert(lat)
+
+
+    marker.setPoint(point);
+    changecenter();
+  }
+  function getposition(){
+    return marker.getLatLng();
+  }
+  YAHOO.util.Event.onDOMReady(mapLoad);
+  //]]>
+</script>
+

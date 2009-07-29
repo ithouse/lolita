@@ -1,0 +1,11 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+<div id="content_map_tree_container" style="height:300px;width:100%;overflow:auto"></div>
+<script type="text/javascript">
+  //<![CDATA[
+  tree=new ITH.Tree('content_map_tree_container',<%=@web[:configuration].to_json%>,<%=@web[:data].to_json%>);
+  tree.render()
+  //]]>
+</script>

@@ -1,0 +1,16 @@
+<table summary="<%=params[:controller].split("/").last%>">
+  <tr>
+    <%= list_header_cell :width=>150, :title=>"Nosaukums",:sort_column=>"name" %>
+    <%= list_header_cell :width=>300, :title=>"Saite" %>
+    <%= list_header_cell :width=>60, :title=>"Iespējas" %>
+  </tr>
+  <% for map in form[:page] %>
+    <tr>
+      <td><%= edit_link :id=>map.id,:title=>map.name %></td>
+      <td><%= "[map #{map.id} \"#{map.name}\" #{map.width || 400} #{map.height || 400} #{map.info ? "yes" : "no"}]"%></td>
+      <td><%= edit_link :id=>map.id,:image=>true %>&nbsp;<%= destroy_link :id=>map.id, :image=>true%></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= cms_pages form  %>

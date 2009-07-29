@@ -1,0 +1,29 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+<%= list_start_tags %>
+<div class="box">
+  <div class="top">
+    <div class="fl big blue"><%= t(:"advice.form") %></div>
+    <div class="fr"></div>
+  </div>
+  <br class="clear" />
+  <div class="hr"></div>
+  <div class="warnbox">
+    <%=error_messages_for_cms @errors %>
+  </div>
+  <div class="leftside">
+    <form method="POST" class="split" action="/advice/send_advice" >
+      <input type="hidden" name="object[submitter]"  value="<%= session[:user].login %>"/>
+      <div style="float:left;width:200px;"><%= t(:"advice.description") %><sup>*</sup></div>
+      <textarea name="object[text]" cols="90" rows="15" ><%= @object[:text]%></textarea><br/><br/>
+      <br class="clear" />
+      <div class="fl"><sup>*</sup> &mdash;<sup class="detail"><%=t(:"system.mandatory fields")%></sup></div>
+      <br class="clear" />
+      <div class="fr mr" style="width:100%;text-align:right;" ><input class="request-btn" type="submit" value="<%="#{t(:"advice.send")}!"%>"/></div>
+      <br class="clear"/>
+    </form>
+  </div><!--[if !IE]>leftside<![endif]-->
+</div>
+<%= list_end_tags %>

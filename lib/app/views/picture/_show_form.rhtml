@@ -1,0 +1,14 @@
+<form method="POST" enctype="multipart/form-data"  id="picture_delete_thumb_form">
+  <% cfg=picture_cfg(show_form) %>
+  <% unless cfg[:read_only] %>
+    <input type="button" value="<%=t(:"actions.destroy")%>" id="picture_delete_thumb_submit" class="btn" style="float:left" />
+    <%= image_tag "icons/arrow_refresh.png",:alt=>"",:id=>"picture_list_refresh_button",:title=>t(:"picture.refresh list"), :style=>"margin-left:10px;", :onclick=>"ITH.Picture.refresh_list()" %>
+    <br />
+    <div style="font-size:9px;"><%=t(:"picture.select")%></div>
+  <% end %>
+  <div style="width:100%;display:block;" id="picture_list_container">
+    <%= render :partial=>'/picture/thumb_list', :object=>cfg %>
+  </div>
+  <%= picture_cfg_form_fields show_form,:excluded=>[:pictures]%>
+</form>
+<%= auto_uploadable '/picture/destroy','picture_delete_thumb_form','picture_delete_thumb_submit','click','picture_list_container',{:type=>"picture"} %>

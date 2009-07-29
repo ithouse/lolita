@@ -1,0 +1,20 @@
+<% unless Admin::User.access_to_area?(session) %>
+  <form action="/login" method="post" class="top-login" onsubmit="if(!allow_submit('#top_login_password')){alert('<%=t(:"public.password obligation")%>');return false;}">
+    <input type="text" name="login" id="top_login_name" value="<%=t(:"user.login name")%>" /><input id="top_login_password" type="password" name="password" value="" />
+    <label for="remember_me"><%=t(:"public.remember me")%></label><input type="checkbox" class="remember-me" name="remember_me" id="remember_me"/>
+    <button type="submit" class="light"><%=t(:"user.login")%></button>
+  </form>
+  <form action="<%= signup_url %>" method="get" class="top-register" >
+    <button type="submit" class="light"><%= t(:"user.registration") %></button>
+  </form>
+  <script type="text/javascript">
+    //<![CDATA[
+    addFieldSyncListners("#top_login_name","#top_login_password")
+    addInputDefaultValueListeners("#top_login_name",'<%=t(:"user.login name")%>')
+    //]]>
+  </script>
+<% else %>
+  <div class="top-authorized">
+    <%=link_to t(:"user.profile"),:controller=>"/user/profile" %><%=link_to t(:"user.logout"),:controller=>"/logout" %>
+  </div>
+<%end%>

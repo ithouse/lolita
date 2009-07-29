@@ -1,0 +1,24 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+
+<span class="brick"><%= t(:"metadata.url")%> </span>
+ <div class="fl">
+    <%= field_render 'text',{:field=>'url',:object=>:metadata,:maxlength=>3000} %>
+</div>
+
+<span class="brick"><%= t(:"metadata.name")%> </span>
+ <div class="fl">
+    <%= field_render 'text',{:field=>'title',:object=>:metadata,:maxlength=>255} %>
+</div>
+
+<span class="brick"><%= t(:"metadata.keywords")%> </span>
+ <div class="fl">
+    <%= field_render 'text',{:field=>'tags',:object=>:metadata,:maxlength=>255} %>
+</div>
+
+<span class="brick" style="float:none;display:block;padding-top:5px;"><%= t(:"metadata.description")%> </span>
+ <div class="fl" >
+    <%= field_render 'textarea',{:field=>'description',:object=>:metadata,:class=>'meta_data_textarea' } %>
+</div>

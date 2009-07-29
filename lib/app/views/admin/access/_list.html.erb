@@ -1,0 +1,26 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+%>
+<table summary="user list">
+  <tr>
+    <th class="black"><%=t(:"user.title")%></th>
+  </tr>
+  <% for access in @page %>
+    <tr>
+      <td>
+        <%= toggable_link "access_subtree_#{access.id}",:title=>table_title(access.name),:opened=>access==@active_access,:action=>:all_access_roles,:controller=>"/admin/role",:id=>access.id %>
+        <div id="access_subtree_<%=access.id%>">
+          <% if @active_access==access %>
+            <%= render :partial=>'/admin/role/all_access_roles',:locals=>{:access=>@active_access}%>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+    
+  <% end %>
+</table>
