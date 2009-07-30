@@ -1,0 +1,66 @@
+<div id="page_content_container">
+  <%= list_start_tags %>
+  <div class="box">
+    <div class="top">
+      <div class="fl big blue"><%= cms_title list_template[:controller] || params[:controller] %></div>
+      <div class="fr"><%=new_link :html=>{:class=>"add ntd black"},:title=>t(:"actions.new record") %></div>
+    </div>
+    <br class="clear" />
+    <div class="hr"></div>
+    <%= flash_response %>
+    <%= @config[:list][:intro].is_a?(Symbol) ? t(@config[:list][:intro]) : @config[:list][:intro] %>
+    <% has_marker=false %>
+    <% markers do |marker| %>
+      <br class="clear" />
+      <%has_marker=true%>
+      <%= marker %>
+    <% end %>
+    <%= '<br class="clear" />' if @config[:list][:intro].to_s.size>0 || has_marker %>
+    <div style="float:left;">
+      <% if @config[:list][:parent_filter] %>
+        <% parent_filter(list_template[:controller]) do |switch,filter_options|%>
+          <select class="select parent_filter_select" onchange="<%=switch%>"><%= filter_options %></select>
+        <% end %>
+      <% end %>
+    </div>
+    <% if (list_template[:controller] || params[:controller]).camelize.constantize.has_advanced_filter? %>
+      <%= advanced_filter(:filter=>list_template[:advanced_filter], :list_action=>list_template[:list_action]) %>
+      <br class="clear" />
+    <% elsif @config[:list][:filter] == :disabled %>
+      <br class="clear" />
+    <% else %>
+      <%= simple_filter%>
+      <br class="clear" />
+      <br/>
+    <% end %>
+    <% list_template[:partials][:top].each{|p|%>
+      <%= render :partial=>p, :object=>list_template%>
+    <% }%>
+    <div id="form_list">
+      <%= render :partial=>list_template[:partial],
+        :object=>{
+        :controller=>list_template[:controller] || params[:controller],
+        :container=>list_template[:container] || 'form_list',
+        :action=>list_template[:action] || params[:action],
+        :advanced_filter=>list_template[:advanced_filter],
+        :page=>@page || [],
+        :params=>list_template[:params]
+      } %>
+    </div>
+    <% list_template[:partials][:bottom].each{|p|%>
+      <%= render :partial=>p, :object=>list_template%>
+    <% }%>
+  </div>
+  <%= list_end_tags %>
+</div>
+<script type="text/javascript">
+  window.scrollTo(0,0)
+</script>
+<% if list_template[:refresh_menu] %>
+  <script type="text/javascript">
+    try{
+      ITH.MenuTree.active.app.get_updated_items()
+      if(ITH.MenuTree.active.web) ITH.MenuTree.active.web.get_updated_items()
+    }catch(err){}
+  </script>
+<% end %>

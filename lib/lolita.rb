@@ -35,6 +35,8 @@ ActionController::Base.send :include, Extensions::Translation
 ActionController::Base.send :include, Extensions::Util
 ActionController::Base.send :include, Extensions::AdvancedFilterExtension
 
+ActionViewHelper::Base.send :include, ApplicationHelper
+
 # Include TranslationHelper into all Lolitas helpers
 Dir.glob(File.join(File.dirname(__FILE__),'app','helpers','*_helper.rb')) do |path|
   unless File.basename(path) == 'application_helper.rb'

@@ -1,0 +1,33 @@
+<table summary="<%=params[:controller].split("/").last%>">
+  <% @config[:list][:columns]=default_cms_columns unless @config[:list][:columns] %>
+  <tr>
+    <% @config[:list][:columns].each{|column| %>
+      <%= list_header_cell :width=>column[:width], :title=>field_title(column[:title] || column[:field]),:sort_column=>column[:sortable] || column[:default] ? column[:field] : nil %>
+    <%}%>
+    <% if @config[:list][:options] %>
+      <%= list_header_cell :width=>@config[:list][:options].size*35, :title=>t(:"list.options") %>
+    <% end %>
+  </tr>
+  <% for element in list_default[:page] %>
+    <tr>
+      <% @config[:list][:columns].each{|column|%>
+        <td>
+          <% if column[:link] %>
+            <%= edit_link :id=>element.id, :title=>element.send(column[:field])%>
+          <%else%>
+            <%= element.send(column[:field])%>
+          <%end%>
+        </td>
+      <%}%>
+      <% if @config[:list][:options] %>
+        <td>
+          <% list_options(element) do |option| %>
+            <%= option %>&nbsp;
+          <% end %>
+        </td>
+      <%end%>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= cms_pages list_default  %>

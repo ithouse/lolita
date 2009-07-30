@@ -1,0 +1,5 @@
+<div id="user_notice" class="box">
+  <h2><%= notice.title %></h2>
+  <%= notice.message %>
+  <div class="close"><%= link_to t('profile.dashboard.close_notice'),{}, {:href=>"#", :id=>"close_notice", :onclick=>"jQuery.post('cms/notice/dismiss/#{notice.id}', {id: 'notice'})" } %></div>
+</div>

@@ -1,0 +1,145 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.31.3, 14:22:56
+%>
+<% content_for :title do -%><%= t(:"business.page_title") %><% end %>
+<% content_for :javascript do -%>
+  <%= javascript_include_tag "sexy-lightbox/mootools-yui-compressed" %>
+  <%= javascript_include_tag "public" %>
+  <%= javascript_include_tag "/reklama/business" %>
+  <script type="text/javascript">
+    window.onload = function(){
+      <% unless @validator.valid? %>
+      $($$("td div.error")[0].id.split("_").slice(1,$$("td div.error")[0].id.split("_").length).join("_")).focus();
+      <% else %>
+      window.document.getElementsByTagName('input')[2].focus();
+      <% end %>
+    };
+  </script>
+<% end -%>
+<% content_for :stylesheet do -%>
+    <%= stylesheet_link_tag "public/forms" %>
+    <%= stylesheet_link_tag "public/business" %>
+<% end -%>
+<% content_for :header_text do %><%= t(:"business.subtitle") %><% end -%>
+<%# render :partial => "subheader" %>
+
+<%= render :partial => "cms/rebate/steps", :locals => {:active => 3} %>
+
+<div class="box-t boxx"><div class="b"><div class="l"><div class="r"><div class="tl"><div class="tr"><div class="bl"><div class="br">
+<div class="min-height-box">&#160;</div>
+<div class="inner">
+<%= (@failed_rebate_object)? "<div class=\"flash error\">#{t(:"business.payment_failed")}</div>" : '' %>
+<% form_tag("", {:id => "business_form"}) do -%>
+<table id="step3-table">
+  <tr class="title">
+    <th colspan="3"><%= t(:"business.step3_title_1") %></th>
+  </tr>
+  <tr class="info"><th><%= t(:"business.step3_people") %></th><td><%= @count %></td></tr>
+  <tr class="info"><th><%= t(:"business.step3_price") %></th><td><%= number_to_currency(@price, :unit=>SWB_CURRENCY, :format=>"%n %u") %></td></tr>
+  <tr class="info sms_body"><th><%= t(:"business.sms_body") %></th><td><%= @sms_body %></td></tr>
+  <tr class="info"><th><%= t(:"business.date") %></th><td><%= @date %></td></tr>
+  <tr class="info"><th><%= t(:"business.time") %></th><td><%= @time %></td></tr>
+  <tr class="title">
+    <th colspan="2"><%= t(:"business.step3_title_2") %></th>
+  </tr>
+  <tr>
+    <td colspan=3" class="person_type">
+      <%= radio_button :business, :person_type, 1, :checked => @data.key?(:person_type)? @data[:person_type].to_i == 1 : false, :class=>'radio', :onclick => "toggle_person_type(this)" %>
+      <%= label_tag 'business_person_type_1', t(:"business.legal_person"), :class => :radio %>
+      <%= radio_button :business, :person_type, 2, :checked => @data.key?(:person_type)? @data[:person_type].to_i == 2 : false, :class=>'radio', :onclick => "toggle_person_type(this)" %>
+      <%= label_tag 'business_person_type_2', t(:"business.privat_person"), :class => :radio %>
+    </td>
+  </tr>
+  <tr class="company-row"<%= person_type?(2)? ' style="display:none;"' : '' %>>
+    <th><%= t(:"business.company_name") %></th>
+    <td class="col2">
+      <%= text_field :business, :company_name, {:value => @data.key?(:company_name)? @data[:company_name] : nil} %>
+    </td>
+    <td><%= error_msg @validator.errors(:company_name).join(', '),:id=>"er_business_company_name" unless @validator.valid?(:company_name)  %></td>
+  </tr>
+  <tr class="company-row"<%= person_type?(2)? ' style="display:none;"' : '' %>>
+    <th><%= t(:"business.company_reg_nr") %></th>
+    <td class="col2">
+      <%= text_field :business, :company_reg_nr, {:value => @data.key?(:company_reg_nr)? @data[:company_reg_nr] : nil, :maxlength => 11} %>
+    </td>
+    <td><%= error_msg @validator.errors(:company_reg_nr).join(', '),:id=>"er_business_company_reg_nr" unless @validator.valid?(:company_reg_nr)  %></td>
+  </tr>
+  <tr class="company-row"<%= person_type?(2)? ' style="display:none;"' : '' %>>
+    <th><%= t(:"business.company_pvn_nr") %></th>
+    <td class="col2">
+      <%= text_field :business, :company_pvn_nr, {:value => @data.key?(:company_pvn_nr)? @data[:company_pvn_nr] : nil, :maxlength => 13} %>
+    </td>
+    <td class="wrap"><%= error_msg @validator.errors(:company_pvn_nr).join(', '),:id=>"er_business_company_pvn_nr" unless @validator.valid?(:company_pvn_nr)  %></td>
+  </tr>
+  <tr class="company-row"<%= person_type?(2)? ' style="display:none;"' : '' %>>
+    <th><%= t(:"business.company_address") %></th>
+    <td class="col2">
+      <%= text_field :business, :company_address, {:value => @data.key?(:company_address)? @data[:company_address] : nil} %>
+    </td>
+    <td class="wrap"><%= error_msg @validator.errors(:company_address).join(', '),:id=>"er_business_company_address" unless @validator.valid?(:company_address)  %></td>
+  </tr>
+  <tr class="person-row"<%= person_type?(1)? ' style="display:none;"' : '' %>>
+    <th><%= t(:"business.person_name") %></th>
+    <td class="col2">
+      <%= text_field :business, :person_name, {:value => @data.key?(:person_name)? @data[:person_name] : nil} %>
+    </td>
+    <td class="wrap"><%= error_msg @validator.errors(:person_name).join(', '),:id=>"er_business_person_name" unless @validator.valid?(:person_name)  %></td>
+  </tr>
+  <tr class="person-row"<%= person_type?(1)? ' style="display:none;"' : '' %>>
+    <th><%= t(:"business.person_code") %></th>
+    <td class="col2">
+      <%= text_field :business, :person_code, {:value => @data.key?(:person_code)? @data[:person_code] : nil} %>
+    </td>
+    <td class="wrap"><%= error_msg @validator.errors(:person_code).join(', '),:id=>"er_business_person_code" unless @validator.valid?(:person_code)  %></td>
+  </tr>
+  <tr class="person-row"<%= person_type?(1)? ' style="display:none;"' : '' %>>
+    <th><%= t(:"business.person_address") %></th>
+    <td class="col2">
+      <%= text_field :business, :person_address, {:value => @data.key?(:person_address)? @data[:person_address] : nil} %>
+    </td>
+    <td class="wrap"><%= error_msg @validator.errors(:person_address).join(', '),:id=>"er_business_person_address" unless @validator.valid?(:person_address)  %></td>
+  </tr>
+  <tr>
+    <th><%= t(:"login.email") %></th>
+    <td class="col2">
+      <%= text_field :business, :email, {:value => @data.key?(:email)? @data[:email] : nil} %>
+    </td>
+    <td class="wrap"><%= (!@validator.valid?(:email))? error_msg(@validator.errors(:email).join(', '),:id=>"er_business_email") : "<span class=\"hint\">#{t(:"business.email_hint")}</span>"  %></td>
+  </tr>
+  <tr>
+    <th><%= t(:"profile.step1.phone") %></th>
+    <td class="col2">
+      <%= text_field :business, :phone, {:value => @data.key?(:phone)? @data[:phone] : nil, :maxlength => 8} %>
+    </td>
+    <td class="wrap"><%= (!@validator.valid?(:phone))? error_msg(@validator.errors(:phone).join(', '),:id=>"er_business_phone") : "<span class=\"hint\">#{t(:"business.phone_hint")}</span>"  %></td>
+  </tr>
+  <tr class="title">
+    <th colspan="3"><%= t(:"business.payment_type") %></th>
+  </tr>
+  <tr>
+    <td colspan="3" class="person_type">
+      <%= radio_button :business, :payment_type, 'swedbank', :checked => @data.key?(:payment_type)? @data[:payment_type] == 'swedbank' : false, :class=>'radio', :onclick => "change_payment_types(this)" %>
+      <%= label_tag 'business_payment_type_swedbank', t(:"business.payment_type_swedbank"), :class => :radio %>
+      <%= radio_button :business, :payment_type, 'prepay', :checked => @data.key?(:payment_type)? @data[:payment_type] == 'prepay' : false, :class=>'radio', :onclick => "change_payment_types(this)" %>
+      <%= label_tag 'business_payment_type_prepay', t(:"business.payment_type_prepay"), :class => :radio %>
+      <%= radio_button :business, :payment_type, 'firstdata', :checked => @data.key?(:payment_type)? @data[:payment_type] == 'firstdata' : false, :class=>'radio', :onclick => "change_payment_types(this)" %>
+      <%= label_tag 'business_payment_type_firstdata', t(:"business.payment_type_firstdata"), :class => :radio %>
+    </td>
+  </tr>
+  <tr>
+    <td class="back"><%= link_to t(:"simple words.back"), :action => :step2 %></td>
+    <td class="submit-row">
+      <button type="submit"><span id="submit-btn-text"><%= submit_label %></span></button>
+    </td>
+    <td class="wrap">
+      <p class="hint"><%= t(:"business.terms_of_use") % business_tos_url %></p>
+    </td>
+  </tr>
+</table>
+<% end %>
+<br class="clear"/>
+</div><br class="clear"/></div></div></div></div></div></div></div>
+</div>
+<%# render :partial => "payment_logos" %>

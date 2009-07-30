@@ -1,0 +1,12 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.2.2, 08:54:51
+%>
+<% content_for :title, @title if @title %>
+<% content_for :keywords, @keywords if @keywords %>
+
+<% content_for :stylesheet do -%>
+  <%= stylesheet_link_tag "public/text_page" %>
+<% end %>
+<%= box @object.body %>

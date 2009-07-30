@@ -1,0 +1,25 @@
+<% content_for :stylesheet do -%>
+    <%= stylesheet_link_tag "public/start_page2" %>
+<% end -%>
+<div id="subheader">
+  <div class="first">&#160;</div>
+  <%= image_tag "subheader-banner.png", :class => "banner" %>
+  <div class="stats">
+    <%= t(:"start_page.registered_users") + " " + @user_count.to_s %><br />
+    <%= t(:"start_page.earned") %>: <%= number_to_currency(((@earned_money * 100).ceil.to_f / 100.to_f), :unit=>'LVL', :format=>"%n %u") %>
+  </div>
+  <div class="last">&#160;</div>
+  <div class="sharethis">
+    <!-- AddThis Button BEGIN -->
+    <script type="text/javascript">var addthis_pub="4a1298c416027a2d";</script>
+    <a href="http://www.addthis.com/bookmark.php?v=20" onmouseover="return addthis_open(this, '', '[URL]', '[TITLE]')" onmouseout="addthis_close()" onclick="return addthis_sendto()"><img src="http://s7.addthis.com/static/btn/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/></a><script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script><!-- AddThis Button END -->
+  </div>
+</div>
+<div id="column1">
+  <h1>Saņem SMS un pelni</h1>
+  <h2>Reģistrējies, saņem aktuālus piedāvājumus un pelni</h2>
+</div>
+<div id="column2">
+  <h1>Nosūti reklāmas SMS</h1>
+  <h2>Atlasi un sasniedz savu mērķauditoriju dažās minūtēs</h2>
+</div>

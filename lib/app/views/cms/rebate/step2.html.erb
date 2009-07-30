@@ -1,0 +1,80 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.31.3, 14:22:56
+%>
+<% content_for :title do -%><%= t(:"business.page_title") %><% end %>
+<% content_for :javascript do -%>
+  <%= javascript_include_tag "sexy-lightbox/mootools-yui-compressed" %>
+  <%= javascript_include_tag "public" %>
+  <%= javascript_include_tag "/reklama/business" %>
+  <script type="text/javascript">
+    window.onload = function(){
+      window.document.getElementsByTagName('textarea')[0].focus();
+    };
+  </script>
+<% end -%>
+<% content_for :stylesheet do -%>
+    <%= stylesheet_link_tag "public/forms" %>
+    <%= stylesheet_link_tag "public/business" %>
+<% end -%>
+<% content_for :header_text do %><%= t(:"business.subtitle") %><% end -%>
+<%# render :partial => "subheader" %>
+
+<%= render :partial => "cms/rebate/steps", :locals => {:active => 2} %>
+
+<% form_tag "", :id => "business_form" do -%>
+<div class="box-t midbox"><div class="b"><div class="l"><div class="r"><div class="tl"><div class="tr"><div class="bl"><div class="br">
+<div class="min-height-box">&#160;</div>
+<div class="inner">
+  <table>
+    <tr class="one-col-row">
+      <th class="cols2">
+        <label for="business_sms_body">
+          <%= t(:"business.sms_body") %>
+        </label>
+      </th>
+      <td class="col2" colspan="2">
+        <%= error_msg @validator.errors(:sms_body).join(', '),:id=>"er_business_sms_body" unless @validator.valid?(:sms_body)  %>
+        <%= text_area :business, :sms_body, {:value => @data.key?(:sms_body)? @data[:sms_body] : nil, :cols => 40, :rows => 4, :onkeyup => "count_sms_length(this,160)", :onfocus => "count_sms_length(this,160)"} %><br />
+        <%= t(:"business.sms_symbols") %>: <span id="sms_char_count">0</span>
+      </td>
+    </tr>
+    <tr class="cols2">
+      <th>
+        <label for="business_date">
+          <%= t(:"business.date") %>
+        </label>
+      </th>
+      <td class="col2" colspan="2">
+        <%= error_msg @validator.errors(:date).join(', '),:id=>"er_business_date_1" unless @validator.valid?(:date)  %>
+        <%= select :business, :date_1, (1..31).to_a.collect {|v| [v,v]}.insert(0,[t(:"profile.step1.day"),""]), {:selected => @data.key?(:date_1)? @data[:date_1].to_i : nil}, {:onchange => "handle_valid_times()"} %>
+        <%= select :business, :date_2, (1..12).to_a.insert(0,t(:"profile.step1.month")).collect {|v| (v.to_i == 0)? [v,''] : [month_names(:capitalize=>true)[v-1],v]}, {:selected => @data.key?(:date_2)? @data[:date_2].to_i : nil}, {:onchange => "handle_valid_times()"} %>
+        <%= select :business, :date_3,(Date.today.year..(Date.today + 1.year).year).to_a.collect {|v| [v,v]}.insert(0,[t(:"profile.step1.year"),""]), {:selected => @data.key?(:date_3)? @data[:date_3].to_i : nil}, {:onchange => "handle_valid_times()"} %>
+      </td>
+    </tr>
+    <tr class="cols2">
+      <th>
+        <label for="business_time">
+          <%= t(:"business.time") %>
+        </label>
+      </th>
+      <td class="col2" colspan="2">
+        <%= error_msg @validator.errors(:time).join(', '),:id=>"er_business_time" unless @validator.valid?(:time)  %>
+        <%= select :business, :time, @date_values, {:selected => @data.key?(:time)? @data[:time] : nil} %>
+      </td>
+    </tr>
+    <tr>
+      <td class="back"><%= link_to t(:"simple words.back"), :action => :step1 %></td>
+      <td colspan="2" class="submit-row">
+        <button type="submit"><span><%= t(:"profile.step1.go1") %></span></button>
+      </td>
+    </tr>
+  </table>
+<br class="clear"/>
+</div><br class="clear"/></div></div></div></div></div></div></div>
+</div>
+
+<%= render :partial => "cms/rebate/side" %>
+<% end %>
+<%# render :partial => "payment_logos" %>

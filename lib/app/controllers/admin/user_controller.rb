@@ -21,14 +21,14 @@ class Admin::UserController < Managed
         if params[:password] && params[:login]
           flash[:error]=I18n.t(:"errors.unknown_user")
         end
-        render :layout=>'admin/login'
+        render :layout=>"admin/login"
       end
     else
       if logged_in?
         update_token()
         redirect_to(:controller=>Admin::Configuration.get_value_by_name('start_page'),:is_ajax=>params[:is_ajax])
       else
-        render :layout=>"admin/login" #TODO jāpadomā ko darīt ja lapai nav paredzēta publiskā daļa
+        render :layout=>"admin/login"#TODO jāpadomā ko darīt ja lapai nav paredzēta publiskā daļa
       end
     end
   end

@@ -1,0 +1,61 @@
+<%#
+# SIA ITHouse
+# Artūrs Meisters
+# 07.08.2008
+%>
+
+<% %>
+<%= javascript_response %>
+<br />
+ <div id="filter-head">
+    <div class="fl" style="font-weight: bold;"><%= image_tag("cms/arrow_blue_s.gif", :onclick=>"$('filters').toggle();toggle_images(this,['arrow_blue_s','arrow_blue_e'])") %>&nbsp;Atlase</div>
+    <div class="fr">Saglabātie atlases nosacījumi:
+      <select style="vertical-align: top;" class="select-small" id="saved_filters" onchange="<%= change_advanced_filter :url=>{:action=>advanced_filter[:list_action]} %>">
+        <%= saved_filters(advanced_filter[:filter])%>
+      </select>
+    </div>
+    <div class="clear nopad"></div>
+  </div>
+<% remote_form_for :advanced_filter,{:complete=>"flex_app=getFlexApp('aquamet_readout');if(flex_app){flex_app.refreshList()};$('form_list').update(request.responseText)",:url=>{:action=>advanced_filter[:list_action]},:html=>{:id=>"advanced_filter_form"}} do |f| %>
+  <div id="filters">
+    <table width="100%">
+      <tbody><tr>
+          <td>
+            <table>
+              <tbody>
+                <% create_filter(advanced_filter[:filter]){|row|%>
+                    <%= row%>
+                <%}%>
+                <tr class="filter add-filter">
+                  <td class="first-column">
+                    Pievienot jaunu atlases lauku
+                  </td>
+                  <td colspan="2">
+                    <div>
+                      <select style="width:150px" onchange="add_filter(this,this.selectedIndex);" name="advanced_filter[select]" id="add_filter_select" class="select-small"><option value=""/>
+                        <%= filter_columns(advanced_filter[:filter]) %>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+                <tr style="border-bottom: 1px solid #DDD; height:1px; line-height:1px;">
+                  <td colspan="3"></td>
+                </tr>
+              </tbody>
+           </table>
+          </td>
+        </tr>
+    </tbody></table>
+
+    <p class="buttons">
+      <a onclick="$('advanced_filter_form').onsubmit(); return false;" class="icon icon-checked">Filtrēt</a>
+      <%= link_to_remote "Attīrīt",
+            :url=>{:action=>advanced_filter[:list_action],:advanced_filter=>{:clear_filter=>true}},
+            :update=>"content",
+            :html=>{:class=>"icon icon-reload"}
+       %>
+      <a onclick="ask_for_form_name('save_filter','advanced_filter_form','<%=advanced_filter[:list_action]%>')" class="icon icon-save" >Saglabāt</a>
+    </p>
+  </div>
+<% end %>
+

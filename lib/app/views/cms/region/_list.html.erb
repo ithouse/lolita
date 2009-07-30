@@ -1,0 +1,19 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.30.1, 11:53:07
+%>
+<table summary="<%= only_controller%>">
+  <tr>
+    <%= list_header_cell :width=>200, :sort_column=>"name" %>
+    <%= list_header_cell :width=>50, :title=>"Dzēst" %>
+  </tr>
+  <% for region in @page %>
+    <tr>
+      <td><%= edit_link(:title=>region.full_name, :id=>region.id) %></td>
+      <td><%= destroy_link(:image=>true,:id=>region.id) %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= cms_pages list%>

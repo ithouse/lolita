@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE"/>
+    <meta HTTP-EQUIV="EXPIRES" CONTENT="01 Jan 1970 00:00:00 GMT"/>
+    <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"/>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+    <title><%=Admin::Configuration.get_value_by_name('system_title')%></title>
+    <%= stylesheet_link_tag 'admin/default', 'cms','admin/user','media','picture','admin/menu','admin/current' %>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/javascripts/yui/build/assets/skins/sam/container.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/javascripts/yui/build/assets/skins/sam/menu.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/javascripts/yui/build/autocomplete/assets/skins/sam/autocomplete.css" />
+
+    <%= javascript_include_tag "cms/ith.js" %>
+    <%= javascript_include_tag 'prototype.js' %>
+    <%= javascript_include_tag 'yui/build/yahoo/yahoo-min.js' %>
+    <%= javascript_include_tag 'yui/build/utilities/utilities.js' %>
+    <%= javascript_include_tag 'yui/build/event/event-min.js' %>
+    <%= javascript_include_tag 'yui/build/connection/connection-min.js' %>
+    <%= javascript_include_tag 'yui/build/dom/dom-min.js' %>
+    <%= javascript_include_tag 'yui/build/dragdrop/dragdrop-min.js' %>
+    <%= javascript_include_tag 'yui/build/datasource/datasource-min.js' %>
+    <%= javascript_include_tag 'yui/build/autocomplete/autocomplete-min.js' %>
+    <%= javascript_include_tag 'yui/build/animation/animation-min.js' %>
+    <%= javascript_include_tag 'yui/build/container/container-min.js' %>
+    <%= javascript_include_tag 'yui/build/menu/menu-min.js' %>
+
+    <%= javascript_include_tag 'yui/build/element/element-beta-min.js' %>
+    <%= javascript_include_tag 'cms/dom_load.js' %>
+    <%= javascript_include_tag 'cms/object_functions.js' %>
+    <%= javascript_include_tag 'cms/simple_functions.js' %>
+    <%= javascript_include_tag 'cms/content_map.js' %>
+    <%= javascript_include_tag 'cms/simple_tree.js' %>
+    <%= javascript_include_tag 'cms/menu_trees.js' %>
+    <%= javascript_include_tag 'application.js' %>
+    <%= javascript_include_tag 'filter.js' %>
+    <%= javascript_include_tag 'tiny_mce/tiny_mce.js' %>
+    <%= javascript_include_tag 'ufo' %>
+    <%= javascript_include_tag "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{GMAPS_KEY}" if GMAPS_KEY  %>
+    <%= javascript_include_tag "highslide/highslide-with-html" %>
+  </head>
+  <body class=" yui-skin-sam" <%= 'onunload="GUnload()"' if GMAPS_KEY %>>
+    <div id="body" >
+      <%= render :partial=>"cms/header" %>
+      <div class="bigbox" id="content">
+        <div id="flash"></div>
+        <%= yield  %>
+      </div>
+      <%= render :partial=>"admin/menu/containers" %>
+      <%= render :partial=>"cms/footer" %>
+    </div>
+    <%= render :partial=>"cms/dialogs" %>
+    <div id="script"></div>
+  </body>
+</html>
+<div id="warning_dialog"></div>
+<script type="text/javascript">
+  ITH.MenuTree.namespace="<%= params[:controller].split("/").first%>"
+  ITH.locale="<%=params[:locale] || Admin::Language.find_base_language.short_name%>"
+</script>
+<% session[:locale]=params[:locale] || Admin::Language.find_base_language.short_name %>

@@ -1,0 +1,11 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.20.2, 09:35:27
+%>
+<h1><%= t(:"profile.remove.title") %></h1>
+<% form_tag "" do -%>
+  <p><%= t(:"profile.remove.confirm") %></p>
+  <p><button type="submit"><span><%= t(:"profile.remove.yes_delete") %></span></button></p>
+  <p><%= link_to t(:"simple_words.back"), :action => "change" %></p>
+<% end %>

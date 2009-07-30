@@ -1,0 +1,36 @@
+.loginform {
+  text-align: left;
+}
+.loginform .pad {
+  margin-left: 35px;
+}
+.loginform label {
+  display: block;
+  line-height: 2em;
+  padding: 10px 10px 0 0;
+  width: 400px;
+  font-weight: bold;
+  _width: 410px;
+  _margin-left: -18px;
+}
+.loginform input.txt {
+  clear:right;
+  float:right;
+  margin-right: 20px;
+  _margin-right: 10px;
+}
+.loginform .forget {
+  float: left;
+  display: block;
+  width: 90px;
+}
+.loginform .footer {
+  line-height: 2em;
+  margin: 0 0 0 55px;
+}
+.loginform .btn {
+  float: right;
+  margin-left: 0;
+  margin-right: 65px;
+  width: 98px;
+}

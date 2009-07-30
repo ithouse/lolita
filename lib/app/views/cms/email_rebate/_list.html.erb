@@ -1,0 +1,29 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.20.2, 08:57
+%>
+<table summary="<%= only_controller%>">
+  <tr>
+    <%= list_header_cell :width=>80, :sort_column=>"title" %>
+    <%= list_header_cell :width=>30, :sort_column=>"newsletter" %>
+    <%= list_header_cell :width=>30, :sort_column=>"state" %>
+    <%= list_header_cell :width=>30, :sort_column=>"started" %>
+    <%= list_header_cell :width=>30, :sort_column=>"finished" %>
+    <%= list_header_cell :width=>30, :sort_column=>"email_count", :title => "Email Count" %>
+    <%= list_header_cell :width=>20, :title=>"" %>
+  </tr>
+  <% for erebate in @page %>
+    <tr>
+      <td><%= edit_link(:title=>erebate.title, :id=>erebate.id) %></td>
+      <td><%= localized_boolean(erebate.newsletter) %></td>
+      <td><%= erebate.state %></td>
+      <td><%= erebate.started.to_s(:short_datetime) if erebate.started %></td>
+      <td><%= erebate.finished.to_s(:short_datetime) if erebate.finished %></td>
+      <td><%= erebate.email_count %></td>
+      <td><%= destroy_link(:image=>true,:id=>erebate.id) %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= cms_pages list%>

@@ -1,0 +1,108 @@
+body {
+
+}
+div.role-tab{
+    float:left;
+    text-align:center;
+    width:310px;
+    height:30px;
+    background:transparent url(../images/cms/topmenu_bg.png) repeat-x scroll 0 0
+}
+div.role-tab a{
+    font-weight:bold;
+    width:100%;
+    height:25px;
+    padding-top: 5px;
+    display:block;
+}
+div.role-tab a:hover{
+    text-decoration:none;
+}
+a.current-role-tab{
+    color:white;
+    background:transparent url(../images/cms/topmenu_current.png) repeat-x scroll 0 0;
+}
+a.other-role-tab{
+    color:black;
+}
+a.other-role-tab:hover{
+    background:url("../images/cms/topmenu_hvr.png") repeat-x;
+}
+div.admin-list{
+    margin-left:20px;
+    width:600px;
+    display:block;
+}
+.admin-list-row{
+    display:block;
+    width:100%;
+    margin-bottom:3px;
+}
+div.user_list{
+    display:block;
+    width:200px;
+    float:left;
+    margin-right:5px;
+    border:1px solid black;
+}
+div.role_list{
+    display:block;
+    width:200px;
+    float:left;
+    border:1px solid red;
+}
+div.login-container{
+    display:block;
+    width: 300px;
+    height: 200px;
+    border: 1px solid #2186B4;
+    margin-top: 100px;
+    margin-left: 400px;
+}
+div.login-title{
+    display:block;
+    width:95%;
+    height: 20px;
+    background-color: #2186B4;
+    margin-bottom: 5px;
+    color:white;
+    font-weight:bold;
+    padding-left:5%;
+}
+div.login-content{
+    display:block;
+    width:90%;
+    height: 180px;
+    margin-left:10%;
+    margin-top: 30px;
+}
+span.login-title{
+    display:block;
+    width: 100px;
+    float:left;
+    font-weight:bold;
+    font-size:10px;
+    margin-bottom:10px;
+}
+span.login-field{
+    float:left;
+    margin-bottom:10px;
+}
+span.login-button-container{
+    display:block;
+    width:90%;
+    text-align:right;
+    clear:left;
+}
+.special-button{
+    color:#2186B4;
+    font-weight:bold;
+    width: 100px;
+    height: 25px;
+    background-color:#C1E8F2;
+    border:1px solid #B5E3EF;
+    cursor:pointer;
+}
+.special-button:hover{
+    background-color:#B9DFE9;
+}

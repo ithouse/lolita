@@ -1,0 +1,33 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.13.2, 13:25:20
+%>
+<% content_for :javascript do -%>
+    <script type="text/javascript">
+      window.onload = function(){window.document.getElementsByTagName('input')[0].focus()}
+    </script>
+<% end -%>
+<h1><%= t(:"login.title") %></h1>
+<% form_tag "", :class => "box", :id => "loginform" do -%>
+  <% if @error %>
+    <div class="error"><%= @error %></div>
+  <% end %>
+  <label for="user_any">
+    <%= text_field_tag :any, @any %>
+    <%= t(:"login.any") %>
+  </label>
+  <label for="user_password">
+    <%= password_field_tag :password, @password %>
+    <%= t(:"login.password") %>
+  </label>
+  <p>
+    <button type="submit"><span><%= t(:"login.button") %></span></button> <%= link_to t(:"login.cancel"), home_url, :onclick => "window.parent.SexyLightbox.close();" %>
+  </p>
+  <br class="clear" />
+  <ul class="list">
+    <li class="w-line"><%= link_to(t(:"login.forgot"), recover_url, :onclick => "window.parent.location.href='#{recover_url}';") %></li>
+    <li><%=  link_to(t(:"login.register"), register_url, :onclick => "window.parent.location.href='#{register_url}';") %></li>
+  </ul>
+  <br class="clear" />
+<% end %>

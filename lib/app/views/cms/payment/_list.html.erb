@@ -1,0 +1,29 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.30.1, 11:53:07
+%>
+<p style="text-align: right">
+  <% payouts_count = Cms::Payout.count(:all, :conditions => {:state => 'waiting'}) %>
+  <%= link_to "Izveidot jaunu maksājumu <strong>%s</strong> lietotāj#{(payouts_count == 1)? 'am' : 'iem'}!" % payouts_count,{:action => :new_payment}, {:onclick => "this.style.display='none';"} if payouts_count > 0 %>
+</p>
+<table summary="<%= only_controller%>">
+  <tr>
+    <%= list_header_cell :width=>20, :sort_column=>"id" %>
+    <%= list_header_cell :width=>80, :sort_column=>"created_at" %>
+    <%= list_header_cell :width=>80, :sort_column=>"paid_money" %>
+    <%= list_header_cell :width=>80, :sort_column=>"FidaVista XML" %>
+    <%= list_header_cell :width=>50, :title=>"Delete" %>
+  </tr>
+  <% for payment in @page %>
+    <tr>
+      <td><%= payment.id %></td>
+      <td><%= payment.created_at.strftime("%d.%m.%Y. %H:%M") %></td>
+      <td><%= number_to_currency payment.paid_money, :unit=>'LVL', :format=>"%n %u" %></td>
+      <td><%= link_to image_tag("xml.png"), :action => :fidavista_export, :id => payment.id, :format => 'xml' %></td>
+      <td><%= destroy_link(:image=>true,:id=>payment.id) %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= cms_pages list%>

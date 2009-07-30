@@ -1,0 +1,213 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.27.3, 16:20:57
+%>
+
+var choosed_areas = Array();
+
+function area_in_use(v){
+  var rs = false;
+  $each(choosed_areas,function(item){
+    if(item.split("-")[0] == v){rs = true;}
+  });
+  return rs;
+}
+
+function need_refresh(){
+  if($('business_region').get('value') > 0){
+    if(choosed_areas.in_array($('business_area').get('value') + '-' + $('business_region').get('value')))
+      return false;
+    else
+      return true;
+  }else{
+    if(area_in_use($('business_area').get('value')))
+      return false;
+    else
+      return true;
+  }
+}
+function add_area(){
+  var area = $('business_area');
+  var region = $('business_region');
+  if(area.get('value') > 0){
+    var text = false;
+    if(region.get('value') > 0){
+      k = area.get('value') + '-' + region.get('value');
+      if(!choosed_areas.in_array(area.get('value')) && !choosed_areas.in_array(k)){
+        text = $('business_area').options[$('business_area').selectedIndex].innerHTML + ' &#187; ' + $('business_region').options[$('business_region').selectedIndex].innerHTML;
+        choosed_areas.push(k);
+      }else{return false;}
+    }else{
+      if(!choosed_areas.in_array(area.get('value')) && !area_in_use(area.get('value'))){
+        text = $('business_area').options[$('business_area').selectedIndex].innerHTML;
+        k = area.get('value');
+        choosed_areas.push(k);
+      }else{return false;}
+    }
+    if(text){
+      if($('areas_' + k)){
+        $('areas_' + k).setStyles({display:'block'});
+        $('areas_input_' + k).disabled = false;
+      }else{
+        var div = Element('div',{id: 'areas_' + k});
+        var span = Element('span',{'html':text});
+        var input = Element('input',{name: 'business[areas][]',type: 'hidden',value: k,id: 'areas_input_' + k});
+        var a = Element('a',{'html':'<%= t(:"business.remove") %>',href: '#', rel: k});
+        a.addEvent('click',function(e){
+          $('areas_' + this.rel).setStyles({display:'none'});
+          $('areas_input_' + this.rel).disabled=true;
+          choosed_areas.remove(this.rel);
+          filter_users();
+          return false;
+        });
+        span.injectInside(div);
+        a.injectInside(div);
+        input.injectInside(div);
+        div.injectInside($('areas'));
+      }
+    }
+  }
+  area.selectedIndex = 0;
+  clear_region();
+  //filter_users();
+  return false;
+}
+
+function clear_areas() {
+  $('areas').innerHTML = '';
+  choosed_areas = [];  
+}
+
+function clear_region(){
+  $('business_region').set('html','<option value=""><%= t(:"business.blank_region") %></option>');
+}
+
+function assign_business_events(clear){
+  $each($$("input[type=checkbox]"),function(item){
+    if(clear == 1){item.checked = false;}
+    item.disabled = false;
+    item.addEvent('click', filter_users);
+  });
+  $each($$("select"),function(item){
+    if(clear == 1){item.selectedIndex = 0;}
+    item.disabled = false;
+    if(item.id != 'business_area' && item.id != 'business_region'){
+      item.addEvent('change', filter_users);
+    }
+  });
+}
+function toggle_inputs(toggle){
+  $each($$("input[type=checkbox]"),function(item){
+    item.disabled = (toggle)? true : false;
+  });
+  $each($$("select"),function(item){
+    item.disabled = (toggle)? true : false;
+  });
+}
+var times = 0;
+function filter_users(){
+  if(!need_refresh()){ return false; }
+  times += 1;
+  if(times < 1){ return false; }
+  var data = $('business_form').toQueryString();
+  toggle_inputs(true);
+  new Request({
+    url: '/cms/rebate/filter_users/',
+    method: 'post',
+    onSuccess: function(response) {
+      var rs = response.split("|");
+      if(rs[0] >= 0){
+        update_counts(rs);
+      }
+      toggle_inputs(false);
+    },
+    onFailure: function(response){
+      alert('<%= t(:"business.ajax_error") %>');
+    }}
+  ).send(data);
+  return true;
+}
+function update_counts(rs){
+  $('user-count').set('html',rs[0]);
+  $('count').value = rs[0];
+  $('price').value = Math.ceil((rs[0] * rs[1]) * 100) / 100;
+}
+var start_price = null;
+function calculate_user_count(){
+  if(start_price == null) start_price = $('price').alt * 1;
+  if($('price').value.substr(0,1) == 0) $('price').value = $('price').value.substr(1,$('price').value.length);
+  $('price').value = $('price').value.replace(',','.');
+  var m = $('price').value.match(/(\d{1,10}\.\d{1,2})|(\d+)/)
+  if(!m) return false;
+  if(start_price < $('price').value) $('price').value = start_price
+  var user_count = Math.floor($('price').value / <%= @charge %>);
+  $('user-count').set('html', user_count);
+  $('count').value = user_count;
+}
+function count_sms_length(sms,max_len){
+  sms.value = sms.value.replace(/[^a-ž0-9\s{}!\"\',%\(\)\.\-\?\/\:\!]/i,'');
+  if(sms.value.length >= max_len) sms.value = sms.value.substring(0,max_len);
+  $('sms_char_count').set('html',max_len - sms.value.length);
+}
+function toggle_person_type(x){
+  if(x.id == 'business_person_type_1'){
+    $each($$("tr.company-row"),function(item){
+      item.setStyle('display',(document.all)? 'block' : 'table-row');
+    });
+  }else{
+    $each($$("tr.company-row"),function(item){
+      item.setStyle('display','none');
+    });
+  }
+  if(x.id == 'business_person_type_2'){
+    $each($$("tr.person-row"),function(item){
+      item.setStyle('display',(document.all)? 'block' : 'table-row');
+    });
+  }else{
+    $each($$("tr.person-row"),function(item){
+      item.setStyle('display','none');
+    });
+  }
+}
+
+function handle_valid_times(){
+  var now   = new Date();
+  var month = now.getMonth() + 1;
+  var day   = now.getDate();
+  var year  = now.getFullYear();
+
+  if($('business_date_1').value != day || $('business_date_2').value != month || $('business_date_3').value != year){
+    if($('business_time').options[0].value == ''){
+      $('business_time').remove(0);
+    }
+  }else{
+    if($('business_time').options[0].value != ''){
+      Element('option',{'html':'<%= t(:"business.date_now") %>','value':''}).inject($('business_time'),'top');
+    }
+  }
+}
+
+function change_payment_types(choose){
+  <%# Cms::Rebate::PAYMENT_TYPES holds valid types %>
+  var labels = {
+    swedbank: '<%= t(:"business.pay") %>',
+    prepay: '<%= t(:"simple words.continue") %>',
+    firstdata: '<%= t(:"simple words.continue") %>'
+  }
+  $('submit-btn-text').set('html',labels[choose.value]);
+  $('rules-btn-text').set('html',labels[choose.value]);
+}
+
+function clear_input_fields() {
+  $$("#business_form select").each(function(e) { e.selectedIndex = 0; });
+  $$("#business_form input[type = 'checkbox']").each(function(e) { e.checked = false; });  
+}
+
+function clear_form() {
+  clear_input_fields();
+  clear_areas();
+  clear_region();
+  filter_users();
+  return false;
+}

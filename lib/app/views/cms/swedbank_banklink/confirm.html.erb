@@ -1,0 +1,1 @@
+<%= @parameters.collect { |key, value| key.to_s+text_field_tag("VK_#{key.to_s.upcase}", value.to_s ,{:style=>"width:600px;"} ) }.join("<br/>\n") %>

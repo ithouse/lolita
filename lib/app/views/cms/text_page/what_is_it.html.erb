@@ -1,0 +1,28 @@
+<%#
+# Rolands Bondars
+%>
+<% content_for :title, t(:"static_metadata.what_is_it.title") %>
+<% content_for :keywords, t(:"static_metadata.what_is_it.keywords") %>
+
+<% content_for :stylesheet do -%>
+  <%= stylesheet_link_tag "public/what_is_it" %>
+<% end %>
+
+<div id="whatis">
+  <div class="title"><h1><%= @page.title %></h1></div>
+  <%= @page.body %>
+</div>
+
+<div id="register-box">
+  <h1><%= t(:"public.wanna_register") %></h1>
+    <% form_tag register_url, :method => "get" do -%>
+      <%= text_field_tag :phone, "",
+        :id => "big-phone",
+        :autocomplete => "off",
+        :style => "background: url(/images/big-phone-#{Globalize::Locale.language_code}.png) left top no-repeat;",
+        :onfocus=> "$(this).css({'background-image': 'url(/images/big-phone.png)'});",
+        :onblur => "if(this.value=='') $(this).css({'background-image': 'url(/images/big-phone-#{Globalize::Locale.language_code}.png)'});"
+      %>
+      <button type="submit" class="reg-btn3"><span><%= t(:"start_page.reg_btn") %></span></button>
+    <% end %>
+</div>

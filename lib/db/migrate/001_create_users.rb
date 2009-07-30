@@ -12,7 +12,7 @@ class CreateUsers < ActiveRecord::Migration
       t.boolean   :deleted
     end
     add_index :admin_users, :login
-    insert("INSERT INTO admin_users (login,email,crypted_password,salt) VALUES('atbalsts@ithouse.lv','atbalsts@ithouse.lv','8f1b8f9504b34e63d560968be2448957ae38177e','f15c1dcd585628112cc4076f8dd31a877e342fce')")
+    insert("INSERT INTO admin_users (login,email,crypted_password,salt,type) VALUES('atbalsts@ithouse.lv','atbalsts@ithouse.lv','8f1b8f9504b34e63d560968be2448957ae38177e','f15c1dcd585628112cc4076f8dd31a877e342fce','Admin::SystemUser')")
  end
 
   def self.down

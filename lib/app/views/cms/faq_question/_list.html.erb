@@ -1,0 +1,21 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.26.2, 11:53:07
+%>
+<table summary="<%= only_controller%>">
+  <tr>
+    <%= list_header_cell :width=>400, :sort_column=>"name" %>
+    <%= list_header_cell :width=>400, :title=>"Jautājumu grupa" %>
+    <%= list_header_cell :width=>50, :title=>"Dzēst" %>
+  </tr>
+  <% for question in @page %>
+    <tr>
+      <td><%= edit_link(:title=>question.question, :id=>question.id) %></td>
+      <td><%= question.group.name %>
+      <td><%= destroy_link(:image=>true,:id=>question.id) %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= cms_pages list%>

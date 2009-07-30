@@ -1,0 +1,67 @@
+<%#
+# SIA ITHouse
+# Rolands Bondars
+%>
+<% content_for :stylesheet do -%>
+    <%= stylesheet_link_tag "public/import_contacts" %>
+<% end -%>
+<% content_for :javascript do -%>
+    <%= javascript_include_tag "jquery/autoresize.jquery.min.js" %>
+    <script type="text/javascript">
+      jQuery(document).ready(function(){
+        var selected=false;
+        jQuery("#add-imported-contacts").click(function() {
+          var val="\n";
+          $('input:checkbox:checked').each(function(){
+             val += $(this).val();
+             val += ",\n";
+          });
+          jQuery("textarea#friend_email", window.parent.document).append(val).autoResize().trigger('change');
+          window.parent.SexyLightbox.close();
+        });
+        jQuery(".select_all_none").click(function(){
+         if(selected==false) {
+            jQuery('input:checkbox').attr('checked', true);
+            selected=true;
+          }
+          else {
+            jQuery('input:checkbox').attr('checked', false);
+            selected=false;
+          }
+        });
+      });
+    </script>
+<% end -%>
+<div id="small-logo">
+  <%= image_tag "logo-small.png" %>
+</div>
+<div class="box wide">
+  <p>
+    <%= t(:"profile.dashboard.import_popup.your") %>
+    <%= image_tag "gmail_logo_small.png", :class=>"logo" %>
+    <%= t(:"profile.dashboard.import_popup.contacts") %>
+  </p>
+  <p class="small"><%= t(:"profile.dashboard.import_popup.step2_info") %></p>
+  <div id="email_contacts">
+    <div id="email_contacts_head">
+      <table>
+        <tr>
+          <td><%= check_box_tag :select_all, "" , false, :class=>"select_all_none" %></td>
+          <td><%= link_to t(:"profile.dashboard.import_popup.select_all_none"),"", {:href=>"#", :class=>"select_all_none" } %></td>
+        </tr>
+      </table>
+    </div>    
+    <div id="email_contacts_list">
+      <table id="contacts">
+        <% @contacts.each_with_index do |contact, index| %>
+          <tr class="<%= cycle("even", "odd")  %>">
+            <td class="checkbox"><%= check_box_tag "friend[email][#{index}]", contact[1] , false %></td>
+            <td class="email_name"><%= contact[0] %></td>
+            <td class="email_checkbox"><%= contact[1] %></td>
+          </tr>
+        <% end  %>
+      </table>      
+    </div>    
+  </div>
+  <p><button type="submit" id="add-imported-contacts"><span><%= t(:"profile.dashboard.import_popup.submit_step2") %></span></button><span id ="close"> <%= t(:"simple words.or") %> <%= link_to t(:"simple words.close"), "", {:href=>"#", :onclick=>"window.parent.SexyLightbox.close();"}  %></span></p>
+</div>

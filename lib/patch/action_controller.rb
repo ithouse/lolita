@@ -3,7 +3,7 @@ class ::ActionController::Base
 #
 #  Admin::SystemUser
 #  Admin::PublicUser
-  #helper :all
+#  helper :all
  
   #
   #include Extensions::Sso

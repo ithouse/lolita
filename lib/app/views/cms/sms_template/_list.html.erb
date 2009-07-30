@@ -1,0 +1,17 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.30.1, 11:53:07
+%>
+<table summary="<%= only_controller%>">
+  <tr>
+    <%= list_header_cell :width=>400, :sort_column=>"name" %>
+  </tr>
+  <% for sms in @page %>
+    <tr>
+      <td><%= edit_link(:title=>sms.name, :id=>sms.id) %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= cms_pages list%>

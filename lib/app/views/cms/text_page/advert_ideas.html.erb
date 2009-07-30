@@ -1,0 +1,12 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.18.3, 15:11:36
+%>
+<% content_for :title, t(:"static_metadata.advert_ideas.title") %>
+<% content_for :keywords, t(:"static_metadata.advert_ideas.keywords") %>
+
+<% content_for :stylesheet do -%>
+  <%= stylesheet_link_tag "public/advert_ideas" %>
+<% end %>
+<%= @page.body %>

@@ -1,0 +1,17 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.16.4, 16:28:48
+%>
+<% content_for :javascript do -%>
+  <script type="text/javascript">
+    function exit(){
+      window.parent.location.href='<%= dashboard_url %>';
+    }
+  </script>
+<% end %>
+<div style="text-align: center; margin-top: 40px;">
+  <h3><%= t(:"payout.title_ok") %></h3>
+  <br /><br /><br />
+  <p><%= link_to t(:"simple words.close"), home_url, :onclick => "exit();" %></p>
+</div>

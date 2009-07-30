@@ -1,0 +1,43 @@
+<% content_for :stylesheet do -%>
+    <%= stylesheet_link_tag "public/start_page" %>
+    <%= stylesheet_link_tag "/javascripts/highslide/highslide.css"  %>
+<% end -%>
+<% content_for :javascript do -%>
+    <%= javascript_include_tag "highslide/highslide" %>
+  <script type="text/javascript">
+    hs.outlineType = null;
+  </script>
+<% end %>
+<div style="display:none;">
+  <img src="/images/btn-reg-start_page-left.png" />
+  <img src="/images/btn-reg-start_page-right.png" />
+  <img src="/images/btn-reg-start_page-left-hover.png" />
+  <img src="/images/btn-reg-start_page-right-hover.png" />
+</div>
+<div id="subheader">
+  <h1><%= t(:"start_page.subheader_slogan") %></h1>
+  <div id="main-comercial">
+    <%= Cms::TextPage.find_by_title('Sākumlapas akcija').body %>
+  </div>
+  <%= link_to t(:"start_page.register_now"), register_path, :id => "register-button" %>
+  <ul id="steps">
+   <li><div class="nr">1.</div><div class="txt"><%= t(:"start_page.nr1_txt") %></div></li>
+   <li><div class="nr">2.</div><div class="txt"><%= t(:"start_page.nr2_txt") %></div></li>
+   <li><div class="nr">3.</div><div class="txt"><%= t(:"start_page.nr3_txt") %></div></li>
+  </ul>
+  <% if nil -%>
+  <div id="line_banner">
+  <object type="application/x-shockwave-flash"
+      data="/swf/smsBuzz_800x40_<%= session[:locale] -%>.swf"
+      width="800" height="40">
+      <param name="movie" value="/swf/smsBuzz_800x40_<%= session[:locale] -%>.swf" />
+      <param name="quality" value="high"/>
+  </object>
+  </div>
+  <% end -%>
+</div>
+<div id="stats">
+  <%= t(:"start_page.registered_users") % @user_count %><br />
+  <strong><%= t(:"start_page.earned") %>:</strong> <%= number_to_currency(((@earned_money * 100).ceil.to_f / 100.to_f), :unit=>'LVL', :format=>"%n %u") %>
+</div>
+<%= Cms::TextPage.find_by_title('Sākumlapas saturs').body %>

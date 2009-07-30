@@ -1,0 +1,9 @@
+<% unless @config[:list][:no_filter] %>
+  <% options=simple_filter_options(simple_filter)%>
+  <% remote_form_for :object,{:complete=>"$('#{options[:container]}').update(request.responseText)",:url=>{:action=>options[:action]}} do |f| %>
+    <div class="fr">
+      <input type="text" class="txt" name="ferret_filter" value="<%= self_filter_value %>"/>
+      <input type="submit" class="btn" value="<%="Filtrēt" %>" name="do_filter_list"/>
+    </div>
+  <%end%>
+<% end %>

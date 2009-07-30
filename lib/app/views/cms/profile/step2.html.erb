@@ -1,0 +1,145 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.12.2, 08:40:24
+%>
+<% content_for :title, t(:"static_metadata.register.title") %>
+<% content_for :keywords, t(:"static_metadata.register.keywords") %>
+
+<% content_for :javascript do -%>
+<%= javascript_include_tag "sexy-lightbox/mootools-yui-compressed" %>
+<script type="text/javascript">
+  window.onload = function(){
+    <% if @data.length > 0 %>
+    $($$("div.error")[0].id.split("_").slice(1,$$("div.error")[0].id.split("_").length).join("_")).focus();
+    <% else %>
+    window.document.getElementById('step2_area').focus();
+    <% end %>
+  };
+</script>
+<% end -%>
+<% content_for :stylesheet do -%>
+    <%= stylesheet_link_tag "public/forms" %>
+    <%= stylesheet_link_tag "public/registration" %>
+<% end -%>
+<h1 class="big"><%= t(:"profile.step1.title") %></h1>
+<h2><%= t(:"profile.step1.subtitle_2") %></h2>
+<% form_tag "/register/step2", :class => "step2" do -%>
+  <table>
+    <tbody>
+      <tr class="one-col-row">
+        <th>
+          <label for="step2_area">
+            <%= t(:"profile.step2.area") %>
+          </label>
+        </th>
+        <td class="col2 post_code" colspan="2">
+          <%= select :step2, :area, [[(t :"profile.step2.blank_area"),""]] + Cms::Area.find(:all).collect{|a| [a.name,a.id]}, {:selected => @data.key?(:area)? @data[:area].to_i : nil} , {
+            :onchange =>  "if(this.options[this.selectedIndex].value!='') new Request({url: '#{url_for(:controller => 'post_code',:action => :get_post_codes)}/?id='+this.options[this.selectedIndex].value,method: 'get',onComplete: function(response) {$('step2_post_code').set('html',response); $('step2_post_code_box').setStyles({visibility: 'visible'});}}).get();"
+          } %><div id="step2_post_code_box" style="<%= (@data.key?(:area) && @data.key?(:post_code))? nil : "visibility:hidden" %>"> <span><%= t(:"profile.step2.index_prefix") %></span>
+          <%= select :step2, :post_code, [[(t :"profile.step2.blank_post_code"),""]] + (@data.key?(:area)? Cms::PostCode.find_all_by_area_id(@data[:area].to_i,:order=>"CAST(code AS UNSIGNED INTEGER)  ASC").collect{|a| [a.code,a.id]} : []),
+            {:selected => @data.key?(:post_code)? @data[:post_code].to_i : nil }
+          %></div>
+          <br />
+          <%= error_msg @validator.errors(:area).join(', '),:id=>"er_step2_area" unless @validator.valid?(:area)  %>
+          <%= error_msg @validator.errors(:post_code).join(', '),:id=>"er_step2_post_code" if (@validator.valid?(:area) and !@validator.valid?(:post_code))   %>
+      </td>
+      </tr>
+      <tr>
+        <th>
+          <label for="step2_job">
+            <%= t(:"profile.step2.job") %>
+          </label>
+        </th>
+        <td class="col2">
+          <%= select :step2, :job, [[(t :"profile.step2.blank_job"),""]] + Cms::Job.find(:all).collect{|j| [j.name,j.id]}, {:selected => @data.key?(:job)? @data[:job].to_i : nil } %>
+        </td>
+        <td><%= error_msg @validator.errors(:job).join(', '),:id=>"er_step2_job" unless @validator.valid?(:job)  %></td>
+      </tr>
+      <tr>
+        <th>
+          <label for="step2_education">
+            <%= t(:"profile.step2.education") %>
+          </label>
+        </th>
+        <td class="col2">
+          <%= select :step2, :education, [[(t :"profile.step2.blank_education"),""]] + Cms::Education.find(:all).collect{|e| [e.name,e.id]}, {:selected => @data.key?(:education)? @data[:education].to_i : nil } %>
+        </td>
+        <td><%= error_msg @validator.errors(:education).join(', '),:id=>"er_step2_education" unless @validator.valid?(:education)  %></td>
+      </tr>
+      <tr>
+        <th>
+          <label for="step2_marital_status">
+            <%= t(:"profile.step2.marital_status") %>
+          </label>
+        </th>
+        <td class="col2">
+          <%= select :step2, :marital_status, [[(t :"profile.step2.blank_marital_status"),""]] + Cms::MaritalStatus.find(:all).collect{|m| [m.name,m.id]}, {:selected => @data.key?(:marital_status)? @data[:marital_status].to_i : nil } %>
+        </td>
+        <td><%= error_msg @validator.errors(:marital_status).join(', '),:id=>"er_step2_marital_status" unless @validator.valid?(:marital_status)  %></td>
+      </tr>
+      <tr>
+        <th>
+          <label>
+            <%= t(:"profile.step2.children") %>
+          </label>
+        </th>
+        <td class="col2">
+          <%= radio_button :step2, :children, 1, :checked => @data.key?(:children)? @data[:children].to_i == 1 : false, :class=>'radio' %>
+          <%= label_tag 'step2_children_1', t(:"profile.step2.has"), :class => :radio %>
+          <%= radio_button :step2, :children, 2, :checked => @data.key?(:children)? @data[:children].to_i == 2 : false, :class=>'radio' %>
+          <%= label_tag 'step2_children_2', t(:"profile.step2.hasnt"), :class => :radio %>
+        </td>
+        <td><%= error_msg @validator.errors(:children).join(', '),:id=>"er_step2_children_2" unless @validator.valid?(:children)  %></td>
+      </tr>
+      <tr>
+        <th style="vertical-align:top">
+          <label for="step2_interests">
+            <%= t(:"profile.step2.interests") %>
+          </label>
+        </th>
+        <td colspan="2" class="interests">
+          <p><%= t(:"profile.step2.interests_info") %></p>
+          <%= error_msg(@validator.errors(:interests).join(', ')) unless @validator.valid?(:interests) %>
+          <% Cms::Interest.find(:all,:order => "name ASC").each do |item| -%>
+            <div class="interest">
+              <%= check_box_tag("step2[interests][#{item.id}]", item.id, @data.key?(:interests) && @data[:interests].include?(item.id.to_s), {:id => "step2_interests_#{item.id}", :class => "chbox"}) %>
+              <%= label_tag("step2_interests_#{item.id}",item.name, :class => "chbox") %>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label for="step2_code">
+            <%= t(:"profile.step2.code") %>
+          </label>
+        </th>
+        <td class="col2">
+           <%= text_field :step2, :code, {:value=> @data.key?(:code)? @data[:code] : '' }  %>
+        </td>
+        <td><%= (@validator.valid?(:code))? "<p id=\"ask-code\">#{t(:"profile.step2.no_code_1")} <a href=\"#\" onclick=\"$('ask-code').innerHTML='<img src=\\'#{image_path("ajax.gif")}\\' />'; new Request({url:'#{url_for(:action => :resend_code)}',onComplete:function(response){$('ask-code').set('html',response);}}).get(); return false;\">#{t(:"profile.step2.no_code_2")}</a></p>" : error_msg(@validator.errors(:code).join(', '),:id=>"er_step2_") %></td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          &#160;
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" class="info">
+          <p><%= t :"profile.step2.info" %></p>
+        </td>
+      </tr>
+      <tr>
+        <th>&#160;</th>
+        <td colspan="2" class="submit-row">
+          <button type="submit"><span><%= t(:"profile.step2.save") %></span></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+<div id="side">
+<%= Cms::TextPage.find_by_title("Reģistrācijas mala").body %>
+</div>
+<br class="clear" />

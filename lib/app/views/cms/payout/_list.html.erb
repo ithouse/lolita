@@ -1,0 +1,23 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.30.1, 11:53:07
+%>
+<table summary="<%= only_controller%>">
+  <tr>
+    <%= list_header_cell :width=>80, :sort_column=>"user" %>
+    <%= list_header_cell :width=>80, :sort_column=>"money" %>
+    <%= list_header_cell :width=>80, :sort_column=>"state" %>
+    <%= list_header_cell :width=>50, :title=>"Dzēst" %>
+  </tr>
+  <% for payout in @page %>
+    <tr>
+      <td><%= edit_link(:title=>payout.user.profile.full_name, :id=>payout.id) %></td>
+      <td><%= number_to_currency payout.money, :unit=>'LVL', :format=>"%n %u" %></td>
+      <td><%= payout.state %></td>
+      <td><%= destroy_link(:image=>true,:id=>payout.id) %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= cms_pages list%>

@@ -1,0 +1,53 @@
+body, div, table, form, label, input, button, ul, ul li, p, h1, h2, h3{
+    padding: 0;
+    margin: 0;
+}
+
+h1{
+    font-family: Georgia, Georgia, serif;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: bold;
+}
+h1 a{
+    font-family: Georgia, Georgia, serif;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: bold;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+a{
+    color: #0072BC;
+    text-decoration:none;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+a:active{
+    outline: none;
+}
+a:focus{
+    -moz-outline-style: none;
+}
+
+p a{
+    color: #979797;
+    text-decoration:underline;
+}
+
+a img {
+    border: 0px;
+}
+body, table{
+    font-family: arial, "lucida console", sans-serif;
+    color: #252525;
+    font-size: 12px;
+}
+.red{
+    color: #790000;
+}

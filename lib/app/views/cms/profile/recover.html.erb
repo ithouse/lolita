@@ -1,0 +1,19 @@
+<%#
+# SIA ITHouse
+# Gatis Tomsons
+# 2009.17.2, 08:59:12
+%>
+<h1><%= t(:"login.forgot") %></h1>
+<% form_tag recover_url, :class => "recover" do -%>
+  <label for="recover_email">
+    <%= t(:"recover.email") %>
+    <%= text_field :recover, :email, {:value=> @data.key?(:email)? @data[:email] : '' }  %>
+  </label>
+  <% unless @validator.valid?(:email) %>
+    <div class="error"><%= @validator.errors(:email).join ', ' %></div>
+  <% end %>
+  <br class="clear" />
+  <p>
+    <button type="submit"><span><%= t(:"recover.submit") %></span></button> <%= link_to t(:"simple words.back"), home_url %>
+  </p>
+<% end %>
