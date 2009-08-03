@@ -14,9 +14,9 @@ class CreateConfigurations < ActiveRecord::Migration
     insert("INSERT INTO admin_configurations (name,title,value) VALUES('system_part_name_2','Sistēmas daļas nosaukums 2','Iestatījumi')")
     insert("INSERT INTO admin_configurations (name,title,value) VALUES('system_part_url_1','Sistēmas daļa 1','cms/home')")
     insert("INSERT INTO admin_configurations (name,title,value) VALUES('system_part_name_1','Sistēmas daļas nosaukums 1','Saturs')")
-    insert("INSERT INTO admin_configurations (name,title,value) VALUES('default_title','Mājas lapas noklusētais virsraksts','Telegraf')")
-    insert("INSERT INTO admin_configurations (name,title,value) VALUES('system_title','Sistēmas nosaukums','Telegraf satura vadības sistēma')")
-    insert("INSERT INTO admin_configurations (name,title,value) VALUES('cms_name','Satura vadības sistēmas nosaukums','ITH Cms')")
+    insert("INSERT INTO admin_configurations (name,title,value) VALUES('default_title','Mājas lapas noklusētais virsraksts','Lolita')")
+    insert("INSERT INTO admin_configurations (name,title,value) VALUES('system_title','Sistēmas nosaukums','Lolita: satura vadības sistēma')")
+    insert("INSERT INTO admin_configurations (name,title,value) VALUES('cms_name','Satura vadības sistēmas nosaukums','ITH Lolita')")
   end
 
   def self.down

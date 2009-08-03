@@ -1,8 +1,9 @@
-simple words:
+lv:
+  simple words:
     or: vai
-configuration:
+  configuration:
     default page title: Lapa
-months:
+  months:
     january: janvāris
     february: februāris
     march: marts
@@ -15,7 +16,7 @@ months:
     october: oktobris
     november: novembris
     december: decembris
-actions:
+  actions:
     destroy: Dzēst
     destroy confirmation: Vai tiešām vēlaties dzēst ierakstu?
     edit: Labot
@@ -28,7 +29,7 @@ actions:
     save all: Saglabāt
     cancel: Atcelt
     back: Atgriezties
-menu:
+  menu:
     field:
         public menus: -Norādiet publisko izvēlni-
     dialog:
@@ -56,33 +57,33 @@ menu:
         edit branch content: Nospiediet, lai rediģētu/izveidotu piesaistītā veida elementu
         edit branch: Mainīt zara uzstādījumus
         manage content tree: Satura koka pārvaldīšana
-content_map:
+  content_map:
     dialog_title: Lapas karte
     button: Lapas karte
-media:
+  media:
     dialog_title: Mēdiji
     button: Mēdiju galerija
-picture:
+  picture:
     select: Uzspiediet uz attēla lai to iezīmētu
     refresh list: Atjaunot attēlu sarakstu
-errors:
-  not_correct_female: nav pareiza
-  unknown_error: nezināma kļūda
-  cant_save: Neizdevās saglabāt
-  unknown_user: Nepareizs lietotāja vārds vai parole!
-  unknown_public_user: Informācija nav pareiza!
-notice:
-  not_followed: -Nav norādīts-
-flash:
-  saved: Veiksmīgi saglabāts
-  access denied: Piekļuve liegta. Nav tiesību aplūkot lapu.
-  need to login: Nepieciešams veikt pieteikšanos!
-  logout success: Atteikšanās veiksmīga!
-  user not found: Lietotājs netika atrasts!
-  human controll not correct: Drošības kods nav pareizs!
-list:
+  errors:
+    not_correct_female: nav pareiza
+    unknown_error: nezināma kļūda
+    cant_save: Neizdevās saglabāt
+    unknown_user: Nepareizs lietotāja vārds vai parole!
+    unknown_public_user: Informācija nav pareiza!
+  notice:
+    not_followed: -Nav norādīts-
+  flash:
+    saved: Veiksmīgi saglabāts
+    access denied: Piekļuve liegta. Nav tiesību aplūkot lapu.
+    need to login: Nepieciešams veikt pieteikšanos!
+    logout success: Atteikšanās veiksmīga!
+    user not found: Lietotājs netika atrasts!
+    human controll not correct: Drošības kods nav pareizs!
+  list:
     options: Iespējas
-tabs:
+  tabs:
     default: Cilne
     content: Saturs
     translate: Tulkošana
@@ -92,19 +93,19 @@ tabs:
     files: Faili
     audio: Audio
     video: Video
-fields:
+  fields:
     not_related: -Nav piesaistīts-
     select a module: -Izvēlieties sadaļu-
     content_tree: Vieta lapas kartē
     not selected: -nav izvēlēts-
-translate:
+  translate:
     language: Valoda
-metadata:
+  metadata:
     url: Adrese(URL)
     name: Nosaukums
     keywords: Atslēgvārdi
     description: Apraksts
-user:
+  user:
     create: Izveidot lietotāju
     edit: Labot lietotāju
     description: Lietotāju pārvaldība
@@ -114,20 +115,20 @@ user:
     password: Parole
     login name: Lietotāja vārds
     login: Ienākt
-system_user:
+  system_user:
     form:
         title: Paroles atgādinājums
         name: Lietotāja vārds
         password: Parole
     list: Lietotāju saraksts
-public_user:
+  public_user:
     signup email subject: Reģistrācija telegraf.lv
     signup email text: Apsveica, Jūs esat veiksmīgi reģistrēts!
-admin_access:
-  show_action: Pieeju saraksts
-admin_field:
-  table_not_found: Norādītā tabula neeksistē!
-admin_email:
+  admin_access:
+    show_action: Pieeju saraksts
+  admin_field:
+    table_not_found: Norādītā tabula neeksistē!
+  admin_email:
     created at: izveidošanas datums
     registration successful: Reģistrācija veiksmīga! Reģistrācijas kods tiks nosūtīts uz norādīto e-pastu!
     registration failed: Norādītā adrese nav korekta!
@@ -141,7 +142,7 @@ admin_email:
         header: Ievadite nosūtīšanas tekstu
         invitation text: Nosūtīšanas teksts
         subject: E-pasta virsraksts
-news:
+  news:
     states:
         draft: Melnraksts
         need_photo: Nepieciešams foto
@@ -150,16 +151,16 @@ news:
         rejected: Noraidīts
     intro: Rakstu pārvaldīšana
     status: Statuss
-category:
+  category:
     intro: Kategoriju pārvaldīšana
-story:
+  story:
     exists: Sižets ar šādu nosaukumu jau eksistē!
     news_without_story: Raksti
     all_stories: Sižeti
     new: Jauns sižets
-source_type:
+  source_type:
     intro: Avotu tipu pārvaldīšana
-ActiveRecord:
+  ActiveRecord:
     errors:
         inclusion: nav iekļauts sarakstā
         exclusion: ir rezervēts

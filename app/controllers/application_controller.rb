@@ -4,7 +4,7 @@ require 'extensions/paging'
 require 'extensions/permission_controll'
 require 'extensions/util'
 
-class ::ActionController::Base
+class ActionController::Base
 #  Admin::Token
 #
 #  Admin::SystemUser

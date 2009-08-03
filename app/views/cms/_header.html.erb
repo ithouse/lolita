@@ -11,7 +11,7 @@
   <div class="fl big black"><%= link_to "ITHouse CMS", Admin::Configuration.get_value_by_name("start_page") || "/", {:style=>"color:black;text-decoration:none;"} %></div>
   <div class="fr sections">
     <%
-    system_parts do |data|%>
+    Admin::Configuration.system_parts do |data|%>
       <%= link_to data[:name], {:controller => data[:controller], :action=> 'index'},{:class=>(namespace==data[:module] ? "current" :"")}  %>
     <% end %>
   </div>
