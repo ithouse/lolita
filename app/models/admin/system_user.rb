@@ -1,28 +1,6 @@
 class Admin::SystemUser < Admin::User
   validates_length_of       :password, :within => 4..40, :if => :password_required?
-  def self.all_without_admin
-    user_table=Admin::SystemUser.table_name
-    profile_table=Cms::Profile.table_name
-    role_table=Admin::Role.table_name
-    self.find_by_sql("
-      SELECT
-      IF(
-        LENGTH(#{profile_table}.last_name)>0,
-        CONCAT(#{profile_table}.first_name,' ',#{profile_table}.last_name),
-        IF(
-          LENGTH(#{profile_table}.first_name)>0,#{profile_table}.first_name,#{user_table}.login
-        )
-      ) as user_name,
-      #{user_table}.id FROM #{user_table}
-      INNER JOIN roles_users ON #{user_table}.id=roles_users.user_id
-      INNER JOIN #{profile_table} ON #{profile_table}.user_id=#{user_table}.id
-      WHERE roles_users.role_id!=(SELECT id FROM #{role_table} WHERE name='#{Admin::Role::ADMIN}') AND
-      #{user_table}.`type`='SystemUser'
-      GROUP BY #{user_table}.id ORDER BY user_name ASC
-      ").collect{|user|
-      [user['user_name'],user['id'].to_i]
-    }
-  end
+
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
     user = self.find_by_login(login) # need to get the salt

@@ -33,13 +33,13 @@ ITH.MenuTree.Functions=function(){
 }()
 ITH.MenuTree.translation={}
 ITH.MenuTree.images={
-    move:"/images/icons/move.png",
-    trash:"/images/cms/trash.gif",
-    published:"/images/cms/published.gif",
-    unpublished:"/images/cms/unpublished.gif",
-    eraser:"/images/icons/eraser.png",
-    edit:"/images/icons/edit.png",
-    add_public:"/images/icons/add.png"
+    move:"/lolita/images/icons/move.png",
+    trash:"/lolita/images/cms/trash.gif",
+    published:"/lolita/images/cms/published.gif",
+    unpublished:"/lolita/images/cms/unpublished.gif",
+    eraser:"/lolita/images/icons/eraser.png",
+    edit:"/lolita/images/icons/edit.png",
+    add_public:"/lolita/images/icons/add.png"
 }
 ITH.MenuTree.colors={
     new_item:"gray",

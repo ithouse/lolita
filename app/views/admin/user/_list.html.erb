@@ -10,7 +10,7 @@
   <% for user in @page %>
     <tr>
       <td>
-        <% link=edit_link(:title=>user.login_name,:id=>user.id) %>
+        <% link=edit_link(:title=>user.login,:id=>user.id) %>
         <%= toggable_link "user_subtree_#{user.id}",:title=>link,:opened=>user==@active_user,:action=>:all_roles,:controller=>"/admin/role",:id=>user.id %>
         <div id="user_subtree_<%=user.id%>">
           <% if @active_user %>

@@ -5,7 +5,6 @@ class Admin::PublicUser < Admin::User
   attr_accessor :privacy
   attr_accessor :terms_of_service
   attr_protected :registration_code
-  attr_protected :profile_id
   before_create :create_registration_code
   validates_length_of       :password, :within => 6..40, :if => :password_required?
   validates_presence_of :terms_of_service, :if=>:registration?
@@ -60,9 +59,6 @@ class Admin::PublicUser < Admin::User
     real_user==self
   end
 
-  def register_profile(profile)
-    self.profile=profile
-  end
   private
 
   def registration?

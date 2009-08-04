@@ -154,59 +154,11 @@ class Admin::UserController < Managed
     @active_user=Admin::User.find_by_id(params[:id])
   end
 
-  def after_open
-    @profile=@object.profile || Cms::Profile.new
-  end
-
-  def before_save
-    @profile=Cms::Profile.find_by_id(my_params[:profile][:id]) || Cms::Profile.new
-  end
-  
-  def after_save
-    #@profile=Cms::Profile.find_by_id(my_params[:profile][:id])
-    my_params[:profile].delete(:id)
-    unless @profile
-      @profile=Cms::Profile.new(my_params[:profile])
-      @profile.registration=true
-      @profile.save
-    else
-      @profile.registration=true
-      @profile.update_attributes(my_params[:profile])
-    end
-    unless @profile.errors.empty?
-      raise ActiveRecord::RecordNotSaved
-    end
-    @object.profile=@profile
-  end
-
-  def on_save_error
-    if !@object.errors.empty? || !@profile.errors.empty?
-      merge_errors @object,@profile
-    end
-  end 
   def config
     {
       :object=>"Admin::SystemUser",
       :tabs=>[
         {:type=>:content,:in_form=>true,:opened=>true,:fields=>:default},
-        {:type=>:default,:in_form=>true,:object=>:profile,:title=>I18n.t(:"profile.title"),:fields=>[
-            {:type=>:hidden, :field=>:id},
-            {:type=>:text,:field=>:first_name, :html=>{:maxlength=>255}},
-            {:type=>:text,:field=>:street, :html=>{:maxlength=>255}},
-            {:type=>:text,:field=>:city, :html=>{:maxlength=>255}},
-            {:type=>:select,:field=>:country_id,:table=>"Cms::Country"},
-            {:type=>:select,:field=>:sex,:simple=>true,:options=>[[I18n.t(:"gender.man"),1],[I18n.t(:"gender.woman"),2]]},
-            {:type=>:date,:field=>:birth_date,:config=>{:minute_step=>15,:start_year=>1910,
-                :order=>[:day,:month,:year],:use_month_names=>month_names}
-            },
-            {:type=>:text,:field=>:blog_url},
-            {:type=>:text,:field=>:home_page_url},
-            {:type=>:textarea,:field=>:interests, :html=>{:class=>"small-textarea"}},
-            {:type=>:text,:field=>:email, :html=>{:maxlength=>255}},
-            {:type=>:text,:field=>:email_for_comments, :html=>{:maxlength=>255}},
-            {:type=>:text,:field=>:ocupation, :html=>{:maxlength=>255}},
-            {:type=>:checkbox,:field=>:hide},
-          ]},
         {:type=>:pictures,:in_form=>true,:single=>true}
       ],
       :list=>{

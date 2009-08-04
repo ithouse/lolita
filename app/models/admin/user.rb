@@ -45,15 +45,6 @@ class Admin::User < Cms::Base
       file.close
     end
   end
-
-  def self.get_blogger_by_url(blogger)
-    if (blogger.to_i>0 && blogger.to_i.to_s.size==blogger.to_s.size)
-      self.find_by_id(blogger)
-    else
-      profile=Cms::Profile.find_by_url(blogger)
-      profile.user if profile
-    end
-  end
   
   def self.access_to_area?(ses,area=false)
     area=:public unless area
@@ -69,21 +60,6 @@ class Admin::User < Cms::Base
     allow_password_change?
   end
 
-  def login_name
-    self.profile && self.profile.name(true).to_s.size>0 ? "#{self.login} (#{self.profile.name})" : self.login
-  end
-  
-  def name
-    self.profile && self.profile.name.to_s.size>0 ? self.profile.name : self.login
-  end
-
-  def name_or_id
-    self.profile && self.profile.name(true).to_s.size>0 ? self.profile.name : self.id
-  end
-  
-  def ocupation
-    self.profile ? self.profile.ocupation : ""
-  end
   def allow_password_change?
     if !(self.new_record? || Admin::User.new.has_role(Admin::Role.admin) || self.authenticated?(self.old_password))
       self.errors.add :old_password, "nepareiza vecā parole"

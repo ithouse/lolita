@@ -27,7 +27,7 @@
         //]]>
       </script>
       <a href="javascript:$('#fileInput').fileUploadStart();" ><%=t(:"picture.upload file")%></a><br/>
-      <a href="javascript:$('#fileInput').fileUploadClearQueue()"><%=t(:"actions.clear").chars.capitalize%></a>
+      <a href="javascript:$('#fileInput').fileUploadClearQueue()"><%=t(:"actions.clear")%></a>
     </div>
     <% if cfg[:main_image] %>
       <%= render :partial=>'/picture/main_image_container', :object=>cfg %>

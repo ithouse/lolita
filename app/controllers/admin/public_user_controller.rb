@@ -1,5 +1,5 @@
 class Admin::PublicUserController < Managed
-  allow :public=>[:login,:logout,:register,:signup], :all_public=>[:profile,:show] #:all_public=>, :message
+  allow :public=>[:login,:logout,:register,:signup], :all_public=>[:show] #:all_public=>, :message
 
   def registration_confirmation #tiks izmantots kad nebūs vairs reģistrācijas laiks
     if user=Admin::PublicUser.register(params[:code])

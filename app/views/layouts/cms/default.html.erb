@@ -49,6 +49,7 @@
     <%= javascript_include_tag '/lolita/javascripts/cms/content_map.js' %>
     <%= javascript_include_tag '/lolita/javascripts/cms/simple_tree.js' %>
     <%= javascript_include_tag '/lolita/javascripts/cms/menu_trees.js' %>
+    <%= javascript_include_tag '/lolita/javascripts/cms/managed_form.js' %>
     <%= javascript_include_tag '/lolita/javascripts/application.js' %>
     <%= javascript_include_tag '/lolita/javascripts/filter.js' %>
     <%= javascript_include_tag '/lolita/javascripts/tiny_mce/tiny_mce.js' %>
@@ -68,11 +69,11 @@
     </div>
     <%= render :partial=>"cms/dialogs" %>
     <div id="script"></div>
+    <div id="warning_dialog"></div>
+    <script type="text/javascript">
+      ITH.MenuTree.namespace="<%= params[:controller].split("/").first%>"
+      ITH.locale="<%=params[:locale] || Admin::Language.find_base_language.short_name%>"
+    </script>
+    <% session[:locale]=params[:locale] || Admin::Language.find_base_language.short_name %>
   </body>
 </html>
-<div id="warning_dialog"></div>
-<script type="text/javascript">
-  ITH.MenuTree.namespace="<%= params[:controller].split("/").first%>"
-  ITH.locale="<%=params[:locale] || Admin::Language.find_base_language.short_name%>"
-</script>
-<% session[:locale]=params[:locale] || Admin::Language.find_base_language.short_name %>

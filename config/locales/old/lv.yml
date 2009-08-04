@@ -1,6 +1,8 @@
 lv:
   simple words:
     or: vai
+    errors: kļūdas
+    error: kļūda
   configuration:
     default page title: Lapa
   months:
@@ -30,6 +32,7 @@ lv:
     cancel: Atcelt
     back: Atgriezties
     confirm: Apstiprināt
+    clear: Attīrīt
   menu:
     field:
         public menus: -Norādiet publisko izvēlni-
@@ -67,6 +70,7 @@ lv:
   picture:
     select: Uzspiediet uz attēla lai to iezīmētu
     refresh list: Atjaunot attēlu sarakstu
+    upload file: Augšupielādēt failu
   errors:
     not_correct_female: nav pareiza
     unknown_error: nezināma kļūda

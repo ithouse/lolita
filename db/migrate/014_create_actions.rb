@@ -4,9 +4,9 @@ class CreateActions < ActiveRecord::Migration
       t.string :controller
       t.string :action
     end
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/user','show')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/role','show')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/access','show')")
+    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/user','list')")
+    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/role','list')")
+    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/access','list')")
     insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/table','list')")
     insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/field','list')")
     insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/configuration','list')")
