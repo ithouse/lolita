@@ -38,9 +38,9 @@ module Extensions::LinkHelper
       else
         case config[:action].to_sym
         when :destroy
-          title="#{image_tag("icons/trash.gif")}&nbsp;"
+          title="#{image_tag("/lolita/images/icons/trash.gif")}&nbsp;"
         when :edit
-          title="#{image_tag("icons/edit.png")}&nbsp;"
+          title="#{image_tag("/lolita/images/icons/edit.png")}&nbsp;"
         end
       end
     else
@@ -174,8 +174,8 @@ module Extensions::LinkHelper
     options[:url]=url_for(:controller=>options[:controller] || params[:controller],:action=>options[:action] || params[:action],:id=>options[:id]) unless options[:simple]
     options=options.delete_if{|key,value| [:controller,:action,:id].include?(key)}
     # if options[:title]
-    #    image_tag("#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:id=>"#{target_id}_switch")+options[:title].to_s+
-    #    options[:title]=image_tag("#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:id=>"#{target_id}_switch")+options[:title].to_s
+    #    image_tag("/lolita/images/#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:id=>"#{target_id}_switch")+options[:title].to_s+
+    #    options[:title]=image_tag("/lolita/images/#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:id=>"#{target_id}_switch")+options[:title].to_s
     #    options[:on_complete]=%($("#{target_id}").update(request.responseText))
     #    options[:before]=%(if(is_toggle_element_opened("#{target_id}")){add_very_small_loading("#{target_id}")}else{stop=true})
     #    link=cms_link(options[:title],options)
@@ -183,7 +183,7 @@ module Extensions::LinkHelper
     #.to_json.gsub(/"/,"&quot;")
     #  end
     status={:small_loading=>true,:state=>options[:opened],:images=>["arrow_blue_s.gif","arrow_blue_e.gif"]}
-    image_tag("#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:class=>"toggle-arrow",:id=>"#{target_id}_switch")+options[:title].to_s+
+    image_tag("/lolita/images/#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:class=>"toggle-arrow",:id=>"#{target_id}_switch")+options[:title].to_s+
     javascript_tag(%( new ITH.ToggableElement("#{target_id}_switch","#{target_id}",#{status.to_json},#{options.to_json})))
 
     end

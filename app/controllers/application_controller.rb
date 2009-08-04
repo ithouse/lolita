@@ -19,9 +19,9 @@ class ActionController::Base
   #include Extensions::AdvancedFilterExtension
   #include Extensions::Sso
   
-  if LOLITA_TRANSLATION
-    before_filter :set_locale
-  end
+  #if LOLITA_TRANSLATION
+  before_filter :set_locale
+  #end
   
   protected
 

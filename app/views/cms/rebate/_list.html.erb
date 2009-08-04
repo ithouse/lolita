@@ -30,7 +30,7 @@
       <td><%= rebate_import_batch_count(rebate) %></td>
       <td><%= rebate.final_count %></td>
       <td><%= number_with_precision(rebate.final_price,2) %></td>
-      <td><%= link_to image_tag("pdf.png") ,:action => 'invoice', :format => 'pdf', :id => rebate.id if rebate.payment_type && rebate.completed? %></td>
+      <td><%= link_to image_tag("/lolita/images/pdf.png") ,:action => 'invoice', :format => 'pdf', :id => rebate.id if rebate.payment_type && rebate.completed? %></td>
       <td><%= destroy_link(:image=>true,:id=>rebate.id) %></td>
     </tr>
   <% end %>

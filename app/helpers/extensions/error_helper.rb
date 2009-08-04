@@ -25,7 +25,7 @@ module Extensions::ErrorHelper
     object_errors=get_object_errors(object_name)
     if object_errors
       errors="<div class='warnbox'>"+list_start_tags+
-        "<div class='top'>"+image_tag("cms/exclamation.gif",:alt=>"")+" #{object_errors.size>1 ? 'Atrastas' : 'Atrasta'} #{spell_number(object_errors.size,'f')} #{object_errors.size>1 ? t(:"simple words.errors") : t(:"simple words.error")}"+"</div>"+
+        "<div class='top'>"+image_tag("/lolita/images/cms/exclamation.gif",:alt=>"")+" #{object_errors.size>1 ? 'Atrastas' : 'Atrasta'} #{spell_number(object_errors.size,'f')} #{object_errors.size>1 ? t(:"simple words.errors") : t(:"simple words.error")}"+"</div>"+
         content_tag("ul",object_errors.collect { |key,error|
           name=field_title(key)
           if error.is_a?(Array) && error.size>1

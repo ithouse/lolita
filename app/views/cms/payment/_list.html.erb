@@ -20,7 +20,7 @@
       <td><%= payment.id %></td>
       <td><%= payment.created_at.strftime("%d.%m.%Y. %H:%M") %></td>
       <td><%= number_to_currency payment.paid_money, :unit=>'LVL', :format=>"%n %u" %></td>
-      <td><%= link_to image_tag("xml.png"), :action => :fidavista_export, :id => payment.id, :format => 'xml' %></td>
+      <td><%= link_to image_tag("/lolita/images/xml.png"), :action => :fidavista_export, :id => payment.id, :format => 'xml' %></td>
       <td><%= destroy_link(:image=>true,:id=>payment.id) %></td>
     </tr>
   <% end %>

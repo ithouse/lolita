@@ -39,7 +39,7 @@ module Extensions::SingleFieldHelper
               select_tag("object[menu_record][branch]",options_for_select(mi,current_menu_id),:style=>"width:300px;")
           )+
             content_tag("td",
-            image_tag("cms/arrow_blue_s.gif",:alt=>"",:onclick=>"toggle_tree_arrows(this)")
+            image_tag("/lolita/images/cms/arrow_blue_s.gif",:alt=>"",:onclick=>"toggle_tree_arrows(this)")
           )+
             content_tag("td",
             content_tag("input","",:id=>"object_menu_record_new",:name=>"object[menu_record][new]",:class=>"txt",:style=>"width:211px;")+
@@ -123,12 +123,12 @@ module Extensions::SingleFieldHelper
       options[:html][:class]=options[:html][:class]+(options[:multiple] ? " multiple" : "")
       select_options=[["-",0]]+select_options if options[:include_blank]
       select_tag("#{object}[#{options[:field]}]#{options[:multiple] ? "[]" : ""}",options_for_select(select_options,current_value),options[:html].merge({:multiple=>options[:multiple]}))+
-        ((options[:parent_link] && !options[:multiple])?(cms_link(image_tag("icons/add.png",:alt=>"+"),'GET',:action=>'create',:controller=>((options[:namespace]?(options[:namespace]+"/"):"")+options[:field].to_s.sub( /_id/, "")), :params=>{:set_back_url=>true},:html=>{:class=>'object-select-add'})):"")+
+        ((options[:parent_link] && !options[:multiple])?(cms_link(image_tag("/lolita/images/icons/add.png",:alt=>"+"),'GET',:action=>'create',:controller=>((options[:namespace]?(options[:namespace]+"/"):"")+options[:field].to_s.sub( /_id/, "")), :params=>{:set_back_url=>true},:html=>{:class=>'object-select-add'})):"")+
         (options[:multiple] ? "<br/><sup class='detail'>#{"lai iezīmētu vairākas rindas turiet nospiestu Crtl"}</sup>" : "")
     else
       "<table><tr>"+
         content_tag('td',select(object.to_sym,options[:field].to_s,select_options,{:include_blank=>options[:include_blank],:selected=>current_value}, options[:html]))+
-        ((options[:parent_link])?(content_tag('td',cms_link(image_tag("icons/add.png",:alt=>"+"),'GET',:action=>'create',:controller=>((options[:namespace]?(options[:namespace]+"/"):"")+options[:field].to_s.sub( /_id/, "")), :params=>{:set_back_url=>true},:html=>{:class=>'object-select-add'}))):"")+
+        ((options[:parent_link])?(content_tag('td',cms_link(image_tag("/lolita/images/icons/add.png",:alt=>"+"),'GET',:action=>'create',:controller=>((options[:namespace]?(options[:namespace]+"/"):"")+options[:field].to_s.sub( /_id/, "")), :params=>{:set_back_url=>true},:html=>{:class=>'object-select-add'}))):"")+
         "</tr></table>"
     end
   end

@@ -78,7 +78,7 @@ module ITHouse
                 :name=>"advanced_filter[values][#{options[:name]}][]"
               )+
                 content_tag("span",
-                image_tag("icons/expand.png",:alt=>"#{t(:"simple words.expand")}",:id=>"values_#{options[:name]}_expand",:onclick=>"AdvancedFilter.toggleSelect(this,'#values_#{options[:name]}')"),
+                image_tag("/lolita/images/icons/expand.png",:alt=>"#{t(:"simple words.expand")}",:id=>"values_#{options[:name]}_expand",:onclick=>"AdvancedFilter.toggleSelect(this,'#values_#{options[:name]}')"),
                 :style=>"margin-left:2px;vertical-align:top;"),
               :id=>"div_values_#{options[:name]}")
           else

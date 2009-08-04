@@ -20,7 +20,7 @@ module Extensions::JavaScriptHelper
 ) if options[:add_new]
 options[:html][:id]="autocomplete_#{object_name}_#{method}"
 %(<div class="autocomplete-container" style="#{options[:html][:style]}">
-        #{text_field object_name,method,options[:html].delete_if{|key,value| key==:style}}#{options[:add_new] ? image_tag("icons/add.png",:alt=>"+",:onclick=>"autocomplete_dialog_#{object_name}_#{method}.dialog.show()",:style=>"cursor:pointer;position:absolute;left:510px;top:3px") : ""}
+        #{text_field object_name,method,options[:html].delete_if{|key,value| key==:style}}#{options[:add_new] ? image_tag("/lolita/images/icons/add.png",:alt=>"+",:onclick=>"autocomplete_dialog_#{object_name}_#{method}.dialog.show()",:style=>"cursor:pointer;position:absolute;left:510px;top:3px") : ""}
         <div id="autocomplete_container_#{object_name}_#{method}"></div>
       </div>
 )+

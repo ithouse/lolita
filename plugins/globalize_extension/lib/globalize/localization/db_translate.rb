@@ -756,7 +756,7 @@ module Globalize # :nodoc:
         # FIX: figure out how to use default rails VALID_FIND_OPTIONS constant
         VALID_FIND_OPTIONS = [ :conditions, :include, :joins, :limit, :offset,
                                :order, :select, :readonly, :group, :from,
-                               :untranslated, :include_translated,:lock ]
+                               :untranslated, :include_translated,:lock, :having ]
 
         def validate_find_options(options) #:nodoc:
           options.assert_valid_keys(VALID_FIND_OPTIONS)

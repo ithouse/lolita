@@ -13,7 +13,7 @@
       <tr>
         <td><%= configuration.title %></td>
         <td><%= text_field_tag "object[#{configuration.name}]",configuration.value,:class=>'txt',:style=>"width:300px;" %></td>
-        <td><%= edit_link :id=>configuration.id, :title=>"#{image_tag("icons/edit.png")}" %></td>
+        <td><%= edit_link :id=>configuration.id, :title=>"#{image_tag("/lolita/images/icons/edit.png")}" %></td>
       </tr>
     <% end %>
   </table>

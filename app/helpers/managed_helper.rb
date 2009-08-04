@@ -221,12 +221,12 @@ module ManagedHelper
     content+=(
       if @config[:list][:sortable] && (options[:params][:sort_column] &&  (params[:sort_column] || session[current_session_name][:sort_column] || []).include?(options[:params][:sort_column]))
         if options[:params][:sort_direction]=="asc"
-          image_tag("cms/arrow_blue_s.gif",:alt=>"V")
+          image_tag("/lolita/images/cms/arrow_blue_s.gif",:alt=>"V")
         else
-          image_tag("cms/arrow_blue_n.gif",:alt=>"A")
+          image_tag("/lolita/images/cms/arrow_blue_n.gif",:alt=>"A")
         end
       else
-        image_tag("cms/bullet_blue.png",:alt=>"o")
+        image_tag("/lolita/images/cms/bullet_blue.png",:alt=>"o")
       end
     )
     content_tag("th", content,:style=>options[:width] ? "width:#{options[:width]}px;" : nil)

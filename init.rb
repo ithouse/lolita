@@ -16,6 +16,5 @@ Dir.glob(File.join(File.dirname(__FILE__),'app','helpers','*_helper.rb')) do |pa
   end
 end
 
-
 # Load flash session middleware
 ActionController::Dispatcher.middleware.insert_before(ActionController::Base.session_store, FlashSessionCookieMiddleware, ActionController::Base.session_options[:key])

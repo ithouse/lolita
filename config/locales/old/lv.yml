@@ -29,6 +29,7 @@ lv:
     save all: Saglabāt
     cancel: Atcelt
     back: Atgriezties
+    confirm: Apstiprināt
   menu:
     field:
         public menus: -Norādiet publisko izvēlni-

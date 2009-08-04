@@ -8,7 +8,7 @@
 <%= javascript_response %>
 <br />
  <div id="filter-head">
-    <div class="fl" style="font-weight: bold;"><%= image_tag("cms/arrow_blue_s.gif", :onclick=>"$('filters').toggle();toggle_images(this,['arrow_blue_s','arrow_blue_e'])") %>&nbsp;Atlase</div>
+    <div class="fl" style="font-weight: bold;"><%= image_tag("/lolita/images/cms/arrow_blue_s.gif", :onclick=>"$('filters').toggle();toggle_images(this,['arrow_blue_s','arrow_blue_e'])") %>&nbsp;Atlase</div>
     <div class="fr">Saglabātie atlases nosacījumi:
       <select style="vertical-align: top;" class="select-small" id="saved_filters" onchange="<%= change_advanced_filter :url=>{:action=>advanced_filter[:list_action]} %>">
         <%= saved_filters(advanced_filter[:filter])%>

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/telegraf/!svn/ver/1/vendor/plugins/betternestedset/test/fixtures
+END
+mixin.rb
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/telegraf/!svn/ver/1/vendor/plugins/betternestedset/test/fixtures/mixin.rb
+END
+mixins.yml
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/telegraf/!svn/ver/1/vendor/plugins/betternestedset/test/fixtures/mixins.yml
+END

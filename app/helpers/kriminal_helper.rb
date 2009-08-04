@@ -59,9 +59,9 @@ module KriminalHelper
   end
 
   def kriminal_media_icons_for news,attributes={}
-    photo_icon=news.media_photo ? image_tag("kriminal/kriminal-foto-ico.gif",{:alt=>""}.merge(attributes)) : ""
-    video_icon=news.media_video ? image_tag("kriminal/kriminal-video-ico.gif", {:alt=>""}.merge(attributes)) : ""
-    audio_icon=news.media_audio ? image_tag("kriminal/kriminal-lout-ico.gif", {:alt=>""}.merge(attributes)) : ""
+    photo_icon=news.media_photo ? image_tag("/lolita/images/kriminal/kriminal-foto-ico.gif",{:alt=>""}.merge(attributes)) : ""
+    video_icon=news.media_video ? image_tag("/lolita/images/kriminal/kriminal-video-ico.gif", {:alt=>""}.merge(attributes)) : ""
+    audio_icon=news.media_audio ? image_tag("/lolita/images/kriminal/kriminal-lout-ico.gif", {:alt=>""}.merge(attributes)) : ""
     photo_icon + video_icon + audio_icon
   end
 end

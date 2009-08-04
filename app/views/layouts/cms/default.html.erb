@@ -14,14 +14,22 @@
       '/lolita/stylesheets/media',
       '/lolita/stylesheets/picture',
       '/lolita/stylesheets/admin/menu',
-      '/lolita/stylesheets/admin/current' %>
+      '/lolita/stylesheets/admin/current',
+      '/lolita/stylesheets/mbContainer' %>
 
     <link rel="stylesheet" type="text/css" media="screen" href="/lolita/javascripts/yui/build/assets/skins/sam/container.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/lolita/javascripts/yui/build/assets/skins/sam/menu.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/lolita/javascripts/yui/build/autocomplete/assets/skins/sam/autocomplete.css" />
 
     <%= javascript_include_tag "/lolita/javascripts/cms/ith.js" %>
-    <%= javascript_include_tag '/lolita/javascripts/prototype.js' %>
+    <%= javascript_include_tag '/lolita/javascripts/jquery/jquery-1.3.2.min.js' %>
+    <%= javascript_include_tag '/lolita/javascripts/jquery/jquery.uploadify.js' %>
+    <%= javascript_include_tag '/lolita/javascripts/jquery/mbContainer1.0.1/ui.core.min.js' %>
+    <%= javascript_include_tag '/lolita/javascripts/jquery/mbContainer1.0.1/ui.draggable.min.js' %>
+    <%= javascript_include_tag '/lolita/javascripts/jquery/mbContainer1.0.1/ui.resizable.min.js' %>
+    <%= javascript_include_tag '/lolita/javascripts/jquery/mbContainer1.0.1/mbContainer.min.js' %>
+    <%#= javascript_include_tag '/lolita/javascripts/prototype.js' %>
+
     <%= javascript_include_tag '/lolita/javascripts/yui/build/yahoo/yahoo-min.js' %>
     <%= javascript_include_tag '/lolita/javascripts/yui/build/utilities/utilities.js' %>
     <%= javascript_include_tag '/lolita/javascripts/yui/build/event/event-min.js' %>
@@ -46,7 +54,7 @@
     <%= javascript_include_tag '/lolita/javascripts/tiny_mce/tiny_mce.js' %>
     <%= javascript_include_tag '/lolita/javascripts/ufo' %>
     <%= javascript_include_tag "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{LOLITA_GMAPS_KEY}" if LOLITA_GMAPS_KEY  %>
-    <%= javascript_include_tag '/lolita/javascripts/highslide/highslide-with-html' %>
+    <%#= javascript_include_tag '/lolita/javascripts/highslide/highslide-with-html' %>
   </head>
   <body class=" yui-skin-sam" <%= 'onunload="GUnload()"' if LOLITA_GMAPS_KEY %>>
     <div id="body" >

@@ -63,7 +63,7 @@
      </div>
     </div>
     <div class="object-list-footer">
-      <%= link_to_remote image_tag("icons/add.png",:alt=>"+"),
+      <%= link_to_remote image_tag("/lolita/images/icons/add.png",:alt=>"+"),
           :url=>{:action=>'insert_row',:fields=>fields,:read_only=>read_only},
           :complete=>"el=elementById('object_remote_list_body_"+body_id.to_s+"');row=document.createElement('div');row.className='object-remote-list-row'; row.id='object_remote_list_row_' + Math.random();row.style.width='"+(fields.size*150+20).to_s+"px';row.innerHTML=request.responseText;el.appendChild(row);",
           :method=>"POST"
