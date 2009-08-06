@@ -78,7 +78,7 @@ AdvancedFilter=function(){
 $(function(){
     AdvancedFilter.dialog=$("#advanced_filter_dialog_container").buildContainers({
         containment:"document",
-        elementsPath:"/lolita/images/jquery/elements/"
+        elementsPath:"/images/jquery/elements/"
     });
 });
 // This function returns the appropriate reference,

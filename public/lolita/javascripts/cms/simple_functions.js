@@ -216,7 +216,7 @@ function add_very_small_loading(id,container_tag){
     container.style.width="100%"
     container.style.textAlign="right"
     var img=document.createElement("img")
-    img.src="/lolita/images/cms/small-ajax-loader.gif"
+    img.src="/images/cms/small-ajax-loader.gif"
     img.alt=""
     container.appendChild(img)
     el.innerHTML=""

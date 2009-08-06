@@ -83,7 +83,7 @@ function init_wait_element(){
     $(function(){
         ITH.Cms.wait=$("#wait_dialog").buildContainers({
             containment:"document",
-            elementsPath:"/lolita/images/jquery/elements/"
+            elementsPath:"/images/jquery/elements/"
         });
     });
     $("#wait").click(function(){
@@ -109,7 +109,7 @@ function init_warn_element(){
     $(function(){
         ITH.Cms.warning=$("#warning_dialog").buildContainers({
             containment:"document",
-            elementsPath:"/lolita/images/jquery/elements/"
+            elementsPath:"/images/jquery/elements/"
         });
     });
     $("#warning_dialog").click(function(event){

@@ -3,6 +3,11 @@ namespace :lolita do
   task :setup do
     #TODO: setup lolita
   end
+
+  desc "Sync Lolita's static files images/js ..."
+  task :sync do
+    system "rsync -ruv vendor/plugins/lolita/public/lolita public/."
+  end
 end
 
 #namespace :db do
