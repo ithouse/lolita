@@ -116,6 +116,7 @@ class Managed < ApplicationController
   #     :title - kolonnas virsraksts, opcionāls, tiks ņemts kolonnas db nosaukums, vai no fields tabula
   #     :link - norāda vai būs edit saite uz elementa rediģēšanu
   #     :field - lauka nosaukums, OBLIGĀTS
+  #     :function - lauka vērtības attēlošanai var izsaukt jūsu norādīto funkciju
   #     :sort_direction - kārtošanas veids (asc,desc), pēc noklusējuma asc
   #     :sortable - norāda vai kārtojams, pēc noklusējuma nav, ja norādīts :default tad ir kārtojams
   # :fields - masīvs, katrs masīvas elements ir Hash masīvs, ar šādām

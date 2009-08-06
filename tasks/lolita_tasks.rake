@@ -1,12 +1,19 @@
 namespace :lolita do
-  desc "Setups Lolita for your rails project"
-  task :setup do
-    #TODO: setup lolita
-  end
-
   desc "Sync Lolita's static files images/js ..."
   task :sync do
     system "rsync -ruv vendor/plugins/lolita/public/lolita public/."
+
+    # YAML config file
+    unless File.exists?("#{RAILS_ROOT}/config/lolita.yml")
+      FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/lolita.yml","#{RAILS_ROOT}/config/lolita.yml")
+      puts "[new] config/lolita.yml"
+    end
+
+    # initializer
+    unless File.exists?("#{RAILS_ROOT}/config/initializers/lolita_init.rb")
+      FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/initializers/lolita_init.rb","#{RAILS_ROOT}/config/initializers/lolita_init.rb")
+      puts "[new] config/initializers/lolita_init.rb"
+    end
   end
 end
 
