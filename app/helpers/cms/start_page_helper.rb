@@ -1,3 +1,0 @@
-module Cms::StartPageHelper
-  
-end

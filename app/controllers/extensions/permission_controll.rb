@@ -49,11 +49,6 @@ module Extensions::PermissionControll
       after_allow if allowed && self.respond_to?("after_allow",true)
     end
     
-    if Admin::User.area==:system
-      unless filter_ip_address
-        return false
-      end if Admin::IpFilter.must_filter?
-    end
     if !allowed
       if session[:user] && session[:user].is_a?(Admin::SystemUser)
         to_user_login_screen

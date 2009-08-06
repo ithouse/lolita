@@ -4,10 +4,11 @@
  */
 
 
-ITH.MenuTree=function(container,configuration,data,parentMenu){
+ITH.MenuTree=function(container,configuration,data,parentMenu,authenticity_token){
     this.draggable=true
     this.parentMenu=parentMenu //ja tiek veidots bērna elements tad šis tiek izmantots
     this.header=null
+    this.authenticity_token = authenticity_token
     ITH.MenuTree.superclass.constructor.call(this,container,configuration,data);
     this.contextMenu=new YAHOO.widget.ContextMenu(configuration.menu_name+"_context_menu",{
         lazyload: true,
@@ -61,7 +62,7 @@ ITH.MenuTree.paths={
 }
 /*
  * Vienlaikus var būt aktīvas tikai divu tipu izvēlnes
- * Aplikācijas izvēlne ar navigāciju attiecīgajā vārdkopā 
+ * Aplikācijas izvēlne ar navigāciju attiecīgajā vārdkopā
  * Web izvēlne, kas atbilst Cms sadaļai, bet teorētiski varētu arī būt citur
  */
 ITH.MenuTree.active={
@@ -78,7 +79,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         }else{
             this.TOTAL_REQUESTS+=1
         }
-        
+
         if(this.TOTAL_REQUESTS==3){
             this.TOTAL_REQUSTS=0
             this.LAST_REQUEST=""
@@ -102,15 +103,15 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
             callback.argument.self=this
             callback.argument.method=method.toUpperCase()
             if(method.toUpperCase()!="GET"){
-                params=params && params.length>0 ? (params[params.length-1]=="&" ? params+"is_ajax=true" : params+"&is_ajax=true") : "is_ajax=true"
+                params=params && params.length>0 ? (params[params.length-1]=="&" ? params+"is_ajax=true&authenticity_token="+this.authenticity_token : params+"&is_ajax=true&authenticity_token="+this.authenticity_token) : "is_ajax=true&authenticity_token="+this.authenticity_token
             }else{
                 var symb=url.search(/\?/)>-1 ? (url[url.length-1]=="&" ? "" : "&") : "?"
-                url=url+symb+"is_ajax=true"
+                url=url+symb+"is_ajax=true&authenticity_token="+this.authenticity_token
             }
-            YAHOO.util.Connect.completeEvent.subscribe(complete); 
+            YAHOO.util.Connect.completeEvent.subscribe(complete);
             YAHOO.util.Connect.asyncRequest(method, url, callback,params || "");
         }
-        
+
     },
     before_last_button:function(){
         return this.buttons[this.buttons.length-2]
@@ -122,7 +123,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
             ITH.MenuTree.superclass.render.call(this)
             this.createHeader()
             this.add_buttons();
-            
+
             this.contextMenu.render(this.DOMMenuRoot)
         }
         if(this.config.menu_type=="web"){
@@ -132,9 +133,9 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
     },
     onMenuShow:function(type,args){
     /*var branch=null
-        var oTarget = this.contextEventTarget, 
-	            aMenuItems, 
-	            aClasses; 
+        var oTarget = this.contextEventTarget,
+	            aMenuItems,
+	            aClasses;
         if(oTarget.parent){
             branch=oTarget.parent
         }else if(oTarget.configuration){
@@ -144,8 +145,8 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         }else if(oTarget.parentNode && oTarget.parentNode.configuration){
             branch=oTarget.parentNode.configuration
         }
-        
-        
+
+
         var b=this.getRoot()
         var c=1*/
     },
@@ -248,7 +249,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
     },
     add_branches_to_child_group:function(){
         if(this.childMenu){
-            var tree_arr=this.flat_tree(this.tree[0].tree) 
+            var tree_arr=this.flat_tree(this.tree[0].tree)
             for(var i=0;i<tree_arr.length;i++){
                 if (tree_arr[i].draggable) tree_arr[i].draggable.addToGroup(this.childMenu.config.menu_name)
             }
@@ -326,14 +327,14 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
             var handleCancel=function(){
                 this.cancel()
             }
-            ITH.MenuTree.menu_dialog = new YAHOO.widget.Dialog("public_menu_dialog",  
+            ITH.MenuTree.menu_dialog = new YAHOO.widget.Dialog("public_menu_dialog",
             {
                 width : "300px",
-                fixedcenter : true, 
-                visible : false,  
+                fixedcenter : true,
+                visible : false,
                 modal:true,
-                draggable: false, 
-                buttons : [ { 
+                draggable: false,
+                buttons : [ {
                     text:ITH.MenuTree.translation.dialog_make,
                     handler:handleSubmit,
                     isDefault:true
@@ -450,7 +451,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
                 request.argument.self.get_updated_items()
             }
         }
-        this.doRequest("POST",ITH.MenuTree.paths.get_updated_items,requestHandler,"current_time="+this.config.current_time+"&menu_id="+this.config.menu_id)
+        this.doRequest("POST",ITH.MenuTree.paths.get_updated_items,requestHandler,"current_time="+this.config.current_time+"&menu_id="+this.config.menu_idc)
     },
     hide_all_menus:function(){
         if(ITH.MenuTree.active.app){
@@ -521,7 +522,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         this.DOMMenuRoot.insertBefore(container,this.DOMMenuRoot.childNodes[0])
         this.header=container
     },
-    
+
     getByRealId:function(tree,id){
         for(var i=0;i<tree.length;i++){
             if(tree[i].id==id){
@@ -577,7 +578,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         }
         return arr;
     },
-    
+
     save:function(tree){
         var result_tree=this.getTreeIds(tree)
         var result="";
@@ -738,7 +739,7 @@ ITH.extend(ITH.MenuBranch,ITH.Branch,{
                             id:self.id,
                             title:self.params.title
                         }))
-                        
+
                     },
                     failure:function(request){
                         if(request.status!=404){
@@ -751,7 +752,7 @@ ITH.extend(ITH.MenuBranch,ITH.Branch,{
                 };
                 this.branch.doRequest('POST', ITH.MenuTree.paths.remove_content+this.parentNode.parentNode.branch.id, requestHandler);
             }
-        }  
+        }
         return remove_content
     },
     add_edit_tool:function(){
@@ -791,7 +792,7 @@ ITH.extend(ITH.MenuBranch,ITH.Branch,{
     add_tools:function(){
         this.tools.move_tool=this.add_move_tool()
         this.tools.appendChild(this.tools.move_tool)
-        this.tools.delete_tool=this.add_delete_tool() 
+        this.tools.delete_tool=this.add_delete_tool()
         if(this.params.module_type=='web'){
             this.tools.publish_tool=this.add_publish_tool();
             this.tools.remove_content_tool=this.add_remove_content_tool()
@@ -816,7 +817,7 @@ ITH.extend(ITH.MenuBranch,ITH.Branch,{
                     this.style.color=ITH.MenuTree.colors.existing_item
                 }else{
                     this.style.color=ITH.MenuTree.colors.unused_item;
-                } 
+                }
             }
         }
         text_node.title=ITH.MenuTree.translation.edit_branch
@@ -905,9 +906,9 @@ ITH.SideMenu.prototype={
                     level:level
                 })
             }
-            
+
             container.appendChild(branch_container)
-        } 
+        }
     },
     createBranch:function(container,branch,level){
         if(level<1){
@@ -951,14 +952,14 @@ ITH.SideMenu.prototype={
                         ITH.Cms.wait.hide();
                         if(request.status!=404){
                             request.argument.text.onclick.call(request.argument.text)
-                        } 
+                        }
                     },
                     argument:{
                         text:this
                     }
                 };
                // this.root_object.mainMenu.doJQRequest("GET",url,requestHandler,text.onclick)
-                this.root_object.mainMenu.doRequest('GET', url, requestHandler); 
+                this.root_object.mainMenu.doRequest('GET', url, requestHandler);
             }
         }
         var content=ITH.Element.create("div",{
@@ -1005,5 +1006,5 @@ ITH.SideMenu.prototype={
         }
         current.text.style.color="#F48843"
     }
-  
+
 }

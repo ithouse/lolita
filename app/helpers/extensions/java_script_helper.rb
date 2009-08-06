@@ -58,6 +58,7 @@ def get_actions_js container,menu_item_id,public=false
         container:'#{container}',
 method:'POST',
 params:{
+authenticity_token: '#{form_authenticity_token}',
 public:#{public ? "true" : "false"},
 menu_item_id:#{menu_item_id},
 controller_name:this.value

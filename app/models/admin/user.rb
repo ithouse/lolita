@@ -3,58 +3,16 @@ class Admin::User < Cms::Base
   @current_user=nil
   @area=nil
   acts_as_authorized_user
-  attr_protected :type
   
   set_table_name :admin_users
   attr_accessor :password
   attr_accessor :old_password
-  validates_presence_of     :login, :email
   validates_presence_of     :password,                   :if => :password_required?
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_confirmation_of :password,                   :if => :password_required?
-  validates_length_of       :login,    :within => 3..40
-  validates_length_of       :email,    :within => 3..100
-  validates_uniqueness_of   :login, :email, :case_sensitive => true
+  validates_length_of       :password, :within => 4..40, :if => :password_required?
+
   before_save :encrypt_password
-  after_update :sync_email_address
-
-  has_one     :photo, :as=>:pictureable, :dependent=>:destroy,:class_name=>"Picture"
-  has_one     :email_address,   :class_name=>"Admin::Email", :dependent=>:delete
-  
-  has_many    :tokens, :class_name=>"Admin::Token", :dependent=>:destroy
-
-
-  def self.user_activities
-    lines=[]
-    file_name=RAILS_ROOT+"/log/user_activities.log"
-    if File.exist?(file_name)
-      file=File.open(file_name,"r")
-      file.each_line do |line|
-        lines<<line
-      end
-      file.close
-    end
-    start=lines.size<1000 ? 0 : lines.size-1000
-    lines.slice(start,1000).reverse.join("")
-  end
-
-  def self.clear_user_activities
-    file_name=RAILS_ROOT+"/log/user_activities.log"
-    if File.exist?(file_name)
-      file=File.open(file_name,"w")
-      file.close
-    end
-  end
-  
-  def self.access_to_area?(ses,area=false)
-    area=:public unless area
-    if area==:public
-      (LOLITA_ALLOW[:system_in_public] && ses[:p_user].is_a?(Admin::SystemUser)) ||
-        (LOLITA_ALLOW[:rewrite] && ses[:user].is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
-      ses[:p_user].is_a?(Admin::PublicUser)
-    elsif area==:system
-    end
-  end
 
   def validate
     allow_password_change?
@@ -165,15 +123,6 @@ class Admin::User < Cms::Base
     end
   end
   protected
-
-  def sync_email_address
-    if @changed_attributes && @changed_attributes.has_key?("email")
-      if self.email_address
-        self.email_address.address=self.email
-        self.email_address.save!
-      end
-    end
-  end
   
   def self.check_options? options,action
     if options

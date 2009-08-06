@@ -68,15 +68,6 @@ class ::ActionController::Base
   def is_local_request?
     request.host=="localhost"
   end
-  
-  def filter_ip_address
-    unless Admin::IpFilter.is_trusted?(request.remote_ip)
-      render :template=>"status/401"
-      return false
-    else
-      return true
-    end
-  end
 
   def namespace
     params[:controller].to_s.split("/").first

@@ -2,7 +2,7 @@
   <%=render :partial=>"video_file/only_player",:locals=>{:video=>single_video_row[:video]}%>
 </td>
 <td >
-  <input type="image" title="<%=t(:"media.video_files.upload picture")%>" src="/images/icons/add_picture.png" onclick="ITH.Cms.VideoFileDialog.open(<%=single_video_row[:video].id%>);return false;"
-         <input type="image" title="<%=t(:"media.video_files.remove picture")%>" src="/images/icons/remove_picture.png" onclick="ITH.Cms.VideoFileDialog.destroy(<%=single_video_row[:video].id%>);return false;"
+  <input type="image" title="<%=t(:"media.video_files.upload picture")%>" src="/lolita/images/icons/add_picture.png" onclick="ITH.Cms.VideoFileDialog.open(<%=single_video_row[:video].id%>);return false;"
+         <input type="image" title="<%=t(:"media.video_files.remove picture")%>" src="/lolita/images/icons/remove_picture.png" onclick="ITH.Cms.VideoFileDialog.destroy(<%=single_video_row[:video].id%>);return false;"
        </td>
 <td style="width:30px;"><input name="thumb[]" class="chk" type="checkbox" value="<%= single_video_row[:video].id %> " /></td>

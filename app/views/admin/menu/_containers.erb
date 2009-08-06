@@ -30,6 +30,7 @@
         <label for="name"><%=t(:"menu.dialog.menu name")%>:</label>
         <input type="text" name="name" maxlength="255" size="30"/>
         <input type="hidden" name="namespace" value="<%=params[:controller].split("/").first%>"/>
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
       </form>
     </div>
   </div>

@@ -13,16 +13,16 @@ ITH.Tree=function(container,configuration,data){
 }
 
 ITH.Tree.arrows={
-    blank:"/images/cms/arrow_blank.gif",
-    east:"/images/cms/arrow_orange_e.gif",
-    south:"/images/cms/arrow_orange_s.gif"
+    blank:"/lolita/images/cms/arrow_blank.gif",
+    east:"/lolita/images/cms/arrow_orange_e.gif",
+    south:"/lolita/images/cms/arrow_orange_s.gif"
 }
 ITH.Tree.buttons={
-    add_branch:"/images/icons/add.png",
-    save_tree:"/images/icons/accept.png",
-    expand:"/images/icons/edit_add.png",
-    collapse:"/images/icons/edit_remove.png",
-    reload_tree:"/images/icons/arrow_refresh.png"
+    add_branch:"/lolita/images/icons/add.png",
+    save_tree:"/lolita/images/icons/accept.png",
+    expand:"/lolita/images/icons/edit_add.png",
+    collapse:"/lolita/images/icons/edit_remove.png",
+    reload_tree:"/lolita/images/icons/arrow_refresh.png"
 }
 ITH.Tree.prototype={
     last_button:function(){

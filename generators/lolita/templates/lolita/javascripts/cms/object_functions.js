@@ -145,8 +145,8 @@ ITH.Element=function(){
         },
         loading:function(type){
             var types={
-                "small":"/images/cms/small-loading.gif",
-                "large":"/images/cms/loading.gif"
+                "small":"/lolita/images/cms/small-loading.gif",
+                "large":"/lolita/images/cms/loading.gif"
             }
             var element=document.createElement("img")
             element.src=types[type]
@@ -189,7 +189,7 @@ ITH.Element=function(){
 ITH.Media=function(){
     var params={}
     
-    var loadingImage="/images/cms/loading.gif"
+    var loadingImage="/lolita/images/cms/loading.gif"
     var current_media="images"
     var current_element=-1
     var container={
@@ -417,9 +417,9 @@ ITH.Media=function(){
     }
 }()
 ITH.Picture=function(){
-    var loadingImage="/images/cms/loading.gif"
-    var refreshLoadingImage="/images/icons/arrow_refresh_loading.gif"
-    var refreshImage="/images/icons/arrow_refresh.png"
+    var loadingImage="/lolita/images/cms/loading.gif"
+    var refreshLoadingImage="/lolita/images/icons/arrow_refresh_loading.gif"
+    var refreshImage="/lolita/images/icons/arrow_refresh.png"
     return{
         init:function(config){
             if(!ITH.Picture.Dialog){
@@ -570,7 +570,7 @@ ITH.PictureVersions=function(){
         $(function(){
             ITH.PictureVersions.Dialog=$(id).buildContainers({
                 containment:"document",
-                elementsPath:"/images/jquery/elements/"
+                elementsPath:"/lolita/images/jquery/elements/"
             });
         });
     });

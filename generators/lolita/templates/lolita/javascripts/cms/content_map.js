@@ -202,19 +202,19 @@ YAHOO.example.DDApp = {
                 if(expand){
                     //Iespējams norādīt cik dziļi atvērt vai aizvērt koku 
                     if(!deep || (deep && expand && parent.deep<=deep)){
-                        parent.arrow.childNodes[0].style.display="none";//="/images/arrow_orange_s.gif";
+                        parent.arrow.childNodes[0].style.display="none";//="/lolita/images/arrow_orange_s.gif";
                         parent.arrow.childNodes[1].style.display="none";
                         parent.arrow.childNodes[2].style.display="block";
-                        //parent.arrow.src="/images/arrow_orange_s.gif";
+                        //parent.arrow.src="/lolita/images/arrow_orange_s.gif";
                         parent.visible=true;
                         parent.tree_element.style.display="block";
                     }
                 }else{
                     if(!deep || (deep && parent.deep>deep)){
-                        parent.arrow.childNodes[0].style.display="none";//="/images/arrow_orange_s.gif";
+                        parent.arrow.childNodes[0].style.display="none";//="/lolita/images/arrow_orange_s.gif";
                         parent.arrow.childNodes[2].style.display="none";
                         parent.arrow.childNodes[1].style.display="block";
-                        //parent.arrow.src="/images/arrow_orange_e.gif";
+                        //parent.arrow.src="/lolita/images/arrow_orange_e.gif";
                         parent.visible=false;
                         parent.tree_element.style.display="none";
                     }
@@ -234,20 +234,20 @@ YAHOO.example.DDApp = {
                 var parent=tree[i];
                 if(parent.arrow && (parent.tree.length>1)){
                     if(parent.visible){
-                        parent.arrow.childNodes[0].style.display="none";//="/images/arrow_orange_s.gif";
+                        parent.arrow.childNodes[0].style.display="none";//="/lolita/images/arrow_orange_s.gif";
                         parent.arrow.childNodes[1].style.display="none";
                         parent.arrow.childNodes[2].style.display="block";
                         parent.tree_element.style.display="block";
                     }else{
-                        parent.arrow.childNodes[0].style.display="none";//="/images/arrow_orange_s.gif";
+                        parent.arrow.childNodes[0].style.display="none";//="/lolita/images/arrow_orange_s.gif";
                         parent.arrow.childNodes[2].style.display="none";
                         parent.arrow.childNodes[1].style.display="block";
-                       // parent.arrow.src="/images/arrow_orange_e.gif";
+                       // parent.arrow.src="/lolita/images/arrow_orange_e.gif";
                         parent.tree_element.style.display="none";
                     }
                 }else{
                     if(parent.arrow){
-                        parent.arrow.childNodes[1].style.display="none";//="/images/arrow_orange_s.gif";
+                        parent.arrow.childNodes[1].style.display="none";//="/lolita/images/arrow_orange_s.gif";
                         parent.arrow.childNodes[2].style.display="none";
                         parent.arrow.childNodes[0].style.display="block";
                         parent.tree_element.style.display="none";
@@ -268,13 +268,13 @@ YAHOO.example.DDApp = {
             arrow.style.styleFloat="left";
             arrow.style.paddingTop="5px"
             var a_blank=document.createElement('img');
-                a_blank.src="/images/cms/arrow_blank.gif";
+                a_blank.src="/lolita/images/cms/arrow_blank.gif";
                 a_blank.style.display="block";
             var a_e=document.createElement('img');
-                a_e.src="/images/cms/arrow_orange_e.gif";
+                a_e.src="/lolita/images/cms/arrow_orange_e.gif";
                 a_e.style.display="none";
             var a_s=document.createElement('img');
-                a_s.src="/images/cms/arrow_orange_s.gif";
+                a_s.src="/lolita/images/cms/arrow_orange_s.gif";
                 a_s.style.display="none";
             arrow.appendChild(a_blank);
             arrow.appendChild(a_e);

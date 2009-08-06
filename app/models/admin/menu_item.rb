@@ -5,7 +5,7 @@ class Admin::MenuItem < Cms::Manager
   belongs_to :menu, :class_name=>"Admin::Menu"
 
   has_many :menu_items, :as=>:menuable, :dependent=>:nullify, :class_name=>"Admin::MenuItem"
-  has_many :start_pages, :dependent=>:nullify, :class_name=>"Cms::StartPage" #sākumlapai var būt vairākas sadaļas no satura
+  #has_many :start_pages, :dependent=>:nullify, :class_name=>"Cms::StartPage" #sākumlapai var būt vairākas sadaļas no satura
   has_many    :pictures, :as=>:pictureable, :dependent=>:destroy, :extend=>Extensions::PictureExtensions
   acts_as_nested_set :scope => :menu_id #ļaujam kārtot koka struktūrās
   

@@ -30,7 +30,7 @@ class VideoFile < FileBase
         self.picture.picture.url
       end
     else
-      "/images/default.jpg"
+      "/lolita/images/default.jpg"
     end
   end
 
