@@ -87,6 +87,7 @@ module Extensions::LinkHelper
   #   <tt>:on_failure</tt> - When request unsuccesfuly completed, overrides <tt>:on_complete</tt>
   def cms_link (title,options={},onclick=nil)
     base_params=options[:url] || {:controller=>options[:controller] || params[:controller],:action=>options[:action] || params[:action],:id=>options[:id]}
+    options[:params][:authenticity_token]=form_authenticity_token if !options[:params][:authenticity_token]
     request_configuration={
       :url=>url_for(base_params),
       :params=>url_for((options[:params]||{}).merge(:only_path=>true,:escape=>false)).split("?")[1],
@@ -184,7 +185,7 @@ module Extensions::LinkHelper
     #  end
     status={:small_loading=>true,:state=>options[:opened],:images=>["arrow_blue_s.gif","arrow_blue_e.gif"]}
     image_tag("/lolita/images/#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:class=>"toggle-arrow",:id=>"#{target_id}_switch")+options[:title].to_s+
-    javascript_tag(%( new ITH.ToggableElement("#{target_id}_switch","#{target_id}",#{status.to_json},#{options.to_json})))
+      javascript_tag(%( new ITH.ToggableElement("#{target_id}_switch","#{target_id}",#{status.to_json},#{options.to_json})))
 
     end
   end
