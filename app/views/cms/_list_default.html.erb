@@ -15,7 +15,7 @@
           <% if column[:link] %>
             <%= edit_link :id=>element.id, :title=>element.send(column[:field])%>
           <%else%>
-            <%= element.send(column[:field])%>
+            <%= element.send(column[:function] || column[:field])%>
           <%end%>
         </td>
       <%}%>

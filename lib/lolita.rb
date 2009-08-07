@@ -6,17 +6,17 @@ conf[RAILS_ENV].each_key do |name|
   eval "LOLITA_#{name.upcase} = conf['#{name}']"
 end
 
-# add all maps to path
-%w{
-  middleware app/models app/helpers app/controllers
-  app/models/extensions app/helpers/extensions app/controllers/extensions
-  app/models/extensions/cms app/helpers/extensions/cms app/controllers/extensions/cms
-}.each do |dir|
-  path = File.join(File.dirname(__FILE__), dir)
-  $LOAD_PATH << path
-  ActiveSupport::Dependencies.load_paths << path
-  ActiveSupport::Dependencies.load_once_paths.delete(path) unless RAILS_ENV == 'production'
-end
+## add all maps to path
+#%w{
+#  middleware app/models app/helpers app/controllers
+#  app/models/extensions app/helpers/extensions app/controllers/extensions
+#  app/models/extensions/cms app/helpers/extensions/cms app/controllers/extensions/cms
+#}.each do |dir|
+#  path = File.join(File.dirname(__FILE__), dir)
+#  $LOAD_PATH << path
+#  ActiveSupport::Dependencies.load_paths << path
+#  ActiveSupport::Dependencies.load_once_paths.delete(path) unless RAILS_ENV == 'production'
+#end
 
 # load patches
 Find.find(File.join(File.dirname(__FILE__), "patch")) do |path|
@@ -38,13 +38,13 @@ ActionController::Base.send :include, Extensions::AdvancedFilterExtension
 ActionView::Base.send :include, BaseHelper
 
 # Include TranslationHelper into all Lolitas helpers
-Dir.glob(File.join(File.dirname(__FILE__),'app','helpers','*_helper.rb')) do |path|
-  unless File.basename(path) == 'application_helper.rb'
-    nspace = path.split("/")[-2]
-    nspace = %w(admin cms extensions).include? nspace ? nspace : nil
-    eval "#{(nspace ? "#{nspace}::#{File.basename(path).split(".")[0]}" : "#{File.basename(path).split(".")[0]}").camelcase}.send :include, Extensions::TranslationHelper"
-  end
-end
+#Dir.glob(File.join(File.dirname(__FILE__),'app','helpers','*_helper.rb')) do |path|
+#  unless File.basename(path) == 'base_helper.rb'
+#    nspace = path.split("/")[-2]
+#    nspace = %w(admin cms extensions).include? nspace ? nspace : nil
+#    eval "#{(nspace ? "#{nspace}::#{File.basename(path).split(".")[0]}" : "#{File.basename(path).split(".")[0]}").camelcase}.send :include, Extensions::TranslationHelper"
+#  end
+#end
 
 # add lolita's template path
 ActionController::Base.view_paths = ActionController::Base.view_paths.dup.unshift("#{RAILS_ROOT}/vendor/plugins/lolita/lib/app/views")

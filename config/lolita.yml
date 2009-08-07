@@ -1,0 +1,44 @@
+# all these variables are available via LOLITA_***, key also is upcased
+
+development:
+  language_code: lv
+  translation: true
+  domain: localhost
+
+  flash_actions:
+    /picture/new_create,
+    /video_file/new_create,
+    /audio_file/new_create,
+    /file/new_create
+  allow:
+    system_in_public: true
+    rewrite: false
+  default_from: "new@telegraf.lv"
+  #comment_table: "Cms::Comment"
+  #vote_table: "Cms::Vote"
+  multi_domain_portal: false
+  domain_depth: 0
+  cms_per_page: 20
+  gmaps_key: nil
+
+production:
+  language_code: lv
+  translation: true
+  domain: localhost
+
+  flash_actions:
+    /picture/new_create,
+    /video_file/new_create,
+    /audio_file/new_create,
+    /file/new_create
+  allow:
+    system_in_public: true
+    rewrite: false
+  root: <%= RAILS_ROOT %>/vendor/plugins/lolita
+  default_from: "new@nomaspunkts.lv"
+  #comment_table: "Cms::Comment"
+  #vote_table: "Cms::Vote"
+  multi_domain_portal: false
+  domain_depth: 0
+  cms_per_page: 20
+  gmaps_key: nil
