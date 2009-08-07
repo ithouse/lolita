@@ -1,7 +1,11 @@
 namespace :lolita do
-  desc "Sync Lolita's static files images/js ..."
-  task :sync do
-    system "rsync -ruv vendor/plugins/lolita/public/lolita public/."
+  desc "Setup lolita"
+  task :setup do
+    # Create static file link
+    unless File.exists?("#{RAILS_ROOT}/public/lolita")
+      FileUtils.ln_s("#{RAILS_ROOT}/vendor/plugins/lolita/_public/","#{RAILS_ROOT}/public/lolita")
+      puts "[new] #{RAILS_ROOT}/public/lolita"
+    end
 
     # YAML config file
     unless File.exists?("#{RAILS_ROOT}/config/lolita.yml")
