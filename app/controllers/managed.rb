@@ -59,7 +59,7 @@ class Managed < ApplicationController
  
 
   
-  #config satru config mainīgo, kas rodas saņemot no apakšklasēm opciju :configuration
+  #config satur config mainīgo, kas rodas saņemot no apakšklasēm opciju :configuration
   #tas nepieciešams lai nodrošinātu katrai apakšklasie nepieciešamības gadījumā pilnīgi atšķirīgu
   #argumentu reģistrēšanu un apstrādi
 
@@ -85,7 +85,7 @@ class Managed < ApplicationController
   #   :translate,
   #   :default - vispārīgs tips paredzēts visām cilnēm
   #   :partial - taba partial forma
-  #   :partails - Hash
+  #   :partials - Hash
   #     :before - Array ar partial formām ko renderēt iekš taba pirms galvenā partial
   #     :after - Array ar partial formām ko renderēt iekš taba aiz galvenā partial
   #   Vispārīgā ciļņu konfigurācija
