@@ -1,7 +1,0 @@
-<html>
-<body onload="document.hansanet_form.submit();">
-<form method="POST" name="hansanet_form" id="hansanet_form" action="<%=  @live_url %>">
-  <%= @post.collect { |key, value| hidden_field_tag("VK_#{key.to_s.upcase}", value.to_s ) } %>
-</form>
-</body>
-</html>
