@@ -1,35 +1,19 @@
 class Picture < Cms::Base
   require 'RMagick'
-  # JAUNIE ATTĒLI
-  # 330x185 - VIDEO PIRMAJĀ LAPĀ
-  #85x115 blogera bilde
-  VERSIONS={
-    :article=>"c490x245",
-    :media_thumb=>"c220x150",
-    :main=>"c360x180",
-    :small=>"c90x90",
-    :photo_thumb=>"c80x55",
-    :portrait=>"c85x115"
-  }
-  N_VERSIONS={ # Non-strict
-    :wide_video=>"330x185",
-    :video=>"466x350",
-    :middle=>"250x180"
-  }
-  S_VERSIONS={ #System 
-    :cropped=>"420x420",
-    :thumb =>"124x124"
-  }
+  
   attr_accessor :watermark_free
   belongs_to :pictureable, :polymorphic => true
-  belongs_to :source, :class_name=>"Cms::Source"
-  has_and_belongs_to_many :tags, :class_name=>"Cms::Tag", :uniq=>true
+  #belongs_to :source, :class_name=>"Cms::Source"
+  #has_and_belongs_to_many :tags, :class_name=>"Cms::Tag", :uniq=>true
   #cropped ir paredzēts bilžu griešanai tādēl nav pieejams
   image_column :picture,:store_dir=>proc{|inst, attr|
     time=inst.created_at ? inst.created_at : Time.now #vienīgā šaize var būt, ja mēneše pēdējā dienā 23:59:59 uploado
     "picture/picture/#{time.strftime("%Y_%m")}/#{inst.id}"
   },
-    :versions => VERSIONS.merge(N_VERSIONS).merge(S_VERSIONS)
+    :versions => { #System
+      :cropped=>"420x420",
+      :thumb =>"124x124"
+    }
   before_save :assign_position
   before_save :singularize_main
   after_save :add_watermarks, :if=>"watermark_free.nil? && !watermark_added"
@@ -433,5 +417,4 @@ class Picture < Cms::Base
     }.merge(options)
     Picture.find(:all,:conditions=>["pictureable_type=? AND pictureable_id=?",self.pictureable_type,self.pictureable_id],:order=>options.sort)
   end
-
 end
