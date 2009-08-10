@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec
+END
+integration_spec.rb
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/integration_spec.rb
+END
+active_record_extension_spec.rb
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/active_record_extension_spec.rb
+END
+custom_matchers.rb
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/custom_matchers.rb
+END
+image_science_manipulator_spec.rb
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/image_science_manipulator_spec.rb
+END
+rmagick_manipulator_spec.rb
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/rmagick_manipulator_spec.rb
+END
+sanitized_file_spec.rb
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/sanitized_file_spec.rb
+END
+uploaded_file_spec.rb
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/uploaded_file_spec.rb
+END
+spec_helper.rb
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/spec_helper.rb
+END
+magic_columns_spec.rb
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/magic_columns_spec.rb
+END
+upload_column_spec.rb
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/telegraf/!svn/ver/673/vendor/plugins/upload_column/spec/upload_column_spec.rb
+END

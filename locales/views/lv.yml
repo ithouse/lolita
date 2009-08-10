@@ -1,9 +1,0 @@
-lv:
-  lolita:
-    admin:
-      user:
-        login:
-          authorization: Autorizācija
-          login name: Vārds
-          password: Parole
-          forgot password: Aizmirsi paroli?

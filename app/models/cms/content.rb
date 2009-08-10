@@ -4,8 +4,7 @@ class Cms::Content < Cms::Manager
   acts_as_content_item
   has_many :menu_items, :as=>:menuable, :dependent=>:nullify, :class_name=>"Admin::MenuItem"
   
-
-  class << self
+    class << self
     def find_related_menu_item menu_name, id
       element=self.find_by_id(id)
       if element

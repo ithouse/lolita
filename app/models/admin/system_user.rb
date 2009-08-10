@@ -27,6 +27,7 @@ class Admin::SystemUser < Admin::User
   end
 
   def self.access_to_area?(ses,area=false)
+    #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
     area=:public unless area
     if area==:public
       (LOLITA_ALLOW[:system_in_public] && ses[:p_user].is_a?(Admin::SystemUser)) ||
