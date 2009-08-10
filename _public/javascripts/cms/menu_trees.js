@@ -70,6 +70,9 @@ ITH.MenuTree.active={
     "web":null
 }
 ITH.extend(ITH.MenuTree,ITH.Tree,{
+    URLEncode:function(str){
+     return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
+    },
     doRequest:function(method,url,callback,params){
         //TODO pielikt lai dzēš vecos pieprsījumus ja ir jauns svaigs pieprasījums, tjipa
         //lai tie kas atkārtojas to vairs nedara
@@ -103,7 +106,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
             callback.argument.self=this
             callback.argument.method=method.toUpperCase()
             if(method.toUpperCase()!="GET"){
-                params=params && params.length>0 ? (params[params.length-1]=="&" ? params+"is_ajax=true&authenticity_token="+this.authenticity_token : params+"&is_ajax=true&authenticity_token="+this.authenticity_token) : "is_ajax=true&authenticity_token="+this.authenticity_token
+                params=params && params.length>0 ? (params[params.length-1]=="&" ? params+"is_ajax=true&authenticity_token="+this.URLEncode(this.authenticity_token) : params+"&is_ajax=true&authenticity_token="+this.URLEncode(this.authenticity_token)) : "is_ajax=true&authenticity_token="+this.URLEncode(this.authenticity_token)
             }else{
                 var symb=url.search(/\?/)>-1 ? (url[url.length-1]=="&" ? "" : "&") : "?"
                 url=url+symb+"is_ajax=true&authenticity_token="+this.authenticity_token
