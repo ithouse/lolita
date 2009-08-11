@@ -80,6 +80,7 @@ class Admin::MenuItemController < Managed
       :fields=>[
         {:type=>:text,:field=>:name,:translate=>true,:html=>{:maxlength=>255}},
         {:type=>:text,:field=>:alt_text,:translate=>true,:html=>{:maxlength=>255}},
+        {:type=>:checkbox,:field=>:not_main_menu},
         {:type=>:custom,:field=>"menu",:function=>'get_menu_editors',:args=>[params[:menu_id]]}
       ]
     }
