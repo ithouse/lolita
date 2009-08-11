@@ -11,10 +11,15 @@ module UploadColumn
       super
       base.extend(ClassMethods)
       base.after_save :save_uploaded_files
+      base.after_destroy :destroy_uploaded_files
     end
   
     private
-  
+
+    def destroy_uploaded_files
+      self.class.reflect_on_upload_columns.each{|k,v| self.send(k).remove_directory(self.send(k).dir)}
+    end
+
     def save_uploaded_files
       @files.each { |k, v| v.send(:save) if v and v.tempfile? } if @files
     end

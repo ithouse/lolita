@@ -65,9 +65,17 @@ module UploadColumn
       @suffix = options[:suffix]
       
       load_manipulator
-      
+      if self.instance.is_a?(Picture)
+        versions_class=self.instance.pictureable_type.constantize
+        if versions_class.respond_to?(:upload_column_versions)
+          c_versions=versions_class.upload_column_versions
+          @options[:versions].merge!(c_versions) if c_versions
+        end
+      end
+     # puts @options[:versions]
       case mode
       when :upload
+        
         if file and file.is_a?(String) and not file.empty?
           raise UploadNotMultipartError.new("Do not know how to handle a string with value '#{file}' that was uploaded. Check if the form's encoding has been set to 'multipart/form-data'.")
         end
@@ -265,6 +273,7 @@ module UploadColumn
     def save
       self.move_to_directory(self.store_dir)
       self.versions.each { |version, file| file.move_to_directory(self.store_dir) } if self.versions
+      self.remove_directory(File.join(tmp_dir,@temp_name)) # Arturs Meisters added (nothing been here)
       @new_file = false
       @temp_name = nil
       true

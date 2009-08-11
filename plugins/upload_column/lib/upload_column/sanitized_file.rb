@@ -63,6 +63,11 @@ module UploadColumn
     def exists?
       File.exists?(self.path) if self.path
     end
+
+    #Arturs Meisters added
+    def remove_directory(path)
+      FileUtils.rm_rf path
+    end
     
     # Moves the file to 'path'
     def move_to(path)
