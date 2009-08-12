@@ -21,11 +21,6 @@ class Admin::SystemUser < Admin::User
     end
   end
 
-  def self.authenticate_by_email(email, password)
-    user = self.find_by_email(email)
-    user && user.authenticated?(password)  ? user : false
-  end
-
   def self.access_to_area?(ses,area=false)
     #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
     area=:public unless area

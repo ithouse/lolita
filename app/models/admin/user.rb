@@ -14,6 +14,11 @@ class Admin::User < Cms::Base
 
   before_save :encrypt_password
 
+  def self.authenticate_by_email(email, password)
+    user = self.find_by_email(email)
+    user && user.authenticated?(password)  ? user : false
+  end
+  
   def validate
     allow_password_change?
   end
