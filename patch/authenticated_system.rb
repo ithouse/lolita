@@ -16,11 +16,12 @@ module AuthenticatedSystem
     # Accesses the current user from the session.
     def current_user
       @current_user ||= (session[:user] && session[:user][:user_class].find_by_id(session[:user][:user_id])) || :false
+      @current_user ||= (session[:p_user] && session[:p_user][:user_class].find_by_id(session[:p_user][:user_id])) || :false unless @current_user
     end
 
     # Store the given user in the session.
     def current_user=(new_user)
-      session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : {:user_id => new_user.id, :user_class => new_user.class}
+      session[new_user.is_a?(Admin::SystemUser) ? :user : :p_user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : {:user_id => new_user.id, :user_class => new_user.class}
       @current_user = new_user
     end
 

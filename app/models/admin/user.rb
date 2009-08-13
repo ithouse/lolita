@@ -4,7 +4,7 @@ class Admin::User < Cms::Base
   @area=nil
   acts_as_authorized_user
 
-  set_table_name :admin_users
+  set_table_name LOLITA_PUBLIC_USER_TABLE
   attr_accessor :password
   attr_accessor :old_password
   validates_presence_of     :password,                   :if => :password_required?
@@ -13,6 +13,21 @@ class Admin::User < Cms::Base
   validates_length_of       :password, :within => 4..40, :if => :password_required?
 
   before_save :encrypt_password
+
+  def self.authenticate(login, password)
+    login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
+    if $&.to_s.include? "@"
+      self.authenticate_by_email($&, password)
+    else
+      user = self.find_by_login(login) # need to get the salt
+      user && user.authenticated?(password)  ? user : false
+    end
+  end
+
+  def self.authenticate_by_email(email, password)
+    user = self.find_by_email(email)
+    user && user.authenticated?(password)  ? user : false
+  end
 
   def validate
     allow_password_change?
