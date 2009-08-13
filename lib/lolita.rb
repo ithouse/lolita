@@ -1,11 +1,5 @@
 require 'find'
 
-# load configuration
-conf = YAML.load(open("#{RAILS_ROOT}/config/lolita.yml").read)
-conf[RAILS_ENV].each_key do |name|
-  eval "LOLITA_#{name.upcase} = conf['#{name}']"
-end
-
 ## add all maps to path
 #%w{
 #  middleware app/models app/helpers app/controllers
@@ -22,9 +16,6 @@ end
 Find.find(File.join(File.dirname(__FILE__), "patch")) do |path|
   require(path) if path =~ /\.rb$/
 end
-
-# load routings
-require 'lolita/routing'
 
 # extend ActionController with our extensions
 ActionController::Base.send :include, AuthenticatedSystem
