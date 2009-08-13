@@ -58,6 +58,7 @@ class Admin::Menu < Cms::Manager
 
   def existing_modules
     a=Util::System.list_directory "app/models/#{self.module_name}", :include_root=>true
+    a+=Util::System.list_directory "vendor/plugins/lolita/app/models/#{self.module_name}", :include_root=>true
     a
   end
 

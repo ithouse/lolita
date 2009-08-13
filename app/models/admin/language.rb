@@ -2,6 +2,7 @@ class Admin::Language < Cms::Base
   set_table_name :admin_languages
     
   belongs_to :globalize_language , :class_name => '::Globalize::Language', :foreign_key => 'globalize_languages_id'
+
     
   validates_presence_of :globalize_languages_id
     

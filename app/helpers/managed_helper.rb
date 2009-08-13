@@ -5,6 +5,7 @@ module ManagedHelper
   include Extensions::FieldHelper
   include Extensions::PagingHelper
   include Extensions::LinkHelper
+  include Extensions::TranslationHelper
 
   def render_partials position
     partials=@config[:list][:partials][position] if @config[:list] && @config[:list][:partials]
