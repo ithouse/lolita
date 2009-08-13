@@ -21,6 +21,11 @@ class Admin::SystemUser < Admin::User
     end
   end
 
+  def self.authenticate_by_email(email, password)
+    user = self.find_by_email(email)
+    user && user.authenticated?(password)  ? user : false
+  end
+
   def self.access_to_area?(ses,area=false)
     #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
     area=:public unless area
@@ -164,7 +169,7 @@ class Admin::SystemUser < Admin::User
       self.has_role?(action_accessable)
     end
   end
-  
+
   def all_accesses controller_name="",opt={}
     controller_name=controller_name.to_s.gsub(/^\//,"")
     Admin::SystemUser.find_by_sql(["

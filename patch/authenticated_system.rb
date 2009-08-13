@@ -5,18 +5,25 @@ module AuthenticatedSystem
     def logged_in?
       current_user != :false
     end
-    
+
+    #-------------------#
+    # Izmaiņas
+    # - ar current_user pieglabājam gan usera id gan klasi, jo ir iespējami dažādi useri
+    #
+    # FIXME: login_required izmanto Admin::User, vai tā ir ok?
+    #-------------------#
+
     # Accesses the current user from the session.
     def current_user
-      @current_user ||= (session[:user] && Admin::User.find_by_id(session[:user])) || :false
+      @current_user ||= (session[:user] && session[:user][:user_class].find_by_id(session[:user][:user_id])) || :false
     end
-    
+
     # Store the given user in the session.
     def current_user=(new_user)
-      session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : new_user.id
+      session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : {:user_id => new_user.id, :user_class => new_user.class}
       @current_user = new_user
     end
-    
+
     # Check if the user is authorized.
     #
     # Override this method in your controllers if you want to restrict access
@@ -52,7 +59,7 @@ module AuthenticatedSystem
       self.current_user ||= Admin::User.authenticate(username, passwd) || :false if username && passwd
       logged_in? && authorized? ? true : access_denied
     end
-    
+
     # Redirect as appropriate when an access request fails.
     #
     # The default action is to redirect to the login screen.
@@ -74,22 +81,22 @@ module AuthenticatedSystem
         end
       end
       false
-    end  
-    
+    end
+
     # Store the URI of the current request in the session.
     #
     # We can return to this location by calling #redirect_back_or_default.
     def store_location
       session[:return_to] = request.request_uri
     end
-    
+
     # Redirect to the URI stored by the most recent store_location call or
     # to the passed default.
     def redirect_back_or_default(default)
       session[:return_to] ? redirect_to(session[:return_to]) : redirect_to(default)
       session[:return_to] = nil
     end
-    
+
     # Inclusion hook to make #current_user and #logged_in?
     # available as ActionView helper methods.
     def self.included(base)
@@ -115,6 +122,6 @@ module AuthenticatedSystem
     def get_auth_data
       auth_key  = @@http_auth_headers.detect { |h| request.env.has_key?(h) }
       auth_data = request.env[auth_key].to_s.split unless auth_key.blank?
-      return auth_data && auth_data[0] == 'Basic' ? Base64.decode64(auth_data[1]).split(':')[0..1] : [nil, nil] 
+      return auth_data && auth_data[0] == 'Basic' ? Base64.decode64(auth_data[1]).split(':')[0..1] : [nil, nil]
     end
 end

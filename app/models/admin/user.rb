@@ -3,7 +3,7 @@ class Admin::User < Cms::Base
   @current_user=nil
   @area=nil
   acts_as_authorized_user
-  
+
   set_table_name :admin_users
   attr_accessor :password
   attr_accessor :old_password
@@ -14,11 +14,6 @@ class Admin::User < Cms::Base
 
   before_save :encrypt_password
 
-  def self.authenticate_by_email(email, password)
-    user = self.find_by_email(email)
-    user && user.authenticated?(password)  ? user : false
-  end
-  
   def validate
     allow_password_change?
   end
@@ -47,7 +42,7 @@ class Admin::User < Cms::Base
     end
     return allowed
   end
-  
+
   def self.current_user=(user)
     @current_user=user
   end
@@ -62,7 +57,7 @@ class Admin::User < Cms::Base
   def self.area
     @area
   end
-  
+
   def self.temp_password len=0
     new_pasw=""
     1.upto(len) do
@@ -128,7 +123,7 @@ class Admin::User < Cms::Base
     end
   end
   protected
-  
+
   def self.check_options? options,action
     if options
       if options.respond_to?("each")
@@ -140,7 +135,7 @@ class Admin::User < Cms::Base
       false
     end
   end
- 
+
   def self.except? options,action
     check_options? options[:except],action
   end
