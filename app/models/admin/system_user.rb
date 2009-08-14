@@ -22,17 +22,6 @@ class Admin::SystemUser < Admin::User
     end
   end
 
-  def self.access_to_area?(ses,area=false)
-    #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
-    area=:public unless area
-    if area==:public
-      (LOLITA_ALLOW[:system_in_public] && ses[:p_user].is_a?(Admin::SystemUser)) ||
-        (LOLITA_ALLOW[:rewrite] && ses[:user].is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
-      ses[:p_user].is_a?(Admin::PublicUser)
-    elsif area==:system
-    end
-  end
-
   def can_all? controller_name
     actions=can_what? controller_name
     actions[:read] && actions[:write] && actions[:update] && actions[:delete]

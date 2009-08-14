@@ -3,9 +3,9 @@ module AuthenticatedSystem
     # Returns true or false if the user is logged in.
     # Preloads @current_user with the user model if they're logged in.
     def logged_in?
-      current_user != :false
+      !current_user.nil?
     end
-
+    
     #-------------------#
     # Izmaiņas
     # - ar current_user pieglabājam gan usera id gan klasi, jo ir iespējami dažādi useri
@@ -15,8 +15,10 @@ module AuthenticatedSystem
 
     # Accesses the current user from the session.
     def current_user
-      @current_user ||= (session[:user] && session[:user][:user_class].find_by_id(session[:user][:user_id])) || :false
-      @current_user ||= (session[:p_user] && session[:p_user][:user_class].find_by_id(session[:p_user][:user_id])) || :false unless @current_user
+      return @current_user if @current_user
+      u = (session[:user] && session[:user][:user_class].find_by_id(session[:user][:user_id])) || nil
+      u = (session[:p_user] && session[:p_user][:user_class].find_by_id(session[:p_user][:user_id])) || nil unless u
+      @current_user = u
     end
 
     # Store the given user in the session.

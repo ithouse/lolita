@@ -176,8 +176,7 @@ class Admin::UserController < Managed
   
   def register_user_in_session user
     reset_session
-    self.current_user=user
-    session[:user] =user
+    set_current_user user
   end
   def email_sent(email,title,data)
     RequestMailer::deliver_mail(email,"#{title}",data)
