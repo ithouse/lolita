@@ -20,7 +20,7 @@ module AuthenticatedSystem
     end
 
     # Store the given user in the session.
-    def current_user=(new_user)
+    def set_current_user(new_user)
       session[new_user.is_a?(Admin::SystemUser) ? :user : :p_user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : {:user_id => new_user.id, :user_class => new_user.class}
       @current_user = new_user
     end
