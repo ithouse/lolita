@@ -1,4 +1,5 @@
 class Admin::SystemUser < Admin::User
+  set_table_name :admin_users
   attr_protected :type
   validates_presence_of     :login, :email
   validates_length_of       :login,    :within => 3..40
