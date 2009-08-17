@@ -46,21 +46,25 @@ class Admin::Menu < Cms::Manager
   def self.accessable_modules id,options={}
     #Valdis: atsakamies no namespece ierobežojumiem veidojot menu + mums tagad ir arī lolita kur meklēt modeļus
     if menu=self.find_by_id(id)
+      modules_for_display = []
       table_names=menu.humanized_modules(options[:all])
       menu.existing_modules.each{|module_hsh|
         if table_names[module_hsh[:name]]
-          yield table_names[module_hsh[:name]], module_hsh[:name]
+          modules_for_display << {:display_name=>table_names[module_hsh[:name]], :system_name=>module_hsh[:name]}
         else
-          yield module_hsh[:name].split("/").last, module_hsh[:name]
+          modules_for_display << {:display_name=>module_hsh[:name].camelize, :system_name=>module_hsh[:name]}
         end if (!options[:all] && module_hsh[:object].constantize.superclass==Cms::Content) || (options[:all])
+      }
+      modules_for_display.sort!{|x,y| x[:display_name] <=> y[:display_name] }
+      modules_for_display.each{|model|
+        yield model[:display_name],model[:system_name]
       }
     end
   end
 
   def existing_modules
     #a=Util::System.list_directory "app/models/#{self.module_name}", :include_root=>true
-    #a = Util::System.get_data_models
-    a = Util::System.get_models
+    a = Util::System.get_data_models
     a
   end
 

@@ -14,18 +14,18 @@ module Util
       paths
     end
 
-    def self.module_paths
+    def self.model_paths
       [ "app/models",
         "vendor/plugins/lolita/app/models"
       ]
     end
 
     def self.get_data_models(options={})
-      get_modules(options.merge({:namespaces=>:all,:exclude_namespaces=>"extensions"}))
+      get_models(options.merge({:namespaces=>:all,:exclude_namespaces=>"extensions"}))
     end
     
     def self.get_extension_models(options={})
-      get_modules(options.merge({:namespaces=>"extensions"}))
+      get_models(options.merge({:namespaces=>"extensions"}))
     end
 
     def self.get_models(options={:include_root=>true})
@@ -48,15 +48,15 @@ module Util
       end
       if !namespaces
         #ja netiek prasīti namespaci tad ielasa arī visus modeļus kas ir rootā
-        module_paths.each{|path|
+        model_paths.each{|path|
           class_list+=list_directory(path,options)
         }
       end
-      module_paths.each{|root|
+      model_paths.each{|root|
         Dir.foreach(root) do |subdir|
           if ! (subdir == "." || subdir == "..")
             path=File.join(RAILS_ROOT,root,subdir)
-            allowed_namespace=!namespaces || (namespaces && ((namespaces==:all && !exclude_namespaces.include?(subdir))||namespaces.include?(subdir)))
+            allowed_namespace=!namespaces || (namespaces && ((namespaces==:all && !exclude_namespaces.include?(subdir))||(namespaces!=:all && namespaces.include?(subdir))))
             if !path.match(/\.svn|\.git/) && File.directory?(path) && allowed_namespace && !subdir.match(/\./)
               class_list+=list_directory(File.join(root,subdir),options)
               options.delete(:include_root) #dumjš risinājums, lai neiekļautu rootu otriez
@@ -64,7 +64,7 @@ module Util
           end
         end
       }
-      return class_list
+      return class_list.sort!{|x,y| x[:object] <=> y[:object] }
     end
     
     protected
