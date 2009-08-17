@@ -10,7 +10,7 @@ class Admin::MenuController < Managed
  
   def init_menus
     response=""
-    Admin::Menu.init_menus(params[:namespace]) do |app,web|
+    Admin::Menu.init_menus("Admin") do |app,web| #params[:namespace]
       response+="new ITH.MenuTree('app_editable_menu',#{app[:configuration].to_json},#{app[:data].to_json},null,'#{form_authenticity_token}');"
       response+="new ITH.MenuTree('web_editable_menu',#{web[:configuration].to_json},#{web[:data].to_json},null,'#{form_authenticity_token}');" if web
     end

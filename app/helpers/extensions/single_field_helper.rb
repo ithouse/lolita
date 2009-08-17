@@ -24,7 +24,7 @@ module Extensions::SingleFieldHelper
   end
   
   def cms_content_tree_field object,options
-    if menu=Admin::Menu.web_menu(params[:controller].split("/").first).first
+    if menu=Admin::Menu.web_menu("Admin").first #Valdis: atejam no namespecotā menu - if menu=Admin::Menu.web_menu(params[:controller].split("/").first).first
       id=params[:action]=='update' ? instance_variable_get("@#{object}").id : 0
       menu_items=menu.all_menu_items
       mi=[[t(:"fields.not_related"),0]]
