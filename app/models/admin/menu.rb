@@ -44,6 +44,7 @@ class Admin::Menu < Cms::Manager
   
   
   def self.accessable_modules id,options={}
+    #Valdis: atsakamies no namespece ierobežojumiem veidojot menu + mums tagad ir arī lolita kur meklēt modeļus
     if menu=self.find_by_id(id)
       table_names=menu.humanized_modules(options[:all])
       menu.existing_modules.each{|module_hsh|
@@ -57,15 +58,24 @@ class Admin::Menu < Cms::Manager
   end
 
   def existing_modules
-    a=Util::System.list_directory "app/models/#{self.module_name}", :include_root=>true
+    #a=Util::System.list_directory "app/models/#{self.module_name}", :include_root=>true
+    #a = Util::System.get_data_models
+    a = Util::System.get_models
     a
   end
 
-  def humanized_modules all=nil,excluded=["home"]
+  def humanized_modules all=nil,excluded=["home"], namespace=nil
+    #Valdis: atsakamies no namespece ierobežojumiem veidojot menu
     table_names={}
-    Admin::Table.in_namespace(self.module_name,all).exclude_names(excluded).by_human_name.each{|table|
-      table_names[table.name]=table.human_name if table.human_name.to_s.size>0
-    }
+    if namespace
+      Admin::Table.in_namespace(self.module_name,all).exclude_names(excluded).by_human_name.each{|table|
+        table_names[table.name]=table.human_name if table.human_name.to_s.size>0
+      }
+    else
+      Admin::Table.exclude_names(excluded).by_human_name.each{|table|
+        table_names[table.name] = "#{table.name.split('/')[0].humanize}::#{table.human_name}" if table.human_name.to_s.size>0
+      }
+    end
     table_names
   end
   

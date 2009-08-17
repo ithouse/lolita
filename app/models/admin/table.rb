@@ -15,7 +15,7 @@ class Admin::Table < Cms::Base
   }
   def self.collect_modules
     existing=existing_table_names
-    unneeded=existing-collect_real_tables(Util::System.get_all_modules(:include_root=>true),existing)
+    unneeded=existing-collect_real_tables(Util::System.get_models,existing)
     remove_tables(unneeded)
   end
 

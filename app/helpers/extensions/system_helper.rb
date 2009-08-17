@@ -8,9 +8,9 @@ module Extensions::SystemHelper
     }
   end
   
-  def get_tables_for_menu options={}
+  def get_tables_for_menu menu_id, options={}
     tables=[]
-    Admin::Menu.accessable_modules(params[:menu_id],options) do |name,controller|
+    Admin::Menu.accessable_modules(menu_id,options) do |name,controller|
       tables<<[name.camelize, options[:simple] ? controller : "/#{controller}"]
     end
     tables=options[:include]+tables if options[:include]

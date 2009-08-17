@@ -58,11 +58,11 @@ module Extensions::MenuHelper
     menu_item=Admin::MenuItem.find_by_id(id) 
     case menu_type
     when 'app',menu.menu_name=='admin'
-      admin_menu_select menu_item,namespace
+      admin_menu_select menu_item,namespace,menu_id
     when 'web'
-      content_menu_select menu_item,namespace
+      content_menu_select menu_item,namespace,menu_id
     when 'public_web'
-      public_web_menu_select menu_item,namespace
+      public_web_menu_select menu_item,namespace,menu_id
     end
   end
 
@@ -70,7 +70,7 @@ module Extensions::MenuHelper
     namespace ?  "object[#{namespace}][#{method}]" : "object[#{method}]"
   end
   
-  def admin_menu_select menu_item,namespace
+  def admin_menu_select menu_item,namespace,menu_id
     #action_name=namespace ?  "object[#{namespace}][action]" : "object[action]"
     if menu_item && menu_item.menuable_type=='Admin::Action'
       current_table= menu_item.menuable.controller ? menu_item.menuable.controller : ""
@@ -92,21 +92,21 @@ module Extensions::MenuHelper
       allowed_actions=[[t(:"fields.not selected"),-1]]
     end
     render :partial=>"admin_menu_select", :locals=>{
-      :table_options=>options_for_select(get_tables_for_menu(:all=>true),current_table),
+      :table_options=>options_for_select(get_tables_for_menu(menu_id,{:all=>true}),current_table),
       :action_options=>options_for_select(allowed_actions,current_action),
       :namespace=>namespace,
       :current_item_id=>menu_item ? menu_item.id : 0
     }
   end
 
-  def content_menu_select menu_item,namespace
+  def content_menu_select menu_item,namespace,menu_id
     current_table=menu_item.menuable_type.underscore if menu_item && menu_item.menuable_type
     incl=[['Sākums','home']]
-    select_tag(menu_select_name(namespace),options_for_select(get_tables_for_menu(:simple=>true,:include=>incl),current_table),:class=>"select")
+    select_tag(menu_select_name(namespace),options_for_select(get_tables_for_menu(menu_id,{:simple=>true,:include=>incl}),current_table),:class=>"select")
   end
   
-  def public_web_menu_select menu_item,namespace
-    public_menu=Admin::Menu.find_by_id(params[:menu_id])
+  def public_web_menu_select menu_item,namespace,menu_id
+    public_menu=Admin::Menu.find_by_id(menu_id)
     menu = public_menu ? Admin::Menu.web_menu(public_menu.module_name).first : nil
     return "" unless menu
     menu_items=menu.all_menu_items
@@ -134,7 +134,7 @@ module Extensions::MenuHelper
       :url=>url,
       :content=>{:options=>options_for_select(items,current_item),:name=>menu_select_name(namespace,"item")},
       :actions=>{
-        :table_options=>options_for_select(get_tables_for_menu(),current_table),
+        :table_options=>options_for_select(get_tables_for_menu(menu_id),current_table),
         :action_options=>options_for_select(allowed_actions || [],current_action),
         :namespace=>namespace,
         :current_item_id=>menu_item ? menu_item.id : 0
