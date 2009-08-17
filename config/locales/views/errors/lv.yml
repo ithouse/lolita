@@ -1,0 +1,9 @@
+lv:
+  lolita:
+    errors:
+      error_404:
+        title: Kļūda 404
+        body: Jūsu meklētā adrese netika atrasta. <a href="/">Atgriezties sākumlapā.</a>
+      error_500:
+        title: Kļūda 500
+        body: Atvainojiet, bet ir notikusi kļūda, mēs par to jau esam informētu un centīsimies to pēc iespējas ātrāk novērst. Mēģiniet vēlāk vēlreiz.

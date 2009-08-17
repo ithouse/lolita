@@ -1,19 +1,25 @@
 class ::String
 
-  def translit
-    #translit -->
-    #cyrillic = ['а','б','в','г','д','е','ж','з','и','й','к','л','м','н','о','п','р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ь','ы','э','ю','я']
-    #translit = ['a','b','v','g','d','e','zh','z','i','i','k','l','m','n','o','p','r','s','t','u','f','h','c','ch','sh','sht','u','y','y','e','yu','ya']
+  def translit options = {}
     cyr_to_trans = {'а'=>'a','б'=>'b','в'=>'v','г'=>'g','д'=>'d','е'=>'e','ё'=>'e','ж'=>'zh','з'=>'z','и'=>'i','й'=>'i','к'=>'k','л'=>'l','м'=>'m','н'=>'n','о'=>'o','п'=>'p','р'=>'r','с'=>'s','т'=>'t','у'=>'u','ф'=>'f','х'=>'h','ц'=>'c','ч'=>'ch','ш'=>'sh','щ'=>'sht','ъ'=>'u','ь'=>'y','ы'=>'y','э'=>'e','ю'=>'yu','я'=>'ya',
       'А'=>'a','Б'=>'b','В'=>'v','Г'=>'g','Д'=>'d','Е'=>'e','Ё'=>'e','Ж'=>'zh','З'=>'z','И'=>'i','Й'=>'i','К'=>'k','Л'=>'l','М'=>'m','Н'=>'n','О'=>'o','П'=>'p','Р'=>'r','С'=>'s','Т'=>'t','У'=>'u','Ф'=>'f','Х'=>'h','Ц'=>'c','Ч'=>'ch','Ш'=>'sh','Щ'=>'sht','Ъ'=>'u','Ь'=>'y','Ы'=>'y','Э'=>'e','Ю'=>'yu','Я'=>'ya'}
     lat_to_trans = {'ā'=>'aa','č'=>'ch','ē'=>'ee','ģ'=>'gj','ī'=>'ii','ķ'=>'kj','ļ'=>'lj','ņ'=>'nj','š'=>'sh','ū'=>'uu','ž'=>'zh',
       'Ā'=>'aa','Č'=>'ch','Ē'=>'ee','Ģ'=>'gj','Ī'=>'ii','Ķ'=>'kj','Ļ'=>'lj','Ņ'=>'nj','Š'=>'sh','Ū'=>'uu','Ž'=>'zh'}
  
-    self.gsub(/./){|s| cyr_to_trans[$&] || lat_to_trans[$&] || $& }
+    self.gsub(/./){|s| ((options[:only_lv])? nil : cyr_to_trans[$&]) || ((options[:only_ru])? nil : lat_to_trans[$&]) || $& }
   end
 
-  def to_url
-    self.translit.gsub(/[\s—–]/,"-").gsub(/[^a-zA-Z0-9-]/,'-').gsub(/-{2,}/,"-").gsub(/^\W+|\W+$/,"")
+  def lv_to_ascii
+    self.gsub(/./){|s| {
+      'ā'=>'a','č'=>'c','ē'=>'e','ģ'=>'g','ī'=>'i','ķ'=>'k','ļ'=>'l','ņ'=>'n','š'=>'s','ū'=>'u','ž'=>'z',
+      'Ā'=>'A','Č'=>'c','Ē'=>'E','Ģ'=>'G','Ī'=>'I','Ķ'=>'K','Ļ'=>'L','Ņ'=>'N','Š'=>'S','Ū'=>'U','Ž'=>'Z'
+    }[$&] || $& }
+  end
+
+  def to_url options = {}
+    # slugify => true
+    # Ne vienmēr vajag translītām ar slugify LV burti tiek konvertēti 1:1
+    (options[:slugify] ? self.translit(:only_ru=>true).lv_to_ascii : self.translit).gsub(/[\s—–]/,"-").gsub(/[^a-zA-Z0-9-]/,'-').gsub(/-{2,}/,"-").gsub(/^\W+|\W+$/,"")
   end
   #atpakaļ gājienā visas - pārvērš par atstarpēm, kaut vai tā nav bijis
   

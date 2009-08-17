@@ -22,7 +22,21 @@ class ActionController::Base
   #if LOLITA_TRANSLATION
   before_filter :set_locale
   #end
-  
+
+  def render_404
+    respond_to do |type|
+      type.html { render :template => "errors/error_404", :status => 404 }
+      type.all  { render :nothing => true, :status => 404 }
+    end
+  end
+
+  def render_500
+    respond_to do |type|
+      type.html { render :template => "errors/error_500", :status => 500 }
+      type.all  { render :nothing => true, :status => 500 }
+    end
+  end
+
   protected
 
   def get_main_portal
