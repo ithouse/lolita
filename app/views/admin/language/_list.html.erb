@@ -1,0 +1,22 @@
+<table summary="language list">
+  <tr>
+    <%= list_header_cell :sort_column=>"globalize_languages_id" %>
+    <%= list_header_cell :sort_column=>"is_base_locale" %>
+    <%= list_header_cell :width=>70, :title=>t(:"list.options")%>
+  </tr>
+  <% for lng in @page %>
+    <tr>
+      <td>
+        <%=lng.short_name  %>
+      </td>
+      <td><%=lng.is_base_locale%></td>
+      <td>
+        <% list_options(lng){|option| %>
+          <%= option %>&nbsp;
+        <% } %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= cms_pages list%>
+

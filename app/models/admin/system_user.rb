@@ -1,4 +1,5 @@
 class Admin::SystemUser < Admin::User
+  set_table_name :admin_users
   attr_protected :type
   validates_presence_of     :login, :email
   validates_length_of       :login,    :within => 3..40
@@ -18,22 +19,6 @@ class Admin::SystemUser < Admin::User
       self.authenticate_by_email($&, password)
     else
       self.authenticate(login.to_s, password)
-    end
-  end
-
-  def self.authenticate_by_email(email, password)
-    user = self.find_by_email(email)
-    user && user.authenticated?(password)  ? user : false
-  end
-
-  def self.access_to_area?(ses,area=false)
-    #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
-    area=:public unless area
-    if area==:public
-      (LOLITA_ALLOW[:system_in_public] && ses[:p_user].is_a?(Admin::SystemUser)) ||
-        (LOLITA_ALLOW[:rewrite] && ses[:user].is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
-      ses[:p_user].is_a?(Admin::PublicUser)
-    elsif area==:system
     end
   end
 
@@ -169,7 +154,7 @@ class Admin::SystemUser < Admin::User
       self.has_role?(action_accessable)
     end
   end
-  
+
   def all_accesses controller_name="",opt={}
     controller_name=controller_name.to_s.gsub(/^\//,"")
     Admin::SystemUser.find_by_sql(["

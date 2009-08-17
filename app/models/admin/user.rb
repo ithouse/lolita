@@ -3,8 +3,8 @@ class Admin::User < Cms::Base
   @current_user=nil
   @area=nil
   acts_as_authorized_user
-  
-  set_table_name :admin_users
+
+  set_table_name LOLITA_PUBLIC_USER_TABLE
   attr_accessor :password
   attr_accessor :old_password
   validates_presence_of     :password,                   :if => :password_required?
@@ -13,6 +13,21 @@ class Admin::User < Cms::Base
   validates_length_of       :password, :within => 4..40, :if => :password_required?
 
   before_save :encrypt_password
+
+  def self.authenticate(login, password)
+    login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
+    if $&.to_s.include? "@"
+      self.authenticate_by_email($&, password)
+    else
+      user = self.find_by_login(login) # need to get the salt
+      user && user.authenticated?(password)  ? user : false
+    end
+  end
+
+  def self.authenticate_by_email(email, password)
+    user = self.find_by_email(email)
+    user && user.authenticated?(password)  ? user : false
+  end
 
   def validate
     allow_password_change?
@@ -24,6 +39,17 @@ class Admin::User < Cms::Base
     end
   end
 
+  def self.access_to_area?(ses,area=false)
+    #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
+    area=:public unless area
+    if area==:public
+      (LOLITA_ALLOW[:system_in_public] && ses[:p_user].is_a?(Admin::SystemUser)) ||
+        (LOLITA_ALLOW[:rewrite] && ses[:user].is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
+      ses[:p_user].is_a?(Admin::PublicUser)
+    elsif area==:system
+    end
+  end
+  
   def self.authenticate_in_controller action,controller,users={},options={},roles=nil
     allowed=false
     action=action.to_sym
@@ -42,7 +68,7 @@ class Admin::User < Cms::Base
     end
     return allowed
   end
-  
+
   def self.current_user=(user)
     @current_user=user
   end
@@ -57,7 +83,7 @@ class Admin::User < Cms::Base
   def self.area
     @area
   end
-  
+
   def self.temp_password len=0
     new_pasw=""
     1.upto(len) do
@@ -123,7 +149,7 @@ class Admin::User < Cms::Base
     end
   end
   protected
-  
+
   def self.check_options? options,action
     if options
       if options.respond_to?("each")
@@ -135,7 +161,7 @@ class Admin::User < Cms::Base
       false
     end
   end
- 
+
   def self.except? options,action
     check_options? options[:except],action
   end

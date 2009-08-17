@@ -1,3 +1,3 @@
 module Admin::MenuHelper
-  include Admin::TranslateHelper
+  include Extensions::TranslationHelper
 end

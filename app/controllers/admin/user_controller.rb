@@ -26,6 +26,7 @@ class Admin::UserController < Managed
     else
       if logged_in?
         update_token()
+        #TODO: šeit jāiet uz admin sadaļu ja system/login
         redirect_to(:controller=>Admin::Configuration.get_value_by_name('start_page'),:is_ajax=>params[:is_ajax])
       else
         render :layout=>"admin/login"#TODO jāpadomā ko darīt ja lapai nav paredzēta publiskā daļa
@@ -176,8 +177,7 @@ class Admin::UserController < Managed
   
   def register_user_in_session user
     reset_session
-    self.current_user=user
-    session[:user] =user
+    set_current_user user
   end
   def email_sent(email,title,data)
     RequestMailer::deliver_mail(email,"#{title}",data)

@@ -42,7 +42,7 @@ module Extensions::PermissionControll
       allowed=Admin::User.authenticate_in_controller(
         params[:action].to_sym,
         params[:controller],
-        {:system=>session[:user],:public=>session[:p_user]},
+        {:system=>current_user,:public=>session[:p_user]},
         self.permissions,self.roles
       )
       session[:return_to]=params if Admin::User.area==:public && request.get? && !params[:format]
