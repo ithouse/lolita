@@ -8,8 +8,7 @@ class CreateMenus < ActiveRecord::Migration
       t.boolean   :has_images
     end
     insert("INSERT INTO menus (menu_name,menu_type,module_name,module_type) VALUES('Admin','app','admin','app')")
-    insert("INSERT INTO menus (menu_name,menu_type,module_name,module_type) VALUES('Cms','app','cms','app')")
-    insert("INSERT INTO menus (menu_name,menu_type,module_name,module_type) VALUES('Saturs','web','cms','web')")
+    insert("INSERT INTO menus (menu_name,menu_type,module_name,module_type) VALUES('Saturs','web','admin','web')")
   end
 
   def self.down

@@ -14,7 +14,6 @@ class CreateMenuItems < ActiveRecord::Migration
       t.timestamps 
     end
     insert("INSERT INTO menu_items (name,menu_id,lft,rgt) VALUES('Admin',1,1,20)")
-    insert("INSERT INTO menu_items (name,menu_id,lft,rgt) VALUES('Cms',2,1,2)")
     insert("INSERT INTO menu_items (name,menu_id,lft,rgt) VALUES('Saturs',3,1,2)")
     insert("INSERT INTO menu_items (name,menuable_type,menuable_id,menu_id,parent_id,lft,rgt)"+
            "VALUES('Lietotāji','Admin::Action',1,1,1,2,5)")

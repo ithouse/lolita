@@ -71,7 +71,7 @@
     <div id="script"></div>
     <div id="warning_dialog"></div>
     <script type="text/javascript">
-      ITH.MenuTree.namespace="<%= params[:controller].split("/").first%>"
+      ITH.MenuTree.namespace="Admin"
       ITH.locale="<%=params[:locale] || Admin::Language.find_base_language.short_name%>"
     </script>
     <% session[:locale]=params[:locale] || Admin::Language.find_base_language.short_name %>
