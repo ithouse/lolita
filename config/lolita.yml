@@ -13,7 +13,8 @@ development:
   allow:
     system_in_public: true
     rewrite: false
-  default_from: "new@telegraf.lv"
+  default_from: "dev@ithouse.lv"
+  default_to: "dev@ithouse.lv"
   #comment_table: "Cms::Comment"
   #vote_table: "Cms::Vote"
   multi_domain_portal: false
@@ -38,8 +39,8 @@ production:
     system_in_public: true
     rewrite: false
   root: <%= RAILS_ROOT %>/vendor/plugins/lolita
-  default_from: "new@nomaspunkts.lv"
-  #comment_table: "Cms::Comment"
+  default_from: "dev@ithouse.lv"
+  default_to: "dev@ithouse.lv"  #comment_table: "Cms::Comment"
   #vote_table: "Cms::Vote"
   multi_domain_portal: false
   domain_depth: 0
@@ -63,8 +64,8 @@ production:
     system_in_public: true
     rewrite: false
   root: <%= RAILS_ROOT %>/vendor/plugins/lolita
-  default_from: "new@nomaspunkts.lv"
-  #comment_table: "Cms::Comment"
+  default_from: "dev@ithouse.lv"
+  default_to: "dev@ithouse.lv"  #comment_table: "Cms::Comment"
   #vote_table: "Cms::Vote"
   multi_domain_portal: false
   domain_depth: 0
