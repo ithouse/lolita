@@ -26,6 +26,7 @@ class Admin::UserController < Managed
     else
       if logged_in?
         update_token()
+        #TODO: šeit jāiet uz admin sadaļu ja system/login
         redirect_to(:controller=>Admin::Configuration.get_value_by_name('start_page'),:is_ajax=>params[:is_ajax])
       else
         render :layout=>"admin/login"#TODO jāpadomā ko darīt ja lapai nav paredzēta publiskā daļa

@@ -315,7 +315,7 @@ module BaseHelper
   end
   
   def user_link
-    link_to session[:user].email,{:action=>'edit_self',:controller=>'/admin/user',:id=>session[:user].id},{:class=>"grey", :style=>params[:action]=="edit_self" ? "text-decoration:underline" : ""} if session[:user]
+    link_to current_user.email,{:action=>'edit_self',:controller=>'/admin/user',:id=>current_user.id},{:class=>"grey", :style=>params[:action]=="edit_self" ? "text-decoration:underline" : ""} if current_user
   end
  
   def checkbox value,id
