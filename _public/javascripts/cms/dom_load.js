@@ -53,7 +53,7 @@ function init_menus(retray){
     if(ITH.MenuTree.namespace!="wiki_page"){
         $.ajax({
             type:"GET",
-            data:"namespace="+ITH.MenuTree.namespace,
+            //data:"namespace="+ITH.MenuTree.namespace,
             url:"/"+ITH.locale+"/admin/menu/init_menus",
             dataType:"script",
             success:function(data){

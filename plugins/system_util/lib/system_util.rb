@@ -15,9 +15,8 @@ module Util
     end
 
     def self.model_paths
-      [ "app/models",
-        "vendor/plugins/lolita/app/models"
-      ]
+      #Ielādē projekta modeļus, lolitas modeļus un visus lolitas pluginu modeļus
+      ["app/models"] + Dir[File.join(RAILS_ROOT,'vendor','plugins','lolita*','app','models')].collect{|p| p.gsub("#{RAILS_ROOT}/",'')}.compact
     end
 
     def self.get_data_models(options={})

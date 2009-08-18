@@ -30,10 +30,10 @@ class ActionController::Base
     end
   end
 
-  def render_500
+  def render_500(status=500)
     respond_to do |type|
-      type.html { render :template => "errors/error_500", :status => 500 }
-      type.all  { render :nothing => true, :status => 500 }
+      type.html { render :template => "errors/error_500", :status => status }
+      type.all  { render :nothing => true, :status => status }
     end
   end
 
