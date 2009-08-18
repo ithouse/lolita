@@ -132,7 +132,8 @@ class ActionController::Base
       when ActiveRecord::RecordNotFound, ActionController::RoutingError, ActionController::UnknownController, ActionController::UnknownAction
         render_404
       else
-        send_bug("#{e.to_s}\n\n#{$@.join("\n")}", "Error") if status == 500
+        send_bug("#{exception.to_s}\n\n#{$@.join("\n")}", "Error")
+        render_500
     end
   end
 
