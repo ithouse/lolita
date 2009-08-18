@@ -127,18 +127,13 @@ class ActionController::Base
     "<ul>#{h.collect{|k,v| "<li>#{k} => #{v.instance_of?(HashWithIndifferentAccess)? join_hash(v) : v}</li>"}}</ul>"
   end
 
-  def rescue_action_in_public(e)
-
-    status = 500
-    status = 400 if e.kind_of?(ArgumentError)
-    status = 404 if e.kind_of?(ActiveRecord::RecordNotFound) || e.kind_of?(ActionController::RoutingError)
-    status = 400 if e.kind_of?(ActiveRecord::RecordInvalid)
-    status = 500 if e.kind_of?(ActiveRecord::StatementInvalid) || e.kind_of?(ActiveRecord::AttributeAssignmentError)
-    status = 409 if e.kind_of?(ActiveRecord::StaleObjectError)
-    status = 403 if e.kind_of?(PermissionDenied)
-
-    send_bug("#{e.to_s}\n\n#{$@.join("\n")}", "Error") if status == 500
-    status == 500 ? render_500 : render_404(status)
+  def rescue_action_in_public(exception)
+    case exception
+      when ActiveRecord::RecordNotFound, ActionController::RoutingError, ActionController::UnknownController, ActionController::UnknownAction
+        render_404
+      else
+        send_bug("#{e.to_s}\n\n#{$@.join("\n")}", "Error") if status == 500
+    end
   end
 
   def local_request? #:doc:
