@@ -23,10 +23,10 @@ class ActionController::Base
   before_filter :set_locale
   #end
 
-  def render_404
+  def render_404(status=404)
     respond_to do |type|
-      type.html { render :template => "errors/error_404", :status => 404 }
-      type.all  { render :nothing => true, :status => 404 }
+      type.html { render :template => "errors/error_404", :status => status }
+      type.all  { render :nothing => true, :status => status }
     end
   end
 
@@ -127,14 +127,22 @@ class ActionController::Base
     "<ul>#{h.collect{|k,v| "<li>#{k} => #{v.instance_of?(HashWithIndifferentAccess)? join_hash(v) : v}</li>"}}</ul>"
   end
 
-  def rescue_action_in_public(exception)
-    unless request.host=="localhost"
-      send_bug("#{exception.to_s}\n\n#{$@.join("\n")}", "Kļūda")
-      render :template => "status/error", :status => 500
-    end
+  def rescue_action_in_public(e)
+
+    status = 500
+    status = 400 if e.kind_of?(ArgumentError)
+    status = 404 if e.kind_of?(ActiveRecord::RecordNotFound) || e.kind_of?(ActionController::RoutingError)
+    status = 400 if e.kind_of?(ActiveRecord::RecordInvalid)
+    status = 500 if e.kind_of?(ActiveRecord::StatementInvalid) || e.kind_of?(ActiveRecord::AttributeAssignmentError)
+    status = 409 if e.kind_of?(ActiveRecord::StaleObjectError)
+    status = 403 if e.kind_of?(PermissionDenied)
+
+    send_bug("#{e.to_s}\n\n#{$@.join("\n")}", "Error") if status == 500
+    status == 500 ? render_500 : render_404(status)
   end
 
   def local_request? #:doc:
+    #FIXME: wtf?
     false #request.remote_addr == LOCALHOST and request.remote_ip == LOCALHOST
   end
  
