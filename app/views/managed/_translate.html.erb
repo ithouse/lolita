@@ -4,7 +4,7 @@
   <%= all_languages %>
 </div>
 <script>
-  observe_languages(<%=tab.to_i%>,"<%=url_for(:action=>"change_language",:locale=>nil)%>","<%="id=#{@object.id}&tab=#{tab}"%>")
+  observe_languages(<%=tab.to_i%>,"<%=url_for(:action=>"change_language",:locale=>nil)%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
 </script>
 <% unless @object.language_code==Globalize::Locale.base_language.code %>
   <% fields=fields_for_tab(tab).clone %>
@@ -40,3 +40,5 @@
     <%= render :partial=>"/managed/tinymce", :object=>{:tab=>tab,:mode=>"specific_textareas",:selector=>"textarea-translation"} %>
   <% end %>
 <%end%>
+<div class="clear"></div>
+<div></div>

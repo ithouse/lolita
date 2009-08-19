@@ -74,7 +74,7 @@ class Admin::MenuItemController < Managed
       :tabs=>[
         {:fields=>:default,:type=>:content, :in_form=>true,:opened=>true},
         {:type=>:metadata, :in_form=>true},
-        {:type=>:translate},
+        {:type=>:translate, :fields=>:default, :in_form => true},
         {:main_image=>true,:type=>:pictures,:single=>false}
       ],
       :fields=>[

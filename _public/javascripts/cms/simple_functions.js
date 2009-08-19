@@ -427,3 +427,29 @@ function add_new_element_to_autocomplete(id,value){
     }
     $(id).focus()
 }
+
+function URLEncode(str){
+  return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
+}
+function observe_languages(tab,url,params){
+  var el=elementById("translation_locale");
+  el.url=url
+  el.tab=tab
+  el.params=params
+  if(el){
+    YAHOO.util.Event.addListener(el,"change",change_language,el,true)
+  }
+}
+function change_language(e){
+  var that=this
+  ITH.Cms.wait.show()
+  new Ajax.Request(this.url,{
+    parameters:this.params+"&translation_locale="+this.value,
+    onSuccess: function(data){
+      $("#tab"+that.tab+"container").html(data);
+    },
+    onComplete:function(){
+      ITH.Cms.wait.hide()
+    }
+  });
+}
