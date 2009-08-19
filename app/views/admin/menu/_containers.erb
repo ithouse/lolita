@@ -26,12 +26,11 @@
   <div id="public_menu_dialog" style="display:none">
     <div class="hd"><%=t(:"menu.dialog.header")%></div>
     <div class="bd">
-      <form method="POST" action="/admin/menu/add_public_menu">
+      <% form_tag "/admin/menu/add_public_menu" do -%>
         <label for="name"><%=t(:"menu.dialog.menu name")%>:</label>
-        <input type="text" name="name" maxlength="255" size="30"/>
-        <input type="hidden" name="namespace" value="Admin"/> <% # =params[:controller].split("/").first%>
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
-      </form>
+        <input type="text" name="name" maxlength="255" size="30"/><%# =params[:controller].split("/").first %>
+        <input type="hidden" name="namespace" value="Admin"/>
+      <% end %>
     </div>
   </div>
 <% #end %>
