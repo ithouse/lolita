@@ -1,4 +1,6 @@
 class PictureController < ApplicationController
+  #FIXME JF:nācās ielikt protect_from_forgery exceptu, jo nekādīgi negribēja ņemt padoto auth tokenu
+  protect_from_forgery :except=>[:new_create]
   allow :public=>[:only_image,:load_image_with_siblings,:all_pictures],
     :all=>[
     :load_image_for_cropping,

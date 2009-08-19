@@ -15,7 +15,7 @@ module Extensions::TranslationHelper
 #      end
 #
 #    }
-#    @object.switch_language(params[:temp_locale] || base_lang.code) #if params[:locale]
+#    @object.switch_language(params[:translation_locale] || base_lang.code) #if params[:locale]
 #    languages=all_combined
 #    current=@object.language_code
 #    select_tag("translation_locale", options_for_select(languages, current),:class=>"select")
@@ -38,7 +38,7 @@ module Extensions::TranslationHelper
     @object.switch_language(params[:locale]) if params[:locale]
     languages=all_combined
     current=@object.language_code
-    select_tag("temp_locale", options_for_select(languages, current),:class=>"select")
+    select_tag("translation_locale", options_for_select(languages, current),:class=>"select")
   end
 
   def t key

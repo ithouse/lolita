@@ -1,4 +1,6 @@
 class MediaBase < ApplicationController
+  #FIXME JF:nācās ielikt protect_from_forgery exceptu, jo nekādīgi negribēja ņemt padoto auth tokenu
+  protect_from_forgery :except=>[:new_create]
 
   def new_create
     params[params[:media].to_sym]={:name=>params['Filedata']}
