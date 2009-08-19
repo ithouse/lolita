@@ -3,7 +3,7 @@
 <div class="fl">  
   <%= all_languages %>
 </div>
-<script>
+<script type="text/javascript">
   observe_languages(<%=tab.to_i%>,"<%=url_for(:action=>"change_language",:locale=>nil)%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
 </script>
 <% unless @object.language_code==Globalize::Locale.base_language.code %>

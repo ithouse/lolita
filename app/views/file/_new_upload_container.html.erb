@@ -23,7 +23,7 @@
   <% file_ext=cfg[:media].to_s=="audio_file" ? "*.mp3;*.wav" : (cfg[:media].to_s=="video_file" ? "*.flv;*.mpeg" : "*.*") %>
     //loadjscssfile("/stylesheets/admin/uploadify.css","css")
     $(document).ready(function() {
-      <%="#{cfg[:media]}_upload_settings"%>={'sid':'<%=  session.session_id %>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>}
+      <%="#{cfg[:media]}_upload_settings"%>={'sid':'<%=request.session_options[:id]%>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>}
       $('#<%=cfg[:media]%>fileInput').uploadify({
         'uploader': '/swf/uploader.swf',
         'script': "/<%=cfg[:media]%>/new_create",
