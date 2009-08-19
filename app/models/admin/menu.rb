@@ -335,7 +335,7 @@ class Admin::Menu < Cms::Manager
       :menu_type=>"web",
       :module_name=>namespace,
       :module_type=>"web"
-    ) if !menu && namespace=="cms"
+    ) if !menu
     return menu ? menu.initialization_data : nil
   end
 

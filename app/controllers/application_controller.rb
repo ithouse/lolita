@@ -23,17 +23,17 @@ class ActionController::Base
   before_filter :set_locale
   #end
 
-  def render_404
+  def render_404(status=404)
     respond_to do |type|
-      type.html { render :template => "errors/error_404", :status => 404 }
-      type.all  { render :nothing => true, :status => 404 }
+      type.html { render :template => "errors/error_404", :status => status }
+      type.all  { render :nothing => true, :status => status }
     end
   end
 
-  def render_500
+  def render_500(status=500)
     respond_to do |type|
-      type.html { render :template => "errors/error_500", :status => 500 }
-      type.all  { render :nothing => true, :status => 500 }
+      type.html { render :template => "errors/error_500", :status => status }
+      type.all  { render :nothing => true, :status => status }
     end
   end
 
@@ -128,13 +128,17 @@ class ActionController::Base
   end
 
   def rescue_action_in_public(exception)
-    unless request.host=="localhost"
-      send_bug("#{exception.to_s}\n\n#{$@.join("\n")}", "Kļūda")
-      render :template => "status/error", :status => 500
+    case exception
+      when ActiveRecord::RecordNotFound, ActionController::RoutingError, ActionController::UnknownController, ActionController::UnknownAction
+        render_404
+      else
+        send_bug("#{exception.to_s}\n\n#{$@.join("\n")}", "Error")
+        render_500
     end
   end
 
   def local_request? #:doc:
+    #FIXME: wtf?
     false #request.remote_addr == LOCALHOST and request.remote_ip == LOCALHOST
   end
  
