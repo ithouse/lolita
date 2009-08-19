@@ -60,7 +60,7 @@ class Admin::MenuItem < Cms::Manager
     end if source
   end
   
-  def get_deepest_item items=[]
+  def self.get_deepest_item items=[]
     menu_item = items[0]
     menu_item =items.detect{ |item|
       item if item.level > menu_item.level

@@ -21,10 +21,10 @@
       <script type="text/javascript">
         //<![CDATA[
   <% file_ext=cfg[:media].to_s=="audio_file" ? "*.mp3;*.wav" : (cfg[:media].to_s=="video_file" ? "*.flv;*.mpeg" : "*.*") %>
-    loadjscssfile("/stylesheets/admin/uploadify.css","css")
+    //loadjscssfile("/stylesheets/admin/uploadify.css","css")
     $(document).ready(function() {
       <%="#{cfg[:media]}_upload_settings"%>={'sid':'<%=  session.session_id %>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>}
-      $('#<%=cfg[:media]%>fileInput').fileUpload({
+      $('#<%=cfg[:media]%>fileInput').uploadify({
         'uploader': '/swf/uploader.swf',
         'script': "/<%=cfg[:media]%>/new_create",
         'cancelImg': '/images/cms/cancel.png',
@@ -52,7 +52,7 @@
     //]]>
       </script>
       <a href="javascript:startMultifileUpload('<%=cfg[:media]%>',<%=cfg[:media]=="video_file" && cfg[:with_intro] ? "true" : "false"%>)" ><%=t(:"picture.upload file")%></a><br/>
-      <a href="javascript:$('#<%=cfg[:media]%>fileInput').fileUploadClearQueue()"><%=t(:"actions.clear").chars.capitalize%></a>
+      <a href="javascript:$('#<%=cfg[:media]%>fileInput').uploadifyClearQueue()"><%=t(:"actions.clear").mb_chars.capitalize%></a>
     </div>
     <%= render :partial=>"/file/thumb_files_container", :object=>cfg %>
   </div>

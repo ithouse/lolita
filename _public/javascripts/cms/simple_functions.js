@@ -165,8 +165,8 @@ function startMultifileUpload(media,intro){
         if (i){
             $('#'+media+'fileInput').fileUploadSettings('scriptData',json_to_params(eval(media+"_upload_settings"))+'&intro=true');
         }
-        $('#'+media+'fileInput').fileUploadStart();
     }
+        $('#'+media+'fileInput').uploadifyUpload();
 }
 Ajax={}
 Ajax.Request=function(url,c){

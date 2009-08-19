@@ -1,20 +1,21 @@
 <% cfg=picture_cfg(new_upload_container) %>
+<%=form_authenticity_token%>
 <% if new_upload_container[:parent] && new_upload_container[:parent_id] %>
   <div id="picture-photos" class="picture-photos-container">
     <div style="float:right">
       <input type="file" name="fileInput" id="fileInput" />
       <script type="text/javascript">
         //<![CDATA[
-        loadjscssfile("/stylesheets/admin/uploadify.css","css")
+        //loadjscssfile("/stylesheets/admin/uploadify.css","css")
         $(document).ready(function() {
-          ITH.Picture.init(<%=new_upload_container.to_json%>)
-          $('#fileInput').fileUpload({
+          ITH.Picture.init(<%=new_upload_container.merge(:authenticity_token=>CGI::escape(form_authenticity_token)).to_json%>)
+          $('#fileInput').uploadify({
             'uploader': '/swf/uploader.swf',
             'script': '/picture/new_create',
             'cancelImg': '/images/cms/cancel.png',
             'simUploadLimit':1,
             'multi':true,
-            'scriptData':{'sid':'<%=  session.session_id %>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>},
+            'scriptData':{'authenticity_token':'<%=form_authenticity_token%>','sid':'<%=request.session_options[:id] %>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>},
             'displayData':'speed',
             'onError':function(){
               alert("Error!\n Try again or Reload page (Ctrl+R)!")
@@ -26,8 +27,8 @@
         });
         //]]>
       </script>
-      <a href="javascript:$('#fileInput').fileUploadStart();" ><%=t(:"picture.upload file")%></a><br/>
-      <a href="javascript:$('#fileInput').fileUploadClearQueue()"><%=t(:"actions.clear")%></a>
+      <a href="javascript:$('#fileInput').uploadifyUpload();" ><%=t(:"picture.upload file")%></a><br/>
+      <a href="javascript:$('#fileInput').uploadifyClearQueue()"><%=t(:"actions.clear")%></a>
     </div>
     <% if cfg[:main_image] %>
       <%= render :partial=>'/picture/main_image_container', :object=>cfg %>

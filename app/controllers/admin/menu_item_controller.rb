@@ -75,7 +75,7 @@ class Admin::MenuItemController < Managed
         {:fields=>:default,:type=>:content, :in_form=>true,:opened=>true},
         {:type=>:metadata, :in_form=>true},
         {:type=>:translate},
-        {:main_image=>true,:type=>:pictures}
+        {:main_image=>true,:type=>:pictures,:single=>false}
       ],
       :fields=>[
         {:type=>:text,:field=>:name,:translate=>true,:html=>{:maxlength=>255}},

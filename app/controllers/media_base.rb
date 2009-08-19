@@ -19,7 +19,7 @@ class MediaBase < ApplicationController
         @error_msg="#{t(:"media.bad type or file")}!"
       end
     else
-      render :text=>"Fail not found!", :status=>404
+      render :text=>"File not found!", :status=>404
     end
   end
   
