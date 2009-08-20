@@ -45,7 +45,7 @@ module Util
       else
         []
       end
-      if !namespaces
+      if !namespaces or namespaces == :all
         #ja netiek prasīti namespaci tad ielasa arī visus modeļus kas ir rootā
         model_paths.each{|path|
           class_list+=list_directory(path,options)

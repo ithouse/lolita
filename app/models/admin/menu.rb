@@ -53,7 +53,7 @@ class Admin::Menu < Cms::Manager
           modules_for_display << {:display_name=>table_names[module_hsh[:name]], :system_name=>module_hsh[:name]}
         else
           modules_for_display << {:display_name=>module_hsh[:name].camelize, :system_name=>module_hsh[:name]}
-        end if (!options[:all] && module_hsh[:object].constantize.superclass==Cms::Content) || (options[:all])
+        end if (!options[:all] && [Cms::Content,TableLess].include?(module_hsh[:object].constantize.superclass)) || (options[:all])
       }
       modules_for_display.sort!{|x,y| x[:display_name] <=> y[:display_name] }
       modules_for_display.each{|model|

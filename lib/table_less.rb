@@ -1,4 +1,4 @@
-class Tableless < ActiveRecord::Base
+class TableLess < Cms::Content
   # Usage:
   # class Foo < Tableless
   #   column :bar, :string

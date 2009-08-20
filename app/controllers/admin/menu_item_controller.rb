@@ -4,7 +4,8 @@ class Admin::MenuItemController < Managed
   def controller_actions
     if params[:controller_name]
       begin
-        controller="#{params[:controller_name]}_controller".camelize.constantize
+        controller=params[:controller_name][1,999] if params[:controller_name][0,1] == "/"
+        controller="#{controller}_controller".camelize.constantize
         current_item=Admin::MenuItem.find_by_id(params[:menu_item_id])
         current_action=current_item.menuable.action if current_item && current_item.menuable.is_a?(Admin::Action)
         allowed_actions=params[:public].to_b ? controller.public_actions : controller.default_actions+controller.system_actions
@@ -13,7 +14,7 @@ class Admin::MenuItemController < Managed
           name=name.to_s.size>0 ? name : nil
           [name || action.last.to_s.humanize, action.last]
         }
-      rescue #ne visi kontrolieri eksistē
+      rescue Exception => e #ne visi kontrolieri eksistē
         allowed_actions=[t(:"notice.not_followed"),""]
       end
     end
