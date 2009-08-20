@@ -256,8 +256,8 @@ class Managed < ApplicationController
     end
   end
   
-  def redirect_view options={}
-    if !@config[:public][:plain] && (!@object || options[:error])
+  def redirect_view options={} #FIXME JF: pieliku ||@page, citādi negāja :single=>flase views
+    if !@config[:public][:plain] && (!(@object||@page) || options[:error])
       redirect_to home_url
       return
     end

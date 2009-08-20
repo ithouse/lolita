@@ -14,7 +14,7 @@ class Admin::TranslateController < Managed
     list
   end
 
-   def translation_text
+  def translation_text
     @translation = Globalize::ViewTranslation.find(get_id)
     render :text => @translation.text || ""
   end
@@ -45,5 +45,5 @@ class Admin::TranslateController < Managed
         :sort_direction=>'asc'
       }
     }
-end
+  end
 end
