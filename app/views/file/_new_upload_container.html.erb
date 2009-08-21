@@ -25,7 +25,7 @@
     $(document).ready(function() {
       <%="#{cfg[:media]}_upload_settings"%>={'sid':'<%=request.session_options[:id]%>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>}
       $('#<%=cfg[:media]%>fileInput').uploadify({
-        'uploader': '/swf/uploader.swf',
+        'uploader': '/lolita/swf/uploader.swf',
         'script': "/<%=cfg[:media]%>/new_create",
         'cancelImg': '/images/cms/cancel.png',
         'simUploadLimit':1,

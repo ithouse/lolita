@@ -9,7 +9,7 @@
         $(document).ready(function() {
           ITH.Picture.init(<%=new_upload_container.merge(:authenticity_token=>CGI::escape(form_authenticity_token)).to_json%>)
           $('#fileInput').uploadify({
-            'uploader': '/swf/uploader.swf',
+            'uploader': '/lolita/swf/uploader.swf',
             'script': '/picture/new_create',
             'cancelImg': '/images/cms/cancel.png',
             'simUploadLimit':1,
