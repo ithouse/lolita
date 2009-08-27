@@ -44,6 +44,6 @@ class Admin::Configuration < Cms::Base
   private
 
   def self.get_user_permission user,controller,action
-    Admin::User.authenticate_in_controller(action,controller,{:system=>user},self.controller_object(controller).permissions)
+    Admin::User.authenticate_in_controller(action,controller,user,self.controller_object(controller).permissions)
   end
 end

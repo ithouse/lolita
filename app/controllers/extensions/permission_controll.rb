@@ -38,11 +38,11 @@ module Extensions::PermissionControll
   def allow
     unless params[:action].to_sym==:allow
       flash[:notice]=nil if flash[:notice]==t(:"flash.access.denied") || flash[:notice]==t(:"flash.need to login")
-      authenticate_from_cookies unless session[:p_user]
+      authenticate_from_cookies unless logged_in?
       allowed=Admin::User.authenticate_in_controller(
         params[:action].to_sym,
         params[:controller],
-        {:system=>current_user,:public=>session[:p_user]},
+        current_user,
         self.permissions,self.roles
       )
       session[:return_to]=params if Admin::User.area==:public && request.get? && !params[:format]
@@ -50,7 +50,7 @@ module Extensions::PermissionControll
     end
     
     if !allowed
-      if session[:user] && session[:user].is_a?(Admin::SystemUser)
+      if system_user?
         to_user_login_screen
       else
         to_login_screen
@@ -106,7 +106,7 @@ module Extensions::PermissionControll
       (block_given?)? yield: return
     else
       unless self.redirect_forbidden_actions_to
-        if session[:user] && session[:user].is_a?(Admin::SystemUser)
+        if system_user?
           to_user_login_screen
         else
           to_login_screen
