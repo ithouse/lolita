@@ -43,9 +43,10 @@ class Admin::User < Cms::Base
     #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
     area=:public unless area
     if area==:public
-      (LOLITA_ALLOW[:system_in_public] && ses[:user].is_a?(Admin::SystemUser)) ||
-        (LOLITA_ALLOW[:rewrite] && ses[:user].is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
-      ses[:user].is_a?(Admin::PublicUser)
+      user = ses[:user][:user_class].find_by_id(ses[:user][:user_id])
+      (LOLITA_ALLOW[:system_in_public] && user.is_a?(Admin::SystemUser))||
+        (LOLITA_ALLOW[:rewrite] && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
+      user.is_a?(Admin::PublicUser)
     elsif area==:system
     end
   end

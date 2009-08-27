@@ -123,8 +123,8 @@ module Extensions::PermissionControll
   def authenticate_from_cookies
     if cookies[:remember_me]
       u=Admin::User.find_by_remember_token(cookies[:remember_me])
-      if u && Admin::User.access_to_area?({:p_user=>u}) #access pārbauda, lai būtu drošs ka var
-        session[:p_user]=u
+      if u && Admin::User.access_to_area?(u) #access pārbauda, lai būtu drošs ka var
+        set_current_user u
       else
         cookies.delete(:remember_me)
       end
