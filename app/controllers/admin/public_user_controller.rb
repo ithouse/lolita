@@ -23,13 +23,8 @@ class Admin::PublicUserController < Managed
   end
   
   def signup
-    if session[:user] && session[:p_user].is_a?(Admin::PublicUser) && session[:p_user].registered?
-      redirect_authenticated_user
-      return
-      #    elsif !@user=Admin::PublicUser.register(params[:code])
-      #      redirect_user
-      #      return
-    end
+    return redirect_authenticated_user if logged_in?
+
     @user=Admin::PublicUser.register(params[:code])
     flash[:error]=nil
     if request.post? && params[:user] 
@@ -107,11 +102,9 @@ class Admin::PublicUserController < Managed
   end
 
   def profile
-    @user=session[:p_user]
-    if @user.is_a?(Admin::SystemUser) || !@user
-      redirect_authenticated_user
-      return
-    end
+    @user = current_user
+    return redirect_authenticated_user unless system_user?
+
     params[:profile]=params[:profile].delete_if{|key,valu| key.to_sym==:user_id} if params[:profile].is_a?(Hash)
     @profile=Cms::Profile.find_by_user_id(@user.id) || Cms::Profile.new(params[:profile])
     flash[:notice]=nil
@@ -132,8 +125,8 @@ class Admin::PublicUserController < Managed
           if (params[:user][:old_password].to_s.size>0 && !Admin::PublicUser.authenticate(@user.login,params[:user][:old_password]))
             @user.errors.add(:old_password,t(:"errors.worng old password"))
           end
-          if @user.errors.empty? && @profile.errors.empty?
-            session[:p_user]=@user
+          if @user.valid? && @profile.valid?
+            set_current_user @user
           else
             raise ActiveRecord::RecordNotSaved
           end
@@ -183,8 +176,8 @@ class Admin::PublicUserController < Managed
   end
 
   def logout
-    if session[:p_user] && Admin::User.access_to_area?(session, :public)
-      reset_sso
+    if ogged_in?
+      reset_sso if LOLITA_MULTI_DOMAIN_PORTAL
       reset_remember_me
       reset_session
       flash[:notice] = t(:"flash.logout success")
@@ -205,12 +198,12 @@ class Admin::PublicUserController < Managed
   end
   
   def reset_remember_me
-    session[:p_user].update_attributes!(:remember_token=>nil) if session[:p_user] && session[:p_user].remember_token
+    current_user.update_attributes!(:remember_token=>nil) if public_user? && current_user.remember_token
     cookies.delete(:remember_me)
   end
 
   def reset_sso #lai varētu šeit ielik vēl ko ja vajadzēs
-    Admin::Token.destroy_all(["user_id=? OR updated_at<?",session[:p_user].id,1.day.ago]) if LOLITA_MULTI_DOMAIN_PORTAL && !is_local_request?
+    Admin::Token.destroy_all(["user_id=? OR updated_at<?",current_user.id,1.day.ago]) if LOLITA_MULTI_DOMAIN_PORTAL && !is_local_request?
     cookies.delete(:sso_token)
   end
   
@@ -224,8 +217,8 @@ class Admin::PublicUserController < Managed
   end
   
   def register_user_in_session user
-    session.data.delete(:p_user)
-    session[:p_user]=user
+    session.data.delete(:user)
+    set_current_user user
     if LOLITA_MULTI_DOMAIN_PORTAL && !is_local_request?
       token=Admin::Token.find_by_token(cookies[:sso_token])
       if token

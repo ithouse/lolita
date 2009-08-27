@@ -2,7 +2,7 @@ module Extensions::Sso
   def sso
     return true if controller_name == "sso" || params[:format]=="xml" || is_local_request? || request.env['HTTP_USER_AGENT']=~ /^(Adobe|Shockwave) Flash/ || robot?
     set_current_portal
-    if session[:p_user] && cookies[:sso_token] && !Admin::Token.find_by_token(cookies[:sso_token])
+    if public_user? && cookies[:sso_token] && !Admin::Token.find_by_token(cookies[:sso_token])
       reset_session
       cookies.delete(:sso_token)
     end
@@ -35,10 +35,10 @@ module Extensions::Sso
     if Admin::Token.current_token
       cookies[:sso_token]=Admin::Token.current_token.token
       session[:sso_token]=Admin::Token.current_token.token
-      session[:p_user]=Admin::Token.current_token.user
+      set_current_user Admin::Token.current_token.user
     end
-    if session[:p_user] && session[:p_user].remember_token
-      cookies[:remember_me]=session[:p_user].remember_token
+    if current_user && current_user.remember_token
+      cookies[:remember_me]=current_user.remember_token
     end
   end
 
