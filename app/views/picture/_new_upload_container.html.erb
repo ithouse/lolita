@@ -5,21 +5,21 @@
       <input type="file" name="fileInput" id="fileInput" />
       <script type="text/javascript">
         //<![CDATA[
-        //loadjscssfile("/stylesheets/admin/uploadify.css","css")
+        <% session_key_name = ActionController::Base.session_options[:key] -%>
         $(document).ready(function() {
           ITH.Picture.init(<%=new_upload_container.merge(:authenticity_token=>CGI::escape(form_authenticity_token)).to_json%>)
           $('#fileInput').uploadify({
-            'uploader': '/lolita/swf/uploader.swf',
-            'script': '/picture/new_create',
-            'cancelImg': '/images/cms/cancel.png',
-            'simUploadLimit':1,
-            'multi':true,
-            'scriptData':{'authenticity_token':'<%=form_authenticity_token%>','sid':'<%=request.session_options[:id] %>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>},
-            'displayData':'speed',
-            'onError':function(){
+            uploader: '/lolita/javascripts/jquery/uploadify/uploadify.swf',
+            script: '/picture/new_create?<%= session_key_name %>=<%= u session.session_id %>',
+            cancelImg: '/lolita/javascripts/jquery/uploadify/cancel.png',
+            simUploadLimit:1,
+            multi:true,
+            scriptData: { 'authenticity_token': encodeURIComponent('<%= u form_authenticity_token %>') },
+            displayData:'speed',
+            onError:function(){
               alert("Error!\n Try again or Reload page (Ctrl+R)!")
             },
-            'onAllComplete':function(fu,err,a,speed){
+            onAllComplete:function(fu,err,a,speed){
               ITH.Picture.refresh_list()
             }
           });

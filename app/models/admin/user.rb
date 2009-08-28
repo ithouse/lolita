@@ -40,7 +40,7 @@ class Admin::User < Cms::Base
   end
 
   def self.access_to_area?(ses,area=false)
-    #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
+    return false unless ses[:user]
     area=:public unless area
     if area==:public
       user = ses[:user][:user_class].find_by_id(ses[:user][:user_id])
