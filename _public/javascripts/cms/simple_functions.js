@@ -159,15 +159,6 @@ function simple_yui_request(object,config){
     return false;
 }
 
-function startMultifileUpload(media,intro){
-    if(intro){
-        var i=$('#video_intro_flag').attr("checked")
-        if (i){
-            $('#'+media+'fileInput').fileUploadSettings('scriptData',json_to_params(eval(media+"_upload_settings"))+'&intro=true');
-        }
-    }
-        $('#'+media+'fileInput').uploadifyUpload();
-}
 Ajax={}
 Ajax.Request=function(url,c){
     ITH.Cms.wait.show()

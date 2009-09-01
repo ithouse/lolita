@@ -20,7 +20,7 @@ module BaseHelper
   include PublicHelper
   include ManagedHelper
   include PictureHelper
-  
+  include MediaHelper
   # Iespējamās opcijas
   #   :image - vai nepieciešams tekstā pielikt klāt ITHouse
   #   :simple - vienkārša lapa vai nē

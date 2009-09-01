@@ -17,43 +17,58 @@
       <% if cfg[:media]=="video_file" && cfg[:with_intro] %>
         <%=t(:"media.video_files.intro")%>: <input type="checkbox" name="intro" id="video_intro_flag"  />
       <% end %>
-      <input type="file" name="fileInput" id="<%=cfg[:media]%>fileInput" />
+
+    <div id="swf-container">
       <script type="text/javascript">
-        //<![CDATA[
-  <% file_ext=cfg[:media].to_s=="audio_file" ? "*.mp3;*.wav" : (cfg[:media].to_s=="video_file" ? "*.flv;*.mpeg" : "*.*") %>
-    //loadjscssfile("/stylesheets/admin/uploadify.css","css")
-    $(document).ready(function() {
-      <%="#{cfg[:media]}_upload_settings"%>={'sid':'<%=request.session_options[:id]%>'<%= ","+cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>}
-      $('#<%=cfg[:media]%>fileInput').uploadify({
-        'uploader': '/lolita/swf/uploader.swf',
-        'script': "/<%=cfg[:media]%>/new_create",
-        'cancelImg': '/images/cms/cancel.png',
-        'simUploadLimit':1,
-        'multi':true,
-        'fileDesc':"<%=cfg[:media]=="audio_file" ? "Audio Files (#{file_ext})" : cfg[:media]=="video_file" ? "Video Files (#{file_ext})" : "All Files (#{file_ext})"%>",
-        'fileExt':"<%=file_ext%>",
-        'scriptData':<%="#{cfg[:media]}_upload_settings"%>,
-        'displayData':'speed',
-        'onError':function(){
-          alert("Error!\n Try again or Reload page (Ctrl+R)!")
-        },
-        'onAllComplete':function(fu,err,a,speed){
-          $.ajax({
-            type:"get",
-            url:"/<%=cfg[:media]%>/refresh",
-            data:"<%=cfg.collect{|k,v| "#{k}=#{v}"}.join("&")%>",
-            success:function(html){
-              $("#<%=cfg[:media]%>_list_container").html(html)
-            }
-          })
-        }
-      });
-    });
-    //]]>
+        var swfu = new SWFUpload({
+          upload_url : '<%= new_file_path_with_session_information(cfg[:media]) %>',
+          flash_url : '/lolita/javascripts/swfupload/swfupload.swf',
+
+                // Button settings
+                button_image_url: "/lolita/images/cms/btn-multi.png",	// Relative to the Flash file
+                button_width: "82",
+                button_height: "26",
+                button_placeholder_id: "spanButtonPlaceHolder",
+                button_text: '<span class="theFont">Browse</span>',
+                button_text_style: ".theFont { font-size: 12; font-family: verdana;}",
+                button_text_left_padding: 12,
+                button_text_top_padding: 3,
+
+          file_size_limit : '10000',
+          file_types : '<%= cfg[:media].to_s=="audio_file" ? audio_extensions : (cfg[:media].to_s=="video_file" ? video_extensions : "*.*") %>',
+          file_types_description : '<%= file_types_description(cfg[:media].to_s) %>',
+          file_upload_limit : '0',
+                custom_settings : {
+                    progressTarget : "fsUploadProgress"
+                },
+
+          file_queue_error_handler : fileQueueError,
+          file_dialog_complete_handler : fileDialogComplete,
+          upload_progress_handler : uploadProgress,
+          upload_error_handler : uploadError,
+          upload_success_handler : uploadSuccess,
+          upload_complete_handler : uploadComplete,
+
+                post_params : {
+                    authenticity_token : '<%= u form_authenticity_token -%>',
+                    parent: '<%= @object.class.to_s %>',
+                    parent_id: '<%= @object.id %>'
+                },
+
+          custom_settings : {
+            upload_target : 'divFileProgressContainer'
+          },
+
+          debug: false
+
+        });
       </script>
-      <a href="javascript:startMultifileUpload('<%=cfg[:media]%>',<%=cfg[:media]=="video_file" && cfg[:with_intro] ? "true" : "false"%>)" ><%=t(:"picture.upload file")%></a><br/>
-      <a href="javascript:$('#<%=cfg[:media]%>fileInput').uploadifyClearQueue()"><%=t(:"actions.clear").mb_chars.capitalize%></a>
+
+      <span id="spanButtonPlaceHolder"></span>
+      <div id="divFileProgressContainer"></div>
+
     </div>
     <%= render :partial=>"/file/thumb_files_container", :object=>cfg %>
+    </div>
   </div>
 <% end %>

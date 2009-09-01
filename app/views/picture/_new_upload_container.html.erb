@@ -1,33 +1,58 @@
 <% cfg=picture_cfg(new_upload_container) %>
 <% if new_upload_container[:parent] && new_upload_container[:parent_id] %>
   <div id="picture-photos" class="picture-photos-container">
-    <div style="float:right">
-      <input type="file" name="fileInput" id="fileInput" />
+    <div id="swf-container">
       <script type="text/javascript">
-        //<![CDATA[
-        <% session_key_name = ActionController::Base.session_options[:key] -%>
-        $(document).ready(function() {
-          ITH.Picture.init(<%=new_upload_container.merge(:authenticity_token=>CGI::escape(form_authenticity_token)).to_json%>)
-          $('#fileInput').uploadify({
-            uploader: '/lolita/javascripts/jquery/uploadify/uploadify.swf',
-            script: '/picture/new_create?<%= session_key_name %>=<%= u session.session_id %>',
-            cancelImg: '/lolita/javascripts/jquery/uploadify/cancel.png',
-            simUploadLimit:1,
-            multi:true,
-            scriptData: { 'authenticity_token': encodeURIComponent('<%= u form_authenticity_token %>') },
-            displayData:'speed',
-            onError:function(){
-              alert("Error!\n Try again or Reload page (Ctrl+R)!")
-            },
-            onAllComplete:function(fu,err,a,speed){
-              ITH.Picture.refresh_list()
-            }
-          });
+        var swfu;
+        ITH.Picture.init(<%=new_upload_container.merge(:authenticity_token=>CGI::escape(form_authenticity_token)).to_json%>)
+
+        swfu = new SWFUpload({
+          upload_url : '<%= new_file_path_with_session_information("picture") %>',
+          flash_url : '/lolita/javascripts/swfupload/swfupload.swf',
+
+                // Button settings
+                button_image_url: "/lolita/images/cms/btn-multi.png",	// Relative to the Flash file
+                button_width: "82",
+                button_height: "26",
+                button_placeholder_id: "spanButtonPlaceHolder",
+                button_text: '<span class="theFont">Browse</span>',
+                button_text_style: ".theFont { font-size: 12; font-family: verdana;}",
+                button_text_left_padding: 12,
+                button_text_top_padding: 3,
+
+          file_size_limit : '10000',
+          file_types : '<%= UploadColumn.image_extensions.collect{|t| "*.#{t};"}.join %>',
+          file_types_description : '<%= file_types_description(cfg[:media].to_s) %>',
+          file_upload_limit : '0',
+                custom_settings : {
+                    progressTarget : "fsUploadProgress"
+                },
+
+          file_queue_error_handler : fileQueueError,
+          file_dialog_complete_handler : fileDialogComplete,
+          upload_progress_handler : uploadProgress,
+          upload_error_handler : uploadError,
+          upload_success_handler : uploadSuccess,
+          upload_complete_handler : uploadComplete,
+
+                post_params : {
+                    authenticity_token : '<%= u form_authenticity_token -%>',
+                    parent: '<%= @object.class.to_s %>',
+                    parent_id: '<%= @object.id %>'
+                },
+
+          custom_settings : {
+            upload_target : 'divFileProgressContainer'
+          },
+
+          debug: false
+
         });
-        //]]>
       </script>
-      <a href="javascript:$('#fileInput').uploadifyUpload();" ><%=t(:"picture.upload file")%></a><br/>
-      <a href="javascript:$('#fileInput').uploadifyClearQueue()"><%=t(:"actions.clear")%></a>
+    
+      <span id="spanButtonPlaceHolder"></span>
+      <div id="divFileProgressContainer"></div>
+
     </div>
     <% if cfg[:main_image] %>
       <%= render :partial=>'/picture/main_image_container', :object=>cfg %>
