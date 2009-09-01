@@ -20,7 +20,7 @@
 
     <div id="swf-container">
       <script type="text/javascript">
-        var swfu = new SWFUpload({
+        var swfu2 = new SWFUpload({
           upload_url : '<%= new_file_path_with_session_information(cfg[:media]) %>',
           flash_url : '/lolita/javascripts/swfupload/swfupload.swf',
 
@@ -28,7 +28,7 @@
                 button_image_url: "/lolita/images/cms/btn-multi.png",	// Relative to the Flash file
                 button_width: "82",
                 button_height: "26",
-                button_placeholder_id: "spanButtonPlaceHolder",
+                button_placeholder_id: "spanButtonPlaceHolder2",
                 button_text: '<span class="theFont">Browse</span>',
                 button_text_style: ".theFont { font-size: 12; font-family: verdana;}",
                 button_text_left_padding: 12,
@@ -39,7 +39,7 @@
           file_types_description : '<%= file_types_description(cfg[:media].to_s) %>',
           file_upload_limit : '0',
                 custom_settings : {
-                    progressTarget : "fsUploadProgress"
+                    progressTarget : "fsUploadProgress2"
                 },
 
           file_queue_error_handler : fileQueueError,
@@ -56,7 +56,7 @@
                 },
 
           custom_settings : {
-            upload_target : 'divFileProgressContainer'
+            upload_target : 'divFileProgressContainer2'
           },
 
           debug: false
@@ -64,8 +64,8 @@
         });
       </script>
 
-      <span id="spanButtonPlaceHolder"></span>
-      <div id="divFileProgressContainer"></div>
+      <span id="spanButtonPlaceHolder2"></span>
+      <div id="divFileProgressContainer2"></div>
 
     </div>
     <%= render :partial=>"/file/thumb_files_container", :object=>cfg %>
