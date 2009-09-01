@@ -32,12 +32,12 @@
     theme_advanced_toolbar_location : "top",
     theme_advanced_toolbar_align : "left",
     theme_advanced_blockformats : "p,h1,h2,h3,h4,h5,h6,blockquote,code",
-    content_css : "/stylesheets/tinymcestyle.css",
+    content_css : "/lolita/stylesheets/tinymcestyle.css",
     setup :function(ed) {
       // Add a custom button
       ed.addButton('mapbutton', {
         title : '<%= t(:"content_map.button") %>',
-        image : '/images/icons/view_tree.png',
+        image : '/lolita/images/icons/view_tree.png',
         onclick : function(){
           if(!YAHOO.content_map.map.visible){
             $("#content_map_container").html(ITH.Translation.wait_dialog_header);
@@ -52,7 +52,7 @@
       });
       ed.addButton('mediabutton', {
         title : '<%= t(:"media.button") %>',
-        image : '/images/icons/gallery_icon.png',
+        image : '/lolita/images/icons/gallery_icon.png',
         onclick : ITH.Media.show_dialog
       });
     }

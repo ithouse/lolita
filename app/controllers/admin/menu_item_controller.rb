@@ -21,6 +21,11 @@ class Admin::MenuItemController < Managed
     render :partial=>"options", :layout=>false, :locals=>{:options=>allowed_actions || [],:current=>current_action}
   end
 
+  def get_meta_url
+    result=MetaData.url_match params[:query],["metaable_type!=?","Admin::MenuItem"]
+    render :text=>result.uniq.join("\t")
+  end
+  
   def update
     @menu_data=my_params[:object][:menu] if my_params[:object]
     my_params[:object].delete(:menu) if my_params[:object]
@@ -35,7 +40,7 @@ class Admin::MenuItemController < Managed
     if request.post?
       if my_params[:object]
         @menu_data=my_params[:object][:menu]
-        my_params[:object][:name]=my_params[:object][:name].size>0 ? my_params[:object][:name] : "Bez nosaukuma"
+        my_params[:object][:name]=my_params[:object][:name].size>0 ? my_params[:object][:name] : t(:"menu item.untitled")
         my_params[:object][:menu_id]=my_params[:menu_id]
       end
       my_params[:object].delete(:menu) if my_params[:object]
@@ -71,7 +76,6 @@ class Admin::MenuItemController < Managed
     {
       :do_not_redirect=>true,
       :redirect_to=>"cancel",
-      # :on_complete=>"$('#content').html(request.responseText)",
       :tabs=>[
         {:fields=>:default,:type=>:content, :in_form=>true,:opened=>true},
         {:type=>:metadata, :in_form=>true},
@@ -81,7 +85,7 @@ class Admin::MenuItemController < Managed
       :fields=>[
         {:type=>:text,:field=>:name,:translate=>true,:html=>{:maxlength=>255}},
         {:type=>:text,:field=>:alt_text,:translate=>true,:html=>{:maxlength=>255}},
-        {:type=>:checkbox,:field=>:not_main_menu},
+        {:type=>:text, :field=>:branch_name,:html=>{:maxlength=>255}},
         {:type=>:custom,:field=>"menu",:function=>'get_menu_editors',:args=>[params[:menu_id]]}
       ]
     }
@@ -95,18 +99,12 @@ class Admin::MenuItemController < Managed
       when 'app'
         @object.update_application_menu_relations(:controller=>menu_data[:table],:action=>menu_data[:action]) if(menu_data[:action].to_i!=-1)
       when 'web'
-        table=menu_data[:table] ? menu_data[:table].camelize : nil
-        @object.update_web_menu_relations(table)
-      when 'public_web'
-        @object.url=nil
-        if menu_data[:table] && menu_data[:action]
+        if params[:relation_type].to_i==0
           @object.update_application_menu_relations(:controller=>menu_data[:table],:action=>menu_data[:action]) if(menu_data[:action].to_i!=-1)
-        elsif menu_data[:url]
-          @object.remove_action
-          @object.update_menu_with_url(menu_data[:url])
-        else
-          @object.remove_action
-          @object.update_public_web_menu_relations(menu_data[:item])
+        elsif params[:relation_type].to_i==1
+          @object.update_content_with_url(menu_data[:url])
+        elsif params[:relation_type].to_i==2
+          @object.update_content_with_object(menu_data[:meta_url])
         end
       end
     end

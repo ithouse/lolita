@@ -4,9 +4,9 @@
  */
 
 
-ITH.MenuTree=function(container,configuration,data,parentMenu,authenticity_token){
+ITH.MenuTree=function(container,configuration,data,authenticity_token){
     this.draggable=true
-    this.parentMenu=parentMenu //ja tiek veidots bērna elements tad šis tiek izmantots
+    // this.parentMenu=parentMenu //ja tiek veidots bērna elements tad šis tiek izmantots
     this.header=null
     this.authenticity_token = authenticity_token
     ITH.MenuTree.superclass.constructor.call(this,container,configuration,data);
@@ -48,9 +48,9 @@ ITH.MenuTree.colors={
     unused_item:"green"
 }
 ITH.MenuTree.paths={
-    public_menus:"/admin/menu/public_menus",
-    public_menu:"/admin/menu/public_menu",
-    delete_public_menu:"/admin/menu/delete_public_menu",
+    // public_menus:"/admin/menu/public_menus",
+    // public_menu:"/admin/menu/public_menu",
+    // delete_public_menu:"/admin/menu/delete_public_menu",
     add_content:"/admin/menu/add_content",
     remove_content:"/admin/menu/remove_content/",
     get_updated_items:"/admin/menu/get_updated_items",
@@ -71,7 +71,7 @@ ITH.MenuTree.active={
 }
 ITH.extend(ITH.MenuTree,ITH.Tree,{
     URLEncode:function(str){
-     return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
+        return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
     },
     doRequest:function(method,url,callback,params){
         //TODO pielikt lai dzēš vecos pieprsījumus ja ir jauns svaigs pieprasījums, tjipa
@@ -129,9 +129,9 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
 
             this.contextMenu.render(this.DOMMenuRoot)
         }
-        if(this.config.menu_type=="web"){
-            this.add_child_menu()
-        }
+        //        if(this.config.menu_type=="web"){
+        //            this.add_child_menu()
+        //        }
         this.sideMenu=new ITH.SideMenu(this.config.menu_type+"_menu",this)
     },
     onMenuShow:function(type,args){
@@ -234,172 +234,172 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         }
         tree[tree.length-1].render()//reāli menuBranch izveidoju elementus
     },
-    add_child_menu:function(){
-        var requestHandler={
-            success:function(request){
-                var self=request.argument.self
-                var menus=eval(request.responseText)
-                var select=self.child_list(menus)
-                self.add_delete_public_menu(select)
-            },
-            failure:function(request){
-                if(request.status!=404){
-                    request.argument.self.add_child_menu()
-                }
-            }
-        }
-        this.doRequest('POST',ITH.MenuTree.paths.public_menus, requestHandler,"namespace="+this.config.module_name);
-    },
-    add_branches_to_child_group:function(){
-        if(this.childMenu){
-            var tree_arr=this.flat_tree(this.tree[0].tree)
-            for(var i=0;i<tree_arr.length;i++){
-                if (tree_arr[i].draggable) tree_arr[i].draggable.addToGroup(this.childMenu.config.menu_name)
-            }
-        }
-    },
-    destroy_child_menu:function(){
-        if(this.childMenu){
-            var parent=this.childMenu.DOMMenuRoot.parentNode
-            parent.removeChild(this.childMenu.DOMMenuRoot)
-            this.childMenu=null
-        }
-    },
-    change_child_menu:function(e){
-        if(this.childSelect.value>0 && (!this.childMenu || (this.childMenu && this.childMenu.config.menu_id!=this.childSelect.value))){
-            var requestHandler={
-                success:function(request){
-                    var args=eval(request.responseText)
-                    request.argument.self.destroy_child_menu()
-                    request.argument.self.childMenu=new ITH.MenuTree(request.argument.self.container,args[0],args[1],request.argument.self)
-                    request.argument.self.childMenu.render()
-                    request.argument.self.add_branches_to_child_group()
-                },
-                failure:function(request){
-                    if(request.status!=404){
-                        request.argument.self.change_child_menu()
-                    }
-                }
-            }
-            this.doRequest('POST',ITH.MenuTree.paths.public_menu, requestHandler,"id="+this.childSelect.value);
-        }
-    },
-    child_list:function(menus){
-        var select_container=ITH.Element.create("div",{
-            className:"child-menu-select-container"
-        })
-        select_container.innerHTML=ITH.MenuTree.translation.public_menu+" "
-        //Izveidoju sarakstu ar izvēlnēm
-        var select=ITH.Element.create("select",{
-            className:"child-menu-select"
-        })
-        this.childSelect=select //tikai vecāka elementam
-        YAHOO.util.Event.addListener(select,"change",this.change_child_menu,this,true)
-        for(var i=0;i<menus.length;i++){
-            var option=ITH.Element.create("option",{
-                value:menus[i].id,
-                innerHTML:menus[i].name
-            })
-            select.appendChild(option)
-        }
-        select_container.appendChild(select)
-        //beidzas saraksta izveide
-        this.DOMRoot.insertBefore(select_container,this.DOMRoot.childNodes[0])
-        return select_container
-    },
-    add_delete_public_menu:function(sel_container){
-        var add=ITH.Element.create("img",{
-            src:ITH.MenuTree.images.add_public,
-            className:"menu-small-buttons"
-        })
-        YAHOO.util.Event.addListener(add,"click",this.add_public_menu,this,true)
-        var remove=ITH.Element.create("img",{
-            src:ITH.MenuTree.images.trash,
-            className:"menu-small-buttons"
-        })
-        YAHOO.util.Event.addListener(remove,"click",this.remove_public_menu,this,true)
-        sel_container.appendChild(add)
-        sel_container.appendChild(remove)
-    },
-    add_public_menu:function(){
-        if(!ITH.MenuTree.menu_dialog){
-            Dom.get('public_menu_dialog').style.display=""
-            var handleSubmit=function(){
-                this.submit()
-            }
-            var handleCancel=function(){
-                this.cancel()
-            }
-            ITH.MenuTree.menu_dialog = new YAHOO.widget.Dialog("public_menu_dialog",
-            {
-                width : "300px",
-                fixedcenter : true,
-                visible : false,
-                modal:true,
-                draggable: false,
-                buttons : [ {
-                    text:ITH.MenuTree.translation.dialog_make,
-                    handler:handleSubmit,
-                    isDefault:true
-                },
-
-                {
-                    text:ITH.MenuTree.translation.dialog_cancel,
-                    handler:handleCancel
-                } ]
-            })
-            var requestHandler={
-                success:function(request){
-                    ITH.MenuTree.menu_dialog.hide()
-                    var conf=eval(request.responseText)[0]
-                    var self=request.argument.caller
-                    var option=ITH.Element.create("option",{
-                        innerHTML:conf.name,
-                        value:conf.id
-                    })
-                    self.childSelect.appendChild(option)
-                    self.childSelect.selectedIndex=self.childSelect.options.length-1
-                    self.change_child_menu()
-                },
-                failure:function(request){
-                    if(request.status==500){
-                        alert(request.responseText)
-                    }else{
-                        if(request.status!=404){
-                            ITH.MenuTree.menu_dialog.submit()
-                        }
-                    }
-                },
-                argument:{
-                    caller:this
-                }
-            }
-            ITH.MenuTree.menu_dialog.callback=requestHandler
-            ITH.MenuTree.menu_dialog.render()
-        }
-        ITH.MenuTree.menu_dialog.show()
-    },
-    remove_public_menu:function(){
-        var requestHandler={
-            success:function(request){
-                var self=request.argument.self
-                var option=ITH.Element.optionByValue(self.childSelect.options,request.argument.id)
-                if(option){
-                    self.childSelect.removeChild(option)
-                    self.destroy_child_menu()
-                }
-            },
-            failure:function(request){
-                if(request.status!=404){
-                    request.argument.self.remove_public_menu()
-                }
-            },
-            argument:{
-                id:this.childSelect.value
-            }
-        }
-        this.doRequest('POST',ITH.MenuTree.paths.delete_public_menu, requestHandler,"id="+this.childSelect.value);
-    },
+    //    add_child_menu:function(){
+    //        var requestHandler={
+    //            success:function(request){
+    //                var self=request.argument.self
+    //                var menus=eval(request.responseText)
+    //                var select=self.child_list(menus)
+    //                self.add_delete_public_menu(select)
+    //            },
+    //            failure:function(request){
+    //                if(request.status!=404){
+    //                    request.argument.self.add_child_menu()
+    //                }
+    //            }
+    //        }
+    //        this.doRequest('POST',ITH.MenuTree.paths.public_menus, requestHandler,"namespace="+this.config.module_name);
+    //    },
+    //    add_branches_to_child_group:function(){
+    //        if(this.childMenu){
+    //            var tree_arr=this.flat_tree(this.tree[0].tree)
+    //            for(var i=0;i<tree_arr.length;i++){
+    //                if (tree_arr[i].draggable) tree_arr[i].draggable.addToGroup(this.childMenu.config.menu_name)
+    //            }
+    //        }
+    //    },
+    //    destroy_child_menu:function(){
+    //        if(this.childMenu){
+    //            var parent=this.childMenu.DOMMenuRoot.parentNode
+    //            parent.removeChild(this.childMenu.DOMMenuRoot)
+    //            this.childMenu=null
+    //        }
+    //    },
+    //    change_child_menu:function(e){
+    //        if(this.childSelect.value>0 && (!this.childMenu || (this.childMenu && this.childMenu.config.menu_id!=this.childSelect.value))){
+    //            var requestHandler={
+    //                success:function(request){
+    //                    var args=eval(request.responseText)
+    //                    request.argument.self.destroy_child_menu()
+    //                    request.argument.self.childMenu=new ITH.MenuTree(request.argument.self.container,args[0],args[1],request.argument.self)
+    //                    request.argument.self.childMenu.render()
+    //                    request.argument.self.add_branches_to_child_group()
+    //                },
+    //                failure:function(request){
+    //                    if(request.status!=404){
+    //                        request.argument.self.change_child_menu()
+    //                    }
+    //                }
+    //            }
+    //            this.doRequest('POST',ITH.MenuTree.paths.public_menu, requestHandler,"id="+this.childSelect.value);
+    //        }
+    //    },
+    //    child_list:function(menus){
+    //        var select_container=ITH.Element.create("div",{
+    //            className:"child-menu-select-container"
+    //        })
+    //        select_container.innerHTML=ITH.MenuTree.translation.public_menu+" "
+    //        //Izveidoju sarakstu ar izvēlnēm
+    //        var select=ITH.Element.create("select",{
+    //            className:"child-menu-select"
+    //        })
+    //        this.childSelect=select //tikai vecāka elementam
+    //        YAHOO.util.Event.addListener(select,"change",this.change_child_menu,this,true)
+    //        for(var i=0;i<menus.length;i++){
+    //            var option=ITH.Element.create("option",{
+    //                value:menus[i].id,
+    //                innerHTML:menus[i].name
+    //            })
+    //            select.appendChild(option)
+    //        }
+    //        select_container.appendChild(select)
+    //        //beidzas saraksta izveide
+    //        this.DOMRoot.insertBefore(select_container,this.DOMRoot.childNodes[0])
+    //        return select_container
+    //    },
+    //    add_delete_public_menu:function(sel_container){
+    //        var add=ITH.Element.create("img",{
+    //            src:ITH.MenuTree.images.add_public,
+    //            className:"menu-small-buttons"
+    //        })
+    //        YAHOO.util.Event.addListener(add,"click",this.add_public_menu,this,true)
+    //        var remove=ITH.Element.create("img",{
+    //            src:ITH.MenuTree.images.trash,
+    //            className:"menu-small-buttons"
+    //        })
+    //        YAHOO.util.Event.addListener(remove,"click",this.remove_public_menu,this,true)
+    //        sel_container.appendChild(add)
+    //        sel_container.appendChild(remove)
+    //    },
+    //    add_public_menu:function(){
+    //        if(!ITH.MenuTree.menu_dialog){
+    //            Dom.get('public_menu_dialog').style.display=""
+    //            var handleSubmit=function(){
+    //                this.submit()
+    //            }
+    //            var handleCancel=function(){
+    //                this.cancel()
+    //            }
+    //            ITH.MenuTree.menu_dialog = new YAHOO.widget.Dialog("public_menu_dialog",
+    //            {
+    //                width : "300px",
+    //                fixedcenter : true,
+    //                visible : false,
+    //                modal:true,
+    //                draggable: false,
+    //                buttons : [ {
+    //                    text:ITH.MenuTree.translation.dialog_make,
+    //                    handler:handleSubmit,
+    //                    isDefault:true
+    //                },
+    //
+    //                {
+    //                    text:ITH.MenuTree.translation.dialog_cancel,
+    //                    handler:handleCancel
+    //                } ]
+    //            })
+    //            var requestHandler={
+    //                success:function(request){
+    //                    ITH.MenuTree.menu_dialog.hide()
+    //                    var conf=eval(request.responseText)[0]
+    //                    var self=request.argument.caller
+    //                    var option=ITH.Element.create("option",{
+    //                        innerHTML:conf.name,
+    //                        value:conf.id
+    //                    })
+    //                    self.childSelect.appendChild(option)
+    //                    self.childSelect.selectedIndex=self.childSelect.options.length-1
+    //                    self.change_child_menu()
+    //                },
+    //                failure:function(request){
+    //                    if(request.status==500){
+    //                        alert(request.responseText)
+    //                    }else{
+    //                        if(request.status!=404){
+    //                            ITH.MenuTree.menu_dialog.submit()
+    //                        }
+    //                    }
+    //                },
+    //                argument:{
+    //                    caller:this
+    //                }
+    //            }
+    //            ITH.MenuTree.menu_dialog.callback=requestHandler
+    //            ITH.MenuTree.menu_dialog.render()
+    //        }
+    //        ITH.MenuTree.menu_dialog.show()
+    //    },
+    //    remove_public_menu:function(){
+    //        var requestHandler={
+    //            success:function(request){
+    //                var self=request.argument.self
+    //                var option=ITH.Element.optionByValue(self.childSelect.options,request.argument.id)
+    //                if(option){
+    //                    self.childSelect.removeChild(option)
+    //                    self.destroy_child_menu()
+    //                }
+    //            },
+    //            failure:function(request){
+    //                if(request.status!=404){
+    //                    request.argument.self.remove_public_menu()
+    //                }
+    //            },
+    //            argument:{
+    //                id:this.childSelect.value
+    //            }
+    //        }
+    //        this.doRequest('POST',ITH.MenuTree.paths.delete_public_menu, requestHandler,"id="+this.childSelect.value);
+    //    },
     add_content:function(content_id,public_id,parent){
         var requestHandler={
             success:function(request){
@@ -479,7 +479,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
                 request.argument.self.data=eval(request.responseText)
                 request.argument.self.create_tree();
                 request.argument.self.sideMenu.refresh()
-                if(request.argument.self.childMenu) request.argument.self.childMenu.refresh()
+            // if(request.argument.self.childMenu) request.argument.self.childMenu.refresh()
             },
             failure:function(request){
                 if(request.status!=404){
@@ -489,23 +489,23 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         };
         this.doRequest('POST',ITH.MenuTree.paths.refresh, requestHandler,"id="+this.config.menu_id);
     },
-    refresh_child_menu:function(branch,data){
-        if(this.childMenu){
-            var child_branch=this.getByContent(this.childMenu.tree[0].tree,branch.params.menuable_type,branch.params.menuable_id,branch.params.id)
-            if(child_branch){
-                if(data){ //mainu satura datus, ja mainījies vecāka zars
-                    child_branch.params.controller=data.controller
-                    child_branch.params.action=data.action
-                    child_branch.params.menuable_type=data.menuable_type
-                    child_branch.params.menuable_id=data.menuable_id
-                    child_branch.params.published=data.published
-                }else{ // mainu tikai publiskošanas stāvokli, ja mainījies vecāka stāvoklis
-                    child_branch.params.published=branch.params.published
-                }
-                child_branch.refresh()
-            }
-        }
-    },
+    //    refresh_child_menu:function(branch,data){
+    //        if(this.childMenu){
+    //            var child_branch=this.getByContent(this.childMenu.tree[0].tree,branch.params.menuable_type,branch.params.menuable_id,branch.params.id)
+    //            if(child_branch){
+    //                if(data){ //mainu satura datus, ja mainījies vecāka zars
+    //                    child_branch.params.controller=data.controller
+    //                    child_branch.params.action=data.action
+    //                    child_branch.params.menuable_type=data.menuable_type
+    //                    child_branch.params.menuable_id=data.menuable_id
+    //                    child_branch.params.published=data.published
+    //                }else{ // mainu tikai publiskošanas stāvokli, ja mainījies vecāka stāvoklis
+    //                    child_branch.params.published=branch.params.published
+    //                }
+    //                child_branch.refresh()
+    //            }
+    //        }
+    //    },
     createHeader:function(){
         var container=ITH.Element.create("div",{
             className:"menu-title-container"
@@ -513,7 +513,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         container.style.height="25px"
         var title=ITH.Element.create("div",{
             className:"big blue",
-            innerHTML:this.parentMenu ? ITH.MenuTree.translation.public_menu+" " : ITH.MenuTree.translation.menu+" "+this.config.menu_name
+            innerHTML: ITH.MenuTree.translation.menu+" "+this.config.menu_name
         })
         title.style.cssFloat="left"
         var loading=ITH.Element.loading("small")
@@ -562,7 +562,7 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         var branch=this.getByRealId(this.tree[0].tree,old_id);
         if(branch){
             branch.id=new_id.toString()
-            this.refresh_child_menu(branch,data) //atjaunoju bērna koku, ja gadījumā tajā ir šāda tipa elements, lai tas atjaunotos, neatjaunojot koku
+            // this.refresh_child_menu(branch,data) //atjaunoju bērna koku, ja gadījumā tajā ir šāda tipa elements, lai tas atjaunotos, neatjaunojot koku
             branch.params=data
             branch.refresh()
         }
@@ -636,14 +636,14 @@ ITH.extend(ITH.MenuBranch,ITH.Branch,{
     },
     refresh:function(){
         if(this.tools.publish_tool) this.tools.publish_tool.src=this.params.published ? ITH.MenuTree.images.published : ITH.MenuTree.images.unpublished
-        if(this.root.childMenu){
-            // this.refresh_child_branch(this.root.childMenu.tree[0].tree,this.params.menuable_type,this.params.menuable_id,this.params.id,this.params.published)
-            var child_branch=this.root.getByContent(this.root.childMenu.tree[0].tree,this.params.menuable_type,this.params.menuable_id,this.params.id)
-            if(child_branch){
-                child_branch.params.published=this.params.published
-                child_branch.refresh()
-            }
-        }
+        //        if(this.root.childMenu){
+        //            // this.refresh_child_branch(this.root.childMenu.tree[0].tree,this.params.menuable_type,this.params.menuable_id,this.params.id,this.params.published)
+        //            var child_branch=this.root.getByContent(this.root.childMenu.tree[0].tree,this.params.menuable_type,this.params.menuable_id,this.params.id)
+        //            if(child_branch){
+        //                child_branch.params.published=this.params.published
+        //                child_branch.refresh()
+        //            }
+        //        }
         this.text.refresh()
     },
     remove_content:function(params){
@@ -729,15 +729,15 @@ ITH.extend(ITH.MenuBranch,ITH.Branch,{
                 var requestHandler={
                     success:function(request){
                         var self=request.argument.caller.parentNode.parentNode.branch
-                        if(self.root.childMenu){
-                            var child_branch=self.root.getByContent(self.root.childMenu.tree[0].tree,self.params.menuable_type,self.params.menuable_id,self.params.id)
-                            child_branch.remove_content(request.argument.self.default_configuration({
-                                id:child_branch.id,
-                                title:child_branch.params.title,
-                                menuable_type:"Admin::MenuItem",
-                                menuable_id:self.id
-                            }))
-                        }
+                        //                        if(self.root.childMenu){
+                        //                            var child_branch=self.root.getByContent(self.root.childMenu.tree[0].tree,self.params.menuable_type,self.params.menuable_id,self.params.id)
+                        //                            child_branch.remove_content(request.argument.self.default_configuration({
+                        //                                id:child_branch.id,
+                        //                                title:child_branch.params.title,
+                        //                                menuable_type:"Admin::MenuItem",
+                        //                                menuable_id:self.id
+                        //                            }))
+                        //                        }
                         self.remove_content(request.argument.self.default_configuration({
                             id:self.id,
                             title:self.params.title
@@ -886,16 +886,16 @@ ITH.SideMenu=function(container,tree){
 }
 ITH.SideMenu.prototype={
     refresh:function(){
-        if(!this.mainMenu.parentMenu){
-            var item_element=elementById(this.item_container);
-            item_element.title=ITH.MenuTree.translation.manage_content_tree
-            var first_level=this.mainMenu.tree[0].tree
-            item_element.innerHTML=""
-            this.createTree(first_level,item_element,0)
-            if(this.mainMenu.config.accessable){
-                this.createFooter(item_element)
-            }
+        // if(!this.mainMenu.parentMenu){
+        var item_element=elementById(this.item_container);
+        item_element.title=ITH.MenuTree.translation.manage_content_tree
+        var first_level=this.mainMenu.tree[0].tree
+        item_element.innerHTML=""
+        this.createTree(first_level,item_element,0)
+        if(this.mainMenu.config.accessable){
+            this.createFooter(item_element)
         }
+    // }
     },
     createTree:function(tree,container,level){
         for(var i=0;i<tree.length;i++){
@@ -936,7 +936,9 @@ ITH.SideMenu.prototype={
         if(branch.params.action.length>0 && branch.params.module_type=="app"){
             var url=branch.params.controller+"/"+branch.params.action
         }else{
-            if(parseInt(branch.params.menuable_id)>0 && branch.params.module_type=="web"){
+            if(branch.params.url.length>0){
+                url=branch.params.url
+            }else if(parseInt(branch.params.menuable_id)>0 && branch.params.module_type=="web"){
                 url="/"+branch.params.controller+"/"+branch.params.action+"/"+branch.params.menuable_id
             }
         }
@@ -944,25 +946,29 @@ ITH.SideMenu.prototype={
         text.parent=container
         container.text=text
         if(url){
-            text.onclick=function(){
-                ITH.Cms.wait.show();
-                var requestHandler={
-                    success:function(request){
-                        $('#content').html(request.responseText)
-                        ITH.Cms.wait.hide()
-                    },
-                    failure:function(request){
-                        ITH.Cms.wait.hide();
-                        if(request.status!=404){
-                            request.argument.text.onclick.call(request.argument.text)
+            if(branch.params.url.length>0){
+                text.onclick=function(){window.open(url,"_blank")}
+            }else{
+                text.onclick=function(){
+                    ITH.Cms.wait.show();
+                    var requestHandler={
+                        success:function(request){
+                            $('#content').html(request.responseText)
+                            ITH.Cms.wait.hide()
+                        },
+                        failure:function(request){
+                            ITH.Cms.wait.hide();
+                            if(request.status!=404){
+                                request.argument.text.onclick.call(request.argument.text)
+                            }
+                        },
+                        argument:{
+                            text:this
                         }
-                    },
-                    argument:{
-                        text:this
-                    }
-                };
-               // this.root_object.mainMenu.doJQRequest("GET",url,requestHandler,text.onclick)
-                this.root_object.mainMenu.doRequest('GET', url, requestHandler);
+                    };
+                    // this.root_object.mainMenu.doJQRequest("GET",url,requestHandler,text.onclick)
+                    this.root_object.mainMenu.doRequest('GET', url, requestHandler);
+                }
             }
         }
         var content=ITH.Element.create("div",{

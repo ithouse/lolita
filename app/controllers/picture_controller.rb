@@ -1,6 +1,5 @@
 class PictureController < ApplicationController
-  #FIXME JF:nācās ielikt protect_from_forgery exceptu, jo nekādīgi negribēja ņemt padoto auth tokenu
-  protect_from_forgery :except=>[:new_create]
+
   allow :public=>[:only_image,:load_image_with_siblings,:all_pictures],
     :all=>[
     :load_image_for_cropping,
@@ -78,6 +77,7 @@ class PictureController < ApplicationController
   end
 
   def new_create
+    sleep 2
     params[:picture]={:picture=>params['Filedata']}
     check_session
     if params[:picture] && params[:picture][:picture]
@@ -87,7 +87,7 @@ class PictureController < ApplicationController
       if new? && @picture
         session_pictures << @picture.id
       end
-      render :text=>"OK"
+      render :text=>@picture.picture.thumb.url
     else
       render :text=>"Nav norādīts attēls!", :status=>404
     end

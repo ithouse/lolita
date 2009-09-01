@@ -1,6 +1,6 @@
 class Admin::UserController < Managed
   allow Admin::Role.admin,:all=>[:edit_self], :public=>[:login,:logout,:forgot_password]
-  menu_actions :system=>{:view_log=>I18n.t(:"user.log")}
+  #menu_actions :system=>{:view_log=>I18n.t(:"user.log")}
   
   def index
     if params[:id]

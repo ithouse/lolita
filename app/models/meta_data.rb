@@ -1,4 +1,4 @@
-class MetaData < ActiveRecord::Base
+class MetaData < Cms::Base
   #belongs_to :menu_items
   belongs_to :metaable, :polymorphic => true
   #validates_uniqueness_of   :url, :scope => [:metaable_type], :case_sensitive => false ,:allow_blank=>true
@@ -26,6 +26,17 @@ class MetaData < ActiveRecord::Base
   def self.find_title id, controller
     md=MetaData.find(:first,:conditions=>["metaable_id=? AND metaable_type=?",id,controller.to_s.camelize])
     md.title if md && md.title && md.title.size>0
+  end
+
+  def self.url_match query="",conditions=[]
+    query=query.to_s
+    start_with=self.find(:all,:conditions=>self.cms_merge_conditions(["url LIKE ?","#{query}%"],conditions), :limit=>50)
+    include_query=unless start_with.size==50
+      self.find(:all,:conditions=>self.cms_merge_conditions(["url LIKE ?","%#{query}%"],conditions),:limit=>50-start_with.size)
+    else
+      []
+    end
+    (start_with+include_query).collect{|m| m.url}
   end
 
   private

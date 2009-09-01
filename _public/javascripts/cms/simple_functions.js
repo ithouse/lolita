@@ -159,15 +159,6 @@ function simple_yui_request(object,config){
     return false;
 }
 
-function startMultifileUpload(media,intro){
-    if(intro){
-        var i=$('#video_intro_flag').attr("checked")
-        if (i){
-            $('#'+media+'fileInput').fileUploadSettings('scriptData',json_to_params(eval(media+"_upload_settings"))+'&intro=true');
-        }
-    }
-        $('#'+media+'fileInput').uploadifyUpload();
-}
 Ajax={}
 Ajax.Request=function(url,c){
     ITH.Cms.wait.show()
@@ -382,26 +373,13 @@ function is_toggle_element_opened(id){
     }else return false
 }
 function change_public_menus(name){
-    var content=elementById("my_content_menu_tree_select");
-    var action_s=elementById("admin_menu_select_actions");
-    var tables_s=elementById("admin_menu_select_tables");
-    var url_s=elementById("my_content_menu_tree_url_select");
-    if (name=="action"){
-        tables_s.disabled=false
-        action_s.disabled=false
-        content.disabled=true
-        url_s.disabled=true
-    }else if(name=="content"){
-        tables_s.disabled=true
-        action_s.disabled=true
-        content.disabled=false
-        url_s.disabled=true
-    }else{
-        tables_s.disabled=true
-        action_s.disabled=true
-        content.disabled=true
-        url_s.disabled=false
-    }
+    $(".content_menu_item_editor select, .content_menu_item_editor input").each(function(i){
+        $(this).attr("disabled","disabled")
+    })
+    $("#content_menu_item_editor_"+name+" select, #content_menu_item_editor_"+name+" input").each(function(i){
+        $(this).removeAttr("disabled")
+    })
+
 }
 function loadjscssfile(filename, filetype){
     if (filetype=="js"){ //if filename is a external JavaScript file

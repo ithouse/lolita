@@ -14,12 +14,12 @@ class Admin::Menu < Cms::Manager
   named_scope :web_menu,lambda{|namespace|
     {:conditions=>["module_name=? AND menu_type=?",namespace,"web"]}
   }
-  named_scope :public_menus,lambda{|namespace|
-    {:conditions=>["module_name=? AND menu_type=?",namespace,"public_web"]}
-  }
-  named_scope :public_menu,lambda{|namespace,name|
-    {:conditions=>["module_name=? AND menu_name=?",namespace,name]}
-  }
+#  named_scope :public_menus,lambda{|namespace|
+#    {:conditions=>["module_name=? AND menu_type=?",namespace,"public_web"]}
+#  }
+#  named_scope :public_menu,lambda{|namespace,name|
+#    {:conditions=>["module_name=? AND menu_name=?",namespace,name]}
+#  }
 
   def action_item(params)
     actions=Admin::Action.find(:all,:conditions=>["controller=? AND action=?","/#{params[:controller]}",params[:action]])

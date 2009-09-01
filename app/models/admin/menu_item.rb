@@ -5,12 +5,10 @@ class Admin::MenuItem < Cms::Manager
   belongs_to :menu, :class_name=>"Admin::Menu"
 
   has_many :menu_items, :as=>:menuable, :dependent=>:nullify, :class_name=>"Admin::MenuItem"
-  #has_many :start_pages, :dependent=>:nullify, :class_name=>"Cms::StartPage" #sākumlapai var būt vairākas sadaļas no satura
   has_many    :pictures, :as=>:pictureable, :dependent=>:destroy, :extend=>Extensions::PictureExtensions
   acts_as_nested_set :scope => :menu_id #ļaujam kārtot koka struktūrās
-  
-  # before_save :set_stamps
-  before_destroy :remove_links_and_references
+
+  before_save :allow_branch_name_only_on_first_level
   translates :name,:alt_text
 
   def remove_action
@@ -18,46 +16,26 @@ class Admin::MenuItem < Cms::Manager
       self.menuable.destroy
     end
   end
-  def update_or_create_public_item public_item,name,position,parent_id
-    public_item=self.create_public_item(name,parent_id,position) unless public_item
-    public_item.name=="Bez nosaukuma" ? name : nil
-    public_item
-  end
-
+  
   def update_application_menu_relations attributes={}
-    if !self.menuable || (self.menuable && !self.menuable.is_a?(Admin::Action))
+    action_obj=Admin::Action.find(:first,:conditions=>{:controller=>attributes[:controller],:action=>attributes[:action]})
+    unless action_obj
       self.menuable = Admin::Action.create!(attributes)
       self.save!
     else
-      self.menuable.update_attributes!(attributes)
+      self.change_content("Admin::Action",action_obj.id,self.is_published)
     end
   end
 
-  def update_menu_with_url url
-    self.update_attributes!(:menuable_type=>"Admin::MenuItem",:menuable_id=>0,:url=>url)
-  end
-  def update_web_menu_relations parent_type
-    menuable_id=(self.menuable_id.to_i<1 || (parent_type && parent_type!=self.menuable_type)) ? 0 : self.menuable_id
-    self.change_content(parent_type,menuable_id,menuable_id>0)
+  def update_content_with_url url
+    url_obj=Url.find_by_name(url)
+    url_obj=Url.create!(:name=>url) unless url_obj
+    self.change_content("Url",url_obj.id,self.is_published)
   end
 
-  def update_public_web_menu_relations item_id
-    source=Admin::MenuItem.find_by_id(item_id)
-    if source
-      if source.menuable
-        self.update_attributes!(
-          :menuable_type=>source.menuable_type,
-          :menuable_id=>source.menuable_id,
-          :is_published=>source.is_published
-        )
-      else
-        self.update_attributes!(
-          :menuable_type=>"Admin::MenuItem",
-          :menuable_id=>item_id,
-          :is_published=>source.is_published
-        )
-      end
-    end if source
+  def update_content_with_object meta_url
+    meta_obj=MetaData.find_by_url(meta_url)
+    self.change_content(meta_obj.metaable_type,meta_obj.metaable_id,self.is_published) if meta_obj && meta_obj.metaable
   end
   
   def self.get_deepest_item items=[]
@@ -80,46 +58,8 @@ class Admin::MenuItem < Cms::Manager
     hsh
   end
 
-  def remove_content tables=nil,menuable=nil
-    public_menus=tables || Admin::Menu.public_menus(self.menu.module_name)
-    ids=[]
-    unless menuable
-      Admin::MenuItem.find(:all,:conditions=>[
-          "menu_id IN (?) AND menuable_type=? AND menuable_id=?",public_menus,self.menuable_type,self.menuable_id
-        ]).each{|item|ids+=item.remove_content(public_menus,self)}
-    end
-    ids<<self.id
-    unless menuable
-      self.update_attributes!(:menuable_id=>nil, :menuable_type=>nil, :is_published=>false)
-    else
-      self.update_attributes!(:menuable_id=>menuable.id, :menuable_type=>menuable.class.to_s,:is_published=>false)
-    end
-    ids
-  end
-
-  # Pievieno publiskās izvēlnes zaram saturu no satura izvēlnes zara,
-  # ja saturs nav, t.i., <code>id=0</code>, tad tiek saglabāta reference uz atbilstošo
-  # satura koka zaru. Visiem zariem šajā publiskajā izvēlnē, kam ir šāda pati saite (uz objektu, vai zara reference)
-  # tiek tā <b>noņemta</b>, lai saglabātu loģiku kokā.<br/>
-  # Tiek atgriezti zari, kam ir noņemts saturs!
-  def add_public_content content_item,name=nil
-    deleted_content_items=[]
-    if content_item.menuable_id.to_i==0
-      id=content_item.id
-      type="Admin::MenuItem"
-    else
-      id=content_item.menuable_id
-      type=content_item.menuable_type
-    end
-    published=content_item.is_published
-    if self.menu.menu_type=="public_web"
-      Admin::MenuItem.find(:all,:conditions=>["menu_id=? AND menuable_type=? AND menuable_id=?",self.menu_id,type,id]).each do |item|
-        item.remove_content #noņemu visiem saturu, kas vienāds ar šo šajā menu
-        deleted_content_items<<item unless self==item
-      end
-      self.update_attributes(:menuable_type=>type,:menuable_id=>id,:is_published=>published,:name=>name ? name : self.name) # pievienoju šim elementam šo saturu
-    end
-    deleted_content_items
+  def remove_content
+    self.update_attributes!(:menuable_id=>nil, :menuable_type=>nil, :is_published=>false)
   end
 
   # Mainoties <i>Satura koka</i> piesaistītajam objektam, tiek mainīti piesaistītie objekti<br/>
@@ -134,19 +74,24 @@ class Admin::MenuItem < Cms::Manager
   #   tiek izveidota sasaiste uz <code>Cms::News</code> klases objektu ar id 1
   #
   def change_content new_type,new_id,published=nil
-    public_menus=Admin::Menu.public_menus(self.menu.module_name)
-    if new_id.to_i>0
-      menu_items=Admin::MenuItem.find(:all,:conditions=>[
-          "menu_id in (?) AND ((menuable_type=? AND menuable_id=?) OR (menuable_type=? AND menuable_id=?))",
-          public_menus,self.menuable_type,self.menuable_id,"Admin::MenuItem",self.id
-        ])
-      menu_items.each{|item|
-        item.update_attributes(:menuable_type=>new_type,:menuable_id=>new_id,:is_published=>published)
-      }
-    end
     self.update_attributes(:menuable_type=>new_type,:menuable_id=>new_id,:is_published=>published)
   end
-  
+
+  def get_url
+    if self.menuable_type && self.menuable
+      if self.menuable_type=="Admin::Action"
+        controller=self.menuable.controller
+        action=self.menuable.action
+      elsif self.menuable_type!="Url"
+        controller=self.menuable_type.underscore
+        action="edit"
+      else
+        url=self.menuable.name
+      end
+    end
+    return controller,action,url
+  end
+
   def branch_data id=nil
     unless id
       id=self.self_and_ancestors.inject(""){|result,item|
@@ -154,22 +99,13 @@ class Admin::MenuItem < Cms::Manager
       }
       id=id[0..id.size-2]
     end
-    controller=self.menuable_type ?
-      (self.menuable_type=="Admin::Action" && self.menuable ?
-        self.menuable.controller :
-        (self.menuable_type=="Admin::MenuItem" && self.menuable ?
-          self.menuable.menuable_type.underscore :
-          self.menuable_type.underscore)
-    ):""
-    action=self.menuable_type=="Admin::Action" && self.menuable ? self.menuable.action :
-      (self.menuable_type=="Admin::MenuItem" && self.menuable ? "create" :
-        (self.menuable_id.to_i>0 ? "update" : (self.menuable_type.to_s.size>0 ? "create" : ""))
-    )
+    controller,action,url=self.get_url
     {
       :title=>self.name,
       :id=>id,
-      :controller=>controller,
-      :action=>action,
+      :controller=>controller || "",
+      :action=>action || "",
+      :url=>url|| "",
       :menuable_type=>self.menuable_type,
       :menuable_id=>self.menuable_id,
       :published=>self.is_published,
@@ -216,14 +152,6 @@ class Admin::MenuItem < Cms::Manager
   #TODO var rasties gļuki ja kāds piešķir vērtību is_published un nesaglabā sākotnējo elementu t.i. self
   def is_published=(is_published)
     if self.menu && self.menu.menu_type=='web' # doma tātad ka published visiem līdzīgajiem itemiem mainās tikai tad kad mainās content
-      #bet ja mainās citiem menu tad nemainās content un citiem menu
-      if !(self.menuable_type.nil? || self.menuable_id.nil?)
-        items = Admin::MenuItem.find(:all, :conditions=>["menuable_type=? AND menuable_id=? AND menu_items.id!=?",self.menuable_type,self.menuable_id,self.id])
-        for item in items
-          item.is_published_self_only(is_published)
-          item.save
-        end
-      end
       is_published_self_only(is_published)
     else
       is_published_self_only(is_published)
@@ -266,38 +194,12 @@ class Admin::MenuItem < Cms::Manager
   end
   private
 
-  def create_public_item name,parent_id,position
-    public_item=Admin::MenuItem.create!(
-      :menu_id=>self.menu_id,
-      :name=>name,
-      :menuable_id=>0,
-      :parent_id=>parent_id
-    )
-    case position
-    when "child"
-      public_item.move_to_child_of(self)
-    when "prev_sibling"
-      public_item.move_to_left_of(self)
-    when "next_sibling"
-      public_item.move_to_right_of(self)
-    end
-    public_item.root.renumber_full_tree
-    public_item
-  end
-  # Ja tiek izdzēsts satura koka zars, tad visiem tam piesaistītajiem zariem un zariem ar
-  # atsauci uz šo zaru publiskajās izvēlnēs tiek ņoņemts saturs vai atsauce, lai saglabātu
-  # integritāti, un vienmēr publiskās izvēlnes zarams būtu sasaiste ar reālu zaru satura kokā
-  def remove_links_and_references
-    if self.menu.menu_type=="web"
-      Admin::MenuItem.find(:all,:conditions=>[
-          "menu_id IN (?) AND ((menuable_type=? AND menuable_id=?) OR (menuable_type=? AND menuable_id=?))",
-          Admin::Menu.public_menus(self.menu.module_name),self.menuable_type,self.menuable_id,"Admin::MenuItem",self.id]).each{|item|
-        item.remove_content
-      }
-
+  def allow_branch_name_only_on_first_level
+    unless self.level==1
+      self.branch_name=nil
     end
   end
-
+  
   def set_stamps
     if @changed_attributes.size>0
       self.updated_at=Time.now#now.strftime("%Y-%m-%d %H:%M:%S")

@@ -8,7 +8,9 @@ ITH.Tree=function(container,configuration,data){
     this.buttons=[]
     this.config=configuration
     this.TAB_LENGTH=7;
-    this.DOMMenuRoot=ITH.Element.create("div",{className:"very-main-menu-container"})
+    this.DOMMenuRoot=ITH.Element.create("div",{
+        className:"very-main-menu-container"
+    })
     this.DOMRoot.appendChild(this.DOMMenuRoot)
 }
 
@@ -29,7 +31,9 @@ ITH.Tree.prototype={
         return this.buttons[this.buttons.length-1]
     },
     create_root_node:function(){
-        var root_el=ITH.Element.create("div",{className:"menu_tree"})
+        var root_el=ITH.Element.create("div",{
+            className:"menu_tree"
+        })
         var sibling_el=ITH.Element.create("div",{
             className:"menu_sibling",
             innerHTML:"&nbsp"
@@ -38,9 +42,15 @@ ITH.Tree.prototype={
             className:"menu_container",
             id:this.container+"_container"
         })
-        var root_tools_el=ITH.Element.create("div",{className:"menu_tools"})
-        var root_content_el=ITH.Element.create("div",{className:"menu_content"})
-        var root_subtree_el=ITH.Element.create("div",{className:"menu_tree"})
+        var root_tools_el=ITH.Element.create("div",{
+            className:"menu_tools"
+        })
+        var root_content_el=ITH.Element.create("div",{
+            className:"menu_content"
+        })
+        var root_subtree_el=ITH.Element.create("div",{
+            className:"menu_tree"
+        })
         
         root_container_el.appendChild(root_tools_el)
         root_container_el.appendChild(root_content_el)
@@ -56,8 +66,8 @@ ITH.Tree.prototype={
             tree_element:root_subtree_el,
             sibling:sibling_el,
             tree:[{
-                    parent:root_subtree_el
-                }]
+                parent:root_subtree_el
+            }]
         }
     },
     render: function() {
@@ -93,7 +103,7 @@ ITH.Tree.prototype={
         main_config.container.branch=this.tree[0];
         //Izveidoju pašu koku iekš saknes zara
         this.create_tree()
-        /* this.buttons[0].tree=this
+    /* this.buttons[0].tree=this
         this.buttons[1].tree=this
         this.buttons[0].onclick=function(){
             this.tree.expand_collapse(this.tree.tree[0].tree,true,false);
@@ -111,9 +121,9 @@ ITH.Tree.prototype={
             tree.tree_element.removeChild(tree.tree_element.childNodes[0])
         }
         this.tree[0].tree=[{
-                parent:this.tree[0].tree_element,
-                branch:this.tree[0]
-            }]
+            parent:this.tree[0].tree_element,
+            branch:this.tree[0]
+        }]
     },
     create_tree:function(){
         var current_deep=0
@@ -270,7 +280,11 @@ ITH.Branch.prototype={
         })
         this.container.style.paddingLeft=(this.root.TAB_LENGTH*this.deep)+"px"
         //Izveidoju kaimiņa elementu, paredzēts lai tajā ievietotu elementu
-        this.sibling=ITH.Element.create("div",{className:"menu_sibling",innerHTML:"&nbsp;",id:this.root.container+"_sibling_"+this.id})
+        this.sibling=ITH.Element.create("div",{
+            className:"menu_sibling",
+            innerHTML:"&nbsp;",
+            id:this.root.container+"_sibling_"+this.id
+            })
         this.sibling.is_sibling=true
         this.sibling.root=this.root
         this.sibling.style.marginLeft=(this.root.TAB_LENGTH*this.deep)+"px";
@@ -280,13 +294,19 @@ ITH.Branch.prototype={
         this.parent.appendChild(this.container);
         
         //pievienoju rīku kontaineri un rīkus
-        this.tools=ITH.Element.create("div",{className:"menu_tools"})
+        this.tools=ITH.Element.create("div",{
+            className:"menu_tools"
+        })
         this.add_tools()
         //pievienoju satura kontaineri
-        this.content=ITH.Element.create("div",{className:"menu_content"})
+        this.content=ITH.Element.create("div",{
+            className:"menu_content"
+        })
         this.text=this.add_text_node();
         this.arrow=this.add_arrow();//Pievieno bultiņu (tukšu)
-        this.tree_element=ITH.Element.create("div",{className:"menu_tree"})
+        this.tree_element=ITH.Element.create("div",{
+            className:"menu_tree"
+        })
         //pievienoju funkcionālos elementus kontainerim
         this.container.appendChild(this.tools)
         this.container.appendChild(this.content);
@@ -302,9 +322,9 @@ ITH.Branch.prototype={
         //Vienmēr izveidoju jaunajam zaram savu koku ar pirmo elementu, ar vienu atribūtu
         //vecāka elementu, kas norāda vecāku,(NAV DOM elements)
         this.tree=[{
-                branch:this,
-                parent:this.tree_element
-            }];
+            branch:this,
+            parent:this.tree_element
+        }];
         this.toggleSubtree("empty")
         this.container.branch=this;
     },
@@ -342,7 +362,11 @@ ITH.Branch.prototype={
      *  2-atvērts
      */
     toggleSubtree:function(state){
-        var state_names={"empty":0,"closed":1,"opened":2}
+        var state_names={
+            "empty":0,
+            "closed":1,
+            "opened":2
+        }
         for(var i=0;i<3;i++){
             this.arrow.childNodes[i].style.display="none";
         }
@@ -352,10 +376,18 @@ ITH.Branch.prototype={
     //Pievienot zarama bultiņas 
     //Vienlaikus tiek ielasītas visas trīs bultiņas lai palielinātu ātrdarbību pēcāk
     add_arrow:function(){
-        var arrow=ITH.Element.create("span",{className:"ith_tree_arrow"})
-        var a_blank=ITH.Element.create("img",{src:ITH.Tree.arrows.blank})
-        var a_e=ITH.Element.create("img",{src:ITH.Tree.arrows.east})
-        var a_s=ITH.Element.create("img",{src:ITH.Tree.arrows.south})
+        var arrow=ITH.Element.create("span",{
+            className:"ith_tree_arrow"
+        })
+        var a_blank=ITH.Element.create("img",{
+            src:ITH.Tree.arrows.blank
+            })
+        var a_e=ITH.Element.create("img",{
+            src:ITH.Tree.arrows.east
+            })
+        var a_s=ITH.Element.create("img",{
+            src:ITH.Tree.arrows.south
+            })
         arrow.appendChild(a_blank);
         arrow.appendChild(a_e);
         arrow.appendChild(a_s);
@@ -412,14 +444,14 @@ ITH.extend(ITH.DraggableBranch, YAHOO.util.DDProxy, {
         // Show the proxy element and animate it to the src element's location
         Dom.setStyle(proxy, "visibility", "");
         var proxyElement = new YAHOO.util.Motion( 
-        proxy, { 
-            points: { 
-                to: Dom.getXY(srcEl)
-            }
-        }, 
-        0.2, 
-        YAHOO.util.Easing.easeOut 
-    )
+            proxy, {
+                points: {
+                    to: Dom.getXY(srcEl)
+                }
+            },
+            0.2,
+            YAHOO.util.Easing.easeOut
+            )
         var proxyid = proxy.id;
         var thisid = this.id;
         // Hide the proxy and show the source element when finished with the animation
@@ -490,16 +522,16 @@ ITH.extend(ITH.DraggableBranch, YAHOO.util.DDProxy, {
         // or it was dropped on the current location of the source element.
         var elDOM=this.getEl();
         var destEl = Dom.get(id);
-        if(elDOM.branch.root.parentMenu && destEl.branch.root.childMenu || (elDOM.branch.root.childMenu && destEl.is_sibling && destEl.root.parentMenu)){
-            return false
-        }else{
+        //        if(elDOM.branch.root.parentMenu && destEl.branch.root.childMenu || (elDOM.branch.root.childMenu && destEl.is_sibling && destEl.root.parentMenu)){
+        //            return false
+        //        }else{
             var current_deep=YAHOO.util.DragDropMgr.interactionInfo.drop.length;
             var className=destEl.className.toLowerCase();
-            if(elDOM.branch.root.childMenu && destEl. branch.root.parentMenu){
-                if(current_deep==destEl. branch.deep){
-                    elDOM.branch.root.add_content(elDOM.branch.id,destEl.branch.id,this.get_related_and_status(destEl.branch))
-                }
-            }else{
+//            if(elDOM.branch.root.childMenu && destEl. branch.root.parentMenu){
+//                if(current_deep==destEl. branch.deep){
+//                    elDOM.branch.root.add_content(elDOM.branch.id,destEl.branch.id,this.get_related_and_status(destEl.branch))
+//                }
+//            }else{
                 if(current_deep==destEl.branch.deep){
                     //Ievietošana virs vai zem
                     if(className=='menu_sibling' || className=='menu_sibling colored'){
@@ -559,7 +591,7 @@ ITH.extend(ITH.DraggableBranch, YAHOO.util.DDProxy, {
                         }
                     }
                 }
-            }
+            //}
             var real=false;
             if(className=='menu_container' || className=='menu_container colored'){
                 destEl.className="menu_container";
@@ -573,7 +605,7 @@ ITH.extend(ITH.DraggableBranch, YAHOO.util.DDProxy, {
                 this.branch.checkParentTree(this.branch.tree)
             }
             
-        }
+       // }
     },
     onDragOut:function(e,id){
         var destEl = Dom.get(id);
@@ -592,7 +624,7 @@ ITH.extend(ITH.DraggableBranch, YAHOO.util.DDProxy, {
         var destEl = Dom.get(id);
         // if((srcEl.branch.root.parentMenu && destEl.branch.root.childMenu) || (srcEl.branch.root.childMenu && destEl.is_sibling && destEl.root.parentMenu)) return false
         var deep=YAHOO.util.DragDropMgr.interactionInfo.over.length
-        if(destEl.branch.root.childMenu) deep-=1
+       // if(destEl.branch.root.childMenu) deep-=1
         var className=destEl.className.toLowerCase()
         if ((destEl &&  destEl.branch && deep==destEl.branch.deep && className == "menu_container" )|| className == "menu_sibling") {
             if (className=="menu_container"){
