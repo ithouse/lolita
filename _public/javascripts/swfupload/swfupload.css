@@ -25,17 +25,17 @@
 	overflow: hidden;
 }
 /* Error */
-.red {
+#divFileProgressContainer .red {
 	color: #FFEBEB;
 }
 
 /* Current */
-.green {
+#divFileProgressContainer .green {
 	color: #EBFFEB;
 }
 
 /* Complete */
-.blue {
+#divFileProgressContainer .blue {
 	color: #F0F5FF;
 }
 
@@ -43,7 +43,6 @@
   font-family: Arial, verdana;
   font-weight: normal;
 	font-size: 10pt;
-	font-weight: 700;
 	color: #555;
 	width: 323px;
 	height: 14px;
@@ -57,7 +56,7 @@
 .progressBarError {
 	font-size: 0;
 	width: 0%;
-	height: 2px;
+	height: 4px;
 	background-color: #ADEC6C;
 	margin-top: 2px;
 }
@@ -75,7 +74,8 @@
 }
 
 .progressBarStatus {
-	margin-top: 2px;
+  display: none;
+	margin-top: 4px;
 	width: 337px;
 	font-size: 10pt;
 	font-family: Arial;
@@ -126,27 +126,6 @@ div.flash {
     -moz-border-radius-bottomright : 5px;
     -webkit-border-bottom-right-radius : 5px;
 
-}
-
-button,
-input,
-select,
-textarea { 
-	border-width: 1px; 
-	margin-bottom: 10px;
-	padding: 2px 3px;
-}
-
-
-
-input[disabled]{ border: 1px solid #ccc } /* FF 2 Fix */
-
-
-label { 
-	width: 150px; 
-	text-align: right; 
-	display:block;
-	margin-right: 5px;
 }
 
 #btnSubmit { margin: 0 0 0 155px ; }
