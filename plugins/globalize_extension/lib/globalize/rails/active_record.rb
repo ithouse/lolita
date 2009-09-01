@@ -7,10 +7,13 @@ module ActiveRecord # :nodoc:
 
     # Like the regular #add, but automatically translates the error message.
     # Takes an extra +num+ argument to support pluralization.
-    def add(attribute, msg = @@default_error_messages[:invalid], num = nil)
-      @errors[attribute.to_s] = [] if @errors[attribute.to_s].nil?
-      @errors[attribute.to_s] << [ msg, num ]
-    end
+
+#VALDIS rails 2.3.3 pats tiek galā ar kļūdu paziņojumu tulkošanu
+
+#    def add(attribute, msg = @@default_error_messages[:invalid], num = nil)
+#      @errors[attribute.to_s] = [] if @errors[attribute.to_s].nil?
+#      @errors[attribute.to_s] << [ msg, num ]
+#    end
 
     # Like the regular add_to_base, but automatically translates the error message.
     # Takes an extra +num+ argument to support pluralization.

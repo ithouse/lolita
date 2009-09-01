@@ -40,29 +40,30 @@ class Admin::User < Cms::Base
   end
 
   def self.access_to_area?(ses,area=false)
-    #FIXME: jaizņem PublicUser un SysteUser, jauztaisa cits veids, kā noteikt piederību
+    return false unless ses[:user]
     area=:public unless area
     if area==:public
-      (LOLITA_ALLOW[:system_in_public] && ses[:p_user].is_a?(Admin::SystemUser)) ||
-        (LOLITA_ALLOW[:rewrite] && ses[:user].is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
-      ses[:p_user].is_a?(Admin::PublicUser)
+      user = ses[:user][:user_class].find_by_id(ses[:user][:user_id])
+      (LOLITA_ALLOW[:system_in_public] && user.is_a?(Admin::SystemUser))||
+        (LOLITA_ALLOW[:rewrite] && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
+      user.is_a?(Admin::PublicUser)
     elsif area==:system
     end
   end
   
-  def self.authenticate_in_controller action,controller,users={},options={},roles=nil
+  def self.authenticate_in_controller action,controller,user=nil,options={},roles=nil
     allowed=false
     action=action.to_sym
     Admin::User.current_user=nil
     if action_in?(action,options[:public])
       allowed=true
       Admin::User.area=:public
-    elsif !action_in?(action,options[:all_public]) && users[:system] && users[:system].is_a?(Admin::SystemUser) && users[:system].is_real_user?
-      Admin::User.current_user=users[:system]
+    elsif !action_in?(action,options[:all_public]) && user && user.is_a?(Admin::SystemUser) && user.is_real_user?
+      Admin::User.current_user=user
       Admin::User.area=:system
-      allowed=users[:system].is_admin? || action_in?(action,options[:all]) || ((!except?(options,action)||only?(options,action)) && users[:system].has_access?(roles,action,controller,options))
-    elsif self.access_to_area?({:p_user=>users[:public],:user=>users[:system]}) && users[:public].is_real_user?
-      Admin::User.current_user=users[:public]
+      allowed=user.is_admin? || action_in?(action,options[:all]) || ((!except?(options,action)||only?(options,action)) && user.has_access?(roles,action,controller,options))
+    elsif self.access_to_area?({:user => user}) && user.is_real_user?
+      Admin::User.current_user=user
       allowed=action_in?(action,options[:all_public])
       Admin::User.area=:public_system
     end

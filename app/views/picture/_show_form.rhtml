@@ -1,4 +1,4 @@
-<form method="POST" enctype="multipart/form-data"  id="picture_delete_thumb_form">
+<% form_tag "", :multipart => true, :id => "picture_delete_thumb_form" do %>
   <% cfg=picture_cfg(show_form) %>
   <% unless cfg[:read_only] %>
     <input type="button" value="<%=t(:"actions.destroy")%>" id="picture_delete_thumb_submit" class="btn" style="float:left" />
@@ -10,5 +10,5 @@
     <%= render :partial=>'/picture/thumb_list', :object=>cfg %>
   </div>
   <%= picture_cfg_form_fields show_form,:excluded=>[:pictures]%>
-</form>
+<% end %>
 <%= auto_uploadable '/picture/destroy','picture_delete_thumb_form','picture_delete_thumb_submit','click','picture_list_container',{:type=>"picture"} %>

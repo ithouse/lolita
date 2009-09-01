@@ -1,5 +1,5 @@
 module PictureHelper
-
+  
   def first_picture(parent,version=nil,attributes={})
     if parent
       picture=Picture.by_parent(parent.class.to_s,parent.id).main.first

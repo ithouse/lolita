@@ -18,6 +18,12 @@ namespace :lolita do
       FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/initializers/lolita_init.rb","#{RAILS_ROOT}/config/initializers/lolita_init.rb")
       puts "[new] config/initializers/lolita_init.rb"
     end
+
+    # tinymce blank css file
+    unless File.exists?("#{RAILS_ROOT}/public/stylesheets/tinymcestyle.css")
+      File.open("#{RAILS_ROOT}/public/stylesheets/tinymcestyle.css", "w")
+      puts "[new] public/stylesheets/tinymcestyle.css"
+    end
   end
 end
 

@@ -14,12 +14,12 @@ class Admin::Menu < Cms::Manager
   named_scope :web_menu,lambda{|namespace|
     {:conditions=>["module_name=? AND menu_type=?",namespace,"web"]}
   }
-  named_scope :public_menus,lambda{|namespace|
-    {:conditions=>["module_name=? AND menu_type=?",namespace,"public_web"]}
-  }
-  named_scope :public_menu,lambda{|namespace,name|
-    {:conditions=>["module_name=? AND menu_name=?",namespace,name]}
-  }
+#  named_scope :public_menus,lambda{|namespace|
+#    {:conditions=>["module_name=? AND menu_type=?",namespace,"public_web"]}
+#  }
+#  named_scope :public_menu,lambda{|namespace,name|
+#    {:conditions=>["module_name=? AND menu_name=?",namespace,name]}
+#  }
 
   def action_item(params)
     actions=Admin::Action.find(:all,:conditions=>["controller=? AND action=?","/#{params[:controller]}",params[:action]])
@@ -271,7 +271,7 @@ class Admin::Menu < Cms::Manager
     else
       contr_object=@existing_controllers[controller.camelize]
     end
-    Admin::User.authenticate_in_controller(action,controller,{:system=>Admin::User.current_user},contr_object.permissions)
+    Admin::User.authenticate_in_controller(action,controller,Admin::User.current_user,contr_object.permissions)
   end
   
   def create_new_tree(tree)
