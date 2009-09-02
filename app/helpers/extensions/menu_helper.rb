@@ -125,17 +125,17 @@ module Extensions::MenuHelper
         meta_url=meta_obj.url if meta_obj
         2
       end
-      render :partial=>"admin/menu_item/content_menu_editor", :locals=>{
-        :url=>url,
-        :meta_url=>meta_url,
-        :current=>current,
-        :admin_menu=>{
-          :actions=>options_for_select(allowed_actions||[],action),
-          :models=>options_for_select(get_tables_for_menu(menu_id),current_model),
-          :menu_item_id=>menu_item ? menu_item.id : 0
-        }
-      }
     end
+    render :partial=>"admin/menu_item/content_menu_editor", :locals=>{
+      :url=>url,
+      :meta_url=>meta_url,
+      :current=>current,
+      :admin_menu=>{
+        :actions=>options_for_select(allowed_actions||[],action),
+        :models=>options_for_select(get_tables_for_menu(menu_id),current_model),
+        :menu_item_id=>menu_item ? menu_item.id : 0
+      }
+    }
     # if
     #    current_table=menu_item.menuable_type.underscore if menu_item && menu_item.menuable_type
     #    incl=[['Sākums','home']]
