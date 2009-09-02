@@ -17,6 +17,13 @@ module Extensions
         #rescue
         #end
       end
+      def meta_change_language
+        handle_params
+        @object=object.find(params[:id])
+        @metadata=MetaData.by_metaable(@object.id,@config[:object_name])
+        @metadata.switch_language(params[:meta_translation_locale]) if @metadata
+        render :partial=>"/managed/meta_information", :layout=>false,:locals=>{:tab=>params[:tab]}
+      end
     end
   end
 end

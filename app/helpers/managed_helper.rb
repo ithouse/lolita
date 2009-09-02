@@ -64,7 +64,7 @@ module ManagedHelper
       else
         case tab[:type]
         when :metadata
-          yield %(#{start_html}#{render(:partial=>"/managed/meta_information")}#{end_html}) if options[:in_form]
+          yield %(#{start_html}#{render(:partial=>"/managed/meta_information",:locals=>{:tab=>index})}#{end_html}) if options[:in_form]
         when :translate
           yield %(#{start_html}#{render(:partial=>"/managed/translate",:locals=>{:tab=>index})}#{end_html}) if is_translatable?(options)
         when :files,:audio,:video

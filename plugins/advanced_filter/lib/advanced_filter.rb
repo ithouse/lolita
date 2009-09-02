@@ -584,7 +584,6 @@ module ITHouse
 
       end
 
-      # This module provides instance methods for an enhanced acts_as_content_item mixin. Please see the README for background information, examples, and tips on usage.
       module InstanceMethods
 
       end
@@ -610,8 +609,8 @@ module ITHouse
       module ControllerInstanceMethods
         def set_variables
           begin
-          @module=self.class.to_s.gsub(/Controller/,"")
-          @module=@module.constantize
+            @module=self.class.to_s.gsub(/Controller/,"")
+            @module=@module.constantize
           rescue
           end
         end

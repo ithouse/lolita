@@ -17,3 +17,66 @@
     <input type="button"  onclick="YAHOO.cms.advanced_filter_dialog.hide()" class="btn dialog-button" value="Atcelt" />
   </div>
 </div>
+<div id="wait" style="display:none;">
+  <div id="wait_dialog" class="containerPlus"
+       width="265"
+       buttons=""
+       style="top:35%;left:35%;position:fixed"
+       skin="white">
+    <div class="no">
+      <div class="ne">
+        <div class="n"><%=t(:"dialogs.wait.title")%></div>
+      </div>
+      <div class="o">
+        <div class="e">
+          <div class="c">
+            <div class="content"><img src="/lolita/images/icons/ajax-loader.gif" alt="........." /></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="so">
+          <div class="se">
+            <div class="s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="warning" style="display:none;position:fixed;
+     top:0;
+     left:0px;
+     width:100%;
+     height:100%;
+     display:none;
+     background:url(/lolita/images/jquery/elements/screenBgnd.gif)">
+  <div id="warning_dialog" class="containerPlus"
+       width="265"
+       buttons=""
+       icon="alert.png"
+       style="top:35%;left:35%;position:fixed"
+       skin="black">
+    <div class="no">
+      <div class="ne">
+        <div class="n"><%=t(:"dialogs.warning.title")%></div>
+      </div>
+      <div class="o">
+        <div class="e">
+          <div class="c">
+            <div class="content">
+              <%= t(:"dialogs.warning.content text") %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="so">
+          <div class="se">
+            <div class="s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
