@@ -62,7 +62,7 @@ module Extensions::SingleFieldHelper
         }
       end
       #TODO ielikt speciālās funkcijas atbilstošajos modeļos
-      out<<eval("#{options[:function]}(#{instance_variable_get("@#{object}").id || 0},'#{options[:field]}',#{object},#{options[:args] ? options[:args].join(",") : "1"})")
+      out<<(eval("#{options[:function]}(#{instance_variable_get("@#{object}").id || 0},'#{options[:field]}',#{object},#{options[:args] ? options[:args].join(",") : "1"})")).to_s
     end
     out
   end

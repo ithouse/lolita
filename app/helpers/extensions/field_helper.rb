@@ -109,7 +109,7 @@ module Extensions::FieldHelper
     if tab.nil?
       if options[:with_object]
         @config[:tabs].inject([]){|result,tab|
-          result<<[tab[:object] || :object,tabs_fields(tab,options)]
+          result<<[tab[:object] || (tab[:type] == :translate ? :translation : :object),tabs_fields(tab,options)]
         }
       else
         @config[:tabs].inject([]){|result,tab|
