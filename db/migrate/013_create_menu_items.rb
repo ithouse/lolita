@@ -33,7 +33,7 @@ class CreateMenuItems < ActiveRecord::Migration
            "VALUES('Jauna loma','Admin::Action',8,1,5,7,8)")
     insert("INSERT INTO menu_items (name,menuable_type,menuable_id,menu_id,parent_id,lft,rgt)"+
            "VALUES('Draudzīgās adreses','Admin::Action',9,1,1,18,19)")
-    if LOLITA_TRANSLATION
+    if Lolita.config.translation
       insert("INSERT INTO menu_items (name,menuable_type,menuable_id,menu_id,parent_id,lft,rgt)"+
              "VALUES('Tulkojumi','Admin::Action',10,1,1,20,21)")
     end

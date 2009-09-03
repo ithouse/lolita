@@ -13,7 +13,7 @@ class CreateActions < ActiveRecord::Migration
     insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/user','signup')")
     insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/role','create')")
     insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/url_scope','list')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/translate','list')") if LOLITA_TRANSLATION
+    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/translate','list')") if Lolita.config.translation
   end
 
   def self.down
