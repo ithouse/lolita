@@ -13,7 +13,7 @@
     show_notice('<%=flash[:notice]%>')
   <% end %>
   $("#meta_flash_notice").fadeOut(2500)
-  observe_languages("#meta_translation_locale",<%=tab.to_i%>,"<%=url_for(:action=>"meta_change_language",:locale=>nil)%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
+  observe_languages("#meta_translation_locale",<%=tab.to_i%>,"<%=url_for(:action=>"meta_change_language")%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
   //]]>
   </script>
 <% end %>
