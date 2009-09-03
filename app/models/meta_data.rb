@@ -4,6 +4,7 @@ class MetaData < Cms::Base
   #validates_uniqueness_of   :url, :scope => [:metaable_type], :case_sensitive => false ,:allow_blank=>true
   #validates_presence_of :title, :tags
   before_save :normalize_url
+  before_save :singularize_metaable
   translates :title,:url,:tags,:description
   #TODO test
   def self.find_by_object object
@@ -71,11 +72,7 @@ class MetaData < Cms::Base
     end
   end
 
-  def delete_older
-    md=MetaData.find(:all,:conditions=>["metaable_id=? AND metaable_type=?",self.metaable_id,self.metaable_type])
-    md.each{|item|
-      item.destroy
-      MetaData.delete(item.id)
-    }
+  def singularize_metaable
+    MetaData.destroy_all(["metaable_type=? AND metaable_id=? AND meta_datas.id!=?",self.metaable_type,self.metaable_id,self.id])
   end
 end
