@@ -17,7 +17,7 @@
       '/lolita/stylesheets/admin/current',
       '/lolita/stylesheets/mbContainer'
     %>
-    <%= stylesheet_link_tag 'screen', '/lolita/javascripts/swfupload/swfupload', :media => 'screen' %>
+    <%= stylesheet_link_tag '/lolita/javascripts/swfupload/swfupload', :media => 'screen' %>
 
     <link rel="stylesheet" type="text/css" media="screen" href="/lolita/javascripts/yui/build/assets/skins/sam/container.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/lolita/javascripts/yui/build/autocomplete/assets/skins/sam/autocomplete.css" />
@@ -61,6 +61,7 @@
     <%#= javascript_include_tag '/lolita/javascripts/highslide/highslide-with-html' %>
   </head>
   <body class=" yui-skin-sam" <%= 'onunload="GUnload()"' if LOLITA_GMAPS_KEY %>>
+    <div id="dynamic_notice" style="display:none;position:fixed;border:1px solid gray;border-top:none;background-color:yellow;width:250px;"></div>
     <div id="body" >
       <%= render :partial=>"cms/header" %>
       <div class="bigbox" id="content">

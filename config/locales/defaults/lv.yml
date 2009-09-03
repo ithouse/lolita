@@ -107,8 +107,8 @@ lv:
     errors:
       template:
         header:
-          one:    "Dēļ 1 kļūdas šis {{model}} netika saglabāts"
-          other:  "Dēļ {{count}} kļūdām šis {{model}} netika saglabāts"
+          one:    "1 kļūdas dēļ šis {{model}} netika saglabāts"
+          other:  "{{count}} kļūdu dēļ šis {{model}} netika saglabāts"
         body: "Problēmas ir šajos ievades laukos:"
       messages:
         inclusion: "nav iekļauts sarakstā"

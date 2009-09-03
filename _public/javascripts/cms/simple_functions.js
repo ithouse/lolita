@@ -440,10 +440,24 @@ function save_metadata_translation(fields,tab,url,params){
         dataType:"html",
         data:params+field_data,
         success:function(html){
-            $("#tab"+tab+"container".html(html));
+            $("#tab"+tab+"container").html(html);
         },
         complete:function(){
             ITH.Cms.wait.hide()
         }
     })
+}
+function show_notice(text,period){
+    var $n=$("#dynamic_notice")
+    $n.html(text);
+    $n.css({"left":$(document).width()/2-($n.width()/2),"top":-$n.height()})
+    $n.show();
+    $n.animate({"top":"0px"},period||350,"linear",function(){
+        setTimeout("hide_notice()",2000)
+    })
+    
+}
+function hide_notice(){
+    var $n=$("#dynamic_notice")
+    $n.animate({"top":"-"+($n.height()+1)+"px"},350,"linear",function(){$n.hide();})
 }

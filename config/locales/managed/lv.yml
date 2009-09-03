@@ -1,4 +1,11 @@
 lv:
+  metadata:
+    translation saved: Tulkojums saglabāts
+    fields:
+      url: Adrese(URL)
+      name: Nosaukums
+      keywords: Atslēgvārdi
+      description: Apraksts
   actions:
     save translation: Saglabāt tulkojumu
   dialogs:

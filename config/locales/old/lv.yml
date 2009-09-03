@@ -105,11 +105,6 @@ lv:
     not selected: -nav izvēlēts-
   translate:
     language: Valoda
-  metadata:
-    url: Adrese(URL)
-    name: Nosaukums
-    keywords: Atslēgvārdi
-    description: Apraksts
   user:
     create: Izveidot lietotāju
     edit: Labot lietotāju

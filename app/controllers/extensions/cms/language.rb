@@ -19,6 +19,7 @@ module Extensions
       end
       def meta_change_language
         handle_params
+        flash[:notice]=nil
         @object=object.find(params[:id])
         @metadata=MetaData.by_metaable(@object.id,@config[:object_name])
         @metadata.switch_language(params[:meta_translation_locale]) if @metadata

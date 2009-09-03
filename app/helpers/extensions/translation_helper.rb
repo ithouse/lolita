@@ -20,25 +20,25 @@ module Extensions::TranslationHelper
     select_tag(id, options_for_select(languages, current),:class=>"select")
   end
 
-  def t key
+  def t key,options={}
     # in Lolita's tempaltes you can use translations the same way as in the main project
     # with shortcuts like ".login_name" what will be the same as "lolita.admin.user.login.login_name"
 
     if key.to_s.first == "."
       begin
         # first try normal call
-        I18n.t(template.path_without_format_and_extension.gsub(%r{/_?}, ".") + key.to_s, :raise => true)
+        I18n.t(template.path_without_format_and_extension.gsub(%r{/_?}, ".") + key.to_s, {:raise => true}.merge(options))
       rescue I18n::MissingTranslationData
         # try with lolita's prefix
         begin
-          I18n.t("lolita." + template.path_without_format_and_extension.gsub(%r{/_?}, ".") + key.to_s, :raise => true)
+          I18n.t("lolita." + template.path_without_format_and_extension.gsub(%r{/_?}, ".") + key.to_s, {:raise => true}.merge(options))
         rescue I18n::MissingTranslationData
           # call normal again and and return exception
-          I18n.t(template.path_without_format_and_extension.gsub(%r{/_?}, ".") + key.to_s)
+          I18n.t(template.path_without_format_and_extension.gsub(%r{/_?}, ".") + key.to_s,options)
         end
       end
     else
-      I18n.t key
+      I18n.t key,options
     end
   end
 end

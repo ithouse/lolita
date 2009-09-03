@@ -3,7 +3,19 @@ module Extensions
     module HandleMetadata
 
       def save_metadata_translation
-
+        handle_params
+        @object=object.find(params[:id])
+        unless @metadata=MetaData.by_metaable(@object.id,@config[:object_name])
+          @metadata=MetaData.create!
+        end
+        #raise Globalize::Wrong language error if first language switched and then saved
+        # work good if block given
+        @metadata.switch_language(params[:meta_translation_locale]) do
+          @metadata.update_attributes!(params[:metadata])
+        end
+        @metadata.switch_language(params[:meta_translation_locale]) #this switch object lang 
+        flash[:notice]=t(:"metadata.translation saved")
+        render :partial=>"/managed/meta_information", :locals=>{:tab=>params[:tab]}
       end
       
       def handle_metadata

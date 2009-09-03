@@ -11,15 +11,15 @@ class MetaData < Cms::Base
   end
   
   def self.by_metaable id,class_name
-    conditions=["metaable_type=?",class_name.to_s.camelize]
+    conditions=["metaable_type=? ",class_name.to_s.camelize]
     if id.is_a?(Integer)
-      conditions[0]<<"AND metaable_id=?"
+      conditions[0]<<"AND metaable_id=? "
       conditions<<id
     elsif id.is_a?(String)
-      conditions[0]<<"AND #{self.table_name}.url=?"
+      conditions[0]<<"AND #{self.table_name}.url=? "
       conditions<<id
     else
-      conditions[0]<<"AND metaable_id IS NULL"
+      conditions[0]<<"AND metaable_id IS NULL "
     end
     self.find(:first,:conditions=>conditions)
   end
@@ -42,28 +42,30 @@ class MetaData < Cms::Base
 
   private
   def normalize_url
-    self.url.gsub!(/^\W+|\W+$/,'')
-    self.url=self.url.to_url
-    self.url.downcase!
-    #make urls unique per metaable_type
-    url_not_unique = true
-    first_try = true
-    count=2
-    while url_not_unique
-      conditions=["metaable_type=? AND url=? #{new_record? ? "" : "AND id<>?"}",self.metaable_type,self.url]
-      conditions<<self.id unless new_record?
-      res = MetaData.find(:all,:conditions=>conditions)
-      if res.size == 0
-        url_not_unique = false
-      else
-        if first_try
-          self.url += '-2'
-          first_try = false
+    if self.url
+      self.url.gsub!(/^\W+|\W+$/,'')
+      self.url=self.url.to_url
+      self.url.downcase!
+      #make urls unique per metaable_type
+      url_not_unique = true
+      first_try = true
+      count=2
+      while url_not_unique
+        conditions=["metaable_type=? AND meta_datas.url=? #{new_record? ? "" : "AND meta_datas.id<>?"}",self.metaable_type,self.url]
+        conditions<<self.id unless new_record?
+        res = MetaData.find(:all,:conditions=>conditions)
+        if res.size == 0
+          url_not_unique = false
         else
-          self.url.slice!(self.url.size-(count.to_s.size)..self.url.size)
-          count+=1
-          self.url += count.to_s
+          if first_try
+            self.url += '-2'
+            first_try = false
+          else
+            self.url.slice!(self.url.size-(count.to_s.size)..self.url.size)
+            count+=1
+            self.url += count.to_s
           
+          end
         end
       end
     end

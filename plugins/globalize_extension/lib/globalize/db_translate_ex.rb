@@ -111,7 +111,7 @@ module Globalize # :nodoc:
               #Artūrs Meisters changed because match incorrect when () used around field name
              #where_clause.gsub!(/((((#{table_name}\.)|\W)[`"]?#{facet}[`"]?)|^`?#{facet}`?)\W/, "COALESCE(#{facet_table_alias}.text, #{table_name}.#{facet}) ")
               where_clause.gsub!(/`/,"") #Artūrs Meisters add line lai būtu korekta pārveide
-              where_clause.gsub!(/((((#{table_name}\.)|\W)[`"]?#{facet}[`"]?)|^`?#{facet}`?)/,   "COALESCE(#{table_name}.#{facet},#{facet_table_alias}.text)") #Artūrs Meisters COALESCE(#{facet_table_alias}.text,#{table_name}.#{facet}))
+              where_clause.gsub!(/((((#{table_name}\.)|\W)[`"]?#{facet}[`"]?)|^`?#{facet}`?)/,   " COALESCE(#{table_name}.#{facet},#{facet_table_alias}.text)") #Artūrs Meisters COALESCE(#{facet_table_alias}.text,#{table_name}.#{facet}))
             end
             options[:conditions] = sanitize_sql( 
               conditions_is_array ? [ where_clause ] + options[:conditions] : where_clause 

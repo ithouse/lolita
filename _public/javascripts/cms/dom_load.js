@@ -82,7 +82,7 @@ function init_wait_element(){
     $(function(){
         ITH.Cms.wait=$("#wait_dialog").buildContainers({
             containment:"document",
-            elementsPath:"/images/jquery/elements/"
+            elementsPath:"/lolita/images/jquery/elements/"
         });
     });
     $("#wait").click(function(){
@@ -108,7 +108,7 @@ function init_warn_element(){
     $(function(){
         ITH.Cms.warning=$("#warning_dialog").buildContainers({
             containment:"document",
-            elementsPath:"/images/jquery/elements/"
+            elementsPath:"/lolita/images/jquery/elements/"
         });
     });
     $("#warning_dialog").click(function(event){
@@ -120,28 +120,4 @@ function init_warn_element(){
     ITH.Cms.warning.hide=function(){
         $("#warning").fadeOut(350)
     }
-//    if(!ITH.Cms.warning){
-//        var handleYes = function() {
-//            this.hide();
-//        };
-//        ITH.Cms.warning=new YAHOO.widget.SimpleDialog("warning1",
-//        {
-//            width: "300px",
-//            fixedcenter: true,
-//            visible: false,
-//            draggable: false,
-//            modal:true,
-//            close: true,
-//            text: ITH.Translations.error+"!<br/>"+ITH.Translations.error_dialog_text,
-//            icon: YAHOO.widget.SimpleDialog.ICON_WARN,
-//            constraintoviewport: true,
-//            buttons: [ {
-//                text:"Labi",
-//                handler:handleYes,
-//                isDefault:true
-//            }]
-//        } );
-//        ITH.Cms.warning.setHeader(ITH.Translations.error+"!");
-//        ITH.Cms.warning.render("warning_dialog")
-//    }
 }
