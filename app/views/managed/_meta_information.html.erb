@@ -2,7 +2,7 @@
 # SIA ITHouse
 # Artūrs Meisters
 %>
-<% if LOLITA_TRANSLATION && (params[:action].to_s=~/update|meta_change_language/) && !@metadata.new_record? %>
+<% if Lolita.config.translation && (params[:action].to_s=~/update|meta_change_language/) && !@metadata.new_record? %>
   <span class='brick'><%= t(:"fields.language") %></span>
   <div class="fl">
     <%= all_languages("meta_translation_locale",@metadata) %>
