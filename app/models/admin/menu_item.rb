@@ -49,9 +49,17 @@ class Admin::MenuItem < Cms::Manager
   def link
     hsh={}
     if self.menuable_type && !self.menuable_type.include?("::StartPage")
-      hsh[:controller]=self.menuable_type=="Admin::Action" ? self.menuable.controller.to_s : "/#{self.menuable_id.to_i>0 ? self.menuable_type.to_s.underscore : ""}"
-      hsh[:action]=self.menuable_type=="Admin::Action" ? self.menuable.action.to_s :  (self.menuable_id.to_i>0 ? "show" : "")
-      hsh[:id]=self.menuable_type=="Admin::Action" ? nil : (self.menuable_id.to_i>0 ? self.menuable_id : nil)
+      hsh[:controller]=self.menuable_type=="Admin::Action" ?
+        self.menuable.controller.to_s  :
+        "/#{self.menuable_id.to_i>0 ? self.menuable_type.to_s.underscore : ""}"
+
+      hsh[:action]=self.menuable_type=="Admin::Action" ?
+        self.menuable.action.to_s   :
+        (self.menuable_id.to_i>0 ? "show" : "")
+
+      hsh[:id]=self.menuable_type=="Admin::Action" ?
+        nil  :
+        (self.menuable_id.to_i>0 ? self.menuable_id : nil)
     else
       hsh[:controller]="/"
     end
