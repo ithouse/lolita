@@ -19,7 +19,7 @@ class ActionController::Base
   #include Extensions::AdvancedFilterExtension
   #include Extensions::Sso
   
-  #if LOLITA_TRANSLATION
+  #if Lolita.config.translation
   before_filter :set_locale
   #end
 
@@ -45,7 +45,7 @@ class ActionController::Base
   end
 
   def not_main_portal?()
-    domain=request.domain(LOLITA_DOMAIN_DEPTH)
+    domain=request.domain(Lolita.config.domain_depth)
     domain==get_main_portal.domain ? nil : Admin::Portal.find_by_domain(domain)
   end
   

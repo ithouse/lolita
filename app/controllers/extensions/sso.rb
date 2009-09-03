@@ -43,8 +43,8 @@ module Extensions::Sso
   end
 
   def set_current_portal
-    if !Admin::Portal.current_portal || (Admin::Portal.current_portal && Admin::Portal.current_portal.domain!=request.domain(LOLITA_DOMAIN_DEPTH))
-      Admin::Portal.current_portal=Admin::Portal.find_by_domain(request.domain(LOLITA_DOMAIN_DEPTH))
+    if !Admin::Portal.current_portal || (Admin::Portal.current_portal && Admin::Portal.current_portal.domain!=request.domain(Lolita.config.domain_depth))
+      Admin::Portal.current_portal=Admin::Portal.find_by_domain(request.domain(Lolita.config.domain_depth))
     elsif !Admin::Portal.current_portal
       Admin::Portal.current_portal=Admin::Portal.find_by_root(true)
     end

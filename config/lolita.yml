@@ -6,10 +6,10 @@ development:
   domain: localhost
 
   flash_actions:
-    /picture/new_create,
-    /video_file/new_create,
-    /audio_file/new_create,
-    /file/new_create
+    - /picture/new_create,
+    - /video_file/new_create,
+    - /audio_file/new_create,
+    - /file/new_create
   allow:
     system_in_public: true
     rewrite: false
@@ -31,14 +31,13 @@ production:
   domain: localhost
 
   flash_actions:
-    /picture/new_create,
-    /video_file/new_create,
-    /audio_file/new_create,
-    /file/new_create
+    - /picture/new_create,
+    - /video_file/new_create,
+    - /audio_file/new_create,
+    - /file/new_create
   allow:
     system_in_public: true
     rewrite: false
-  root: <%= RAILS_ROOT %>/vendor/plugins/lolita
   default_from: "dev@ithouse.lv"
   default_to: "dev@ithouse.lv"  #comment_table: "Cms::Comment"
   #vote_table: "Cms::Vote"
@@ -56,14 +55,13 @@ production:
   domain: localhost
 
   flash_actions:
-    /picture/new_create,
-    /video_file/new_create,
-    /audio_file/new_create,
-    /file/new_create
+    - /picture/new_create,
+    - /video_file/new_create,
+    - /audio_file/new_create,
+    - /file/new_create
   allow:
     system_in_public: true
     rewrite: false
-  root: <%= RAILS_ROOT %>/vendor/plugins/lolita
   default_from: "dev@ithouse.lv"
   default_to: "dev@ithouse.lv"  #comment_table: "Cms::Comment"
   #vote_table: "Cms::Vote"
@@ -81,10 +79,10 @@ test:
   domain: localhost
 
   flash_actions:
-    /picture/new_create,
-    /video_file/new_create,
-    /audio_file/new_create,
-    /file/new_create
+    - /picture/new_create,
+    - /video_file/new_create,
+    - /audio_file/new_create,
+    - /file/new_create
   allow:
     system_in_public: true
     rewrite: false

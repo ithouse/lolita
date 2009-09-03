@@ -145,7 +145,7 @@ class Admin::SystemUser < Admin::User
   def can_access_built_in_actions?(action,options={})
     return self.class.action_in?(action,options[:all]) ||
     self.class.action_in?(action,options[:public]) ||
-    (LOLITA_ALLOW[:system_in_public] && self.class.action_in?(action,options[:all_public]))
+    (Lolita.config.allow :system_in_public && self.class.action_in?(action,options[:all_public]))
   end
   def can_access_simple_special_action? action_accessable,controller=nil
     if action_accessable.is_a?(Symbol) && controller && [:write,:read,:update,:delete].include?(action_accessable)

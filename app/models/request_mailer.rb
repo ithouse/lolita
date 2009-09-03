@@ -1,7 +1,7 @@
 class RequestMailer < ActionMailer::Base
    def mail(recipient,title,data,from=false)
     ActionMailer::Base.raise_delivery_errors = true
-    @from =from || LOLITA_DEFAULT_FROM #title
+    @from =from || Lolita.config.default_from #title
     @recipients=recipient
     @subject =title
     @body={:recipient => title,:data=>data}

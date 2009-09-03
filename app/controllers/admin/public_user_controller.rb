@@ -5,7 +5,7 @@ class Admin::PublicUserController < Managed
     if user=Admin::PublicUser.register(params[:code])
       user.register
       register_user_in_session(user)
-      if !LOLITA_MULTI_DOMAIN_PORTAL || is_local_request?
+      if !Lolita.config.multi_domain_portal || is_local_request?
         redirect_authenticated_user
       end
     else
@@ -59,7 +59,7 @@ class Admin::PublicUserController < Managed
         end
         if @user.registered?
           register_user_in_session(@user)
-          if !LOLITA_MULTI_DOMAIN_PORTAL || is_local_request?
+          if !Lolita.config.multi_domain_portal || is_local_request?
             session[:return_to]=nil
             if params[:save]
               redirect_authenticated_user
@@ -159,7 +159,7 @@ class Admin::PublicUserController < Managed
       if user = Admin::PublicUser.authenticate(params[:login], params[:password])
         remember_me(user)
         register_user_in_session(user)
-        if !LOLITA_MULTI_DOMAIN_PORTAL || is_local_request?
+        if !Lolita.config.multi_domain_portal || is_local_request?
           redirect_authenticated_user
         end
       else
@@ -177,7 +177,7 @@ class Admin::PublicUserController < Managed
 
   def logout
     if ogged_in?
-      reset_sso if LOLITA_MULTI_DOMAIN_PORTAL
+      reset_sso if Lolita.config.multi_domain_portal
       reset_remember_me
       reset_session
       flash[:notice] = t(:"flash.logout success")
@@ -203,7 +203,7 @@ class Admin::PublicUserController < Managed
   end
 
   def reset_sso #lai varētu šeit ielik vēl ko ja vajadzēs
-    Admin::Token.destroy_all(["user_id=? OR updated_at<?",current_user.id,1.day.ago]) if LOLITA_MULTI_DOMAIN_PORTAL && !is_local_request?
+    Admin::Token.destroy_all(["user_id=? OR updated_at<?",current_user.id,1.day.ago]) if Lolita.config.multi_domain_portal && !is_local_request?
     cookies.delete(:sso_token)
   end
   
@@ -219,7 +219,7 @@ class Admin::PublicUserController < Managed
   def register_user_in_session user
     session.data.delete(:user)
     set_current_user user
-    if LOLITA_MULTI_DOMAIN_PORTAL && !is_local_request?
+    if Lolita.config.multi_domain_portal && !is_local_request?
       token=Admin::Token.find_by_token(cookies[:sso_token])
       if token
         token.update_attributes!(:user=>user,:uri=>url_for(session[:return_to]) || home_url)

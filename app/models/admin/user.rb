@@ -4,7 +4,7 @@ class Admin::User < Cms::Base
   @area=nil
   acts_as_authorized_user
 
-  set_table_name LOLITA_PUBLIC_USER_TABLE
+  set_table_name Lolita.config.public_user_table
   attr_accessor :password
   attr_accessor :old_password
   validates_presence_of     :password,                   :if => :password_required?
@@ -44,8 +44,8 @@ class Admin::User < Cms::Base
     area=:public unless area
     if area==:public
       user = ses[:user][:user_class].find_by_id(ses[:user][:user_id])
-      (LOLITA_ALLOW[:system_in_public] && user.is_a?(Admin::SystemUser))||
-        (LOLITA_ALLOW[:rewrite] && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
+      (Lolita.config.allow :system_in_public && user.is_a?(Admin::SystemUser))||
+        (Lolita.config.allow :rewrite && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
       user.is_a?(Admin::PublicUser)
     elsif area==:system
     end

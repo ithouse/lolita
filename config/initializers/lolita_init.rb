@@ -1,7 +1,3 @@
-
-conf = YAML.load(open("#{RAILS_ROOT}/config/lolita.yml").read)
-conf[RAILS_ENV].each_key do |name|
-  eval "LOLITA_#{name.upcase} = conf[RAILS_ENV][\"#{name}\"]"
-end
-
-Globalize::Locale.set_base_language LOLITA_LANGUAGE_CODE
+$lolita_config = Lolita::Config.new
+Globalize::Locale.set_base_language Lolita.config.language_code
+ActionController::Dispatcher.middleware.insert_before(ActionController::Base.session_store, FlashSessionCookieMiddleware, ActionController::Base.session_options[:key])

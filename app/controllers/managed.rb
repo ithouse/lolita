@@ -14,7 +14,7 @@ class Managed < ApplicationController
   include Extensions::Cms::Crud
   include Extensions::Cms::Callbacks
   include Extensions::Cms::HandleErrors
-  include Extensions::Cms::Language if LOLITA_TRANSLATION
+  include Extensions::Cms::Language if Lolita.config.translation
 
 
   # Pēc noklusējuma index dara to pašu ko list, un tādēļ ir atļauta uz 'read' pieejas veidu modulim.
