@@ -1,0 +1,9 @@
+lv:
+  actions:
+    save translation: Saglabāt tulkojumu
+  dialogs:
+    wait:
+      title: Notiek ielāde...
+    warning:
+      title: Kļūda
+      content text: Ir radusies kļūda!<br/>Mēs par to tikām informēti, un pēc iespējas īsākā laikā novērsīsim.

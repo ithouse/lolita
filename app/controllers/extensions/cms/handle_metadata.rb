@@ -2,6 +2,10 @@ module Extensions
   module Cms
     module HandleMetadata
 
+      def save_metadata_translation
+
+      end
+      
       def handle_metadata
         if has_tab_type?(:metadata)
           if !@metadata

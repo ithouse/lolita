@@ -1,7 +1,5 @@
 class Cms::Content < Cms::Manager
   self.abstract_class = true
-
-  acts_as_content_item
   has_many :menu_items, :as=>:menuable, :dependent=>:nullify, :class_name=>"Admin::MenuItem"
   
     class << self

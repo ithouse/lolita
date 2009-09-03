@@ -409,25 +409,41 @@ function add_new_element_to_autocomplete(id,value){
 function URLEncode(str){
   return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
 }
-function observe_languages(tab,url,params){
-  var el=elementById("translation_locale");
-  el.url=url
-  el.tab=tab
-  el.params=params
-  if(el){
-    YAHOO.util.Event.addListener(el,"change",change_language,el,true)
-  }
+function observe_languages(id,tab,url,params){
+  $(document).ready(function(e){
+      $(id).change(function(){
+          ITH.Cms.wait.show()
+          $.ajax({
+              url:url,
+              type:"get",
+              dataType:"html",
+              data:params+"&"+id.replace(/#/,"")+"="+$(this).val(),
+              success:function(html){
+                $("#tab"+tab+"container").html(html);
+              },
+              complete:function(){
+                  ITH.Cms.wait.hide()
+              }
+          })
+      })
+  })
 }
-function change_language(e){
-  var that=this
-  ITH.Cms.wait.show()
-  new Ajax.Request(this.url,{
-    parameters:this.params+"&translation_locale="+this.value,
-    onSuccess: function(data){
-      $("#tab"+that.tab+"container").html(data);
-    },
-    onComplete:function(){
-      ITH.Cms.wait.hide()
+function save_metadata_translation(fields,tab,url,params){
+    var field_data=""
+    for(var i=0;i<fields.length;i++){
+        field_data+="&metadata["+fields[i]+"]="+$("#metadata_"+fields[i]).val();
     }
-  });
+    ITH.Cms.wait.show();
+    $.ajax({
+        url:url,
+        type:"post",
+        dataType:"html",
+        data:params+field_data,
+        success:function(html){
+            $("#tab"+tab+"container".html(html));
+        },
+        complete:function(){
+            ITH.Cms.wait.hide()
+        }
+    })
 }

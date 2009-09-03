@@ -4,6 +4,7 @@ class MetaData < Cms::Base
   #validates_uniqueness_of   :url, :scope => [:metaable_type], :case_sensitive => false ,:allow_blank=>true
   #validates_presence_of :title, :tags
   before_save :normalize_url
+  translates :title,:url,:tags,:description
   #TODO test
   def self.find_by_object object
     self.find(:first,:conditions=>["metaable_id=? AND metaable_type=?",object.id,object.class.to_s])

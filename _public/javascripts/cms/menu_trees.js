@@ -10,11 +10,6 @@ ITH.MenuTree=function(container,configuration,data,authenticity_token){
     this.header=null
     this.authenticity_token = authenticity_token
     ITH.MenuTree.superclass.constructor.call(this,container,configuration,data);
-    this.contextMenu=new YAHOO.widget.ContextMenu(configuration.menu_name+"_context_menu",{
-        lazyload: true,
-        trigger:this.DOMMenuRoot,
-        className:"menu-tree-context-menu"
-    })
     this.DOMContainer=elementById(container+"_container")
     this.NEW_COUNTER=0;
     this.type="MenuTree"
@@ -121,72 +116,11 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
     },
     render:function(){
         if(this.config.accessable){
-            this.add_context_menu_events()
-            this.add_context_menu_items()
             ITH.MenuTree.superclass.render.call(this)
             this.createHeader()
             this.add_buttons();
-
-            this.contextMenu.render(this.DOMMenuRoot)
         }
-        //        if(this.config.menu_type=="web"){
-        //            this.add_child_menu()
-        //        }
         this.sideMenu=new ITH.SideMenu(this.config.menu_type+"_menu",this)
-    },
-    onMenuShow:function(type,args){
-    /*var branch=null
-        var oTarget = this.contextEventTarget,
-	            aMenuItems,
-	            aClasses;
-        if(oTarget.parent){
-            branch=oTarget.parent
-        }else if(oTarget.configuration){
-            branch=oTarget.configuration
-        }else if(oTarget.parentNode && oTarget.parentNode.parent){
-            branch=oTarget.parentNode.parent
-        }else if(oTarget.parentNode && oTarget.parentNode.configuration){
-            branch=oTarget.parentNode.configuration
-        }
-
-
-        var b=this.getRoot()
-        var c=1*/
-    },
-    add_context_menu_events:function(){
-        this.contextMenu.subscribe("triggerContextMenu",this.onMenuShow)
-    },
-    add_context_menu_items:function(){
-        this.contextMenu.addItems([
-            [
-            {
-                text:ITH.MenuTree.translation.expand_menu,
-                onclick:{
-                    fn:this.expand_full_tree,
-                    obj:this,
-                    scope:this
-                }
-            },
-
-            {
-                text:ITH.MenuTree.translation.collapse_menu,
-                onclick:{
-                    fn:this.collapse_full_tree,
-                    obj:this,
-                    scope:this
-                }
-            },
-
-            {
-                text:ITH.MenuTree.translation.refresh,
-                onclick:{
-                    fn:this.refresh,
-                    obj:this,
-                    scope:this
-                }
-            }
-            ]
-            ])
     },
     add_buttons:function(){
         // this.before_last_button().style.marginLeft="" //noņemu marginu lai pieliktu jaunajai pogai
@@ -234,172 +168,6 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         }
         tree[tree.length-1].render()//reāli menuBranch izveidoju elementus
     },
-    //    add_child_menu:function(){
-    //        var requestHandler={
-    //            success:function(request){
-    //                var self=request.argument.self
-    //                var menus=eval(request.responseText)
-    //                var select=self.child_list(menus)
-    //                self.add_delete_public_menu(select)
-    //            },
-    //            failure:function(request){
-    //                if(request.status!=404){
-    //                    request.argument.self.add_child_menu()
-    //                }
-    //            }
-    //        }
-    //        this.doRequest('POST',ITH.MenuTree.paths.public_menus, requestHandler,"namespace="+this.config.module_name);
-    //    },
-    //    add_branches_to_child_group:function(){
-    //        if(this.childMenu){
-    //            var tree_arr=this.flat_tree(this.tree[0].tree)
-    //            for(var i=0;i<tree_arr.length;i++){
-    //                if (tree_arr[i].draggable) tree_arr[i].draggable.addToGroup(this.childMenu.config.menu_name)
-    //            }
-    //        }
-    //    },
-    //    destroy_child_menu:function(){
-    //        if(this.childMenu){
-    //            var parent=this.childMenu.DOMMenuRoot.parentNode
-    //            parent.removeChild(this.childMenu.DOMMenuRoot)
-    //            this.childMenu=null
-    //        }
-    //    },
-    //    change_child_menu:function(e){
-    //        if(this.childSelect.value>0 && (!this.childMenu || (this.childMenu && this.childMenu.config.menu_id!=this.childSelect.value))){
-    //            var requestHandler={
-    //                success:function(request){
-    //                    var args=eval(request.responseText)
-    //                    request.argument.self.destroy_child_menu()
-    //                    request.argument.self.childMenu=new ITH.MenuTree(request.argument.self.container,args[0],args[1],request.argument.self)
-    //                    request.argument.self.childMenu.render()
-    //                    request.argument.self.add_branches_to_child_group()
-    //                },
-    //                failure:function(request){
-    //                    if(request.status!=404){
-    //                        request.argument.self.change_child_menu()
-    //                    }
-    //                }
-    //            }
-    //            this.doRequest('POST',ITH.MenuTree.paths.public_menu, requestHandler,"id="+this.childSelect.value);
-    //        }
-    //    },
-    //    child_list:function(menus){
-    //        var select_container=ITH.Element.create("div",{
-    //            className:"child-menu-select-container"
-    //        })
-    //        select_container.innerHTML=ITH.MenuTree.translation.public_menu+" "
-    //        //Izveidoju sarakstu ar izvēlnēm
-    //        var select=ITH.Element.create("select",{
-    //            className:"child-menu-select"
-    //        })
-    //        this.childSelect=select //tikai vecāka elementam
-    //        YAHOO.util.Event.addListener(select,"change",this.change_child_menu,this,true)
-    //        for(var i=0;i<menus.length;i++){
-    //            var option=ITH.Element.create("option",{
-    //                value:menus[i].id,
-    //                innerHTML:menus[i].name
-    //            })
-    //            select.appendChild(option)
-    //        }
-    //        select_container.appendChild(select)
-    //        //beidzas saraksta izveide
-    //        this.DOMRoot.insertBefore(select_container,this.DOMRoot.childNodes[0])
-    //        return select_container
-    //    },
-    //    add_delete_public_menu:function(sel_container){
-    //        var add=ITH.Element.create("img",{
-    //            src:ITH.MenuTree.images.add_public,
-    //            className:"menu-small-buttons"
-    //        })
-    //        YAHOO.util.Event.addListener(add,"click",this.add_public_menu,this,true)
-    //        var remove=ITH.Element.create("img",{
-    //            src:ITH.MenuTree.images.trash,
-    //            className:"menu-small-buttons"
-    //        })
-    //        YAHOO.util.Event.addListener(remove,"click",this.remove_public_menu,this,true)
-    //        sel_container.appendChild(add)
-    //        sel_container.appendChild(remove)
-    //    },
-    //    add_public_menu:function(){
-    //        if(!ITH.MenuTree.menu_dialog){
-    //            Dom.get('public_menu_dialog').style.display=""
-    //            var handleSubmit=function(){
-    //                this.submit()
-    //            }
-    //            var handleCancel=function(){
-    //                this.cancel()
-    //            }
-    //            ITH.MenuTree.menu_dialog = new YAHOO.widget.Dialog("public_menu_dialog",
-    //            {
-    //                width : "300px",
-    //                fixedcenter : true,
-    //                visible : false,
-    //                modal:true,
-    //                draggable: false,
-    //                buttons : [ {
-    //                    text:ITH.MenuTree.translation.dialog_make,
-    //                    handler:handleSubmit,
-    //                    isDefault:true
-    //                },
-    //
-    //                {
-    //                    text:ITH.MenuTree.translation.dialog_cancel,
-    //                    handler:handleCancel
-    //                } ]
-    //            })
-    //            var requestHandler={
-    //                success:function(request){
-    //                    ITH.MenuTree.menu_dialog.hide()
-    //                    var conf=eval(request.responseText)[0]
-    //                    var self=request.argument.caller
-    //                    var option=ITH.Element.create("option",{
-    //                        innerHTML:conf.name,
-    //                        value:conf.id
-    //                    })
-    //                    self.childSelect.appendChild(option)
-    //                    self.childSelect.selectedIndex=self.childSelect.options.length-1
-    //                    self.change_child_menu()
-    //                },
-    //                failure:function(request){
-    //                    if(request.status==500){
-    //                        alert(request.responseText)
-    //                    }else{
-    //                        if(request.status!=404){
-    //                            ITH.MenuTree.menu_dialog.submit()
-    //                        }
-    //                    }
-    //                },
-    //                argument:{
-    //                    caller:this
-    //                }
-    //            }
-    //            ITH.MenuTree.menu_dialog.callback=requestHandler
-    //            ITH.MenuTree.menu_dialog.render()
-    //        }
-    //        ITH.MenuTree.menu_dialog.show()
-    //    },
-    //    remove_public_menu:function(){
-    //        var requestHandler={
-    //            success:function(request){
-    //                var self=request.argument.self
-    //                var option=ITH.Element.optionByValue(self.childSelect.options,request.argument.id)
-    //                if(option){
-    //                    self.childSelect.removeChild(option)
-    //                    self.destroy_child_menu()
-    //                }
-    //            },
-    //            failure:function(request){
-    //                if(request.status!=404){
-    //                    request.argument.self.remove_public_menu()
-    //                }
-    //            },
-    //            argument:{
-    //                id:this.childSelect.value
-    //            }
-    //        }
-    //        this.doRequest('POST',ITH.MenuTree.paths.delete_public_menu, requestHandler,"id="+this.childSelect.value);
-    //    },
     add_content:function(content_id,public_id,parent){
         var requestHandler={
             success:function(request){
@@ -489,23 +257,6 @@ ITH.extend(ITH.MenuTree,ITH.Tree,{
         };
         this.doRequest('POST',ITH.MenuTree.paths.refresh, requestHandler,"id="+this.config.menu_id);
     },
-    //    refresh_child_menu:function(branch,data){
-    //        if(this.childMenu){
-    //            var child_branch=this.getByContent(this.childMenu.tree[0].tree,branch.params.menuable_type,branch.params.menuable_id,branch.params.id)
-    //            if(child_branch){
-    //                if(data){ //mainu satura datus, ja mainījies vecāka zars
-    //                    child_branch.params.controller=data.controller
-    //                    child_branch.params.action=data.action
-    //                    child_branch.params.menuable_type=data.menuable_type
-    //                    child_branch.params.menuable_id=data.menuable_id
-    //                    child_branch.params.published=data.published
-    //                }else{ // mainu tikai publiskošanas stāvokli, ja mainījies vecāka stāvoklis
-    //                    child_branch.params.published=branch.params.published
-    //                }
-    //                child_branch.refresh()
-    //            }
-    //        }
-    //    },
     createHeader:function(){
         var container=ITH.Element.create("div",{
             className:"menu-title-container"
@@ -636,14 +387,6 @@ ITH.extend(ITH.MenuBranch,ITH.Branch,{
     },
     refresh:function(){
         if(this.tools.publish_tool) this.tools.publish_tool.src=this.params.published ? ITH.MenuTree.images.published : ITH.MenuTree.images.unpublished
-        //        if(this.root.childMenu){
-        //            // this.refresh_child_branch(this.root.childMenu.tree[0].tree,this.params.menuable_type,this.params.menuable_id,this.params.id,this.params.published)
-        //            var child_branch=this.root.getByContent(this.root.childMenu.tree[0].tree,this.params.menuable_type,this.params.menuable_id,this.params.id)
-        //            if(child_branch){
-        //                child_branch.params.published=this.params.published
-        //                child_branch.refresh()
-        //            }
-        //        }
         this.text.refresh()
     },
     remove_content:function(params){
@@ -729,15 +472,6 @@ ITH.extend(ITH.MenuBranch,ITH.Branch,{
                 var requestHandler={
                     success:function(request){
                         var self=request.argument.caller.parentNode.parentNode.branch
-                        //                        if(self.root.childMenu){
-                        //                            var child_branch=self.root.getByContent(self.root.childMenu.tree[0].tree,self.params.menuable_type,self.params.menuable_id,self.params.id)
-                        //                            child_branch.remove_content(request.argument.self.default_configuration({
-                        //                                id:child_branch.id,
-                        //                                title:child_branch.params.title,
-                        //                                menuable_type:"Admin::MenuItem",
-                        //                                menuable_id:self.id
-                        //                            }))
-                        //                        }
                         self.remove_content(request.argument.self.default_configuration({
                             id:self.id,
                             title:self.params.title

@@ -1,10 +1,10 @@
 <% tab=tab.to_i %>
 <span class='brick'><%= t(:"fields.language") %></span>
 <div class="fl">  
-  <%= all_languages %>
+  <%= all_languages("translation_locale",@object) %>
 </div>
 <script type="text/javascript">
-  observe_languages(<%=tab.to_i%>,"<%=url_for(:action=>"change_language",:locale=>nil)%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
+  observe_languages("#translation_locale",<%=tab.to_i%>,"<%=url_for(:action=>"change_language",:locale=>nil)%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
 </script>
 <% unless @object.language_code==Globalize::Locale.base_language.code %>
   <% fields=fields_for_tab(tab).clone %>
@@ -40,5 +40,7 @@
     <%= render :partial=>"/managed/tinymce", :object=>{:tab=>tab,:mode=>"specific_textareas",:selector=>"textarea-translation"} %>
   <% end %>
 <%end%>
-<div class="clear"></div>
-<div></div>
+<% if params[:action].to_s=="change_language" #need only when reloading via ajax %>
+  <div class="clear"></div>
+  <div></div>
+<% end %>

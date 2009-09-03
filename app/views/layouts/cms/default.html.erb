@@ -20,7 +20,6 @@
     <%= stylesheet_link_tag 'screen', '/lolita/javascripts/swfupload/swfupload', :media => 'screen' %>
 
     <link rel="stylesheet" type="text/css" media="screen" href="/lolita/javascripts/yui/build/assets/skins/sam/container.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="/lolita/javascripts/yui/build/assets/skins/sam/menu.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/lolita/javascripts/yui/build/autocomplete/assets/skins/sam/autocomplete.css" />
 
     <%= javascript_include_tag "/lolita/javascripts/cms/ith.js" %>
@@ -44,9 +43,9 @@
     <%= javascript_include_tag '/lolita/javascripts/yui/build/autocomplete/autocomplete-min.js' %>
     <%= javascript_include_tag '/lolita/javascripts/yui/build/animation/animation-min.js' %>
     <%= javascript_include_tag '/lolita/javascripts/yui/build/container/container-min.js' %>
-    <%= javascript_include_tag '/lolita/javascripts/yui/build/menu/menu-min.js' %>
+    <%#= javascript_include_tag '/lolita/javascripts/yui/build/menu/menu-min.js' %>
 
-    <%= javascript_include_tag '/lolita/javascripts/yui/build/element/element-beta-min.js' %>
+    <%#= javascript_include_tag '/lolita/javascripts/yui/build/element/element-beta-min.js' %>
     <%= javascript_include_tag '/lolita/javascripts/cms/dom_load.js' %>
     <%= javascript_include_tag '/lolita/javascripts/cms/object_functions.js' %>
     <%= javascript_include_tag '/lolita/javascripts/cms/simple_functions.js' %>
@@ -73,7 +72,6 @@
     </div>
     <%= render :partial=>"cms/dialogs" %>
     <div id="script"></div>
-    <div id="warning_dialog"></div>
     <script type="text/javascript">
       //ITH.MenuTree.namespace="Admin"
       ITH.locale="<%=params[:locale] || Admin::Language.find_base_language.short_name%>"
