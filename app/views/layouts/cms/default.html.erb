@@ -8,6 +8,9 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
     <title><%=Admin::Configuration.get_value_by_name('system_title')%></title>
+
+    <%= javascript_tag "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+
     <%= stylesheet_link_tag '/lolita/stylesheets/admin/default',
       '/lolita/stylesheets/cms',
       '/lolita/stylesheets/admin/user',
