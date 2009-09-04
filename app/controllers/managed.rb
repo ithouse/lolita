@@ -119,6 +119,10 @@ class Managed < ApplicationController
   #     :function - lauka vērtības attēlošanai var izsaukt jūsu norādīto funkciju
   #     :sort_direction - kārtošanas veids (asc,desc), pēc noklusējuma asc
   #     :sortable - norāda vai kārtojams, pēc noklusējuma nav, ja norādīts :default tad ir kārtojams
+  #     :localize - pēc noklusēju ieslēgts, ja nepieciesams var atslŗgt, norādot = false
+  #     :format - kā formatēsim, ja tā ir laika/datuma kolonna.
+  #                    Iespējamās vērtības ir 3 sagatavotas un kā strings, kas satur Time.strftime sintakses tekstu:
+  #                     :default, :short, :long, "%d.%m.%Y."
   # :fields - masīvs, katrs masīvas elements ir Hash masīvs, ar šādām
   #           iespējamājām vērtībām:
   #   :type - ievades lauka tikps, kāds no sistēmā definētajiem

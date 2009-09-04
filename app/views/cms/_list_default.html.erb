@@ -15,7 +15,16 @@
           <% if column[:link] %>
             <%= edit_link :id=>element.id, :title=>element.send(column[:field])%>
           <%else%>
-            <%= element.send(column[:function] || column[:field])%>
+            <% if column[:function] %>
+              <%= element.send column[:function]%>
+            <% else %>
+              <% value = element.send(column[:field]) %>
+              <% if [ActiveSupport::TimeWithZone,Time,DateTime,Date].include?(value.class) && (column[:localize].nil? || column[:localize] == true) %>
+                <%= I18n.localize value, :format => column[:format] || :default %>
+              <% else %>
+                <%= value %>
+              <% end %>
+            <% end %>
           <%end%>
         </td>
       <%}%>
