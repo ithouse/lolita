@@ -25,7 +25,9 @@ module Extensions::MenuHelper
     #if type=="Cms::StartPage"
     #  menu_items = Admin::Menu.find_by_menu_name(menu_name).menu_items.find(:all, :conditions=>['menuable_type=? AND is_published=1',type])
     if id
-      menu_items = Admin::Menu.find_by_menu_name(menu_name).menu_items.find(:all, :conditions=>['menuable_type=? AND menuable_id=? AND is_published=1',type,id])
+      menu=Admin::Menu.find_by_menu_name(menu_name)
+      menu=Admin::MenuItem.find_by_branch_name(menu_name) unless menu
+      menu_items = menu.menu_items.find(:all, :conditions=>['menuable_type=? AND menuable_id=? AND is_published=1',type,id])
     else
       return nil
     end

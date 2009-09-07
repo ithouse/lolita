@@ -5,7 +5,7 @@ class Admin::MenuItem < Cms::Manager
   belongs_to :menu, :class_name=>"Admin::Menu"
 
   has_many :menu_items, :as=>:menuable, :dependent=>:nullify, :class_name=>"Admin::MenuItem"
-  has_many    :pictures, :as=>:pictureable, :dependent=>:destroy, :extend=>Extensions::PictureExtensions
+  has_many :pictures, :as=>:pictureable, :dependent=>:destroy, :extend=>Extensions::PictureExtensions
   acts_as_nested_set :scope => :menu_id #ļaujam kārtot koka struktūrās
 
   before_save :allow_branch_name_only_on_first_level
