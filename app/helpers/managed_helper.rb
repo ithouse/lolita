@@ -347,6 +347,17 @@ module ManagedHelper
   def feedback
     request.request_uri.include?("?")?"&redirected=true":"?redirected=true"
   end
-  
+
+  def send_method_array element,ary
+    tempobj=element
+    ary.each{|meth|
+      begin
+        tempobj=tempobj.send(meth)
+      rescue
+        raise "Error sending #{meth}, check managed list config :field for #{element}.#{ary.join(".")}"
+      end
+    }
+    tempobj
+  end
 end
 

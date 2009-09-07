@@ -12,13 +12,15 @@
     <tr>
       <% @config[:list][:columns].each{|column|%>
         <td>
-          <% if column[:link] %>
-            <%= edit_link :id=>element.id, :title=>element.send(column[:field])%>
-          <%else%>
-            <% if column[:function] %>
+          <%  if column[:link] %>
+            <%= edit_link :id=>element.id,
+            :title=>column[:field].is_a?(Array) ?
+              send_method_array(element,column[:field]) : element.send(column[:field]) %>
+          <% else
+            if column[:function] %>
               <%= element.send column[:function]%>
             <% else %>
-              <% value = element.send(column[:field]) %>
+              <% value =column[:field].is_a?(Array) ? send_method_array(element,column[:field]) : element.send(column[:field]) %>
               <% if [ActiveSupport::TimeWithZone,Time,DateTime,Date].include?(value.class) && (column[:localize].nil? || column[:localize] == true) %>
                 <%= I18n.localize value, :format => column[:format] || :default %>
               <% else %>

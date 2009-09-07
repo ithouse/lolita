@@ -115,7 +115,8 @@ class Managed < ApplicationController
   #     :width - kollonas platums px
   #     :title - kolonnas virsraksts, opcionāls, tiks ņemts kolonnas db nosaukums, vai no fields tabula
   #     :link - norāda vai būs edit saite uz elementa rediģēšanu
-  #     :field - lauka nosaukums, OBLIGĀTS
+  #     :field - lauka nosaukums, OBLIGĀTS;
+  #       saistītiem objektiem var norādīt lauku/metožu masīvu e.g. ["eye","color"] izsauc human.eye.color
   #     :function - lauka vērtības attēlošanai var izsaukt jūsu norādīto funkciju
   #     :sort_direction - kārtošanas veids (asc,desc), pēc noklusējuma asc
   #     :sortable - norāda vai kārtojams, pēc noklusējuma nav, ja norādīts :default tad ir kārtojams
