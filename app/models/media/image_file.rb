@@ -251,11 +251,11 @@ class Media::ImageFile < Media::FileBase
   end
 
   def url(version=nil)
-    if self.picture
+    if self.name
       if version
-        self.picture.send(version).url
+        self.name.send(version).url
       else
-        self.picture.url
+        self.name.url
       end
     else
       ""
@@ -264,8 +264,8 @@ class Media::ImageFile < Media::FileBase
   
   def all_versions
     {
-      'Thumb (124x124)'=>{:url=>self.picture.thumb.url,:width=>124,:height=>124},
-      'Media Thumb (220x150)'=>{:url=>self.picture.media_thumb.url,:width=>220,:height=>150}
+      'Thumb (124x124)'=>{:url=>self.name.thumb.url,:width=>124,:height=>124},
+      'Media Thumb (220x150)'=>{:url=>self.name.media_thumb.url,:width=>220,:height=>150}
     }.each{|key,value|
       yield key,value,self
     }
@@ -304,7 +304,7 @@ class Media::ImageFile < Media::FileBase
     files=FileItem.find(:all,:conditions=>["fileable_type=? AND fileable_id=?",self.pictureable_type,self.pictureable_id])
     if files.respond_to?("each")
       files.each{|file|
-        if File.basename(file.name.filename,File.extname(file.name.filename))==File.basename(self.picture.filename,File.extname(self.picture.filename))
+        if File.basename(file.name.filename,File.extname(file.name.filename))==File.basename(self.name.filename,File.extname(self.name.filename))
           file.destroy()
           
         end
@@ -327,7 +327,7 @@ class Media::ImageFile < Media::FileBase
 
   def add_watermark(watermark,version=nil,dimensions=nil)
     # chopped.resize_to_fit!(dimensions[0].to_i,dimensions[1].to_i)
-    url="#{RAILS_ROOT}/public/#{version ? self.picture.send(version).url : self.picture.url}"
+    url="#{RAILS_ROOT}/public/#{version ? self.name.send(version).url : self.name.url}"
     image = Magick::Image.read(url).first
     height=image.rows
     width=image.columns
@@ -361,7 +361,7 @@ class Media::ImageFile < Media::FileBase
     end
   end
   def self.chopped_image(p,img,options={})
-    crop_img=::Magick::Image::read(p.picture.cropped.path).first #ielasu cropped bildi
+    crop_img=::Magick::Image::read(p.name.cropped.path).first #ielasu cropped bildi
     c_width=crop_img.rows
     c_height=crop_img.columns
     b_width=img.rows
