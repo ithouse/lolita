@@ -50,7 +50,9 @@ class Admin::MenuItem < Cms::Manager
   
   def link
     hsh={}
-    if self.menuable_type && !self.menuable_type.include?("::StartPage")
+    if self.menuable_type=="Url"
+      return self.menuable.name
+    elsif self.menuable_type && !self.menuable_type.include?("::StartPage")
       hsh[:controller]=self.menuable_type=="Admin::Action" ?
         self.menuable.controller.to_s  :
         "/#{self.menuable_id.to_i>0 ? self.menuable_type.to_s.underscore : ""}"

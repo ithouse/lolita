@@ -17,13 +17,8 @@ module Extensions::MenuHelper
 
   def get_current_menu_item(menu_name)
     id = get_id
-    if params[:name] && params[:controller]=="Cms::DynamicForm"
-      df=DynamicForm.find_by_template(params[:name])
-      id=df ? df.id : nil
-    end
+ 
     type = params[:controller].camelize
-    #if type=="Cms::StartPage"
-    #  menu_items = Admin::Menu.find_by_menu_name(menu_name).menu_items.find(:all, :conditions=>['menuable_type=? AND is_published=1',type])
     if id
       menu=Admin::Menu.find_by_menu_name(menu_name)
       menu=Admin::MenuItem.find_by_branch_name(menu_name) unless menu
