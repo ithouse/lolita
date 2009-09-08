@@ -7,7 +7,7 @@ module Extensions
           handle_params
           @object=object.find(params[:id])
           save_metadata_with_translation()
-          flash[:notice]=t(:"metadata.translation saved")
+          @notice=t(:"notice.translation saved")
           render :partial=>"/managed/meta_information", :locals=>{:tab=>params[:tab]}
         end
       end

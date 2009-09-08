@@ -88,16 +88,6 @@ lv:
     human controll not correct: Drošības kods nav pareizs!
   list:
     options: Iespējas
-  tabs:
-    default: Cilne
-    content: Saturs
-    translate: Tulkošana
-    map: Karte
-    metadata: Metadati
-    pictures: Attēli
-    files: Faili
-    audio: Audio
-    video: Video
   fields:
     not_related: -Nav piesaistīts-
     select a module: -Izvēlieties sadaļu-

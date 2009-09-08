@@ -1,0 +1,8 @@
+<td id="single_audio_file_row_<%=single_audio_row[:audio].id%>">
+  <%=render :partial=>"/media/audio_file/only_player",:locals=>{:audio=>single_audio_row[:audio]}%>
+</td>
+<td >
+  <input type="image" title="<%=t(:"media.video_files.upload picture")%>" src="/lolita/images/icons/add_picture.png" onclick="ITH.Cms.AudioFileDialog.open(<%=single_audio_row[:audio].id%>);return false;"
+         <input type="image" title="<%=t(:"media.video_files.remove picture")%>" src="/lolita/images/icons/remove_picture.png" onclick="ITH.Cms.AudioFileDialog.destroy(<%=single_audio_row[:audio].id%>);return false;"
+       </td>
+<td style="width:30px;"><input name="thumb[]" class="chk" type="checkbox" value="<%= single_audio_row[:audio].id %> " /></td>

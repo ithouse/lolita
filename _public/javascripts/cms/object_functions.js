@@ -189,7 +189,7 @@ ITH.Element=function(){
 ITH.Media=function(){
     var params={}
     
-    var loadingImage="/images/cms/loading.gif"
+    var loadingImage="/lolita/images/cms/loading.gif"
     var current_media="images"
     var current_element=-1
     var container={
@@ -416,63 +416,63 @@ ITH.Media=function(){
         }
     }
 }()
-ITH.Picture=function(){
-    var loadingImage="/images/cms/loading.gif"
-    var refreshLoadingImage="/images/icons/arrow_refresh_loading.gif"
-    var refreshImage="/images/icons/arrow_refresh.png"
+ITH.ImageFile=function(){
+    var loadingImage="/lolita/images/cms/loading.gif"
+    var refreshLoadingImage="/lolita/images/icons/arrow_refresh_loading.gif"
+    var refreshImage="/lolita/images/icons/arrow_refresh.png"
     return{
         init:function(config){
-            if(!ITH.Picture.Dialog){
+            if(!ITH.ImageFile.Dialog){
                 this.render_dialog()
             }
             this.parameters=config
         },
         show_attributes_dialog:function(config){
             this.configuration=config
-            ITH.Picture.Dialog.show();
+            ITH.ImageFile.Dialog.show();
             this.open_attributes()
         },
         show_loading:function(){
-            ITH.Picture.Dialog.setBody('<img alt="'+ITH.Translations.wait_dialog_header+'" class="ith-media-loading" src="'+loadingImage+'"/>')
+            ITH.ImageFile.Dialog.setBody('<img alt="'+ITH.Translations.wait_dialog_header+'" class="ith-media-loading" src="'+loadingImage+'"/>')
         },
         open_comments:function(config){
             this.make_simple_request("/cms/comment/inline_comments",{
                 parent_id:config.id,
-                parent:"Picture"
+                parent:"ImageFile"
             },"picture_comments_container")
         },
         open_attributes:function(config){
             if(config) this.configuration=config
-            ITH.Picture.Dialog.setHeader(ITH.Translations.picture_attributes)
-            ITH.Picture.Dialog.setFooter("")
+            ITH.ImageFile.Dialog.setHeader(ITH.Translations.picture_attributes)
+            ITH.ImageFile.Dialog.setFooter("")
             this.show_loading()
-            this.dialog_request("/picture/attributes/"+this.configuration.id)
+            this.dialog_request("/media/image_file/attributes/"+this.configuration.id)
         },
         save_attributes:function(form,id){
-            ITH.Picture.Dialog.setFooter(ITH.Translations.saving)
+            ITH.ImageFile.Dialog.setFooter(ITH.Translations.saving)
             var that=this
             $.ajax({
                 type:"post",
-                url:"/picture/save_attributes/"+id,
+                url:"/media/image_file/save_attributes/"+id,
                 data:$(form).serialize(),
                 dataType:"json",
                 success:function(picture){
-                    ITH.Picture.Dialog.setFooter(ITH.Translations.changes_saved+"!")
+                    ITH.ImageFile.Dialog.setFooter(ITH.Translations.changes_saved+"!")
                     element=$('#normalpicturesthumb_'+picture.id)
                     element.attr("title",picture.title)
                     element.attr("alt",picture.alt)
-                    ITH.Picture.Dialog.setBody("")
-                    ITH.Picture.Dialog.hide();
+                    ITH.ImageFile.Dialog.setBody("")
+                    ITH.ImageFile.Dialog.hide();
                 },
                 error:function(){
-                    ITH.Picture.Dialog.setFooter(ITH.Translations.media_error)
+                    ITH.ImageFile.Dialog.setFooter(ITH.Translations.media_error)
                 }
             })
             
             return false;
         },
         render_dialog:function(){
-            ITH.Picture.Dialog=new YAHOO.widget.Dialog("pic_title_dialog",{ 
+            ITH.ImageFile.Dialog=new YAHOO.widget.Dialog("pic_title_dialog",{ 
                 width : "300px",
                 postmethod:"manual",
                 zindex:50000,
@@ -480,7 +480,7 @@ ITH.Picture=function(){
                 visible : false, 
                 constraintoviewport : true
             });
-            ITH.Picture.Dialog.render();
+            ITH.ImageFile.Dialog.render();
         },
         check_state:function(event,obj,id){
             hidden_element=$("#"+obj.id+'_hidden');
@@ -504,7 +504,7 @@ ITH.Picture=function(){
             //cfg=config ? json_to_params(config) : json_to_params(this.parameters)
             toggle_images(elementById("picture_list_refresh_button"),[refreshImage,refreshLoadingImage])
             simple_yui_request(this,{
-                url:"/picture/reload",
+                url:"/media/image_file/reload",
                 params:config || this.parameters,
                 container:'picture_list_container',
                 success:'toggle_images(elementById("picture_list_refresh_button"),["'+refreshImage+'","'+refreshLoadingImage+'"])'
@@ -512,17 +512,17 @@ ITH.Picture=function(){
         },
         remove_main:function(config){
             cfg=config ? json_to_params(config) : json_to_params(this.parameters)
-            this.make_simple_request("/picture/remove_large_picture",cfg,'picture-photos-main')
+            this.make_simple_request("/media/image_file/remove_large_picture",cfg,'picture-photos-main')
         },
         dialog_request:function(url){
             var requestHandler={
                 success: function(request){
-                    $(ITH.Picture.Dialog.body).html(request.responseText);
-                    ITH.Picture.Dialog.center();
-                //ITH.Picture.Dialog.setBody(request.responseText)
+                    $(ITH.ImageFile.Dialog.body).html(request.responseText);
+                    ITH.ImageFile.Dialog.center();
+                //ITH.ImageFile.Dialog.setBody(request.responseText)
                 },
                 failure:function(request){
-                    ITH.Picture.Dialog.setBody("")
+                    ITH.ImageFile.Dialog.setBody("")
                 },
                 argument:{
                     caller:this
@@ -560,7 +560,7 @@ ITH.Picture=function(){
         }
     }
 }()
-ITH.PictureVersions=function(){
+ITH.ImageFileVersions=function(){
     var id="#picture_versions_dialog";
     var container="#picture_versions";
     var default_version="cropped";
@@ -568,9 +568,9 @@ ITH.PictureVersions=function(){
     var default_height=220
     $(document).ready(function(e){
         $(function(){
-            ITH.PictureVersions.Dialog=$(id).buildContainers({
+            ITH.ImageFileVersions.Dialog=$(id).buildContainers({
                 containment:"document",
-                elementsPath:"/images/jquery/elements/"
+                elementsPath:"/lolita/images/jquery/elements/"
             });
         });
     });
@@ -591,7 +591,7 @@ ITH.PictureVersions=function(){
                 var that=this;
                 this.start_loading();
                 $.ajax({
-                    url:"/picture/recreate",
+                    url:"/media/image_file/recreate",
                     type:"post",
                     dataType:"json",
                     data:{
@@ -634,7 +634,7 @@ ITH.PictureVersions=function(){
             this.start_loading();
             var that=this;
             $.ajax({
-                url:"/picture/load_image_for_cropping",
+                url:"/media/image_file/load_image_for_cropping",
                 type:"get",
                 dataType:"json",
                 data:{
@@ -727,7 +727,7 @@ ITH.PictureVersions=function(){
         },
         //Nostrādā kad maina reģionu
         show_preview:function(coords){
-            var self=ITH.PictureVersions
+            var self=ITH.ImageFileVersions
             self.set_coords(coords);
             var rx =(default_width/self.diffs.width) / coords.w;
             var ry =(default_height/self.diffs.height)/coords.h;
@@ -875,7 +875,7 @@ AutoUploadForm.prototype= {
                 var self=request.argument.caller
                 $("#"+self.target).html(request.responseText)
                 if(self.config.type=="picture" && request.responseText==""){
-                    ITH.Picture.remove_main()
+                    ITH.ImageFile.remove_main()
                 }
             },
             failure:function(request){

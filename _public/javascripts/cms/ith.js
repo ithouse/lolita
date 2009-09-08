@@ -35,4 +35,4 @@ ITH.extend = function(subc, superc, overrides) {
     }
 };
 
-ITH.namespace("Cms","Media","Picture","PictureVersions","Event","Tree","Menu","Branch","MenuTree","MenuBranch","Elements");
+ITH.namespace("Cms","Media","ImageFile","ImageFileVersions","Event","Tree","Menu","Branch","MenuTree","MenuBranch","Elements");

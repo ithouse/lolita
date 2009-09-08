@@ -98,7 +98,6 @@ function uploadComplete(fileObj) {
 			progress.SetComplete();
       progress.Hide();
 			progress.ToggleCancel(false);
-      ITH.Picture.refresh_list();
 		}
 	} catch (ex) { this.debug(ex); }
 }

@@ -1,4 +1,4 @@
-class CreatePictures < ActiveRecord::Migration
+class CreatePictures < ActiveRecord::Migration #FIXME rename me from new projects
   def self.up
     create_table   :pictures do |t|
       t.string      :picture
@@ -8,9 +8,11 @@ class CreatePictures < ActiveRecord::Migration
       t.string      :title
       t.string      :alt
       t.string      :caption
-      t.integer      :position
+      t.integer     :position
       t.timestamps
     end
+    add_index :pictures, :main_image
+    add_index :pictures, :position
     add_index :pictures, [:pictureable_type,:pictureable_id]
   end
 

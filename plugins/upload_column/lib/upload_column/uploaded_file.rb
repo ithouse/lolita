@@ -65,12 +65,8 @@ module UploadColumn
       @suffix = options[:suffix]
       
       load_manipulator
-      if self.instance.is_a?(Picture)
-        versions_class=self.instance.pictureable_type.constantize
-        if versions_class.respond_to?(:upload_column_versions)
-          c_versions=versions_class.upload_column_versions
-          @options[:versions].merge!(c_versions) if c_versions
-        end
+      if self.instance.respond_to?(:before_upload,true)
+        self.instance.before_upload(@options)
       end
      # puts @options[:versions]
       case mode

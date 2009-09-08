@@ -4,17 +4,14 @@ module Extensions
       ActionController::Rescue
 
       def handle_before_create
-        if picture_id.to_i<1
+        if file_id.to_i<1
           @new_object_id=get_temp_id
         else
-          @new_object_id=picture_id
+          @new_object_id=file_id
         end
       end
       
       def handle_after_create
-        if has_picture_id?
-          update_uploaded_pictures @object,picture_id
-        end
         if has_file_id?
           update_uploaded_files @object,file_id
         end

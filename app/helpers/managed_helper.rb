@@ -53,61 +53,25 @@ module ManagedHelper
   
   def tabs options={}
     opened=false
+    media_types=Media::FileBase.all_media_names.collect{|m| m.to_sym}
+    special_types= [:metadata,:translate,:file]
     @config[:tabs].each_with_index{|tab,index|
-      special_types= [:files,:pictures,:metadata,:map,:translate,:audio,:video]
-      tab_opened=!opened && (tab[:opened] || tab[:type]==:map)
+      tab_opened=!opened && (tab[:opened] || tab[:opened_on_load])
       opened=tab_opened ? true : opened
       start_html,end_html=tab_start_end_html(tab,index,tab_opened)
       tab[:partial]="/managed/object_data" if tab[:type]==:content || tab[:type]==:default
       unless special_types.include?(tab[:type])
         yield %(#{start_html}#{render(:partial=>tab[:partial],:locals=>{:tab=>index})}#{end_html}) if options[:in_form]==tab[:in_form]
       else
-        case tab[:type]
-        when :metadata
+        if tab[:type]==:metadata
           yield %(#{start_html}#{render(:partial=>"/managed/meta_information",:locals=>{:tab=>index})}#{end_html}) if options[:in_form]
-        when :translate
+        elsif tab[:type]==:translate
           yield %(#{start_html}#{render(:partial=>"/managed/translate",:locals=>{:tab=>index})}#{end_html}) if is_translatable?(options)
-        when :files,:audio,:video
-          if options[:in_form] && !(tab[:create_pdf] && params[:action]=="create")
-            yield %(<input type="hidden" value="#{@new_object_id}" name="temp_file_id" />)
-          elsif !options[:in_form]
-            yield %(#{start_html}#{render :partial=>'/file/new_upload_container', :object=>{
-            :media=>tab[:type]==:files ? :file : "#{tab[:type]}_file",
-            :parent=>@config[:object_name],
-            :tempid=>(params[:action]!="update"),
-            :parent_id=>(params[:action]!="update")? @new_object_id : @object.id,
-            :single=>tab[:single],
-            :read_only=>@read_only
-            }.merge(tab.delete_if{|v,k| k==:type})}#{end_html})
-          end
-        when :pictures
-          if options[:in_form] && !(tab[:create_pdf] && params[:action]=="create")
-            yield %(<input type="hidden" value="#{@new_object_id}" name="temp_picture_id"/>)
-          elsif !options[:in_form]
-            result=start_html+render(:partial=>'/picture/new_upload_container', :object=>{
-                :parent=>tab[:object_name] || @config[:object_name],
-                :tempid=>(params[:action]!="update"),
-                :parent_id=>(params[:action]!="update" ? @new_object_id : @object.id),
-                :single=>tab[:single],
-                :read_only=>@read_only,
-                :pdf=>tab[:create_pdf],
-                :main_image=>tab[:main_image]
-              })+end_html
-            yield result if block_given?
-          end
-        when :map
-          if options[:in_form] && reflection=@object.class.reflections.detect{|name,r| r.class_name=="Location"}
-            locations=set_map_hidden_fields(@object,reflection.first)
-            
-            yield %(#{start_html}<div id="map" class="cms-google-map"></div>
-                      #{locations}
-                      #{render(:partial=>'/managed/map_script', :locals=>{
-            :lat=>(@object.location)?(@object.location.lat):0,
-            :lng=>(@object.location)?(@object.location.lng):0,
-            :tab=>index
-            })}
-                      #{end_html}
-            )
+        elsif tab[:type]==:file && media_types.include?(tab[:media])
+          if self.respond_to?(:"lolita_#{tab[:media]}_tab")
+            yield "#{start_html}#{self.send("lolita_#{tab[:media]}_tab",options,tab)}#{end_html}"
+          else
+            yield "#{start_html}#{default_lolita_media_tab(options,tab)}#{end_html}"
           end
         end
       end
@@ -169,18 +133,8 @@ module ManagedHelper
       tab_opened=tab[:opened] && !opened
       opened=tab_opened || opened
       tab[:title]=t(tab[:title]) if tab[:title] && tab[:title].is_a?(Symbol)
-      case tab[:type]
-      when :translate
-        yield tab_header(tab[:title] || t(:"tabs.translate"), :index=>index,:current=>tab_opened) if is_translatable?(:in_form=>true)
-      when :pictures ,!(tab[:create_pdf] && params[:action]=="create")
-        yield tab_header(tab[:title] || t(:"tabs.pictures"), :index=>index,:current=>tab_opened)
-      when :files ,!(tab[:create_pdf] && params[:action]=="create")
-        yield tab_header(tab[:title] || t(:"tabs.files"), :index=>index,:current=>tab_opened)
-      when :audio,:video
-        yield tab_header(tab[:title] || t("tabs.#{tab[:type]}".to_sym),:index=>index,:current=>tab_opened)
-      when :map, :content, :metadata, :default
-        tab[:title]||=t("tabs.#{tab[:type]}".to_sym)
-        yield tab_header(tab[:title] || "#{t(:"tabs.default")} #{index}", :index=>index,:current=>tab_opened)
+      if tab[:type]!=:translate || (tab[:type]==:translate && is_translatable?(:in_form=>true))
+        yield tab_header(tab[:title] || (tab[:media] ? t(:"tabs.#{tab[:media]}") : t(:"tabs.#{tab[:type]}")), :index=>index,:current=>tab_opened)
       end
     end
   end

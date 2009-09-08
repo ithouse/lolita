@@ -1,9 +1,0 @@
-<%#
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
-<% get_all_parent_pictures(thumb_images_container[:parent],thumb_images_container[:parent_id]) do |pictures| %>
-  <div id="picture-photos-thumb-container" class="picture-photos-thumb-container<%= !thumb_images_container[:main_image] ? "-simple" : "" %>">
-    <%= render :partial=>'/picture/show_form', :object=>picture_cfg(thumb_images_container,:pictures=>pictures) %>
-  </div>
-<% end %>

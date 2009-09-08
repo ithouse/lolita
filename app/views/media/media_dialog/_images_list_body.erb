@@ -1,0 +1,29 @@
+<%#
+# Artūrs Meisters, SIA ITHGroup
+# 06.10.2008
+%>
+<table>
+  <% index=0
+  while index<@images.size
+    row_images=@images[index..index+2]
+    index+=3
+  %>
+    <tr>
+      <%for image in row_images %>
+        <td class="media-image-list">
+          <%= image_tag image.picture.thumb.url, :alt=>image.alt,:title=>image.title, :id=>"ith_media_list_element_#{image.id}"%>
+          <span class="ith-media-image-tools">
+            <span class="ith-media-image-tool" onclick="ITH.Media.open_attributes(<%=image.id%>)"><span title="Mainīt attēla attribūtus" class="picture-edit-tool picture-tool-common"></span></span><br/>
+            <span class="ith-media-image-tool" onclick="ITH.Media.delete_element(<%=image.id%>)"><span title="Dzēst attēlu" class="picture-delete-tool picture-tool-common"></span></span><br/>
+            <span class="ith-media-image-tool" onclick="ITH.Media.show_details(<%=image.id%>)"><span title="Aplūkot citus izmērus" class="picture-detail-tool picture-tool-common"></span></span><br/>
+          </span>
+        </td>
+      <%end%>
+    </tr>
+  <% end  %>
+  <script type="text/javascript">
+    //<![CDATA[
+    ITH.ImageFile.refresh_list()
+    //]]>
+  </script>
+</table>

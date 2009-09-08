@@ -2,8 +2,6 @@
 module BaseHelper
   include Extensions::PermissionHelper
   include Extensions::NumberSpellerHelper
-  include Extensions::PictureHelper
-  include Extensions::FileHelper
 
   include Extensions::ErrorHelper
   include Extensions::JavaScriptHelper
@@ -19,8 +17,7 @@ module BaseHelper
   include Extensions::UrlHelper
   include PublicHelper
   include ManagedHelper
-  include PictureHelper
-  include MediaHelper
+  include Media::BaseHelper
   # Iespējamās opcijas
   #   :image - vai nepieciešams tekstā pielikt klāt ITHouse
   #   :simple - vienkārša lapa vai nē
@@ -111,7 +108,7 @@ module BaseHelper
       "#{key}=#{value}"
     }.join("&")
     msg = t(:"flash.get flash player")
-    base_options={:player=>"/public_swf/player.swf",:type=>"player",:width=>html_options[:width] || 480,:height=>html_options[:height] || 350,:version=>html_options[:version] || '9'}
+    base_options={:player=>"/lolita/public_swf/player.swf",:type=>"player",:width=>html_options[:width] || 480,:height=>html_options[:height] || 350,:version=>html_options[:version] || '9'}
     %(<div id="#{html_options[:id]}"><div class="no-flash-msg">#{msg}</div><noscript>#{image_tag(flash_vars[:image],:alt=>"")}</noscript></div>)+
       javascript_tag(
       %(FlashLoader.create('#{html_options[:id]}',#{base_options.to_json},'#{vars}',#{flash_options.to_json}))
@@ -191,27 +188,6 @@ module BaseHelper
   
   
   def file_cfg container,options={}
-    #    parent=container[:parent] ||nil
-    #    parent_id=container[:parent_id] || 0
-    #    single=container[:single] || nil
-    #    read_only=container[:read_only] || nil
-    #    tempid=container[:tempid] || nil
-    #
-    #    private=container[:private] || nil
-    container[:configuration] ||= {}
-    container[:media] ||= :file
-    cfg={}
-    #cfg={:parent=>parent,:parent_id=>parent_id,:media=>media,:single=>single,:read_only=>read_only,:tempid=>tempid,:configuration=>configuration,:private=>private}
-    container.each{|key,value|
-      cfg[key]=value unless cfg[key]
-    }
-    options.each{|key,value|
-      cfg[key]=value
-    }
-    cfg
-  end
-  
-  def picture_cfg container,options={}
     configuration=container[:configuration] || {}
     excluded=options[:excluded] || []
     cfg={:configuration=>configuration}

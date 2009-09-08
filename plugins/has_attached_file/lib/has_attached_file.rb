@@ -11,11 +11,11 @@ module ITHouse
     module ClassMethods
       attr_reader :upload_column_versions
 
-      def has_attached_picture name, options={}
+      def has_attached_image_file name, options={}
         configure_attached_picture(options)
         self.has_one name, options
       end
-      def has_attached_pictures name, options={}
+      def has_attached_image_files name, options={}
         configure_attached_picture(options)
         self.has_many name, options
       end
