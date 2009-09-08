@@ -17,6 +17,6 @@
     :cols=>80,
     :rows=>(@page.content.blank? ? 20 : [[20, @page.content.length / 60].max, 60].min) %>
   <br />
-  <%= submit_tag "Saglabāt"%> vai <%= link_to "Atgriezties", {:action=>:open, :id=>@page.name} %>
+  <%= submit_tag "Saglabāt"%> vai <%= link_to "Atgriesties", {:action=>:open, :id=>@page.name} %>
 <% end %>
 

@@ -313,7 +313,7 @@ ITH.Media=function(){
                     id:id
                 }
             };
-            YAHOO.util.Connect.asyncRequest('POST', "/media/save_attributes/"+id, requestHandler,Form.serialize(form)+"&media="+current_media);
+            YAHOO.util.Connect.asyncRequest('POST', "/media/save_attributes/"+id, requestHandler,Form.serialize(form)+"&media="+current_media+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN));
             return false;
         },
         /*
@@ -338,7 +338,7 @@ ITH.Media=function(){
                     id:id
                 }
             };
-            YAHOO.util.Connect.asyncRequest('POST', "/media/open_attributes/"+id, requestHandler,"media="+current_media);
+            YAHOO.util.Connect.asyncRequest('POST', "/media/open_attributes/"+id, requestHandler,"media="+current_media+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN));
         },
         /*
          * ITH.Media.close_attributes
@@ -412,6 +412,7 @@ ITH.Media=function(){
                     }
                 }
             }
+            p=p+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN)
             YAHOO.util.Connect.asyncRequest('POST', url, requestHandler,p);
         }
     }
@@ -528,14 +529,14 @@ ITH.ImageFile=function(){
                     caller:this
                 }
             };
-            var req=YAHOO.util.Connect.asyncRequest('POST', url, requestHandler,"");
+            var req=YAHOO.util.Connect.asyncRequest('POST', url, requestHandler,"authenticity_token="+encodeURIComponent(AUTH_TOKEN));
             return false;
         },
         make_simple_request:function(url,params,container){
             $.ajax({
                 url:url,
                 type:"post",
-                data:params,
+                data:params+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN),
                 success:function(html){
                     $("#"+container).html(html)
                 },
@@ -600,7 +601,8 @@ ITH.ImageFileVersions=function(){
                         x:this.coords.x,
                         y:this.coords.y,
                         version:this.current_version,
-                        id:this.current_id
+                        id:this.current_id,
+                        authenticity_token:encodeURIComponent(AUTH_TOKEN)
                     },
                     success:function(json){
                         that.v_info=json.info;
@@ -640,7 +642,8 @@ ITH.ImageFileVersions=function(){
                 data:{
                     "id":id,
                     "version":version,
-                    "all_versions":true
+                    "all_versions":true,
+                    "authenticity_token":encodeURIComponent(AUTH_TOKEN)
                 },
                 success:function(data){
                     that.base_info=data.info;
@@ -844,7 +847,7 @@ ITH.extend(DraggableElement, YAHOO.util.DDProxy, {
                     caller:this
                 }
             };
-            this.req=YAHOO.util.Connect.asyncRequest('POST', this.options.url, requestHandler,"is_ajax=true");
+            this.req=YAHOO.util.Connect.asyncRequest('POST', this.options.url, requestHandler,"is_ajax=true"+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN));
         }
     }
 });

@@ -2,7 +2,7 @@ class Cms::Content < Cms::Manager
   self.abstract_class = true
   has_many :menu_items, :as=>:menuable, :dependent=>:nullify, :class_name=>"Admin::MenuItem"
   
-    class << self
+  class << self
     def find_related_menu_item menu_name, id
       element=self.find_by_id(id)
       if element
@@ -23,6 +23,7 @@ class Cms::Content < Cms::Manager
       end
       return nil
     end
-    
+
   end
+
 end
