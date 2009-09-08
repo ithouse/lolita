@@ -6,7 +6,7 @@ class CreateFileTempMemory < ActiveRecord::Migration
       t.integer :user_id
       t.integer :memory_id
     end
-    add_index :media_file_temp_memories,[:memory_id,:user_id,:media]
+    add_index :media_file_temp_memories,[:memory_id,:user_id,:media],:name=>"memory_user_media_index"
   end
 
   def self.down
