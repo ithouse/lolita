@@ -38,11 +38,8 @@ class Media::ImageFile < Media::FileBase
   #######################SPECIĀLĀS FUNKCIJAS ###################################
   
   def add_watermarks
-    #require 'RMagick'
-    if File.exist?(RAILS_ROOT+"/public/images/watermark-54.png") && self.picture
-      watermark54=Magick::Image.read(RAILS_ROOT+"/public/images/watermark-54.png").first
-      # watermark36=Magick::Image.read(RAILS_ROOT+"/public/images/watermark-38.png").first
-      # add_watermark(watermark54)
+    if File.exist?(RAILS_ROOT+"/public/lolita/images/watermark.png") && self.picture
+      watermark54=Magick::Image.read(RAILS_ROOT+"/public/images/watermark.png").first
       Media::ImageFile.full_versions.each{|version,dimensions|
         add_watermark(watermark54,version,dimensions)
       }
@@ -53,7 +50,7 @@ class Media::ImageFile < Media::FileBase
   ##############################################################################
   def self.get_temp_destination
     timestamp="#{rand(100000)}"+Time.now.strftime("%Y%m%d%H%M%S")
-    "#{RAILS_ROOT}/public/upload/picture/picture/picture/tmp/#{timestamp}"
+    "#{RAILS_ROOT}/public/upload/#{self.to_s.underscore}/name/tmp/#{timestamp}"
   end
   
   def self.full_versions

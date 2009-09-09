@@ -23,7 +23,7 @@ module ITHouse
       private
 
       def configure_attached_picture options={}
-        @upload_column_versions=options[:versions].dup || {}
+        @upload_column_versions=options[:versions] ? options[:versions].dup : {}
         options=options.delete_if{|k,v| k==:versions}
       end
     end
