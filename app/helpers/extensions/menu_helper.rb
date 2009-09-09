@@ -3,7 +3,7 @@ module Extensions::MenuHelper
     picture=item.pictures.main_or_first if options[:image]
     title=options[:image] && picture ? image_tag(picture.picture.url) : item.name
     hsh={:class=>"active"} if current_branch.include?(item)
-    link_to(title,item.link,hsh)
+    link_to(h(title),item.link,hsh)
   end
 
   def get_current_menu_branch (menu_name)
