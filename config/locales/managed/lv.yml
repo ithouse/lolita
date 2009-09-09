@@ -15,7 +15,7 @@ lv:
     translate: Tulkošana
     map: Karte
     metadata: Metadati
-    image: Attēli
-    simple: Faili
-    audio: Audio
-    video: Video
+    image_file: Attēli
+    simple_file: Faili
+    audio_file: Audio
+    video_file: Video
