@@ -1,4 +1,4 @@
-class Media::Base < ApplicationController
+class Media::ControllerBase < ApplicationController
 
   private
   

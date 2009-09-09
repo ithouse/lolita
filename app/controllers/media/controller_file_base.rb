@@ -1,4 +1,4 @@
-class Media::FileBase < Media::Base
+class Media::ControllerFileBase < Media::ControllerBase
   #FIXME JF:nācās ielikt protect_from_forgery exceptu, jo nekādīgi negribēja ņemt padoto auth tokenu
   protect_from_forgery :except=>[:new_create]
 
@@ -28,6 +28,7 @@ class Media::FileBase < Media::Base
   def destroy
     ids=[params[:id]]+if params[:thumb]
       if params[:thumb].is_a?(Hash)
+        params[:thumb]=params[:thumb].delete_if{|k,v| k.to_s=="normal"}
         params[:thumb].values
       else
         params[:thumb]

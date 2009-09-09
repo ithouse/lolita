@@ -1,4 +1,4 @@
-class Media::ImageFileController < Media::Base
+class Media::ImageFileController < Media::ControllerBase
   allow
   
 end

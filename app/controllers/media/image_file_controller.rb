@@ -1,4 +1,4 @@
-class Media::ImageFileController < Media::Base
+class Media::ImageFileController < Media::ControllerFileBase
 
   allow :public=>[:only_image,:load_image_with_siblings],
     :all=>[

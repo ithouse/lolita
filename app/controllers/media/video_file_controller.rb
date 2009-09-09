@@ -1,4 +1,4 @@
-class Media::VideoFileController < MediaBase
+class Media::VideoFileController < Media::ControllerFileBase
   allow :all=>[:destroy,:show,:add_picture,:remove_picture,:new_create,:refresh]
 
   def add_picture
