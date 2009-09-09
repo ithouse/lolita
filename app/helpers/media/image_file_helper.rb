@@ -1,6 +1,6 @@
 module Media::ImageFileHelper
 
-  def image_extensions
+  def image_file_extensions
     UploadColumn.image_extensions.collect{|t| "*.#{t};"}.join
   end
 

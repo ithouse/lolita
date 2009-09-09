@@ -1,4 +1,4 @@
-class Media::FileBase < Cms::Base
+class Media::FileBase < Media::Base
   self.abstract_class = true
 
   #Add file to memory, need when save file without real parent id.
@@ -64,17 +64,6 @@ class Media::FileBase < Cms::Base
       self.find_existing(class_name,memory_id)
     end
   end
-
-  #Return all existing media names, for example 'audio' or 'image'
-  def self.all_media_names
-    media=[]
-    Find.find(File.dirname(__FILE__)) do |path|
-      if File.basename(path,".rb")=~/file$/
-        media<<(File.basename(path,".rb").gsub("_file",""))
-      end
-    end
-    media
-  end
   
   #End of new functions added when changed to media namespace
   def self.new_file(params)
@@ -116,11 +105,6 @@ class Media::FileBase < Cms::Base
     }
     self.assing_polymorphic_result_to_object(parent,result,poly_name.to_sym)
     self.clear_temp_files
-  end
-
-  #Return media class polymorphic name
-  def self.media_get_polymorphic_name
-    self.reflections.collect{|reflection| reflection.last.options[:polymorphic] ? reflection.first : nil}.compact.first
   end
 
 end

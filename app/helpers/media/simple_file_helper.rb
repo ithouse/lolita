@@ -1,5 +1,5 @@
 module Media::SimpleFileHelper
-  def simple_extensions
+  def simple_file_extensions
     "*.*"
   end
 end

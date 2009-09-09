@@ -67,7 +67,7 @@ module ManagedHelper
           yield %(#{start_html}#{render(:partial=>"/managed/meta_information",:locals=>{:tab=>index})}#{end_html}) if options[:in_form]
         elsif tab[:type]==:translate
           yield %(#{start_html}#{render(:partial=>"/managed/translate",:locals=>{:tab=>index})}#{end_html}) if is_translatable?(options)
-        elsif tab[:type]==:file && media_types.include?(tab[:media])
+        elsif tab[:type]==:multimedia && media_types.include?(tab[:media])
           if self.respond_to?(:"lolita_#{tab[:media]}_tab")
             yield "#{start_html}#{self.send("lolita_#{tab[:media]}_tab",options,tab)}#{end_html}"
           else

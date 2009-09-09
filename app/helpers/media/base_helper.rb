@@ -7,7 +7,7 @@ module Media::BaseHelper
 
   def default_media_tab_options tab
     {
-      :media=>"#{tab[:media]}_file",
+      :media=>tab[:media],
       :parent=>@config[:object_name],
       :tempid=>(params[:action]!="update"),
       :parent_id=>(params[:action]!="update")? @new_object_id : @object.id
@@ -22,7 +22,7 @@ module Media::BaseHelper
     if options[:in_form]
       tab_default_form_params
     elsif !options[:in_form]
-      render :partial=>'/media/new_upload_container', :object=>{
+      render :partial=>'/media/container', :object=>{
         :read_only=>@read_only
       }.merge(tab.delete_if{|v,k| k==:type}).merge(default_media_tab_options(tab))
     end
@@ -51,10 +51,10 @@ module Media::BaseHelper
   end
 
   def file_extensions media
-    self.send("#{media.gsub(/_.+$/,"")}_extensions")
+    self.send("#{media}_extensions")
   end
 
   def file_types_description media
-    I18n.t("lolita.media.#{media.gsub(/_.+$/,"")}")
+    I18n.t("lolita.media.#{media}")
   end
 end

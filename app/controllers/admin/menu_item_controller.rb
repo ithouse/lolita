@@ -80,7 +80,7 @@ class Admin::MenuItemController < Managed
         {:fields=>:default,:type=>:content, :in_form=>true,:opened=>true},
         {:type=>:metadata, :in_form=>true},
         {:type=>:translate, :fields=>:default, :in_form => true},
-        {:main_image=>true,:type=>:pictures,:single=>false}
+        {:main_image=>true,:type=>:multimedia,:media=>:image_file,:single=>false}
       ],
       :fields=>[
         {:type=>:text,:field=>:name,:translate=>true,:html=>{:maxlength=>255}},

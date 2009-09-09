@@ -2,7 +2,8 @@ module Extensions::FileManager
   
   def update_uploaded_files(object,id)
     Media::FileBase.all_media_names.each{|media|
-      "Media::#{"#{media}_file".camelize}".constantize.update_memorized_files(id,object)
+      klass="Media::#{"#{media}".camelize}".constantize
+      klass.update_memorized_files(id,object) if klass.respond_to?(:update_memorized_files)
     }
   end
   
