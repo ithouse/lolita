@@ -66,7 +66,7 @@ module UploadColumn
       
       load_manipulator
       if self.instance.respond_to?(:before_upload,true)
-        self.instance.before_upload(@options)
+        @options=self.instance.before_upload(@options)
       end
      # puts @options[:versions]
       case mode

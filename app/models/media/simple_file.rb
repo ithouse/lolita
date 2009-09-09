@@ -3,7 +3,7 @@ class Media::SimpleFile < Media::FileBase
   belongs_to :fileable, :polymorphic => true
   upload_column :name,:store_dir=>proc{|inst, attr|
     time=inst.created_at ? inst.created_at : Time.now
-    "upload/simple_file/#{time.strftime("%Y_%m")}/#{inst.id}"
+    "simple_file/#{time.strftime("%Y_%m")}/#{inst.id}"
   }
   named_scope :by_parent, lambda{|parent,parent_id|
     {:conditions=>["fileable_type=? AND fileable_id=?",parent.to_s.camelize,parent_id]}

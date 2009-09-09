@@ -7,3 +7,8 @@ lv:
           login name: Vārds
           password: Parole
           forgot password: Aizmirsi paroli?
+      menu_item:
+        content_menu_editor:
+          action menu: Sadaļas izvēlne
+          url menu: Pilna adrese
+          meta menu: Objekta piesaiste no meta url

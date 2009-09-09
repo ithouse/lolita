@@ -1,4 +1,5 @@
 <% cfg=file_cfg(before_files_container) %>
+<%= render :partial=>"/media/#{cfg[:media]}/resize_dialog" %>
 <div id="picture-photos-main" class="picture-photos-main" >
     <%= render :partial=>"/media/#{cfg[:media]}/get_image", :object=>cfg %>
 </div>

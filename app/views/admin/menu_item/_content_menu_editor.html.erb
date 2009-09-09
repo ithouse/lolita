@@ -1,4 +1,5 @@
-<span class="brick" style="width:30px;">
+<span class="brick" style="width:150px;float:none;">
+  <label for="relation_type"><%= t(:".action menu") %></label>
   <input type="radio" name="relation_type" value="0" <%=current==0 ? "checked='checked'" : ""%> onchange="change_public_menus(0)"/>
 </span>
 <div id="content_menu_item_editor_0" class="content_menu_item_editor">
@@ -10,7 +11,11 @@
   }
 %>
 </div>
-<span class="brick" style="width:30px;"><input type="radio" name="relation_type" value="1" <%=current==1 ? "checked='checked'" : ""%> onchange="change_public_menus(1)"/></span>
+<div class="clear"></div>
+<span class="brick" style="width:150px;float:none;">
+  <label for="relation_type"><%= t(:".url menu") %></label>
+  <input type="radio" name="relation_type" value="1" <%=current==1 ? "checked='checked'" : ""%> onchange="change_public_menus(1)"/>
+</span>
 <div id="content_menu_item_editor_1" class="content_menu_item_editor">
   <div class="fl">
     <span class='brick'>
@@ -18,7 +23,11 @@
     </span>
   </div>
 </div>
-<span class="brick" style="width:30px;"><input type="radio" name="relation_type" value="2" <%=current==2 ? "checked='checked'" : "" %> onchange="change_public_menus(2)" /></span>
+<div class="clear"></div>
+<span class="brick" style="width:150px;float:none;">
+  <label for="relation_type"><%= t(:".meta menu") %></label>
+  <input type="radio" name="relation_type" value="2" <%=current==2 ? "checked='checked'" : "" %> onchange="change_public_menus(2)" />
+</span>
 <div id="content_menu_item_editor_2" class="content_menu_item_editor">
   <div class="fl">
     <span class="brick">

@@ -31,7 +31,7 @@ class Media::ImageFileController < Media::Base
         :next=>picture.next_picture.id,
         :prev=>picture.prev_picture.id,
         :versions_info=>picture.versions_info,
-        :info=>{:crop=>true,:width=>image.width,:height=>image.height}
+        :info=>{:crop=>true,:width=>picture.width(:cropped),:height=>picture.height(:cropped)}
       }
     else
       render :json=>{}, :status=>404

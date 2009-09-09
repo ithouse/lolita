@@ -54,8 +54,8 @@ ITH.Editor.AutoComplete=function(text_field_id,result_container_id,url){
         animSpeed:0.1
         
     });
-//    YAHOO.util.Event.addListener(widget,"itemSelectEvent",this.itemSelect,this,true)
-//    YAHOO.util.Event.addListener(widget,"textboxKeyEvent",this.textChange,this,true)
+    //    YAHOO.util.Event.addListener(widget,"itemSelectEvent",this.itemSelect,this,true)
+    //    YAHOO.util.Event.addListener(widget,"textboxKeyEvent",this.textChange,this,true)
     widget.itemSelectEvent.subscribe(this.itemSelect);
     widget.textboxKeyEvent.subscribe(this.textChange);
 //widget.dataReturnEvent.subscribe(this.dataReturn)
@@ -567,14 +567,11 @@ ITH.ImageFileVersions=function(){
     var default_version="cropped";
     var default_width=220;
     var default_height=220
-    $(document).ready(function(e){
-        $(function(){
-            ITH.ImageFileVersions.Dialog=$(id).buildContainers({
-                containment:"document",
-                elementsPath:"/lolita/images/jquery/elements/"
-            });
-        });
-    });
+    //    $(document).ready(function(e){
+    //        $(function(){
+    //
+    //        });
+    //    });
     return {
         set_versions:function(versions){
             this.versions=versions;
@@ -615,6 +612,10 @@ ITH.ImageFileVersions=function(){
             }
         },
         load:function(config){
+            ITH.ImageFileVersions.Dialog=$(id).buildContainers({
+                containment:"document",
+                elementsPath:"/lolita/images/jquery/elements/"
+            });
             this.show();
             if(!this.loaded){
                 loadjscssfile("/javascripts/jquery/Jcrop/jquery.Jcrop.js","js");
@@ -699,20 +700,20 @@ ITH.ImageFileVersions=function(){
                 wd=this.v_info.w_diff
                 hd=this.v_info.h_diff
             }
-//            if(w>cw){ // samzinu lai ietilptu platumā
-//                var ratio=w/cw
-//                var diff=(h/w)
-//                w=w/ratio
-//                h=w*diff
-//            // alert(w+" w- "+h)
-//            }
-//            if(h>ch){ // ja samzinot platumu vēl neietilpst augstumā  vai vispār neietilpsts, tad samazinu,
-//                ratio=h/ch // lai ietilptu augstumā
-//                diff=(w/h)
-//                h=h/ratio
-//                w=h*diff
-//            // alert(w+" h- "+h)
-//            }
+            //            if(w>cw){ // samzinu lai ietilptu platumā
+            //                var ratio=w/cw
+            //                var diff=(h/w)
+            //                w=w/ratio
+            //                h=w*diff
+            //            // alert(w+" w- "+h)
+            //            }
+            //            if(h>ch){ // ja samzinot platumu vēl neietilpst augstumā  vai vispār neietilpsts, tad samazinu,
+            //                ratio=h/ch // lai ietilptu augstumā
+            //                diff=(w/h)
+            //                h=h/ratio
+            //                w=h*diff
+            //            // alert(w+" h- "+h)
+            //            }
             var w=this.v_info.width>default_width ? default_width : this.v_info.width
             var h=this.v_info.height>default_height ? default_height : this.v_info.height
             $("#current_version_original").css({
@@ -730,7 +731,7 @@ ITH.ImageFileVersions=function(){
         },
         //Nostrādā kad maina reģionu
         show_preview:function(coords){
-            var self=ITH.ImageFileVersions
+            var self=ITH.PictureVersions
             self.set_coords(coords);
             var rx =(default_width/self.diffs.width) / coords.w;
             var ry =(default_height/self.diffs.height)/coords.h;

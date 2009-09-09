@@ -1,0 +1,65 @@
+<div id="picture_versions" style="display:none;position:fixed;
+     top:0;
+     left:00px;
+     width:100%;
+     height:100%;
+     display:none;
+     background:url(/lolita/images/jquery/elements/screenBgnd.gif)">
+  <div id="picture_versions_dialog" class="containerPlus"
+       buttons=""
+       icon="folder_images.png"
+       style="margin-left:80px;top:20px;position:fixed"
+       skin="black">
+    <div class="no">
+      <div class="ne">
+        <div class="n"><%=t(:"image file.versions")%></div>
+      </div>
+      <div class="o">
+        <div class="e">
+          <div class="c">
+            <div id="picture_version_loading" style="display:none">
+              <%= image_tag "/lolita/images/cms/image-crop-loader.gif", :alt=>"#{t(:"image file.wait")}..." %>
+            </div>
+            <div id="picture_version_dialog_content" class="content">
+              <div class="picture-versions-menu">
+                <div class="title"><%=t(:"image file.all sizes")%></div>
+                <ul id="picture_versions_menu">
+
+                </ul>
+              </div>
+              <div class="version-container" id="current_version_image">
+                <div class="title"><%=t(:"image file.original image")%></div>
+                <div class="workarea">
+                  <img src="" alt="" id="current_version_crop_area"/>
+                </div>
+              </div>
+              <div class="version-container">
+                <div class="title"><%=t(:"image file.cropped image")%></div>
+                <div class="workarea preview">
+                  <img src="" alt="" id="current_version_preview"/>
+                </div>
+              </div>
+              <div class="version-container" >
+                <div class="title"><%=t(:"image file.real look")%></div>
+                <div>
+                  <img src="" alt="" id="current_version_original"/>
+                </div>
+              </div>
+              <div class="footer">
+                <input type="button" class="btn" value="<%=t(:"actions.back").chars.capitalize%>" onclick="ITH.ImageFileVersions.hide()"/>
+                <input type="button" class="btn" value="<%=t(:"actions.save").chars.capitalize%>" onclick="ITH.ImageFileVersions.save()"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="so">
+          <div class="se">
+            <div class="s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
