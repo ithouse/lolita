@@ -1,6 +1,6 @@
-<span class="brick" style="width:150px;float:none;">
-  <label for="relation_type"><%= t(:".action menu") %></label>
+<span class="brick" style="width:250px;float:none;display:block;margin-top:5px">
   <input type="radio" name="relation_type" value="0" <%=current==0 ? "checked='checked'" : ""%> onchange="change_public_menus(0)"/>
+  <label for="relation_type"><%= t(:".action menu") %></label>
 </span>
 <div id="content_menu_item_editor_0" class="content_menu_item_editor">
   <%= render :partial=>"admin_menu_select", :locals=>{
@@ -12,9 +12,9 @@
 %>
 </div>
 <div class="clear"></div>
-<span class="brick" style="width:150px;float:none;">
-  <label for="relation_type"><%= t(:".url menu") %></label>
+<span class="brick" style="width:250px;float:none;display:block;margin-top:5px">
   <input type="radio" name="relation_type" value="1" <%=current==1 ? "checked='checked'" : ""%> onchange="change_public_menus(1)"/>
+  <label for="relation_type"><%= t(:".url menu") %></label>
 </span>
 <div id="content_menu_item_editor_1" class="content_menu_item_editor">
   <div class="fl">
@@ -24,9 +24,9 @@
   </div>
 </div>
 <div class="clear"></div>
-<span class="brick" style="width:150px;float:none;">
-  <label for="relation_type"><%= t(:".meta menu") %></label>
+<span class="brick" style="width:250px;float:none;display:block;margin-top:5px">
   <input type="radio" name="relation_type" value="2" <%=current==2 ? "checked='checked'" : "" %> onchange="change_public_menus(2)" />
+  <label for="relation_type"><%= t(:".meta menu") %></label>
 </span>
 <div id="content_menu_item_editor_2" class="content_menu_item_editor">
   <div class="fl">
