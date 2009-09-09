@@ -1,7 +1,5 @@
 
 class Managed < ApplicationController
-  Admin::SystemUser
-  Admin::PublicUser
   include Extensions::Cms::Extended
   include Extensions::Cms::HandleRelations
   include Extensions::Cms::HandleMenu
@@ -89,6 +87,7 @@ class Managed < ApplicationController
   #     :before - Array ar partial formām ko renderēt iekš taba pirms galvenā partial
   #     :after - Array ar partial formām ko renderēt iekš taba aiz galvenā partial
   #   Vispārīgā ciļņu konfigurācija
+  #   :opened_on_load - ja nepieciešams lai ir atvērs pie ielādes, pēc tam tiek aizvērts
   #   :opened - šī cilne ir atvērat, ja ir vairākas tad pirmais tiks atvērta
   #   :title - cilnes nosaukums
   #   :fields - Hash ar laukiem, vai :default, izmanto kontroliera laukus, vai speciālajām cilnēm
@@ -115,10 +114,15 @@ class Managed < ApplicationController
   #     :width - kollonas platums px
   #     :title - kolonnas virsraksts, opcionāls, tiks ņemts kolonnas db nosaukums, vai no fields tabula
   #     :link - norāda vai būs edit saite uz elementa rediģēšanu
-  #     :field - lauka nosaukums, OBLIGĀTS
+  #     :field - lauka nosaukums, OBLIGĀTS;
+  #       saistītiem objektiem var norādīt lauku/metožu masīvu e.g. ["eye","color"] izsauc human.eye.color
   #     :function - lauka vērtības attēlošanai var izsaukt jūsu norādīto funkciju
   #     :sort_direction - kārtošanas veids (asc,desc), pēc noklusējuma asc
   #     :sortable - norāda vai kārtojams, pēc noklusējuma nav, ja norādīts :default tad ir kārtojams
+  #     :localize - pēc noklusēju ieslēgts, ja nepieciesams var atslŗgt, norādot = false
+  #     :format - kā formatēsim, ja tā ir laika/datuma kolonna.
+  #                    Iespējamās vērtības ir 3 sagatavotas un kā strings, kas satur Time.strftime sintakses tekstu:
+  #                     :default, :short, :long, "%d.%m.%Y."
   # :fields - masīvs, katrs masīvas elements ir Hash masīvs, ar šādām
   #           iespējamājām vērtībām:
   #   :type - ievades lauka tikps, kāds no sistēmā definētajiem
@@ -218,16 +222,8 @@ class Managed < ApplicationController
   end
 
   def on_error existing=false
-    #if @object
-#      unless existing
-#        @new_object_id=picture_id
-#      end
-      params.delete(:temp_picture_id)
       params.delete(:temp_file_id)
       render self_layout
-    #else
-    #  render :text=>'Izņēmuma kļūda!',:status=>400
-    #end
   end
   
   #gadījumā ja nav nepieciešams saraksts tad tiek parādīts edit logs

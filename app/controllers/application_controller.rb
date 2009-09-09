@@ -1,4 +1,4 @@
-require 'extensions/file_and_picture_manager'
+require 'extensions/file_manager'
 require 'extensions/advanced_filter_extension'
 require 'extensions/paging'
 require 'extensions/permission_controll'
@@ -11,7 +11,7 @@ class ActionController::Base
 #  Admin::PublicUser
   #helper :all
   include AuthenticatedSystem
-  include Extensions::FileAndPictureManager
+  include Extensions::FileManager
   include Extensions::PermissionControll
   include Extensions::Paging
   include Extensions::Translation

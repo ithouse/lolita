@@ -80,26 +80,6 @@ module Extensions::PermissionControll
   end
 
   def access_control
-    #    if args && args[0].is_a?(Array) && !args[1]
-    #      argumenti=args[0][0]
-    #    else
-    #      argumenti=args
-    #    end
-    #    accessable_methods=[]
-    #    excluded_methods=[]
-    #    case argumenti.class.to_s
-    #    when "Array"
-    #      accessable_methods=argumenti
-    #    when "String" || "Symbol"
-    #      accessable_methods<<argumenti.to_sym
-    #    when "Hash"
-    #      accessable_methods=argumenti[:included] || []
-    #      excluded_methods=argumenti[:excluded] || []
-    #      redirect=argumenti[:redirect_to]
-    #    end
-    #    action=params[:action].to_sym
-    #    inc=accessable_methods.include?(action)
-    #    exc=excluded_methods.include?(action)
     included=is_action_in?(params[:action],self.included_actions)
     excluded=is_action_in?(params[:action],self.excluded_actions)
     if (included && !excluded) || (!excluded && self.included_actions.empty?)

@@ -3,7 +3,7 @@ module Extensions::MenuHelper
     picture=item.pictures.main_or_first if options[:image]
     title=options[:image] && picture ? image_tag(picture.picture.url) : item.name
     hsh={:class=>"active"} if current_branch.include?(item)
-    link_to(title,item.link,hsh)
+    link_to(h(title),item.link,hsh)
   end
 
   def get_current_menu_branch (menu_name)
@@ -17,15 +17,12 @@ module Extensions::MenuHelper
 
   def get_current_menu_item(menu_name)
     id = get_id
-    if params[:name] && params[:controller]=="Cms::DynamicForm"
-      df=DynamicForm.find_by_template(params[:name])
-      id=df ? df.id : nil
-    end
+ 
     type = params[:controller].camelize
-    #if type=="Cms::StartPage"
-    #  menu_items = Admin::Menu.find_by_menu_name(menu_name).menu_items.find(:all, :conditions=>['menuable_type=? AND is_published=1',type])
     if id
-      menu_items = Admin::Menu.find_by_menu_name(menu_name).menu_items.find(:all, :conditions=>['menuable_type=? AND menuable_id=? AND is_published=1',type,id])
+      menu=Admin::Menu.find_by_menu_name(menu_name)
+      menu=Admin::MenuItem.find_by_branch_name(menu_name) unless menu
+      menu_items = menu.menu_items.find(:all, :conditions=>['menuable_type=? AND menuable_id=? AND is_published=1',type,id])
     else
       return nil
     end

@@ -5,7 +5,9 @@ class Admin::MenuItem < Cms::Manager
   belongs_to :menu, :class_name=>"Admin::Menu"
 
   has_many :menu_items, :as=>:menuable, :dependent=>:nullify, :class_name=>"Admin::MenuItem"
-  has_many    :pictures, :as=>:pictureable, :dependent=>:destroy, :extend=>Extensions::PictureExtensions
+  has_many    :pictures, :as=>:pictureable, :dependent=>:destroy, 
+    :extend=>Extensions::ImageFileExtensions,
+    :class_name=>"Media::ImageFile"
   acts_as_nested_set :scope => :menu_id #ļaujam kārtot koka struktūrās
 
   before_save :allow_branch_name_only_on_first_level
@@ -48,7 +50,9 @@ class Admin::MenuItem < Cms::Manager
   
   def link
     hsh={}
-    if self.menuable_type && !self.menuable_type.include?("::StartPage")
+    if self.menuable_type=="Url"
+      return self.menuable.name
+    elsif self.menuable_type && !self.menuable_type.include?("::StartPage")
       hsh[:controller]=self.menuable_type=="Admin::Action" ?
         self.menuable.controller.to_s  :
         "/#{self.menuable_id.to_i>0 ? self.menuable_type.to_s.underscore : ""}"

@@ -1,17 +1,17 @@
 .picture-comment-tool{
-    background:url('/images/icons/comment.png') no-repeat;
+    background:url('../images/icons/comment.png') no-repeat;
 }
 .picture-edit-tool{
-    background:url('/images/icons/edit_picture.png') no-repeat;
+    background:url('../images/icons/edit_picture.png') no-repeat;
 }
 .picture-delete-tool{
-    background:url('/images/icons/delete.png') no-repeat;
+    background:url('../images/icons/delete.png') no-repeat;
 }
 .picture-all-sizes-tool{
-    background:url('/images/icons/images.png') no-repeat;
+    background:url('../images/icons/images.png') no-repeat;
 }
 .picture-detail-tool{
-    background:url('/images/icons/view_detailed.png') no-repeat;
+    background:url('../images/icons/view_detailed.png') no-repeat;
 }
 .picture-tool-common{
     display:block;

@@ -45,7 +45,7 @@ div.progressBar div.background {
   width: 0%;
 }
 .header{
-    background: url(/images/admin/header_bg.png) repeat-x;
+    background: url(/lolita/images/admin/header_bg.png) repeat-x;
     color: black;
     height: 85px;
 }
@@ -99,7 +99,7 @@ div.progressBar div.background {
 }
 
 .center h1{
-    background: url(/images/admin/h1_bg.png) left repeat-y;
+    background: url(/lolita/images/admin/h1_bg.png) left repeat-y;
     margin:0;
     padding: 12px 0px 12px 20px;
     color: #1780B0;

@@ -1,11 +1,4 @@
 lv:
-  metadata:
-    translation saved: Tulkojums saglabāts
-    fields:
-      url: Adrese(URL)
-      name: Nosaukums
-      keywords: Atslēgvārdi
-      description: Apraksts
   actions:
     save translation: Saglabāt tulkojumu
   dialogs:
@@ -14,3 +7,15 @@ lv:
     warning:
       title: Kļūda
       content text: Ir radusies kļūda!<br/>Mēs par to tikām informēti, un pēc iespējas īsākā laikā novērsīsim.
+  notice:
+    translation saved: Tulkojums saglabāts
+  tabs:
+    default: Cilne
+    content: Saturs
+    translate: Tulkošana
+    map: Karte
+    metadata: Metadati
+    image: Attēli
+    simple: Faili
+    audio: Audio
+    video: Video

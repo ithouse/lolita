@@ -808,9 +808,9 @@ span.splitter{
 #filters tr.filter { height: 2em; }
 #filters tr.add-filter{margin-top:4px;}
 #filters tr.add-filter select{margin-top:4px;}
-.icon-save { background-image:url(/images/icons/save.png); }
-.icon-checked { background-image:url(/images/icons/true.png); }
-.icon-reload { background-image:url(/images/icons/reload-small.png); }
+.icon-save { background-image:url(../images/icons/save.png); }
+.icon-checked { background-image:url(../images/icons/true.png); }
+.icon-reload { background-image:url(../images/icons/reload-small.png); }
 .icon {
 background-position:0% 40%;
 background-repeat:no-repeat;

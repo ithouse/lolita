@@ -11,8 +11,8 @@
 #hoverNav a{ outline: none;}
 
 #prevLink, #nextLink{ width: 49%; height: 100%; background-image: url(data:image/gif;base64,AAAA); /* Trick IE into showing hover */ display: block; }
-#prevLink { left: -25px;top:80%;position:absolute; background: url(/images/arrow_l.gif) left 15% no-repeat;}
-#nextLink { right: -25px;top:80%;position:absolute;background: url(/images/arrow_r.gif) right 15% no-repeat; }
+#prevLink { left: -25px;top:80%;position:absolute; background: url(/lolita/images/arrow_l.gif) left 15% no-repeat;}
+#nextLink { right: -25px;top:80%;position:absolute;background: url(/lolita/images/arrow_r.gif) right 15% no-repeat; }
 #prevLink:hover, #prevLink:visited:hover {  }
 #nextLink:hover, #nextLink:visited:hover {  }
 

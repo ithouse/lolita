@@ -158,7 +158,18 @@ function simple_yui_request(object,config){
     }
     return false;
 }
-
+function startMultifileUpload(media){
+  var adv_params={media:media}
+  $("#upload_options input").each(function(index){
+      if($(this).attr("type")=="checkbox"){
+          eval("adv_params."+$(this).attr("name")+"="+($(this).attr("checked") ? "true" : "false"))
+      }else{
+          eval("adv_params."+$(this).attr("name")+"="+$(this).val())
+      }
+  })
+  $('#'+media+'fileInput').uploadifySettings('scriptData',adv_params);
+  $('#'+media+'fileInput').uploadifyUpload();
+}
 Ajax={}
 Ajax.Request=function(url,c){
     ITH.Cms.wait.show()
@@ -240,8 +251,8 @@ function refreshFileList(params){
 }
 function before_ajax_request(params){
     try{
-        if(ITH.Picture.Dialog){
-            ITH.Picture.Dialog.hide()
+        if(ITH.ImageFile.Dialog){
+            ITH.ImageFile.Dialog.hide()
         }
         ITH.Cms.wait.show();
     }catch(err){}

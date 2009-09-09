@@ -1,0 +1,14 @@
+<% pic=get_main_image(get_image[:parent],get_image[:parent_id],get_image[:tempid])%>
+<% pic=pic ? pic.name.thumb.url : nil %>
+<% main_image_url= pic && File.exists?(RAILS_ROOT+'/public'+pic.to_s) ? pic : '/lolita/images/cms/blank_main.png'%>
+<img class="accepted-main-picture" src="<%=main_image_url%>" id="main_picture_accepted_image"  />
+<% unless get_image[:read_only] || main_image_url=='/lolita/images/cms/blank_main.png'%>
+  <%= yui_draggable_element 'main_picture_accepted_image',  
+    :update => {:success => 'picture-photos-main'},
+    :group=>"main_picture",
+    :url => {:controller=>'/media/image_file', :action=>'remove_large_picture', :authenticity_token => form_authenticity_token}.merge(get_image)
+%>
+  <%= yui_drop_receiving_element 'content','main_picture'%>
+<% end %>
+
+

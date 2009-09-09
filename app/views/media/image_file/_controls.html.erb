@@ -1,0 +1,6 @@
+<% unless controls[:read_only] %>
+  <!--<input type="button" value="<%=t(:"actions.destroy")%>" id="picture_delete_thumb_submit" class="btn" style="float:left" /> -->
+  <%= image_tag "/lolita/images/icons/arrow_refresh.png",:alt=>"",:id=>"picture_list_refresh_button",:title=>t(:"picture.refresh list"), :style=>"margin-left:10px;", :onclick=>"ITH.ImageFile.refresh_list()" %>
+  <br />
+  <div style="font-size:9px;"><%=t(:"picture.select")%></div>
+<% end %>

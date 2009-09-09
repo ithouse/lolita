@@ -1,0 +1,15 @@
+<% cfg=file_cfg(show_form,:files=>show_form[:files]) %>
+<% form_tag "", :multipart => true, :id => "#{show_form[:media]}_delete_thumb_form" do %>
+  <% height=cfg[:configuration][:height] || 390%>
+  <%= render :partial=>"/media/#{cfg[:media]}/controls", :object=>cfg if File.exist?("#{File.dirname(__FILE__)}/#{cfg[:media]}/_controls.html.erb") %>
+  <div style="width:100%;display:block;height:<%= height %>px;overflow:scroll;margin-bottom:5px;" id="<%= cfg[:media] %>_list_container">
+    <%= render :partial=>"/media/#{cfg[:media]}/thumb_list", :object=>cfg %>
+  </div>
+  <%= picture_cfg_form_fields show_form,:excluded=>[:pictures]%>
+  <% unless cfg[:read_only] %>
+    <div style="width:100%; float:left;text-align:right;">
+      <input type="button" value="<%=t(:"actions.destroy")%>" class="btn" id="<%=cfg[:media]%>_delete_thumb_submit" />
+    </div>
+  <% end %>
+<% end %>
+<%= auto_uploadable "/media/#{cfg[:media]}/destroy","#{cfg[:media]}_delete_thumb_form","#{cfg[:media]}_delete_thumb_submit",'click', "#{cfg[:media]}_list_container"%>

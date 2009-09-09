@@ -127,12 +127,12 @@ button span {
   top:-1px;
 }
 
-button{background: url(/images/btn-l.gif) top left no-repeat;}
-button.btn-red{background: url(/images/btnr-l.gif) top left no-repeat;}
-button.btn-green{background: url(/images/btng-l.gif) top left no-repeat;}
-button span{background: url(/images/btn-r.gif) top right no-repeat;}
-button.btn-red span{background: url(/images/btnr-r.gif) top right no-repeat;}
-button.btn-green span{background: url(/images/btng-r.gif) top right no-repeat;padding-right:14px;}
+button{background: url(/lolita/images/btn-l.gif) top left no-repeat;}
+button.btn-red{background: url(/lolita/images/btnr-l.gif) top left no-repeat;}
+button.btn-green{background: url(/lolita/images/btng-l.gif) top left no-repeat;}
+button span{background: url(/lolita/images/btn-r.gif) top right no-repeat;}
+button.btn-red span{background: url(/lolita/images/btnr-r.gif) top right no-repeat;}
+button.btn-green span{background: url(/lolita/images/btng-r.gif) top right no-repeat;padding-right:14px;}
 
 a.btn,
 a.btn-red,
@@ -164,12 +164,12 @@ a.btn-green span{
   line-height: 23px;
   color: white;
 }
-a.btn{background: url(/images/btn-l.gif) top left no-repeat;}
-a.btn-red{background: url(/images/btnr-l.gif) top left no-repeat;}
-a.btn-green{background: url(/images/btng-l.gif) top left no-repeat;}
-a.btn span{background: url(/images/btn-r.gif) top right no-repeat;}
-a.btn-red span{background: url(/images/btnr-r.gif) top right no-repeat;}
-a.btn-green span{background: url(/images/btng-r.gif) top right no-repeat;padding-right:14px;}
+a.btn{background: url(/lolita/images/btn-l.gif) top left no-repeat;}
+a.btn-red{background: url(/lolita/images/btnr-l.gif) top left no-repeat;}
+a.btn-green{background: url(/lolita/images/btng-l.gif) top left no-repeat;}
+a.btn span{background: url(/lolita/images/btn-r.gif) top right no-repeat;}
+a.btn-red span{background: url(/lolita/images/btnr-r.gif) top right no-repeat;}
+a.btn-green span{background: url(/lolita/images/btng-r.gif) top right no-repeat;padding-right:14px;}
 
 input{
   border: 2px solid #E0E0E0;
@@ -231,9 +231,9 @@ a.print{
   font-size: 11px;
 }
 
-a.mail{background-image:url(/images/mail.png);}
-a.favorite{background-image:url(/images/favorite.png);}
-a.print{background-image:url(/images/print.png);}
+a.mail{background-image:url(/lolita/images/mail.png);}
+a.favorite{background-image:url(/lolita/images/favorite.png);}
+a.print{background-image:url(/lolita/images/print.png);}
 
 a.comment{
   display: block;
@@ -250,13 +250,13 @@ a.comment{
   line-height: 15px;
 }
 a.comment{
-  background: url(/images/comment.png) 0px 3px no-repeat;
+  background: url(/lolita/images/comment.png) 0px 3px no-repeat;
   width: 23px;
   _width: 45px;
   font-size: 10px;
  }
 .tag{
-  background: url(/images/tag.png)  0px 4px no-repeat;
+  background: url(/lolita/images/tag.png)  0px 4px no-repeat;
   font-size: 12px;
 }
 a.comment,
@@ -434,11 +434,11 @@ div.more-info div.media a img{
   width: 85px;
 }
 #widgets .widget li.up{
-  list-style-image: url(/images/li-up.png);
+  list-style-image: url(/lolita/images/li-up.png);
   list-style-position: outside;
 }
 #widgets .widget li.down{
-  list-style-image: url(/images/li-down.png);
+  list-style-image: url(/lolita/images/li-down.png);
   list-style-position: outside;
 }
 #headbottom{
@@ -533,7 +533,7 @@ div.more-info div.media a img{
   left: 925px;
   top: 4px;
   padding-left: 23px;
-  background: url(/images/rss.png) no-repeat 0px 3px;
+  background: url(/lolita/images/rss.png) no-repeat 0px 3px;
   color: #0072bc;
   cursor: pointer;
 }
@@ -707,7 +707,7 @@ div.more-info div.media a img{
   height: 18px;
   line-height: 18px;
   padding: 0 6px;
-  background: url(/images/white-px.gif) #dbdbdb repeat-x bottom;
+  background: url(/lolita/images/white-px.gif) #dbdbdb repeat-x bottom;
   color: #555555;
   display: block;
 }
@@ -774,10 +774,10 @@ div.more-info div.media a img{
  height: 40px;
 }
 .media-article .photo-thumb a.left{
-  background: url(/images/arrow-left.png) no-repeat center;
+  background: url(/lolita/images/arrow-left.png) no-repeat center;
 }
 .media-article .photo-thumb a.right{
-  background: url(/images/arrow-right.png) no-repeat center;
+  background: url(/lolita/images/arrow-right.png) no-repeat center;
 }
 .media-article a.comment{
   margin-top: 10px;

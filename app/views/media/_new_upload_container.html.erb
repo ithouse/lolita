@@ -1,0 +1,52 @@
+<% cfg=file_cfg(new_upload_container) %>
+<%= render :partial=>"/media/#{cfg[:media]}/before_container" if File.exist?("#{File.dirname(__FILE__)}/#{cfg[:media]}/_before_container.html.erb")  %>
+<% if new_upload_container[:parent] && new_upload_container[:parent_id] %>
+  <%- session_key_name = ActionController::Base.session_options[:key] -%>
+  <div id="<%=cfg[:media]%>-files" class="<%=cfg[:media]%>-files-container">
+    <div style="display:block;text-align:right;">
+      <div id="upload_options">
+        <%= render :partial=>"/media/#{cfg[:media]}/advanced_upload_options" if File.exist?("#{File.dirname(__FILE__)}/#{cfg[:media]}/_advanced_upload_options.html.erb")  %>
+      </div>
+      <input type="file" name="fileInput" id="<%=cfg[:media]%>fileInput" />
+      <script type="text/javascript">
+        //<![CDATA[
+    loadjscssfile("/lolita/stylesheets/admin/uploadify.css","css")
+    $(document).ready(function() {
+      <%="#{cfg[:media]}_upload_settings"%>={
+              '<%= session_key_name %>' : encodeURIComponent('<%= u cookies[session_key_name] %>'),
+              'authenticity_token'  : encodeURIComponent('<%= u form_authenticity_token if protect_against_forgery? %>'),
+              <%= cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>},
+      $('#<%=cfg[:media]%>fileInput').uploadify({
+        'uploader': '/lolita/swf/uploadify.swf',
+        'script': "/media/<%=cfg[:media]%>/new_create",
+        'cancelImg': '/lolita/images/cms/cancel.png',
+        'simUploadLimit':1,
+        'multi':true,
+        'method':'GET',
+        'fileDesc':"<%=file_extensions_description(cfg)%>",
+        'fileExt':"<%=file_extensions(cfg[:media])%>",
+        'scriptData':<%="#{cfg[:media]}_upload_settings"%>,
+        'displayData':'speed',
+        'onError':function(){
+          alert("Error!\n Try again or Reload page (Ctrl+R)!")
+        },
+        'onAllComplete':function(fu,err,a,speed){
+          $.ajax({
+            type:"get",
+            url:"/media/<%=cfg[:media]%>/refresh",
+            data:"<%=cfg.collect{|k,v| "#{k}=#{v}"}.join("&")%>",
+            success:function(html){
+              $("#<%=cfg[:media]%>_list_container").html(html)
+            }
+          })
+        }
+      });
+    });
+    //]]>
+      </script>
+      <a href="javascript:startMultifileUpload('<%=cfg[:media]%>')" ><%=t(:"picture.upload file")%></a><br/>
+      <a href="javascript:$('#<%=cfg[:media]%>fileInput').uploadifyClearQueue()"><%=t(:"actions.clear").chars.capitalize%></a>
+    </div>
+    <%= render :partial=>"/media/thumb_files_container", :object=>cfg %>
+  </div>
+<% end %>

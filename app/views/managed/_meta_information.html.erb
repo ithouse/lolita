@@ -9,30 +9,30 @@
   </div>
   <script type="text/javascript">
     //<![CDATA[
-  <% if flash[:notice] %>
-    show_notice('<%=flash[:notice]%>')
+  <% if @notice %>
+    show_notice('<%=@notice%>')
   <% end %>
   $("#meta_flash_notice").fadeOut(2500)
   observe_languages("#meta_translation_locale",<%=tab.to_i%>,"<%=url_for(:action=>"meta_change_language")%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
   //]]>
   </script>
 <% end %>
-<span class="brick"><%= t(:"metadata.fields.url",:locale=>@metadata.language_code)%> </span>
+<span class="brick"><%= MetaData.human_attribute_name("url",:locale=>@metadata.language_code)%> </span>
 <div class="fl">
   <%= field_render 'text',{:field=>'url',:object=>:metadata,:maxlength=>255} %>
 </div>
 
-<span class="brick"><%= t(:"metadata.fields.name",:locale=>@metadata.language_code)%> </span>
+<span class="brick"><%= MetaData.human_attribute_name("name",:locale=>@metadata.language_code)%> </span>
 <div class="fl">
   <%= field_render 'text',{:field=>'title',:object=>:metadata,:maxlength=>255} %>
 </div>
 
-<span class="brick"><%= t(:"metadata.fields.keywords",:locale=>@metadata.language_code)%> </span>
+<span class="brick"><%= MetaData.human_attribute_name("keywords",:locale=>@metadata.language_code)%> </span>
 <div class="fl">
   <%= field_render 'text',{:field=>'tags',:object=>:metadata,:maxlength=>255} %>
 </div>
 
-<span class="brick" style="float:none;display:block;padding-top:5px;"><%= t(:"metadata.fields.description",:locale=>@metadata.language_code)%> </span>
+<span class="brick" style="float:none;display:block;padding-top:5px;"><%= MetaData.human_attribute_name("description",:locale=>@metadata.language_code)%> </span>
 <div class="fl" >
   <%= field_render 'textarea',{:field=>'description',:object=>:metadata,:class=>'meta_data_textarea' } %>
 </div>

@@ -14,13 +14,51 @@ class Admin::Menu < Cms::Manager
   named_scope :web_menu,lambda{|namespace|
     {:conditions=>["module_name=? AND menu_type=?",namespace,"web"]}
   }
-#  named_scope :public_menus,lambda{|namespace|
-#    {:conditions=>["module_name=? AND menu_type=?",namespace,"public_web"]}
-#  }
-#  named_scope :public_menu,lambda{|namespace,name|
-#    {:conditions=>["module_name=? AND menu_name=?",namespace,name]}
-#  }
+  #  named_scope :public_menus,lambda{|namespace|
+  #    {:conditions=>["module_name=? AND menu_type=?",namespace,"public_web"]}
+  #  }
+  #  named_scope :public_menu,lambda{|namespace,name|
+  #    {:conditions=>["module_name=? AND menu_name=?",namespace,name]}
+  #  }
 
+  def handle_content_menu_field(menu_record,parent,config)
+    #Sameklēju iepriekšējo menu_itemu
+    old_item=Admin::MenuItem.find(:first,:conditions=>["menuable_type=? and menuable_id=? and menu_id=?",config[:object_name].camelize,parent.id,self.id])
+    #sameklēju to menu itemu kurš ir izvēlēts kokā
+    unless new_parent=Admin::MenuItem.find_by_id(menu_record[:branch])
+      if menu_record[:branch].to_i>0 || (menu_record[:branch].to_i<1 && menu_record[:new].to_s.size>0)
+        new_parent=self.menu_items.first.root
+        menu_record[:dir]='e'
+      end
+    end
+  
+    #Ja ir ierakstits nosaukums tad tiek veidots jauns menu items
+    if menu_record[:new].size>0
+      mi=Admin::MenuItem.create(:name=>menu_record[:new],:menuable_type=>config[:object_name].camelize,:menuable_id=>parent.id,:menu_id=>self.id,:is_published=>true)
+      case menu_record[:dir]
+      when 's'
+        mi.move_to_right_of(new_parent)
+      when 'n'
+        mi.move_to_left_of(new_parent)
+      when 'e'
+        mi.move_to_child_of(new_parent)
+      end
+    else
+      #Ja nav jauns izvēlēts tad ir jāieraksta izvēlētajā zarā
+      #Ja gadījumā ir bijis jau iepriekš šis elements kkur piesaistīts tad no turienes viņu aizvāc
+      #Pielieku izvēlētajam zaram klāt elementu, piemēram 'News',11
+      new_parent.change_content(config[:object_name].camelize,parent.id,old_item ? old_item.is_published : true)
+    end if new_parent
+    #Es domāju ka jānoņem ir jebkurā gadījumā ja ir bijis vecais elements
+    if old_item && (old_item!=new_parent || !new_parent)
+      old_item.change_content(nil,0)
+    end
+    if (old_item && old_item!=new_parent) || (!old_item && menu_record[:new].size<1) || menu_record[:new].size>0
+      self.save!
+    end
+    menu_record
+  end
+  
   def action_item(params)
     actions=Admin::Action.find(:all,:conditions=>["controller=? AND action=?","/#{params[:controller]}",params[:action]])
     self.menu_items.find(:all,:conditions=>["menu_items.menuable_type=? AND menuable_id IN (?)","Admin::Action",actions])

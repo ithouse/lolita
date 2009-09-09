@@ -1,0 +1,6 @@
+<%= render :partial=>"/media/#{thumb_files_container[:media]}/before_files_container", :object=>thumb_files_container if File.exist?("#{File.dirname(__FILE__)}/#{thumb_files_container[:media]}/_before_files_container.html.erb") %>
+<% get_all_parent_files(thumb_files_container) do |files| %>
+  <div id="<%=thumb_files_container[:media]%>-files-thumb-container" class="file-files-thumb-container">
+    <%= render :partial=>"/media/show_form", :object=>file_cfg(thumb_files_container,:files=>files) %>
+  </div>
+<% end %>

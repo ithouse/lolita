@@ -1,7 +1,7 @@
-ITH.MediaPictureUploadDialog=function(container){
+ITH.FileUploadDialog=function(container){
     this.container=container
 }
-ITH.MediaPictureUploadDialog.prototype={
+ITH.FileUploadDialog.prototype={
   
     createDialog:function(media){
         this.fields={}
