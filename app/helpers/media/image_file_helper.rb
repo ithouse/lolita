@@ -33,7 +33,6 @@ module Media::ImageFileHelper
         :update=>{:success => 'picture-photos-main', :failure => 'status'},
         :url=>{:controller=>'/media/image_file', :action=>'get_large_picture', :authenticity_token => form_authenticity_token,:id=>picture.id}.merge(options)
       )
-      #result+=yui_drop_receiving_element('picture-photos-main','pictures')
     end
     result
   end

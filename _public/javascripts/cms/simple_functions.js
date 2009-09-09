@@ -159,7 +159,7 @@ function simple_yui_request(object,config){
     return false;
 }
 function startMultifileUpload(media){
-  var adv_params={}
+  var adv_params={media:media}
   $("#upload_options input").each(function(index){
       if($(this).attr("type")=="checkbox"){
           eval("adv_params."+$(this).attr("name")+"="+($(this).attr("checked") ? "true" : "false"))
