@@ -1,6 +1,6 @@
-<% cfg=file_cfg(new_upload_container) %>
+<% cfg=file_cfg(container) %>
 <%= render :partial=>"/media/#{cfg[:media]}/before_container" if File.exist?("#{File.dirname(__FILE__)}/#{cfg[:media]}/_before_container.html.erb")  %>
-<% if new_upload_container[:parent] && new_upload_container[:parent_id] %>
+<% if container[:parent] && container[:parent_id] %>
   <%- session_key_name = ActionController::Base.session_options[:key] -%>
   <div id="<%=cfg[:media]%>-files" class="<%=cfg[:media]%>-files-container">
     <div style="display:block;text-align:right;">

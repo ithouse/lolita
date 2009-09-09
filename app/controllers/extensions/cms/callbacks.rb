@@ -13,7 +13,7 @@ module Extensions
       
       def handle_after_create
         if has_file_id?
-          update_uploaded_files @object,file_id
+          update_multimedia @object,file_id
         end
         if menu_item=Admin::MenuItem.find_by_id(params[:menu_item_id])
           menu_item.menuable=@object

@@ -54,7 +54,7 @@ module ManagedHelper
   def tabs options={}
     opened=false
     media_types=Media::FileBase.all_media_names.collect{|m| m.to_sym}
-    special_types= [:metadata,:translate,:file]
+    special_types= [:metadata,:translate,:multimedia]
     @config[:tabs].each_with_index{|tab,index|
       tab_opened=!opened && (tab[:opened] || tab[:opened_on_load])
       opened=tab_opened ? true : opened

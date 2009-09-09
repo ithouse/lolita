@@ -5,6 +5,10 @@ module Media::BaseHelper
     end
   end
 
+  #Each module can have following method implemented to work with managed
+  # * lolita_[media name]_tab(options,tab) - can be used to render different
+  #   partial form from default, and to render fields in default form when [:in_form]
+  #   options is passed. See #default_lolita_media_tab
   def default_media_tab_options tab
     {
       :media=>tab[:media],
@@ -27,34 +31,8 @@ module Media::BaseHelper
       }.merge(tab.delete_if{|v,k| k==:type}).merge(default_media_tab_options(tab))
     end
   end
-  
-  def file_source file
-    if file and !file.name.nil?
-      return file.name.url
-    end
-  end
 
   def get_class_name_from_media(media)
     "Media::#{media.to_s.camelize}".constantize
-  end
-
-  def get_all_parent_files(options={})
-    class_name=get_class_name_from_media(options[:media])
-    files=class_name.find_current_files(options[:parent],options[:parent_id])
-    yield files
-  end
-  
-  def file_extensions_description cfg={}
-    result=file_types_description(cfg[:media])
-    ext=file_extensions(cfg[:media])
-    "#{result} (#{ext})"
-  end
-
-  def file_extensions media
-    self.send("#{media}_extensions")
-  end
-
-  def file_types_description media
-    I18n.t("lolita.media.#{media}")
   end
 end

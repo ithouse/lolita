@@ -1,6 +1,16 @@
 class Media::Base < Cms::Base
   self.abstract_class = true
 
+  #Each subclass of Media::Base may have following class methods
+  # * after_parent_save(memory_id,parent,options) - method is called after parent
+  #   object is saved, method can get memory_id, parent object, and options
+  #   including (:params,:session,:cookies)
+  # * update_memorized_files(memory_id,parent) - can be used to update temporary
+  #   multimedia object with real parent id linked with memory_id.
+  #   See implementation in #Media::FileBase.#update_memorized_files
+
+
+  
   #Return all existing media names, for example 'audio' or 'image'
   def self.all_media_names
     media=[]
