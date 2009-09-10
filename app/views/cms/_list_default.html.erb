@@ -2,7 +2,8 @@
   <% @config[:list][:columns]=default_cms_columns unless @config[:list][:columns] %>
   <tr>
     <% @config[:list][:columns].each{|column| %>
-      <%= list_header_cell :width=>column[:width], :title=>field_title(column[:title] || column[:field]),:sort_column=>column[:sortable] || column[:default] ? column[:field] : nil %>
+      <%= list_header_cell :width=>column[:width], :title=>field_title(column[:title] || column[:field]),
+      :sort_column=>column[:sortable] || column[:default] ? (column[:sort_field] ? column[:sort_field] : column[:field]) : nil %>
     <%}%>
     <% if @config[:list][:options] %>
       <%= list_header_cell :width=>@config[:list][:options].size*35, :title=>t(:"list.options") %>

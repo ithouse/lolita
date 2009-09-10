@@ -118,6 +118,8 @@ class Managed < ApplicationController
   #       saistītiem objektiem var norādīt lauku/metožu masīvu e.g. ["eye","color"] izsauc human.eye.color
   #     :function - lauka vērtības attēlošanai var izsaukt jūsu norādīto funkciju
   #     :sort_direction - kārtošanas veids (asc,desc), pēc noklusējuma asc
+  #     :sort_field - kuru lauku izmantot atrādāmā vietā, piem. ja tiek rādīts saistītais objekts:
+  #       :field=["human","eye","color"],:sort_field=>:human_id
   #     :sortable - norāda vai kārtojams, pēc noklusējuma nav, ja norādīts :default tad ir kārtojams
   #     :localize - pēc noklusēju ieslēgts, ja nepieciesams var atslŗgt, norādot = false
   #     :format - kā formatēsim, ja tā ir laika/datuma kolonna.
