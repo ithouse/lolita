@@ -70,7 +70,7 @@ lv:
   picture:
     select: Uzspiediet uz attēla lai to iezīmētu
     refresh list: Atjaunot attēlu sarakstu
-    upload file: Augšupielādēt failu
+    upload file: Augšupielādēt failus
   errors:
     not_correct_female: nav pareiza
     unknown_error: nezināma kļūda
