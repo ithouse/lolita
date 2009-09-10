@@ -8,20 +8,20 @@
   <%= stylesheet_link_tag 'public/pub-profile' %>
 <% end %>
 <% content_for :left do %>
-  <h2><%=t(:"profile.title").chars.capitalize%></h2>
+  <h2><%=t(:"profile.title").capitalize%></h2>
   <h1><%=t(:"profile.user personal information")%>: <span><%=@user.login%></span></h1>
   <div class="col1">
-    <h2><%=t(:"profile.personal information").chars.capitalize%></h2>
+    <h2><%=t(:"profile.personal information").capitalize%></h2>
     <dl>
       <dt><%=t(:"profile.form.name")%>:</dt>
       <dd><%=@user.name%></dd>
-      <dt><%=t(:"profile.form.sex").chars.capitalize%>:</dt>
+      <dt><%=t(:"profile.form.sex").capitalize%>:</dt>
       <dd><%= (@profile.sex==1 ? t(:"gender.man short") : @profile.sex==2 ? t(:"gender.woman short") : t(:"profile.not accessable")) %></dd>
-      <dt><%=t(:"profile.form.birth date").chars.capitalize%>:</dt>
+      <dt><%=t(:"profile.form.birth date").capitalize%>:</dt>
       <dd><%=@profile.birth_date ? @profile.birth_date.strftime("%d.%m.%Y") : t(:"profile.not accessable") %></dd>
-      <dt><%=t(:"profile.form.location").chars.capitalize%>:</dt>
+      <dt><%=t(:"profile.form.location").capitalize%>:</dt>
       <dd><%=@profile.simple_location%></dd>
-      <dt><%=t(:"profile.form.interests").chars.capitalize%>:</dt>
+      <dt><%=t(:"profile.form.interests").capitalize%>:</dt>
       <dd><%=@profile.interests%></dd>
     </dl>
   </div>
@@ -39,11 +39,11 @@
   <div class="clear"></div>
   <div class="splitter-light-gray"></div>
   <div class="col1 second">
-    <h2><%=t(:"profile.form.contacts").chars.capitalize%></h2>
+    <h2><%=t(:"profile.form.contacts").capitalize%></h2>
     <dl>
-      <dt><%=t(:"profile.form.skype").chars.capitalize%>:</dt>
+      <dt><%=t(:"profile.form.skype").capitalize%>:</dt>
       <dd><strong><%=t(:"profile.not accessable")%></strong></dd>
-      <dt><%=t(:"profile.form.blog url").chars.capitalize%>:</dt>
+      <dt><%=t(:"profile.form.blog url").capitalize%>:</dt>
       <dd>
         <% if @profile.blog_url.to_s.size>0 %>
           <a href="http://<%=@profile.blog_url%>" ><span class="protocol">http://</span><%=@profile.blog_url%></a>
@@ -51,7 +51,7 @@
           <%=  t(:"profile.not accessable")%>
         <% end %>
       </dd>
-      <dt><%=t(:"profile.form.home page url").chars.capitalize%>:</dt>
+      <dt><%=t(:"profile.form.home page url").capitalize%>:</dt>
       <dd>
         <% if @profile.home_page_url.to_s.size>0 %>
         <a href="http://<%=@profile.home_page_url%>" ><span class="protocol">http://</span><%=@profile.home_page_url%></a></dd>
@@ -61,7 +61,7 @@
     </dl>
   </div>
   <div class="col2 second">
-    <h2><%=t(:"profile.form.mail boxes").chars.capitalize%></h2>
+    <h2><%=t(:"profile.form.mail boxes").capitalize%></h2>
     <dl>
       <% unless @profile.hide %>
         <dt><%=t(:"simple words.email")%>:</dt>
