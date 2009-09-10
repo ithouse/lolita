@@ -45,7 +45,7 @@
     //]]>
       </script>
       <a href="javascript:startMultifileUpload('<%=cfg[:media]%>')" ><%=t(:"picture.upload file")%></a><br/>
-      <a href="javascript:$('#<%=cfg[:media]%>fileInput').uploadifyClearQueue()"><%=t(:"actions.clear").chars.capitalize%></a>
+      <a href="javascript:$('#<%=cfg[:media]%>fileInput').uploadifyClearQueue()"><%=t(:"actions.clear").capitalize%></a>
     </div>
     <%= render :partial=>"/media/thumb_files_container", :object=>cfg %>
   </div>

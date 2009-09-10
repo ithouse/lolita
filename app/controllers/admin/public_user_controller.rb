@@ -120,7 +120,7 @@ class Admin::PublicUserController < Managed
           if @profile.errors.empty? && @user.errors.empty?
             flash[:notice]=t(:"flash.saved")
           else
-            flash[:error]=t(:"errors.cant_save").chars.capitalize
+            flash[:error]=t(:"errors.cant_save").capitalize
           end
           if (params[:user][:old_password].to_s.size>0 && !Admin::PublicUser.authenticate(@user.login,params[:user][:old_password]))
             @user.errors.add(:old_password,t(:"errors.worng old password"))

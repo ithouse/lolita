@@ -123,7 +123,7 @@ module BaseHelper
       t(:"months.september"),t(:"months.october"),
       t(:"months.november"),t(:"months.december"),
     ]
-    months.collect!{|month| month.chars.capitalize} if options[:capitalize]
+    months.collect!{|month| month.capitalize} if options[:capitalize]
     months
   end
   def cms_text_value_html_from_element element

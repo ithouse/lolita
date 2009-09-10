@@ -80,7 +80,7 @@ class Cms::Base < ActiveRecord::Base
       sort_fields.each{|field|
         field_in_parts=field.to_s.split(" ") #novērš kļūdu situācijā, kad ir "field asc"
         field=field_in_parts[0] if field_in_parts.size>0
-        if field.match(/_id$/) &&  allowed_fields.include?(field.to_sym)
+        if field.match(/_id$/) && (allowed_fields.nil? || allowed_fields.include?(field.to_sym))
           self.build_join_sql(field,:sortable=>true){|sort_column,join_sql|
             sort_columns<<"#{sort_column}" if sort_column && !sort_columns.include?(sort_column)
             join_statements<<"#{join_sql}" if join_sql && !join_statements.include?(join_sql)

@@ -3,7 +3,7 @@ module Extensions::MultimediaManager
   def update_multimedia(object,id)
     Media::FileBase.all_media_names.each{|media|
       klass="Media::#{"#{media}".camelize}".constantize
-      klass.after_parent_save(id,object,{:params=>params,:session=>session,:cookies=>cookies}) if klass.respond_to(:after_parent_save)
+      klass.after_parent_save(id,object,{:params=>params,:session=>session,:cookies=>cookies}) if klass.respond_to?(:after_parent_save)
       klass.update_memorized_files(id,object) if klass.respond_to?(:update_memorized_files)
     }
   end
