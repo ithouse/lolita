@@ -64,7 +64,7 @@
     <%= javascript_include_tag "http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.gmaps_key}" if Lolita.config.gmaps_key  %>
     <%#= javascript_include_tag '/lolita/javascripts/highslide/highslide-with-html' %>
   </head>
-  <body class=" yui-skin-sam" <%= 'onunload="GUnload()"' if Lolita.config.gmaps_key %>>
+  <body class=" yui-skin-sam">
     <div id="dynamic_notice" style="display:none;position:fixed;border:1px solid gray;border-top:none;background-color:yellow;width:250px;"></div>
     <div id="body" >
       <%= render :partial=>"cms/header" %>
