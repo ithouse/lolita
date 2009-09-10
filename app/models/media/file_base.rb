@@ -89,7 +89,7 @@ class Media::FileBase < Media::Base
       memory_ids<<f.id
       f.destroy
     }
-    Media::MediaFileTempMemory.delete_all(["memory_file_id IN (?)",memory_ids]) unless memory_ids.empty?
+    Media::MediaFileTempMemory.delete_all(["media_file_id IN (?)",memory_ids]) unless memory_ids.empty?
   end
 
   #Function is called from file_manager.rb extensions.
