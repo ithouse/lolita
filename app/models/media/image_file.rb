@@ -353,7 +353,7 @@ class Media::ImageFile < Media::FileBase
     end
   end
   def self.chopped_image(p,img,options={})
-    crop_img=::Magick::Image::read(p.name.cropped.path).first #ielasu cropped bildi
+    crop_img=::Magick::Image::read(p.name.cropped.path).first #ielasu croppable bildi
     c_width=crop_img.rows
     c_height=crop_img.columns
     b_width=img.rows
