@@ -1,0 +1,8 @@
+lv:
+  lolit:
+    media:
+      media_dialog:
+        open attributes: Mainīt attēla attribūtus
+        delete picture: Dzēst attēlu
+        open other versions: Aplūkot citus izmērus
+        error: Nevar ielādēt attēlus

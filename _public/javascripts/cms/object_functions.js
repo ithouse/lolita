@@ -190,7 +190,7 @@ ITH.Media=function(){
     var params={}
     
     var loadingImage="/lolita/images/cms/loading.gif"
-    var current_media="images"
+    var current_media="image_file"
     var current_element=-1
     var container={
         main:"media_gallery_container",
@@ -255,10 +255,8 @@ ITH.Media=function(){
          */
         update_element:function(element,object){
             element.title=object.title
-            if(current_media=="images"){
+            if(current_media=="image_file"){
                 element.alt=object.alt
-            }else if(current_media=="files"){
-                $(element).html(object.caption)
             }
         },
         /*
@@ -313,7 +311,7 @@ ITH.Media=function(){
                     id:id
                 }
             };
-            YAHOO.util.Connect.asyncRequest('POST', "/media/save_attributes/"+id, requestHandler,Form.serialize(form)+"&media="+current_media+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN));
+            YAHOO.util.Connect.asyncRequest('POST', "/media/media_dialog/save_attributes/"+id, requestHandler,Form.serialize(form)+"&media="+current_media+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN));
             return false;
         },
         /*
@@ -338,7 +336,7 @@ ITH.Media=function(){
                     id:id
                 }
             };
-            YAHOO.util.Connect.asyncRequest('POST', "/media/open_attributes/"+id, requestHandler,"media="+current_media+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN));
+            YAHOO.util.Connect.asyncRequest('GET', "/media/media_dialog/open_attributes/"+id, requestHandler,"media="+current_media+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN));
         },
         /*
          * ITH.Media.close_attributes
@@ -350,11 +348,11 @@ ITH.Media=function(){
         },
         delete_element:function(id){
             if(current_element==id) this.close_attributes()
-            this.make_request("/media/destroy/"+id,container.body)
+            this.make_request("/media/media_dialog/destroy/"+id,container.body)
         },
         show_details:function(id){
             this.close_attributes();
-            this.make_request("/media/detail/"+id,container.body)
+            this.make_request("/media/media_dialog/detail/"+id,container.body)
         },
         add_new:function(){
           
@@ -372,7 +370,7 @@ ITH.Media=function(){
         change_to:function(media,current_item,current_container){
             current_media=media;
             this.close_attributes();
-            this.make_request("/media/all_"+media,current_container)
+            this.make_request("/media/media_dialog/all_"+media,current_container)
             if(current_item){
                 $(".media-selector").each(function(i){
                     $(this).removeClass("active-media")
@@ -426,7 +424,6 @@ ITH.ImageFile=function(){
             if(!ITH.ImageFile.Dialog){
                 this.render_dialog()
             }
-            
             this.parameters=config
         },
         show_attributes_dialog:function(config){
@@ -498,10 +495,12 @@ ITH.ImageFile=function(){
         },
         refresh_list:function(config){
             //cfg=config ? json_to_params(config) : json_to_params(this.parameters)
+            var p=config || this.parameters
+            p.authenticity_token=encodeURIComponent(AUTH_TOKEN)
             toggle_images(elementById("picture_list_refresh_button"),[refreshImage,refreshLoadingImage])
             simple_yui_request(this,{
-                url:"/media/image_file/reload",
-                params:config || this.parameters,
+                url:"/media/image_file/refresh",
+                params:p,
                 container:'picture_list_container',
                 success:'toggle_images(elementById("picture_list_refresh_button"),["'+refreshImage+'","'+refreshLoadingImage+'"])'
             })

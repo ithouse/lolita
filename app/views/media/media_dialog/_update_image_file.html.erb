@@ -1,0 +1,19 @@
+<%#
+# Artūrs Meisters ITHGroup 
+# 06.10.2008
+%>
+<div id="ith_media_status_container_<%=update_image_file[:id]%>" class="greenbox" style="display:none;">
+  <div class="l">
+    <div id="ith_media_status_<%=update_image_file[:id]%>" class="r"></div>
+  </div>
+</div>
+<form class="ith-media-attributes-form" method="post" onsubmit="ITH.Media.save_attributes(this,<%=update_image_file[:id]%>);return false;">
+    <%= label :image,:alt, Media::ImageFile.human_attribute_name("alt") %>
+    <%=text_field :image,:alt, :class=>"ith-media-text-field" %>
+    <%= label :image,:title, Media::ImageFile.human_attribute_name("title") %>
+    <%=text_field :image,:title, :class=>"ith-media-text-field" %>
+    <%= label :image,:caption, Media::ImageFile.human_attribute_name("caption") %>
+    <%=text_field :image,:caption, :class=>"ith-media-text-field"%>
+    <input type="submit" class="btn" value="<%=t(:"actions.save")%>"/>&nbsp;
+    <span class="blue" style="cursor:pointer;" onclick="ITH.Media.close_attributes()"><%=t(:"actions.cancel")%></span>
+</form>

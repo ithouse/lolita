@@ -11,7 +11,7 @@ class Admin::Translate < Cms::Base
       :error_dialog_text=>:"javascript.error dialog text",
       :saving=>:"javascript.media.saving",
       :changes_saved=>:"javascript.media.changes saved",
-      :media_error=>:"javascript.media.error",
+      :media_error=>:"media.media_dialog.error",
       :picture_attributes=>:"image file.dialog.header"
     }
   end

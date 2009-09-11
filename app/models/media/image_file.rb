@@ -260,7 +260,7 @@ class Media::ImageFile < Media::FileBase
   def all_versions
     result={}
     self.full_versions.each{|v,d|
-      result["#{t(:"image file.versions.#{v}")} (#{d})"]={:url=>self.url(v),:width=>self.width(v),:height=>self.height(v)}
+      result["#{I18n.t(:"image file.versions.#{v}")} (#{d})"]={:url=>self.url(v),:width=>self.width(v),:height=>self.height(v)}
     }
     result.each{|key,value|
       yield key,value,self
