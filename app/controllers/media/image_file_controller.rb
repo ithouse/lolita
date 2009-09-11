@@ -63,6 +63,12 @@ class Media::ImageFileController < Media::ControllerFileBase
     end
   end
 
+  def attributes
+    @picture=Media::ImageFile.find_by_id(params[:id])
+    @picture=Media::ImageFile.new unless @picture
+    render :layout=>false
+  end
+
   def save_attributes
     if @picture=Media::ImageFile.find_by_id(params[:id])
       @picture.update_attributes(params[:picture])
