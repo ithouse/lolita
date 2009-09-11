@@ -2,6 +2,7 @@
 <script type="text/javascript">
   loadjscssfile("/lolita/javascripts/jquery/Jcrop/jquery.Jcrop.min.js","js")
   loadjscssfile("/lolita/stylesheets/jquery.Jcrop.css","css")
+  ITH.ImageFile.init(<%= cfg.to_json %>)
 </script>
 <%= render :partial=>"/media/#{cfg[:media]}/resize_dialog" %>
 <div id="picture-photos-main" class="picture-photos-main" >

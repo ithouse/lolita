@@ -426,6 +426,7 @@ ITH.ImageFile=function(){
             if(!ITH.ImageFile.Dialog){
                 this.render_dialog()
             }
+            
             this.parameters=config
         },
         show_attributes_dialog:function(config){
@@ -435,12 +436,6 @@ ITH.ImageFile=function(){
         },
         show_loading:function(){
             ITH.ImageFile.Dialog.setBody('<img alt="'+ITH.Translations.wait_dialog_header+'" class="ith-media-loading" src="'+loadingImage+'"/>')
-        },
-        open_comments:function(config){
-            this.make_simple_request("/cms/comment/inline_comments",{
-                parent_id:config.id,
-                parent:"ImageFile"
-            },"picture_comments_container")
         },
         open_attributes:function(config){
             if(config) this.configuration=config
@@ -455,7 +450,7 @@ ITH.ImageFile=function(){
             $.ajax({
                 type:"post",
                 url:"/media/image_file/save_attributes/"+id,
-                data:$(form).serialize(),
+                data:$(form).serialize()+"&authenticity_token="+encodeURIComponent(AUTH_TOKEN),
                 dataType:"json",
                 success:function(picture){
                     ITH.ImageFile.Dialog.setFooter(ITH.Translations.changes_saved+"!")

@@ -39,12 +39,12 @@ module Media::ImageFileHelper
   
   def draggable_picture_tools image
     json={:id=>image.id}.to_json
-    # edit_image='<span title="'+t(:"picture.change attributes")+'" class="picture-edit-tool picture-tool-common"></span>'
+    edit_image='<span title="'+t(:"image file.change attributes")+'" class="picture-edit-tool picture-tool-common"></span>'
     if(image.has_cropped_versions?)
       images='<span title="'+t(:"image file.all sizes")+'" class="picture-all-sizes-tool picture-tool-common"></span>'
     end
     content_tag("span",
-      #content_tag("span",edit_image,:class=>"ith-media-image-tool",:onclick=>"ITH.ImageFile.show_attributes_dialog(#{json})")+"<br/>"+
+      content_tag("span",edit_image,:class=>"ith-media-image-tool",:onclick=>"ITH.ImageFile.show_attributes_dialog(#{json})")+"<br/>"+
       (images ? content_tag("span",images,:class=>"ith-media-image-tool",:onclick=>"ITH.ImageFileVersions.load(#{json})") : ""),
       :class=>"ith-media-image-tools")
   end
