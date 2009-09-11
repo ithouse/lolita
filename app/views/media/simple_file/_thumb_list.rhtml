@@ -9,7 +9,7 @@
   <% for file in thumb_list[:files] %>
       <% if !file.nil?  %>
           <tr>
-            <td><%= link_to "#{file.name.to_s.humanize}",{:action=>'download',:controller=>'file',:file=>file.name}%></td>
+            <td><%= link_to "/upload#{file.name.to_s}",{:action=>'download',:controller=>'file',:file=>file.name}%></td>
             <td style="width:30px;"><input name="thumb[]" class="chk" type="checkbox" value="<%= file.id %> " /></td>
           </tr>
       <% end %>
