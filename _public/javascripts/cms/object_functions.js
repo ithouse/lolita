@@ -426,7 +426,7 @@ ITH.ImageFile=function(){
             if(!ITH.ImageFile.Dialog){
                 this.render_dialog()
             }
-            this.tokken=tokken
+            
             this.parameters=config
         },
         show_attributes_dialog:function(config){
