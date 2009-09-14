@@ -1,0 +1,8 @@
+lv:
+  lolita:
+    media:
+      media_dialog:
+        image_file_list_body:
+          open attributes: Atvērt attēla atribūtus
+          delete picture: Dzēst attēlu
+          open other versions: Atvērt cias attēla versijas
