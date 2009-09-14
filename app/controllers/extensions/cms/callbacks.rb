@@ -12,20 +12,17 @@ module Extensions
       end
       
       def handle_after_create
-        if has_file_id?
-          update_multimedia @object,file_id
-        end
         if menu_item=Admin::MenuItem.find_by_id(params[:menu_item_id])
           menu_item.menuable=@object
           menu_item.save!
         end
-        #handle_has_many_relation true
-        #handle_has_many_polimorphic_relation true
         handle_menu
-        #handle_external_object_relations
         handle_special_fields
       end
 
+      def handle_after_save
+        update_multimedia @object,file_id
+      end
       # Funkcija, kas atbild par to, lai varētu ievietot apakšklasēs funkcijas, kas tiktu
       # izsauktas pirms kādas attiecīgās darbības, piemēram
       # ievietojam kontrolierī

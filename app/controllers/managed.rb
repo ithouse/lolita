@@ -40,23 +40,7 @@ class Managed < ApplicationController
   def my_params
     @my_params
   end
-  #Funkcija kas veic darbu ar lokāciju notiekšanu un maiņu
-  def update_or_create_location loc={}
-    Location.transaction do
-      reflection=@object.class.reflections.detect{|name,r| r.class_name=="Location"}
-      location=@object.send(reflection.first)
-      if location
-        location.update_attributes(my_params[:location])
-      elsif(my_params[:location][:lat].to_i>0 || loc[:lat].to_i>0)
-        location=Location.new(loc||my_params[:location])
-        location.mappable=@object
-        location.save!
-      end  if my_params[:location]
-    end
-  end
- 
 
-  
   #config satur config mainīgo, kas rodas saņemot no apakšklasēm opciju :configuration
   #tas nepieciešams lai nodrošinātu katrai apakšklasie nepieciešamības gadījumā pilnīgi atšķirīgu
   #argumentu reģistrēšanu un apstrādi

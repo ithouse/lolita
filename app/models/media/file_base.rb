@@ -100,10 +100,11 @@ class Media::FileBase < Media::Base
   def self.update_memorized_files(memory_id,parent)
     poly_name=self.media_get_polymorphic_name
     result=self.find_in_memory(memory_id).collect{|obj|
-      obj.update_attributes!(:"#{poly_name}_type"=>parent.class.to_s,:"#{poly_name}_id"=>parent.id)
+      obj.update_attributes!(:"#{poly_name}_type"=>parent.class.base_class.to_s,:"#{poly_name}_id"=>parent.id)
       self.delete_file_from_memory(obj.id)
+      obj
     }
-    self.assing_polymorphic_result_to_object(parent,result,poly_name.to_sym)
+    parent.class.assing_polymorphic_result_to_object(parent,result,poly_name.to_sym)
     self.clear_temp_files
   end
 

@@ -27,6 +27,10 @@ class Media::Base < Cms::Base
     media
   end
 
+  def self.get_current_media_class_reflection_by(klass)
+    poly_name=self.media_get_polymorphic_name
+    klass.reflections.collect{|reflection| reflection.last.options[:as]==poly_name ? reflection.first : nil}.compact.first
+  end
    #Return media class polymorphic name
   def self.media_get_polymorphic_name
     self.reflections.collect{|reflection| reflection.last.options[:polymorphic] ? reflection.first : nil}.compact.first

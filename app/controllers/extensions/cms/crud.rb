@@ -28,6 +28,7 @@ module Extensions
               handle_metadata
               update_or_create_location if has_tab_type?(:map) # TODO šo no šejienes vajadzētu izvākt
               handle_after_create
+              handle_after_save
               handle_after_functions 'create'
               redirect_step_back? ? redirect_me(:step_back=>true) : redirect_me
             else
@@ -80,11 +81,10 @@ module Extensions
               end
               @object.update_attributes!(my_params[:object])
               if @object.errors.empty?
-                handle_metadata
-                update_or_create_location if has_tab_type?(:map) #TODO šo no šejienes vajadzētu izvākt
-                handle_special_fields
-                handle_menu
-                #handle_external_object_relations
+                handle_metadata()
+                handle_special_fields()
+                handle_menu()
+                handle_after_save()
                 handle_after_functions 'update'
                 #                unless @object.errors.empty?
                 #                  raise ActiveRecord::RecordInvalid

@@ -57,7 +57,7 @@ module ManagedHelper
     special_types= [:metadata,:translate,:multimedia]
     @config[:tabs].each_with_index{|tab,index|
       tab[:index]=index
-      tab_opened=(!opened || tab[:opened_on_load]) && (tab[:opened])
+      tab_opened=(!opened && tab[:opened])|| tab[:opened_on_load]
       opened=tab_opened ? true : opened
       start_html,end_html=tab_start_end_html(tab,index,tab_opened)
       tab[:partial]="/managed/object_data" if tab[:type]==:content || tab[:type]==:default

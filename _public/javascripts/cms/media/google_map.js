@@ -1,86 +1,114 @@
 LolitaGoogleMap=function(options){
     this.options=options
+    this.marker_counter=1
+    this.lat=56.9444123864;
+    this.lng=24.1009140015;
+//Rīgas koordinātas
 }
 LolitaGoogleMap.prototype={
-    load:function(){
-        var lat=this.options.lat || 0;
-        var lng=this.options.lng || 0;
-        if ((!lat || !lng)||(lat==0 || lng==0)){
-            lat=56.9444123864;
-            lng=24.1009140015;
-        //Rīgas koordinātas
-        }
-        alert(112343)
+    init:function(){
+        var that=this
+        $(document).ready(function(){
+            $("body").eq(0).unload(function(){
+                GUnload()
+            })
+            that.load_map()
+        })
+    },
+    load_map:function(){
         if (GBrowserIsCompatible()){// Do Map if Compatible Browser only
-            alert(elementById("map_"+this.options.id))
-            this.map = new GMap2(elementById("map_"+this.options.id));
-            //}
+            this.map = new GMap2(elementById("map_"+this.options.unique_id));
             this.map.enableScrollWheelZoom();
-            this.map.addControl(new GLargeMapControl());
-            this.map.addControl(new GMapTypeControl());
-            this.map.addControl(new GScaleControl()) ;
-            this.map.addControl(new GOverviewMapControl()) ;
-
-            var icon = new GIcon();
-            icon.image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
-            icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
-            icon.iconSize = new GSize(12, 20);
-            icon.shadowSize = new GSize(22, 20);
-            icon.iconAnchor = new GPoint(6, 20);
-
-
-            // alert(lat,lng);
-            // alert(icon.iconSize);
-
-            var start = new GLatLng(lat, lng);//new GLatLng(56.945348705799276, 24.100570678710938) ; // Rīga
-            try{
-                this.map.setCenter(start,11);
-            }catch(e){}
-            // alert(start);
-            this.marker=new GMarker(start,{
-                icon:icon,
-                draggable: !this.options.read_only
-                });
-            this.map.addOverlay(this.marker);
-            //  alert(marker);
-            if (!this.options.read_only){
-                GEvent.addListener(this.map, 'click', function(overlay, point){
-                    if (overlay){
-                    }else if (point){
-                        this.marker.setPoint(point)
-                        this.current_zoom=this.map.getZoom();
-                        changecenter()
-                    }
-                });
-            }
-
-            if (!this.options.read_only){
-                this.marker.enableDragging()
-                GEvent.addListener(this.marker,'dragend',function() {
-                    changecenter()
-                    });
-            }
-            $('#tab'+this.options.tab+'container').css("display","none");
+            this.add_controls() // add Gmap controls to map
+            this.set_default_center()
+            this.hide_current_tab()
         }else{
-            $("#map_"+this.options.id).html("<div style='color: grey'>Error! Render Google Map</div>") ;
+            $("#map_"+this.options.unique_id).html("<div style='color: grey'>Error! Render Google Map</div>") ;
         }
 
     },
-    changecenter:function(){
-        this.map.setCenter(this.marker.getPoint(),this.current_zoom);//map.getZoom()
-        this.point=this.marker.getLatLng();
-        $('#object_map_lat').val(this.point.lat());
-        $('#object_map_lng').val(this.point.lng());
+    set_default_center:function(){
+        try{
+            this.map.setCenter(new GLatLng(this.lat,this.lng),11);
+            this.add_markers()
+        }catch(e){
+            setTimeout(function(that){
+                that.set_default_center()
+            },500,this)
+        }
     },
-    changelocation:function(lat,lng){
-        this.point=new GLatLng(lat, lng);
-        alert(lat)
-
-
-        this.marker.setPoint(this.point);
-        changecenter();
+    add_markers:function(){
+        var total_markers=0;
+        var icon=this.create_icon();
+        for(var i=0;i<this.options.lat.length;i++){
+            var lat=this.options.lat[i];
+            var lng=this.options.lng[i];
+            if(!((!lat || !lng) || (lat==0 || lng==0))){
+                total_markers++
+                var point=new GLatLng(lat,lng);
+                this.add_simple_marker(point,icon)
+            }
+        }
+        if(total_markers==0){
+            this.add_simple_marker(new GLatLng(this.lat,this.lng),icon)
+        }
     },
-    getposition:function(){
-        return this.marker.getLatLng();
+    add_simple_marker:function(start,icon){
+        var marker=new GMarker(start,{
+            icon:icon,
+            draggable: !this.options.read_only
+        });
+        marker.counter=this.marker_counter
+        this.marker_counter+=1
+        this.map.addOverlay(marker);
+        this.add_marker_events(marker)
+    },
+    add_marker_events:function(marker){
+        var that=this;
+//        if (!this.options.read_only){
+//            GEvent.addListener(this.map, 'click', function(overlay, point){
+//                if (overlay){
+//                }else if (point){
+//                    marker.setPoint(point)
+//                    that.current_zoom=this.getZoom();
+//                    that.change_center(marker)
+//                }
+//            });
+//        }
+
+        if (!this.options.read_only){
+            marker.enableDragging()
+            GEvent.addListener(marker,'dragend',function() {
+                that.change_center(this)
+            });
+//            GEvent.addListener(marker,'click',function(){
+//                this.openInfoWindowHtml("<b>asdf</b><span>Arturs</span>");
+//            })
+        }
+    },
+    add_controls:function(){
+        this.map.addControl(new GLargeMapControl());
+        this.map.addControl(new GMapTypeControl());
+        this.map.addControl(new GScaleControl()) ;
+        this.map.addControl(new GOverviewMapControl()) ;
+    },
+    
+    create_icon:function(){
+        var icon = new GIcon();
+        icon.image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
+        icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
+        icon.iconSize = new GSize(12, 20);
+        icon.shadowSize = new GSize(22, 20);
+        icon.iconAnchor = new GPoint(6, 20);
+        return icon
+    },
+    change_center:function(marker){
+        var point=marker.getLatLng();
+        this.map.setCenter(marker.point,this.current_zoom);//map.getZoom()
+        $('#object_map_'+this.options.unique_id+'_lat_'+marker.counter).attr("value",point.lat());
+        $('#object_map_'+this.options.unique_id+'_lng_'+marker.counter).attr("value",point.lng());
+    },
+    hide_current_tab:function(){
+        $('#tab'+this.options.index+'container').css("display","none");
     }
 }

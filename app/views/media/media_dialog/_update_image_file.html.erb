@@ -8,12 +8,14 @@
   </div>
 </div>
 <form class="ith-media-attributes-form" method="post" onsubmit="ITH.Media.save_attributes(this,<%=update_image_file[:id]%>);return false;">
-    <%= label :image,:alt, Media::ImageFile.human_attribute_name("alt") %>
-    <%=text_field :image,:alt, :class=>"ith-media-text-field" %>
-    <%= label :image,:title, Media::ImageFile.human_attribute_name("title") %>
-    <%=text_field :image,:title, :class=>"ith-media-text-field" %>
-    <%= label :image,:caption, Media::ImageFile.human_attribute_name("caption") %>
-    <%=text_field :image,:caption, :class=>"ith-media-text-field"%>
-    <input type="submit" class="btn" value="<%=t(:"actions.save")%>"/>&nbsp;
-    <span class="blue" style="cursor:pointer;" onclick="ITH.Media.close_attributes()"><%=t(:"actions.cancel")%></span>
+  <%= label :image,:alt, Media::ImageFile.human_attribute_name("alt") %>
+  <%=text_field :image,:alt, :class=>"ith-media-text-field" %>
+  <%= label :image,:title, Media::ImageFile.human_attribute_name("title") %>
+  <%=text_field :image,:title, :class=>"ith-media-text-field" %>
+  <%= label :image,:caption, Media::ImageFile.human_attribute_name("caption") %>
+  <%=text_field :image,:caption, :class=>"ith-media-text-field"%>
+  <%= label_tag "p_name", Media::ImageFile.human_attribute_name("name") %>:
+  <%= text_field_tag "p_name",@image.name.relative_path,:readonly=>true,:class=>"ith-media-text-field" %>
+  <input type="submit" class="btn" value="<%=t(:"actions.save")%>"/>&nbsp;
+  <span class="blue" style="cursor:pointer;" onclick="ITH.Media.close_attributes()"><%=t(:"actions.cancel")%></span>
 </form>

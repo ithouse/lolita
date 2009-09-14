@@ -1,20 +1,18 @@
 <% cfg=file_cfg(container) %>
-<% rnd=rand()*100 %>
-<div id="map_<%=rnd%>" class="house-google-map" ></div>
+<div id="map_<%=cfg[:unique_id]%>" class="house-google-map" style="width:600px;height:400px;"></div>
 <script type="text/javascript">
 <% if Lolita.config.gmaps_key %>
-
-  <% cfg[:id]=rnd %>
-    loadjscssfile("/lolita/javascripts/cms/media/google_map.js?<%=rand*100000.to_i%>","js")
-    $("body").eq(0).unload(function(){
-      GUnload()
-    })
-    map=new LolitaGoogleMap(<%= cfg.to_json %>)
-    map.load()
-    $(document).ready(function(){
-      alert("Document ready")
-      map=new LolitaGoogleMap(<%= cfg.to_json %>)
-      map.load()
-    })
+    loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
+    function init_lolita_google_map(){
+      //alert("Try initializing!")
+      try{
+        map=new LolitaGoogleMap(<%= cfg.to_json %>)
+        map.init()
+      }catch(e){
+        alert(e)
+        setTimeout("init_lolita_google_map()",500)
+      }
+    }
+    init_lolita_google_map()
 <%end%>
 </script>
