@@ -21,7 +21,7 @@ module UploadColumn
     :manipulator => nil,
     :versions => nil,
     :quality=>nil, # Can write {:thum=>55}
-    :strip=>nil, # Can be true, false or nil
+    :strip=>true, # Can be true, false or nil
     :validate_integrity => false
   }
   
