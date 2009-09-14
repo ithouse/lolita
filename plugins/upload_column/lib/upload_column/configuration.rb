@@ -20,6 +20,8 @@ module UploadColumn
     :web_root => '',
     :manipulator => nil,
     :versions => nil,
+    :quality=>nil, # Can write {:thum=>55}
+    :strip=>nil, # Can be true, false or nil
     :validate_integrity => false
   }
   

@@ -25,7 +25,7 @@
   <div class="clear"></div>
   <div>
     <%= label_tag "p_name", Media::ImageFile.human_attribute_name("name") %>:
-    <%= text_field_tag "p_name",@picture.name.relative_path,:readonly=>true,:size=>41 %>
+    <%= text_field_tag "p_name","/upload/#{@picture.name.relative_path}",:readonly=>true,:size=>41 %>
   </div>
   <div class="clear"></div>
   <div class="clear"></div>

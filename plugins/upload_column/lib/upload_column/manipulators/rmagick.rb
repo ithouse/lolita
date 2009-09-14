@@ -61,7 +61,12 @@ module UploadColumn
           end
           list.write(self.path)
         else
-          yield( image.first ).write(self.path)
+          quality=self.options[:quality] && self.options[:quality][self.suffix] ? self.options[:quality][self.suffix] : 75
+          image=self.options[:strip] ? image.first.strip! : image.first
+          image=image.write(self.path) do
+            self.quality=quality
+          end
+          yield image
         end
       rescue ::Magick::ImageMagickError => e
         # this is a more meaningful error message, which we could catch later
