@@ -104,7 +104,7 @@ class Media::FileBase < Media::Base
       self.delete_file_from_memory(obj.id)
       obj
     }
-    parent.class.assing_polymorphic_result_to_object(parent,result,poly_name.to_sym)
+    parent.class.assing_polymorphic_result_to_object(parent,result,poly_name.to_sym) if memory_id.to_s.size>0
     self.clear_temp_files
   end
 

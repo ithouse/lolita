@@ -19,7 +19,7 @@ class Media::Base < Cms::Base
         base_name=File.basename(path,".rb")
         klass_name="Media::#{base_name.camelize}".constantize
         is_abstract=klass_name.respond_to?("abstract_class?") ? klass_name.abstract_class? : false
-        unless is_abstract
+        if !is_abstract && klass_name.ancestors.include?(self)
           media<<base_name
         end
       end
