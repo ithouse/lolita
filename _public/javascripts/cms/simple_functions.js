@@ -43,8 +43,8 @@ function SimpleRequest(r_object,r_config){
         if(config.before) eval(config.before)
         var request={
             url:config.url,
-            type:config.method || "post",
-            data:construct_params(config.data),
+            type:config.method || "get",
+            data:construct_params(config.params),
             dataType: config.dataType || 'html'
         }
         if(config.success){
@@ -59,7 +59,10 @@ function SimpleRequest(r_object,r_config){
                 if(status!="success"){
                     ITH.Cms.warning.show()
                 }else{
-                    if(config.container) $(config.container).html(xhr.responseText)
+                    if(config.container){
+                        var p=config.container.match(/^#/) ? "" : "#"
+                        $(p+config.container).html(xhr.responseText)
+                    }
                 }
             }catch(err){}
         }
@@ -159,16 +162,18 @@ function simple_yui_request(object,config){
     return false;
 }
 function startMultifileUpload(media){
-  var adv_params={media:media}
-  $("#upload_options input").each(function(index){
-      if($(this).attr("type")=="checkbox"){
-          eval("adv_params."+$(this).attr("name")+"="+($(this).attr("checked") ? "true" : "false"))
-      }else{
-          eval("adv_params."+$(this).attr("name")+"="+$(this).val())
-      }
-  })
-  $('#'+media+'fileInput').uploadifySettings('scriptData',adv_params);
-  $('#'+media+'fileInput').uploadifyUpload();
+    var adv_params={
+        media:media
+    }
+    $("#upload_options input").each(function(index){
+        if($(this).attr("type")=="checkbox"){
+            eval("adv_params."+$(this).attr("name")+"="+($(this).attr("checked") ? "true" : "false"))
+        }else{
+            eval("adv_params."+$(this).attr("name")+"="+$(this).val())
+        }
+    })
+    $('#'+media+'fileInput').uploadifySettings('scriptData',adv_params);
+    $('#'+media+'fileInput').uploadifyUpload();
 }
 Ajax={}
 Ajax.Request=function(url,c){
@@ -418,26 +423,26 @@ function add_new_element_to_autocomplete(id,value){
 }
 
 function URLEncode(str){
-  return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
+    return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
 }
 function observe_languages(id,tab,url,params){
-  $(document).ready(function(e){
-      $(id).change(function(){
-          ITH.Cms.wait.show()
-          $.ajax({
-              url:url,
-              type:"get",
-              dataType:"html",
-              data:params+"&"+id.replace(/#/,"")+"="+$(this).val(),
-              success:function(html){
-                $("#tab"+tab+"container").html(html);
-              },
-              complete:function(){
-                  ITH.Cms.wait.hide()
-              }
-          })
-      })
-  })
+    $(document).ready(function(e){
+        $(id).change(function(){
+            ITH.Cms.wait.show()
+            $.ajax({
+                url:url,
+                type:"get",
+                dataType:"html",
+                data:params+"&"+id.replace(/#/,"")+"="+$(this).val(),
+                success:function(html){
+                    $("#tab"+tab+"container").html(html);
+                },
+                complete:function(){
+                    ITH.Cms.wait.hide()
+                }
+            })
+        })
+    })
 }
 function save_metadata_translation(fields,tab,url,params){
     var field_data=""
@@ -461,14 +466,23 @@ function save_metadata_translation(fields,tab,url,params){
 function show_notice(text,period){
     var $n=$("#dynamic_notice")
     $n.html(text);
-    $n.css({"left":$(document).width()/2-($n.width()/2),"top":-$n.height()})
+    $n.css({
+        "left":$(document).width()/2-($n.width()/2),
+        "top":-$n.height()
+        })
     $n.show();
-    $n.animate({"top":"0px"},period||350,"linear",function(){
+    $n.animate({
+        "top":"0px"
+    },period||350,"linear",function(){
         setTimeout("hide_notice()",2000)
     })
     
 }
 function hide_notice(){
     var $n=$("#dynamic_notice")
-    $n.animate({"top":"-"+($n.height()+1)+"px"},350,"linear",function(){$n.hide();})
+    $n.animate({
+        "top":"-"+($n.height()+1)+"px"
+        },350,"linear",function(){
+        $n.hide();
+    })
 }

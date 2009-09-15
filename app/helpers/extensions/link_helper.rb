@@ -100,7 +100,7 @@ module Extensions::LinkHelper
       :method=>options[:method] || "GET",
       :loading=>options.has_key?(:loading) ? options[:loading] : true
     }.delete_if{|key,value| value.nil?}.to_json.gsub(/"/,"&quot;")
-    on_click=onclick || %(onclick="simple_yui_request(this,#{request_configuration});return false;")
+    on_click=onclick || %!onclick="SimpleRequest(this,#{request_configuration});return false;"!
     result=%(<a #{cms_html_options(options[:html] || {})} #{on_click} href="#{base_params.is_a?(Hash) ? url_for(base_params.merge(options[:params] || {})) : base_params}" >#{title}</a>)
     result
   end
