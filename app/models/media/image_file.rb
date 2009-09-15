@@ -41,7 +41,7 @@ class Media::ImageFile < Media::FileBase
   def full_versions
     version_class=self.pictureable_type.constantize
     class_versions=version_class.respond_to?(:upload_column_versions) ? version_class.upload_column_versions : {}
-    Media::ImageFile::VERSIONS.merge(class_versions)
+    Media::ImageFile::VERSIONS.merge(class_versions || {})
   end
 
   def cropped_versions
