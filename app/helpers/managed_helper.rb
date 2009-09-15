@@ -173,7 +173,7 @@ module ManagedHelper
     options[:params][:sort_column]||=options[:sort_column] ? options[:sort_column].to_s : nil
     options[:container]||="form_list"
     options[:title]||=field_title(options[:params][:sort_column] || options[:title])
-    content=(@config[:list][:sortable] && options[:params][:sort_column] ? list_link(options) : options[:title])+"&nbsp;"
+    content="#{(@config[:list][:sortable] && options[:params][:sort_column] ? list_link(options) : options[:title])}&nbsp;"
     content+=(
       if @config[:list][:sortable] && (options[:params][:sort_column] &&  (params[:sort_column] || session[current_session_name][:sort_column] || []).include?(options[:params][:sort_column]))
         if options[:params][:sort_direction]=="asc"
