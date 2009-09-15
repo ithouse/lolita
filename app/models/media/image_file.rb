@@ -102,7 +102,7 @@ class Media::ImageFile < Media::FileBase
     watermark=self.get_watermark
 
     start_time=Time.now
-    all_pictures=Media::ImageFile.find(:all,:conditions=>["created_at>?",1.month.ago])
+    all_pictures=Media::ImageFile.find(:all)#,:conditions=>["created_at>?",1.month.ago]
     count=all_pictures.size
     decs=1
     border_count=count/10
