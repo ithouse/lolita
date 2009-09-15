@@ -6,6 +6,7 @@
  *      id_prefix(String) - konteinera id sākums, piemērs, id="my_map_134", id_prefix="my_map"
  *      icon(GIcon) - marķiera ikona
  *      unique_id - unikāls identifikātors obligāti jānorāda
+ *      center_marker - nocentrē karti pārvietojot marķieri
  *  lat - noklusētais platums
  *  lng - noklusētais garums
  *  marker_count - skaitītājs no kura sāk marķieru skaitīšana, nav īpaša nozīme
@@ -16,6 +17,7 @@ LolitaGoogleMap=function(options){
     this.marker_counter=1
     this.lat=56.9444123864;
     this.lng=24.1009140015;
+    this.last_marker=false;
 //Rīgas koordinātas
 }
 LolitaGoogleMap.prototype={
@@ -75,23 +77,27 @@ LolitaGoogleMap.prototype={
         this.marker_counter+=1
         this.map.addOverlay(marker);
         this.add_marker_events(marker)
+        this.last_marker=marker
     },
     add_marker_events:function(marker){
         var that=this;
-        //        if (!this.options.read_only){
-        //            GEvent.addListener(this.map, 'click', function(overlay, point){
-        //                if (overlay){
-        //                }else if (point){
-        //                    marker.setPoint(point)
-        //                    that.current_zoom=this.getZoom();
-        //                    that.change_center(marker)
-        //                }
-        //            });
-        //        }
+        if (!this.options.read_only){
+            GEvent.addListener(this.map, 'click', function(overlay, point){
+                if (overlay){
+                }else if (point){
+                    if(that.last_marker){
+                        that.last_marker.setPoint(point)
+                        that.current_zoom=this.getZoom();
+                        that.change_center(that.last_marker)
+                    }
+                }
+            });
+        }
 
         if (!this.options.read_only){
             marker.enableDragging()
             GEvent.addListener(marker,'dragend',function() {
+                that.current_zoom=that.map.getZoom();
                 that.change_center(this)
             });
         //            GEvent.addListener(marker,'click',function(){
@@ -121,7 +127,7 @@ LolitaGoogleMap.prototype={
     },
     change_center:function(marker){
         var point=marker.getLatLng();
-        this.map.setCenter(marker.point,this.current_zoom);//map.getZoom()
+        if(this.options.center_marker) this.map.setCenter(point,this.current_zoom);//map.getZoom()
         $('#object_map_'+this.options.unique_id+'_lat_'+marker.counter).attr("value",point.lat());
         $('#object_map_'+this.options.unique_id+'_lng_'+marker.counter).attr("value",point.lng());
     },

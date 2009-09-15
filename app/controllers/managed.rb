@@ -62,7 +62,7 @@ class Managed < ApplicationController
   #     :video_file
   #       :with_intro - iespēja norādīt intro (FIXME noņemt pogu pie paša video)
   #     :audio_file
-  #     :google_map
+  #     :google_map - citas opcijas skatīt iekš google_map.js
   #       :unique_id - unikāls id vajadzīgs obligāti, jābūt integer vai string, bez specsimboliem
   #     :image_file,
   #       :main_image - vai ir lielais attēls

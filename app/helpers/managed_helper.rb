@@ -53,7 +53,7 @@ module ManagedHelper
   
   def tabs options={}
     opened=false
-    media_types=Media::FileBase.all_media_names.collect{|m| m.to_sym}
+    media_types=Media::Base.all_media_names.collect{|m| m.to_sym}
     special_types= [:metadata,:translate,:multimedia]
     @config[:tabs].each_with_index{|tab,index|
       tab[:index]=index
