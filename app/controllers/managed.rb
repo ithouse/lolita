@@ -57,13 +57,17 @@ class Managed < ApplicationController
   # :overwrite=> Klase pēc kuras meklē ir tā kas norādīt parent_name
   # :tabs - cilnes, kādās ir sadalīts ievades logs, iespējamie noklusētie tipi,
   #   :metadata,
-  #   :picture,
-  #     :main_image - vai ir lielais attēls
-  #     :single - vai ir tikai viens attēls
-  #     :create_pdf - vai izveidot pdf failu ar attēlu, jābūt atļautiem arī failiem
-  #
-  #   :file,
-  #   :map,
+  #   :multimedia,
+  #     :simple_file
+  #     :video_file
+  #       :with_intro - iespēja norādīt intro (FIXME noņemt pogu pie paša video)
+  #     :audio_file
+  #     :google_map
+  #       :unique_id - unikāls id vajadzīgs obligāti, jābūt integer vai string, bez specsimboliem
+  #     :image_file,
+  #       :main_image - vai ir lielais attēls
+  #       :single - vai ir tikai viens attēls
+  #       :create_pdf - vai izveidot pdf failu ar attēlu, jābūt atļautiem arī failiem
   #   :translate,
   #   :default - vispārīgs tips paredzēts visām cilnēm
   #   :partial - taba partial forma

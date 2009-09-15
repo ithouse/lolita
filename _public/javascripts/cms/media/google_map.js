@@ -1,3 +1,16 @@
+/*
+ * Konfigurācijā tieks saņemts JSON masīvs
+ * Attribūti
+ *  options - tiek saņemts caur konstruktoru
+ *      read_only(Boolean) - vai ir marķieris kustināms vai ir noklusētais marķieris redzams
+ *      id_prefix(String) - konteinera id sākums, piemērs, id="my_map_134", id_prefix="my_map"
+ *      icon(GIcon) - marķiera ikona
+ *      unique_id - unikāls identifikātors obligāti jānorāda
+ *  lat - noklusētais platums
+ *  lng - noklusētais garums
+ *  marker_count - skaitītājs no kura sāk marķieru skaitīšana, nav īpaša nozīme
+ *
+ */
 LolitaGoogleMap=function(options){
     this.options=options
     this.marker_counter=1

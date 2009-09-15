@@ -1,6 +1,16 @@
 <% cfg=public_google_map_configuration(public_container) %>
 <div id="public_map_<%=cfg[:unique_id]%>" class="google-map <%=cfg[:class_name]%>" style="width:<%=cfg[:width] || 600%>px;height:<%=cfg[:height] || 400%>px;"></div>
 <script type="text/javascript">
+<%
+  # Saņem sekojošu konfigurāciju
+  # :unique_id - unikāls id integer vai string bez specsimboliem
+  # :class_name - google kartes konteinera speciālais klases nosaukums, vienmēr jau ir google-map
+  # :width - konteinera platums px
+  # :height - konteinera augstums px
+  # :object - ActiveRecord objekts, kam ir piesaistītas koordinātas
+  # :lat - masīvs ar platuma grādiem
+  # :lng - masīvs ar garuma grādiem, ja norādīts :object tad tik pārrakstīti
+%>
 <% if Lolita.config.gmaps_key %>
     loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
     function init_lolita_google_map(){
