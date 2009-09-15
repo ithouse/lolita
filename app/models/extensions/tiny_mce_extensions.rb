@@ -10,14 +10,14 @@ module Extensions::TinyMceExtensions
       obj.gsub!(/src=\"/,'src="/')
     end
     obj.gsub!(/src=\"\/\.\.\//,'src="/');
-    obj.gsub!(/href=\"\.\.\/\.\./,'href="');
-    obj.gsub!(/href=\"http:\/\/#{Lolita.config.domain}/,'href="')
-    obj.gsub!(/href=\"\/(\/|\w)+\"/){|match|
-      change_url(match)
-    }
-    obj.gsub!(/href=\"[c](\/|\w)+\"/){|match| #šis vecajam kad ir href="cms/sdfasdf"
-      change_url(match,true)
-    }
+#    obj.gsub!(/href=\"\.\.\/\.\./,'href="');
+#    obj.gsub!(/href=\"http:\/\/#{Lolita.config.domain}/,'href="')
+#    obj.gsub!(/href=\"\/(\/|\w)+\"/){|match|
+#      change_url(match)
+#    }
+#    obj.gsub!(/href=\"[c](\/|\w)+\"/){|match| #šis vecajam kad ir href="cms/sdfasdf"
+#      change_url(match,true)
+#    }
   end
   
   
