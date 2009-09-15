@@ -5,7 +5,7 @@ class CreateUrls < ActiveRecord::Migration
       t.string  :addressable_type
       t.string  :addressable_id
     end
-    add_index :urls, [:addressable_type,:addressable_id]
+    add_index :urls, [:addressable_type,:addressable_id], :name=>"address_type_and_id"
   end
 
   def self.down

@@ -17,7 +17,7 @@ LolitaGoogleMap.prototype={
     },
     load_map:function(){
         if (GBrowserIsCompatible()){// Do Map if Compatible Browser only
-            this.map = new GMap2(elementById("map_"+this.options.unique_id));
+            this.map = new GMap2(elementById((this.options.id_prefix || "map")+"_"+this.options.unique_id));
             this.map.enableScrollWheelZoom();
             this.add_controls() // add Gmap controls to map
             this.set_default_center()
@@ -49,7 +49,7 @@ LolitaGoogleMap.prototype={
                 this.add_simple_marker(point,icon)
             }
         }
-        if(total_markers==0){
+        if(total_markers==0 && !this.options.read_only){
             this.add_simple_marker(new GLatLng(this.lat,this.lng),icon)
         }
     },
@@ -65,25 +65,25 @@ LolitaGoogleMap.prototype={
     },
     add_marker_events:function(marker){
         var that=this;
-//        if (!this.options.read_only){
-//            GEvent.addListener(this.map, 'click', function(overlay, point){
-//                if (overlay){
-//                }else if (point){
-//                    marker.setPoint(point)
-//                    that.current_zoom=this.getZoom();
-//                    that.change_center(marker)
-//                }
-//            });
-//        }
+        //        if (!this.options.read_only){
+        //            GEvent.addListener(this.map, 'click', function(overlay, point){
+        //                if (overlay){
+        //                }else if (point){
+        //                    marker.setPoint(point)
+        //                    that.current_zoom=this.getZoom();
+        //                    that.change_center(marker)
+        //                }
+        //            });
+        //        }
 
         if (!this.options.read_only){
             marker.enableDragging()
             GEvent.addListener(marker,'dragend',function() {
                 that.change_center(this)
             });
-//            GEvent.addListener(marker,'click',function(){
-//                this.openInfoWindowHtml("<b>asdf</b><span>Arturs</span>");
-//            })
+        //            GEvent.addListener(marker,'click',function(){
+        //                this.openInfoWindowHtml("<b>asdf</b><span>Arturs</span>");
+        //            })
         }
     },
     add_controls:function(){
@@ -94,13 +94,17 @@ LolitaGoogleMap.prototype={
     },
     
     create_icon:function(){
-        var icon = new GIcon();
-        icon.image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
-        icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
-        icon.iconSize = new GSize(12, 20);
-        icon.shadowSize = new GSize(22, 20);
-        icon.iconAnchor = new GPoint(6, 20);
-        return icon
+        if(!this.options.icon){
+            var icon = new GIcon();
+            icon.image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
+            icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
+            icon.iconSize = new GSize(12, 20);
+            icon.shadowSize = new GSize(22, 20);
+            icon.iconAnchor = new GPoint(6, 20);
+            return icon
+        }else{
+            return this.options.icon
+        }
     },
     change_center:function(marker){
         var point=marker.getLatLng();

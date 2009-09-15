@@ -11,4 +11,15 @@ module Media::GoogleMapHelper
       render :partial=>"/media/#{tab[:media]}/in_form", :object=>p_options
     end
   end
+
+  def public_google_map_configuration(conf={})
+    if conf[:object]
+      locations=Media::GoogleMap.collect_coords(conf[:object])
+      conf[:lat]=locations[:lat]
+      conf[:lng]=locations[:lng]
+    end
+    conf[:id_prefix]="public_map"
+    conf[:read_only]=true
+    conf
+  end
 end

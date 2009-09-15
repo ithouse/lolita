@@ -5,7 +5,7 @@ class CreateFields < ActiveRecord::Migration
       t.string  :human_name
       t.string  :table
     end
-    add_index :admin_fields, [:table,:name]
+    add_index :admin_fields, [:table,:name], :name=>"table_name_index"
   end
 
   def self.down

@@ -1,12 +1,11 @@
-<% cfg=file_cfg(container) %>
-<div id="map_<%=cfg[:unique_id]%>" class="google-map" style="width:600px;height:400px;"></div>
+<% cfg=public_google_map_configuration(public_container) %>
+<div id="public_map_<%=cfg[:unique_id]%>" class="google-map <%=cfg[:class_name]%>" style="width:<%=cfg[:width] || 600%>px;height:<%=cfg[:height] || 400%>px;"></div>
 <script type="text/javascript">
 <% if Lolita.config.gmaps_key %>
     loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
     function init_lolita_google_map(){
-      //alert("Try initializing!")
       try{
-        map=new LolitaGoogleMap(<%= cfg.to_json %>)
+        var map=new LolitaGoogleMap(<%= cfg.to_json %>)
         map.init()
       }catch(e){
         setTimeout("init_lolita_google_map()",500)

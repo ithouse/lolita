@@ -32,7 +32,7 @@ module Extensions::MenuHelper
     end
     unless menu_item
       object=type.constantize
-      menu_item=object.find_related_menu_item(menu_name,id)      
+      menu_item=object.find_related_menu_item(menu_name,id) if object.respond_to?(:find_related_menu_item)
       unless menu_item
         menu_item = session["last_selected_#{menu_name.downcase}_item"] unless session["last_selected_#{menu_name.downcase}_item"].nil? 
       end

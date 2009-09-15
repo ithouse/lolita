@@ -63,7 +63,7 @@ module Extensions
           @object=object.find_by_id(my_params[:id])
           return false unless @object
           @translation=@object.clone if Lolita.config.translation
-          @metadata=MetaData.by_metaable(@object.id,@config[:object_name])
+          @metadata=MetaData.by_metaable(@object.id,@config[:object_name]) || MetaData.new
           if my_params[:object]
             if Lolita.config.translation && has_tab_type?(:translate)
               current_language=params[:translation_locale]
