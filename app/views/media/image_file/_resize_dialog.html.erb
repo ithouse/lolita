@@ -12,42 +12,42 @@
        skin="black">
     <div class="no">
       <div class="ne">
-        <div class="n"><%=t(:"image file.versions")%></div>
+        <div class="n"><%=t ".versions" %></div>
       </div>
       <div class="o">
         <div class="e">
           <div class="c">
             <div id="picture_version_loading" style="display:none">
-              <%= image_tag "/lolita/images/cms/image-crop-loader.gif", :alt=>"#{t(:"image file.wait")}..." %>
+              <%= image_tag "/lolita/images/cms/image-crop-loader.gif", :alt=>"#{t".wait"}..." %>
             </div>
             <div id="picture_version_dialog_content" class="content">
               <div class="picture-versions-menu">
-                <div class="title"><%=t(:"image file.all sizes")%></div>
+                <div class="title"><%=t ".all sizes" %></div>
                 <ul id="picture_versions_menu">
 
                 </ul>
               </div>
               <div class="version-container" id="current_version_image">
-                <div class="title"><%=t(:"image file.original image")%></div>
+                <div class="title"><%=t ".original image" %></div>
                 <div class="workarea">
                   <img src="" alt="" id="current_version_crop_area"/>
                 </div>
               </div>
               <div class="version-container">
-                <div class="title"><%=t(:"image file.cropped image")%></div>
+                <div class="title"><%=t ".cropped image" %></div>
                 <div class="workarea preview">
                   <img src="" alt="" id="current_version_preview"/>
                 </div>
               </div>
               <div class="version-container" >
-                <div class="title"><%=t(:"image file.real look")%></div>
+                <div class="title"><%=t ".real look" %></div>
                 <div>
                   <img src="" alt="" id="current_version_original"/>
                 </div>
               </div>
               <div class="footer">
-                <input type="button" class="btn" value="<%=t(:"actions.back").capitalize%>" onclick="ITH.ImageFileVersions.hide()"/>
-                <input type="button" class="btn" value="<%=t(:"actions.save").capitalize%>" onclick="ITH.ImageFileVersions.save()"/>
+                <input type="button" class="btn" value="<%=t(".back").capitalize%>" onclick="ITH.ImageFileVersions.hide()"/>
+                <input type="button" class="btn" value="<%=t(".save").capitalize%>" onclick="ITH.ImageFileVersions.save()"/>
               </div>
             </div>
           </div>

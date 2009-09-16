@@ -12,7 +12,7 @@ class Admin::Translate < Cms::Base
       :saving=>:"javascript.media.saving",
       :changes_saved=>:"javascript.media.changes saved",
       :media_error=>:"media.media_dialog.error",
-      :picture_attributes=>:"image file.dialog.header"
+      :picture_attributes=>:"lolita.media.image_file.dialog.header"
     }
   end
 end

@@ -1,0 +1,9 @@
+lv:
+  activerecord:
+    attributes:
+      media/image_file:
+        position: Pozīcija
+        alt: Alternatīvais teksts
+        title: Virsraksts
+        caption: Caption
+        name: Nosaukums
