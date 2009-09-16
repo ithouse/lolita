@@ -18,7 +18,6 @@ LolitaGoogleMap=function(options){
     this.markers=[] //store all markers that are on map
     this.lat=56.9444123864;
     this.lng=24.1009140015;
-    this.last_marker=false; // last marker change position when clicked on map
 //Rīgas koordinātas
 }
 LolitaGoogleMap.prototype={
@@ -43,7 +42,9 @@ LolitaGoogleMap.prototype={
             this.map.enableScrollWheelZoom();
             this.add_controls() // add Gmap controls to map
             this.set_default_center()
-            this.hide_current_tab()
+            if(this.options.type=="multimedia"){ //need close tab if map in system side
+                this.hide_current_tab()
+            }
         }else{
             $("#map_"+this.options.unique_id).html("<div style='color: grey'>Error! Render Google Map</div>") ;
         }
@@ -55,7 +56,9 @@ LolitaGoogleMap.prototype={
     set_default_center:function(){
         try{
             this.map.setCenter(new GLatLng(this.lat,this.lng),11);
-            this.add_markers()
+            setTimeout(function(that){
+                that.add_markers()
+            },1000,this)
         }catch(e){
             alert(e)
             setTimeout(function(that){
@@ -102,7 +105,6 @@ LolitaGoogleMap.prototype={
         marker.counter=this.marker_counter
         this.map.addOverlay(marker);
         this.add_marker_events(marker)
-        this.last_marker=marker
         if(values) this.create_form_elements()
         this.markers.push(marker)
         this.marker_counter+=1
@@ -149,10 +151,10 @@ LolitaGoogleMap.prototype={
             GEvent.addListener(this.map, 'click', function(overlay, point){
                 if (overlay){
                 }else if (point){
-                    if(that.last_marker){
-                        that.last_marker.setPoint(point)
+                    if(that.last_marker()){
+                        that.last_marker().setPoint(point)
                         that.current_zoom=this.getZoom();
-                        that.change_center(that.last_marker)
+                        that.change_center(that.last_marker())
                     }
                 }
             });
@@ -195,6 +197,13 @@ LolitaGoogleMap.prototype={
         $('#object_map_'+this.options.unique_id+'_lat_'+marker.counter).attr("value",point.lat());
         $('#object_map_'+this.options.unique_id+'_lng_'+marker.counter).attr("value",point.lng());
     },
+    last_marker:function(){
+        return this.markers[this.markers.length-1]
+    },
+    /*
+     * Seach for specific address, when found change last marker position to id
+     * otherwise alert message that address canot be found
+     */
     show_address:function(address){
         if (!this.map.geocoder)
             this.map.geocoder=new GClientGeocoder();
@@ -203,19 +212,23 @@ LolitaGoogleMap.prototype={
             address,
             function(point){
                 if (!point) {
-                    alert(address + " not found");
+                    alert(address + " not found!");
                 } else{
-                    if (typeof(that.map.last_marker)=="undefined"){
-                        var icon=that.map.create_icon();
-                        that.map.add_new_marker(point.lat,point.lng,icon)
+                    if (typeof(that.last_marker())=="undefined"){
+                        var icon=that.create_icon();
+                        that.add_new_marker(point.lat,point.lng,icon)
                     }else{
-                        that.map.last_marker.setPoint(point)
+                        that.last_marker().setPoint(point)
                     }
-                    that.map.change_center(that.map.last_marker,true)
+                    that.change_center(that.last_marker(),true)
                 }
-            })
+            }
+            )
     },
     hide_current_tab:function(){
-        $('#tab'+this.options.index+'container').css("display","none");
+        if(!this.options.opened){
+            $('#tab'+this.options.index+'container').css("display","none");
+        }
+        $("#map_form_"+this.options.unique_id).css("display","block")
     }
 }

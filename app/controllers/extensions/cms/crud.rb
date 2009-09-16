@@ -48,7 +48,7 @@ module Extensions
         else
           handle_before_functions 'edit'
           @object=object.find_by_id(my_params[:id])
-          @metadata=MetaData.by_metaable(@object.id,@config[:object_name])
+          @metadata=MetaData.by_metaable(@object.id,@config[:object_name]) || MetaData.new
           handle_after_functions 'edit'
           redirect_me :only_render=>true, :layout=>self_layout
         end
