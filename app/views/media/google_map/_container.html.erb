@@ -6,21 +6,23 @@
   </p>
 </form>
 <div id="map_<%=cfg[:unique_id]%>" class="google-map" style="width:600px;height:400px;"></div>
-<script type="text/javascript">
 <% if Lolita.config.gmaps_key %>
-    loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
-    function init_lolita_google_map(){
-      //alert("Try initializing!")
-      try{
-        map=new LolitaGoogleMap(<%= cfg.to_json %>)
-        map.init()
-      }catch(e){
+  <script type="text/javascript">
+    $(document).ready(function(){
+      loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
+      function init_lolita_google_map(){
+        //alert("Try initializing!")
+        try{
+          map=new LolitaGoogleMap(<%= cfg.to_json %>)
+          map.init()
+        }catch(e){
   <% if RAILS_ENV=="development"  %>
-          alert(e)
+            alert(e)
   <% end %>
-        setTimeout("init_lolita_google_map()",500)
+          setTimeout("init_lolita_google_map()",500)
+        }
       }
-    }
-    init_lolita_google_map()
+      init_lolita_google_map()
+    })
+  </script>
 <%end%>
-</script>
