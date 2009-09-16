@@ -189,36 +189,33 @@ LolitaGoogleMap.prototype={
             return this.options.icon
         }
     },
-    change_center:function(marker){
+    change_center:function(marker,center){
         var point=marker.getLatLng();
-        if(this.options.center_marker) this.map.setCenter(point,this.current_zoom);//map.getZoom()
+        if(this.options.center_marker || center) this.map.setCenter(point,this.current_zoom);//map.getZoom()
         $('#object_map_'+this.options.unique_id+'_lat_'+marker.counter).attr("value",point.lat());
         $('#object_map_'+this.options.unique_id+'_lng_'+marker.counter).attr("value",point.lng());
+    },
+    show_address:function(address){
+        if (!this.map.geocoder)
+            this.map.geocoder=new GClientGeocoder();
+        var that=this
+        this.map.geocoder.getLatLng(
+            address,
+            function(point){
+                if (!point) {
+                    alert(address + " not found");
+                } else{
+                    if (typeof(that.map.last_marker)=="undefined"){
+                        var icon=that.map.create_icon();
+                        that.map.add_new_marker(point.lat,point.lng,icon)
+                    }else{
+                        that.map.last_marker.setPoint(point)
+                    }
+                    that.map.change_center(that.map.last_marker,true)
+                }
+            })
     },
     hide_current_tab:function(){
         $('#tab'+this.options.index+'container').css("display","none");
     }
-}
-
-function show_address(map,address){
-    if (!map.geocoder)
-        map.geocoder=new GClientGeocoder();
-    map.geocoder.getLatLng(
-        address,
-        function(point)
-        {
-            if (!point) {
-                alert(address + " not found");
-            } else
-            {
-                if (typeof(map.last_marker)=="undefined")
-                {
-                    var icon=map.create_icon();
-                    map.add_simple_marker(point,icon)
-                }
-                map.last_marker.setPoint(point)
-                map.change_center(map.last_marker)
-                map.map.setCenter(point,map.map.getZoom());
-            }
-        })
 }

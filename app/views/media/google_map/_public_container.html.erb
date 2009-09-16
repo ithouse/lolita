@@ -17,7 +17,7 @@
     function init_lolita_google_map(){
       var _map_init_timeout;
       try{
-        clearTimeout(_map_init_timeout);
+        clearTimeout(_map_init_timeout); //timeout nav liela jēga tīrīt, jo tas tāpat 1 reizi strādā
         var map=new LolitaGoogleMap(<%= cfg.to_json %>)
         map.init()
       }catch(e){
