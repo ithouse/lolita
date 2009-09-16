@@ -28,7 +28,8 @@ class Media::Base < Cms::Base
   end
 
   def self.belongs_to_many?(object)
-    object.class.base_class.reflect_on_association(self.get_current_media_class_reflection_by(object.class.base_class)).macro==:has_many
+    reflection=object.class.base_class.reflect_on_association(self.get_current_media_class_reflection_by(object.class.base_class))
+    reflection && reflection.macro==:has_many
   end
 
   def self.belongs_to_one?(object)
