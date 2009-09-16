@@ -1,26 +1,29 @@
 <% cfg=public_google_map_configuration(public_container) %>
-<div id="public_map_<%=cfg[:unique_id]%>" class="google-map <%=cfg[:class_name]%>" style="width:<%=cfg[:width] || 600%>px;height:<%=cfg[:height] || 400%>px;"></div>
-<script type="text/javascript">
+<div id="public_map_<%=cfg[:unique_id]%>" class="google-map <%=cfg[:class_name]%>" style="width:<%=cfg[:width] || '600px'%>;height:<%=cfg[:height] || '400px'%>;"></div>
 <%
-  # Saņem sekojošu konfigurāciju
-  # :unique_id - unikāls id integer vai string bez specsimboliem
-  # :class_name - google kartes konteinera speciālais klases nosaukums, vienmēr jau ir google-map
-  # :width - konteinera platums px
-  # :height - konteinera augstums px
-  # :object - ActiveRecord objekts, kam ir piesaistītas koordinātas
-  # :lat - masīvs ar platuma grādiem
-  # :lng - masīvs ar garuma grādiem, ja norādīts :object tad tik pārrakstīti
+# Saņem sekojošu konfigurāciju
+# :unique_id - unikāls id integer vai string bez specsimboliem
+# :class_name - google kartes konteinera speciālais klases nosaukums, vienmēr jau ir google-map
+# :width - konteinera platums px
+# :height - konteinera augstums px
+# :object - ActiveRecord objekts, kam ir piesaistītas koordinātas
+# :lat - masīvs ar platuma grādiem
+# :lng - masīvs ar garuma grādiem, ja norādīts :object tad tik pārrakstīti
 %>
 <% if Lolita.config.gmaps_key %>
+  <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%=Lolita.config.gmaps_key%>"></script>
+  <script type="text/javascript">
     loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
     function init_lolita_google_map(){
+      var _map_init_timeout;
       try{
+        clearTimeout(_map_init_timeout);
         var map=new LolitaGoogleMap(<%= cfg.to_json %>)
         map.init()
       }catch(e){
-        setTimeout("init_lolita_google_map()",500)
+        _map_init_timeout=setTimeout("init_lolita_google_map()",1000)
       }
     }
     init_lolita_google_map()
+  </script>
 <%end%>
-</script>
