@@ -308,6 +308,7 @@ module ManagedHelper
     ary.each{|meth|
       begin
         tempobj=tempobj.send(meth)
+        return "--" unless tempobj
       rescue
         raise "Error sending #{meth}, check managed list config :field for #{element}.#{ary.join(".")}"
       end
