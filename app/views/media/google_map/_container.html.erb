@@ -1,7 +1,7 @@
 <% cfg=file_cfg(container) %>
 <form id="map_form_<%=cfg[:unique_id]%>" action="#" onsubmit="<%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.show_address(this.address.value)"%>;return false" style="display:none;">
   <p>
-    <input type="text" size="60" name="address" onfocus="select()" />
+    <input type="text" size="60" name="address" id="gmap_address_input" onfocus="select()" />
     <input type="submit" value="<%=t(:".move_to_address")%>"  />
   </p>
 </form>

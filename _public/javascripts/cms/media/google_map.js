@@ -6,7 +6,8 @@
  *      id_prefix(String) - konteinera id sākums, piemērs, id="my_map_134", id_prefix="my_map"
  *      icon(GIcon) - marķiera ikona
  *      unique_id - unikāls identifikātors obligāti jānorāda
- *      center_marker - nocentrē karti pārvietojot marķieri
+ *      center_marker (bool) - nocentrē karti pārvietojot marķieri
+ *      zoom (int) - level of magnification
  *  lat - noklusētais platums
  *  lng - noklusētais garums
  *  marker_count - skaitītājs no kura sāk marķieru skaitīšana, nav īpaša nozīme
@@ -16,9 +17,8 @@ LolitaGoogleMap=function(options){
     this.options=options
     this.marker_counter=0 //create index for each marker
     this.markers=[] //store all markers that are on map
-    this.lat=56.9444123864;
+    this.lat=56.9444123864; //coordinares of Rīga, Latvia
     this.lng=24.1009140015;
-//Rīgas koordinātas
 }
 LolitaGoogleMap.prototype={
     /*
@@ -42,6 +42,9 @@ LolitaGoogleMap.prototype={
             this.map.enableScrollWheelZoom();
             this.add_controls() // add Gmap controls to map
             this.set_default_center()
+            if (this.options.zoom){
+                this.map.setZoom(this.options.zoom)
+            }
             if(this.options.type=="multimedia"){ //need close tab if map in system side
                 this.hide_current_tab()
             }
@@ -58,6 +61,9 @@ LolitaGoogleMap.prototype={
             this.map.setCenter(new GLatLng(this.lat,this.lng),11);
             setTimeout(function(that){
                 that.add_markers()
+                if (that.options.center_marker && that.last_marker()){
+                 that.change_center(that.last_marker(),true)
+                }
             },1000,this)
         }catch(e){
             alert(e)
