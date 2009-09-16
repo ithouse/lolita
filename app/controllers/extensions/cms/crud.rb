@@ -26,7 +26,6 @@ module Extensions
             @object.save!
             if @object.errors.empty?
               handle_metadata
-              update_or_create_location if has_tab_type?(:map) # TODO šo no šejienes vajadzētu izvākt
               handle_after_create
               handle_after_save
               handle_after_functions 'create'

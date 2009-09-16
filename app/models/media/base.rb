@@ -27,6 +27,14 @@ class Media::Base < Cms::Base
     media
   end
 
+  def self.belongs_to_many?(object)
+    object.class.base_class.reflect_on_association(self.get_current_media_class_reflection_by(object.class.base_class)).macro==:has_many
+  end
+
+  def self.belongs_to_one?(object)
+    !self.belongs_to_many?(object)
+  end
+
   def self.get_current_media_class_reflection_by(klass)
     poly_name=self.media_get_polymorphic_name
     klass.reflections.collect{|reflection| reflection.last.options[:as]==poly_name ? reflection.first : nil}.compact.first

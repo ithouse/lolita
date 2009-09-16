@@ -1,10 +1,11 @@
 module Media::GoogleMapHelper
   def lolita_google_map_tab(options,tab)
-    p_options={
-      :read_only=>@read_only,
-      :lat=>Media::GoogleMap.collect_lat(@object),
-      :lng=>Media::GoogleMap.collect_lng(@object)
-    }.merge(tab.delete_if{|v,k| k==:type}).merge(default_media_tab_options(tab))
+    p_options=(tab.delete_if{|v,k| k==:type}).merge(default_media_tab_options(tab)).merge({
+        :read_only=>@read_only,
+        :lat=>Media::GoogleMap.collect_lat(@object),
+        :lng=>Media::GoogleMap.collect_lng(@object),
+        :single=>Media::GoogleMap.belongs_to_one?(@object)
+      }) # last options are important
     unless options[:in_form]
       render :partial=>"/media/#{tab[:media]}/container", :object=>p_options
     else

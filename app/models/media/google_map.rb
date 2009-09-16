@@ -8,7 +8,9 @@ class Media::GoogleMap < Media::Base
     points=[]
     options[:params][:map].each{|map_id,maps|
       maps.each{|marker_id,marker|
-        points<<self.create!(:lat=>marker[:lat],:lng=>marker[:lng],:mappable_type=>object_class,:mappable_id=>object.id)
+        if marker[:lng].to_s!="0" && marker[:lat]!="0"
+          points<<self.create!(:lat=>marker[:lat],:lng=>marker[:lng],:mappable_type=>object_class,:mappable_id=>object.id)
+        end
       }
     } if options[:params][:map].is_a?(Hash)
     object.class.assing_polymorphic_result_to_object(object,points,:mappable)

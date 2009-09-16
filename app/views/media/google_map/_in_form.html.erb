@@ -1,10 +1,2 @@
 <div id="object_map_<%=in_form[:unique_id]%>_container" style="display:none">
-  <% in_form[:lat].each_with_index do |lat,index| %>
-    <input type="hidden" name="map[<%=in_form[:unique_id]%>][<%=index%>][lat]" id="object_map_<%=in_form[:unique_id]%>_lat_<%=index+1%>" value="<%=lat%>" />
-    <input type="hidden" name="map[<%=in_form[:unique_id]%>][<%=index%>][lng]" id="object_map_<%=in_form[:unique_id]%>_lng_<%=index+1%>" value="<%=in_form[:lng][index]%>"/>
-  <% end %>
-  <% if in_form[:lat].empty? %>
-    <input type="hidden" name="map[<%=in_form[:unique_id]%>][1][lat]" id="object_map_<%=in_form[:unique_id]%>_lat_1" value="0" />
-    <input type="hidden" name="map[<%=in_form[:unique_id]%>][1][lng]" id="object_map_<%=in_form[:unique_id]%>_lng_1" value="0"/>
-  <% end %>
 </div>
