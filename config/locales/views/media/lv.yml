@@ -1,8 +1,25 @@
 lv:
   lolita:
     media:
+      google_map:
+        container:
+          move_to_address: Aiziet uz adresi
       media_dialog:
         image_file_list_body:
           open attributes: Atvērt attēla atribūtus
           delete picture: Dzēst attēlu
           open other versions: Atvērt cias attēla versijas
+      image_file:
+        dialog:
+          header: Bilžu dialogs
+        thumb_list:
+          change attributes: Mainīt attēla attribūtus
+          all sizes: Visi izmēri
+        resize_dialog:
+          all sizes: Visi izmēri
+          versions: Versijas
+          original image: Orģinālais attēls
+          cropped image: Sagrieztais attēls
+          real look: Reālais izskats
+          back: Atpakaļ
+          save: Saglabāt

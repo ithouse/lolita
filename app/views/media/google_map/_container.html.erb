@@ -1,4 +1,10 @@
 <% cfg=file_cfg(container) %>
+<form action="#" onsubmit="show_address(map,this.address.value); return false">
+  <p>
+    <input type="text" size="60" name="address" onfocus="select()" />
+    <input type="submit" value="<%=t(:".move_to_address")%>" />
+  </p>
+</form>
 <div id="map_<%=cfg[:unique_id]%>" class="google-map" style="width:600px;height:400px;"></div>
 <% unless cfg[:single] %>
   <input type="button" class="btn" value="Add marker" onclick="<%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.add_new_marker()"%>"/>
@@ -13,15 +19,15 @@
     function init_lolita_google_map(){
       //alert("Try initializing!")
       try{
-  <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>);
-  <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.init()"%>;
+        <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>);
+        <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.init()"%>;
       }catch(e){
-  <% if RAILS_ENV=="development"  %>
-          alert(e)
-  <% end %>
+        <% if RAILS_ENV=="development"  %>
+                alert(e)
+        <% end %>
         setTimeout("init_lolita_google_map()",500)
       }
+      init_lolita_google_map()
     }
-    init_lolita_google_map()
+  </script>
 <%end%>
-</script>

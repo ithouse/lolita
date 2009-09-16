@@ -76,7 +76,10 @@ LolitaGoogleMap.prototype={
             var lng=this.options.lng[i];
             if(!((!lat || !lng) || (lat==0 || lng==0))){
                 var point=new GLatLng(lat,lng);
-                this.add_simple_marker(point,icon,{lat:lat,lng:lng})
+                this.add_simple_marker(point,icon,{
+                    lat:lat,
+                    lng:lng
+                })
             }
         }
         if(this.marker_counter==0 && !this.options.read_only && this.options.single){
@@ -122,7 +125,7 @@ LolitaGoogleMap.prototype={
                 'name="map['+this.options.unique_id+']['+this.marker_counter+']['+fields[i]+']"'+
                 'id="object_map_'+this.options.unique_id+'_'+fields[i]+'_'+this.marker_counter+'"'+
                 'value="'+value+'"'
-            )
+                )
         }
     },
     /*
@@ -195,4 +198,27 @@ LolitaGoogleMap.prototype={
     hide_current_tab:function(){
         $('#tab'+this.options.index+'container').css("display","none");
     }
+}
+
+function show_address(map,address){
+    if (!map.geocoder)
+        map.geocoder=new GClientGeocoder();
+    map.geocoder.getLatLng(
+        address,
+        function(point)
+        {
+            if (!point) {
+                alert(address + " not found");
+            } else
+            {
+                if (typeof(map.last_marker)=="undefined")
+                {
+                    var icon=map.create_icon();
+                    map.add_simple_marker(point,icon)
+                }
+                map.last_marker.setPoint(point)
+                map.change_center(map.last_marker)
+                map.map.setCenter(point,map.map.getZoom());
+            }
+        })
 }
