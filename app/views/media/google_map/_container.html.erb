@@ -1,4 +1,10 @@
 <% cfg=file_cfg(container) %>
+<form action="#" onsubmit="show_address(map,this.address.value); return false">
+  <p>
+    <input type="text" size="60" name="address" onfocus="select()" />
+    <input type="submit" value="<%=t(:".move_to_addess")%>" />
+  </p>
+</form>
 <div id="map_<%=cfg[:unique_id]%>" class="google-map" style="width:600px;height:400px;"></div>
 <script type="text/javascript">
 <% if Lolita.config.gmaps_key %>
@@ -9,9 +15,9 @@
         map=new LolitaGoogleMap(<%= cfg.to_json %>)
         map.init()
       }catch(e){
-        <% if RAILS_ENV=="development"  %>
+  <% if RAILS_ENV=="development"  %>
           alert(e)
-        <% end %>
+  <% end %>
         setTimeout("init_lolita_google_map()",500)
       }
     }

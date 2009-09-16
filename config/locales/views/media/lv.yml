@@ -1,6 +1,9 @@
 lv:
   lolita:
     media:
+      google_map:
+        container:
+          move_to_address: Aiziet uz adresi
       media_dialog:
         image_file_list_body:
           open attributes: Atvērt attēla atribūtus
