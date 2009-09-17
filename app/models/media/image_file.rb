@@ -327,7 +327,7 @@ class Media::ImageFile < Media::FileBase
       self.full_versions.each{|version,dimensions|
         add_watermark(watermark54,version,dimensions)
       }
-      self.toggle!(:watermark_added)
+      self.toggle!(:has_watermark)
     end
   end
 

@@ -1,4 +1,4 @@
-class CreateAccesses < ActiveRecord::Migration
+class CreateAdminAccesses < ActiveRecord::Migration
   def self.up
     create_table :admin_accesses do |t|
       t.string :name
@@ -12,7 +12,7 @@ class CreateAccesses < ActiveRecord::Migration
       t.boolean :allow_update
     end
     add_index :admin_accesses, :name
-    add_index :accesses_roles, [:role_id,:access_id]
+    add_index :accesses_roles, [:role_id,:access_id], :name => "role_access_index"
     add_index :accesses_roles, :role_id
     add_index :accesses_roles, :access_id
   end

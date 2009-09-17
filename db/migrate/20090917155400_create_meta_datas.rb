@@ -4,11 +4,12 @@ class CreateMetaDatas < ActiveRecord::Migration
       t.string    :title
       t.string    :metaable_type
       t.integer   :metaable_id
-      t.text      :url
+      t.string    :url
       t.text      :tags
       t.text      :description
     end
-    add_index :meta_datas, [:metaable_type,:metaable_id]
+    add_index :meta_datas, :url
+    add_index :meta_datas, [:metaable_type,:metaable_id], :name => "meta_datas_metaable_index"
   end
 
   def self.down

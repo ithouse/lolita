@@ -1,0 +1,16 @@
+class CreateMediaGoogleMaps < ActiveRecord::Migration
+  def self.up
+    create_table :media_google_maps do |t|
+      t.integer :mappable_id
+      t.string  :mappable_type
+      t.decimal :lat, :precision => 11, :scale => 11
+      t.decimal :lng, :precision => 11, :scale => 11
+      t.text  :description
+      t.timestamps
+    end
+  end
+
+  def self.down
+    drop_table :media_google_maps
+  end
+end
