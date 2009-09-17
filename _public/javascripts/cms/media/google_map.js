@@ -60,7 +60,7 @@ LolitaGoogleMap.prototype={
             setTimeout(function(that){
                 that.add_markers()
                 if (that.options.center_marker && that.last_marker()){
-                 that.change_center(that.last_marker(),true,this.options.zoom)
+                 that.change_center(that.last_marker(),true,that.options.zoom)
                 }
             },1000,this)
         }catch(e){
