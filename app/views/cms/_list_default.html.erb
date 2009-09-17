@@ -13,20 +13,19 @@
     <tr>
       <% @config[:list][:columns].each{|column|%>
         <td>
+          <%
+          value =column[:field].is_a?(Array) ? send_method_array(element,column[:field]) : element.send(column[:field])
+          if [ActiveSupport::TimeWithZone,Time,DateTime,Date].include?(value.class) && (column[:localize].nil? || column[:localize] == true)
+            value= I18n.localize value, :format => column[:format] || :default
+          end
+        %>
           <%  if column[:link] %>
-            <%= edit_link :id=>element.id,
-            :title=>column[:field].is_a?(Array) ?
-              send_method_array(element,column[:field]) : element.send(column[:field]) %>
+            <%= edit_link :id=>element.id,:title=>value %>
           <% else
             if column[:function] %>
               <%= element.send column[:function]%>
             <% else %>
-              <% value =column[:field].is_a?(Array) ? send_method_array(element,column[:field]) : element.send(column[:field]) %>
-              <% if [ActiveSupport::TimeWithZone,Time,DateTime,Date].include?(value.class) && (column[:localize].nil? || column[:localize] == true) %>
-                <%= I18n.localize value, :format => column[:format] || :default %>
-              <% else %>
-                <%= value %>
-              <% end %>
+              <%=value%>
             <% end %>
           <%end%>
         </td>
