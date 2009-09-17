@@ -13,17 +13,18 @@
 <% if Lolita.config.gmaps_key %>
   <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%=Lolita.config.gmaps_key%>"></script>
   <script type="text/javascript">
+    ITH.GoogleMap=ITH.Google||{}
     loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
-    function init_lolita_google_map(){
+    function init_lolita_google_map_<%=cfg[:unique_id]%>(){
       var _map_init_timeout;
       try{
         clearTimeout(_map_init_timeout); //timeout nav liela jēga tīrīt, jo tas tāpat 1 reizi strādā
-        var map=new LolitaGoogleMap(<%= cfg.to_json %>)
-        map.init()
+        <%="ITH.GoogleMap.public_map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>)
+        <%="ITH.GoogleMap.public_map_#{cfg[:unique_id]}.init()" %>
       }catch(e){
-        _map_init_timeout=setTimeout("init_lolita_google_map()",1000)
+        _map_init_timeout=setTimeout("init_lolita_google_map_<%=cfg[:unique_id]%>()",500)
       }
     }
-    init_lolita_google_map()
+    init_lolita_google_map_<%=cfg[:unique_id]%>()
   </script>
 <%end%>
