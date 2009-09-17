@@ -42,7 +42,7 @@ LolitaGoogleMap.prototype={
             if(!this.options.read_only) this.map.enableScrollWheelZoom();
             this.add_controls() // add Gmap controls to map
             this.set_default_center()
-            this.options.zoom=this.options.zoom || 11
+            this.options.zoom=this.options.zoom || 15
             if(this.options.type=="multimedia"){ //need close tab if map in system side
                 this.hide_current_tab()
             }
@@ -56,7 +56,7 @@ LolitaGoogleMap.prototype={
      */
     set_default_center:function(){
         try{
-            this.map.setCenter(new GLatLng(this.lat,this.lng),11);
+            this.map.setCenter(new GLatLng(this.lat,this.lng),this.options.zoom);
             setTimeout(function(that){
                 that.add_markers()
                 if (that.options.center_marker && that.last_marker()){
