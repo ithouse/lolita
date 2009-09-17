@@ -39,12 +39,10 @@ LolitaGoogleMap.prototype={
     load_map:function(){
         if (GBrowserIsCompatible()){// Do Map if Compatible Browser only
             this.map = new GMap2(elementById((this.options.id_prefix || "map")+"_"+this.options.unique_id));
-            this.map.enableScrollWheelZoom();
+            if(!this.options.read_only) this.map.enableScrollWheelZoom();
             this.add_controls() // add Gmap controls to map
             this.set_default_center()
-            if (this.options.zoom){
-                this.map.setZoom(this.options.zoom)
-            }
+            this.options.zoom=this.options.zoom || 15
             if(this.options.type=="multimedia"){ //need close tab if map in system side
                 this.hide_current_tab()
             }
@@ -58,11 +56,11 @@ LolitaGoogleMap.prototype={
      */
     set_default_center:function(){
         try{
-            this.map.setCenter(new GLatLng(this.lat,this.lng),11);
+            this.map.setCenter(new GLatLng(this.lat,this.lng),this.options.zoom);
             setTimeout(function(that){
                 that.add_markers()
                 if (that.options.center_marker && that.last_marker()){
-                 that.change_center(that.last_marker(),true)
+                 that.change_center(that.last_marker(),true,that.options.zoom)
                 }
             },1000,this)
         }catch(e){
@@ -197,9 +195,15 @@ LolitaGoogleMap.prototype={
             return this.options.icon
         }
     },
-    change_center:function(marker,center){
+    /*
+     * @@PRIVATE
+     * marker(GMarker) - must be specified
+     * center(Boolean) - optional, center or not
+     * zoom(Integer) - optional, map zoom to set
+     */
+    change_center:function(marker,center,zoom){
         var point=marker.getLatLng();
-        if(this.options.center_marker || center) this.map.setCenter(point,this.current_zoom);//map.getZoom()
+        if(this.options.center_marker || center) this.map.setCenter(point,zoom ||this.current_zoom);//map.getZoom()
         $('#object_map_'+this.options.unique_id+'_lat_'+marker.counter).attr("value",point.lat());
         $('#object_map_'+this.options.unique_id+'_lng_'+marker.counter).attr("value",point.lng());
     },
