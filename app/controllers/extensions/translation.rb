@@ -1,6 +1,10 @@
 module Extensions::Translation
   def set_locale
-    I18n.locale = (params[:locale] && I18n.available_locales.include?(params[:locale].to_sym)) ? params[:locale] : nil
+    I18n.locale=session[:locale]
+    if params[:locale] && I18n.available_locales.include?(params[:locale].to_sym)
+      I18n.locale = params[:locale]
+      session[:locale]=params[:locale]
+    end
     Globalize::Locale.set I18n.locale.to_s
   end
 
