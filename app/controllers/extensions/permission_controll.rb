@@ -76,7 +76,7 @@ module Extensions::PermissionControll
     return unless self.respond_to?( :redirect_to )
     flash[:notice] = t(:"flash.access denied")
     session[:return_to]=request.request_uri unless params[:format]
-    render :template=>"status/access_denay", :layout=>params[:is_ajax].to_b ? false : "cms/default"
+    render :template=>"status/access_denied", :layout=>params[:is_ajax].to_b ? false : "cms/default"
   end
 
   def access_control

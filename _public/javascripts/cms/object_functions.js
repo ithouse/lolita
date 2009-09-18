@@ -561,11 +561,11 @@ ITH.ImageFileVersions=function(){
     var default_version="cropped";
     var default_width=220;
     var default_height=220
-    //    $(document).ready(function(e){
-    //        $(function(){
-    //
-    //        });
-    //    });
+    $(document).ready(function(){
+        loadjscssfile("/javascripts/jquery/Jcrop/jquery.Jcrop.js","js");
+        loadjscssfile("/stylesheets/jquery.Jcrop.css","css")
+        loadjscssfile("/stylesheets/admin/image.cropper.css","css")
+    })
     return {
         set_versions:function(versions){
             this.versions=versions;
@@ -606,18 +606,38 @@ ITH.ImageFileVersions=function(){
             }
         },
         load:function(config){
-            ITH.ImageFileVersions.Dialog=$(id).buildContainers({
-                containment:"document",
-                elementsPath:"/lolita/images/jquery/elements/"
-            });
             this.show();
             if(!this.loaded){
-                loadjscssfile("/javascripts/jquery/Jcrop/jquery.Jcrop.js","js");
-                loadjscssfile("/stylesheets/jquery.Jcrop.css","css")
-                loadjscssfile("/stylesheets/admin/image.cropper.css","css")
+                ITH.ImageFileVersions.Dialog=$(id).buildContainers({
+                    containment:"document",
+                    elementsPath:"/lolita/images/jquery/elements/"
+                });
                 this.loaded=true
             }
+            this.load_all_versions(config.id)
             this.load_image(config.id,default_version)
+        },
+        load_all_versions:function(picture_id){
+            var that=this
+            $.ajax({
+                url:"/media/image_file/load_all_versions",
+                type:"get",
+                dataType:"json",
+                data:{
+                    "id":picture_id
+                },
+                success:function(data){
+                    that.set_versions(data)
+                    that.create_versions_menu()
+                }
+            })
+        },
+        create_versions_menu:function(){
+            var menu_container=$("#picture_versions_menu")
+            menu_container.html("")
+            for(var v in this.versions){
+                menu_container.append('<li><a id="picture_version_menu_'+v+'" href="#" onclick="ITH.ImageFileVersions.load_version(\''+v+'\');return false;">'+this.versions[v].t+'</a></li>')
+            }
         },
         show:function(){
             $(container).show();
@@ -691,8 +711,16 @@ ITH.ImageFileVersions=function(){
             $("#current_version_original").attr("src",this.v_info.url+ '?' + (new Date()).getTime());
             var wd=1;var hd=1;
             if(this.v_info.width>default_width || this.v_info.height>default_height){
-                wd=this.v_info.w_diff
-                hd=this.v_info.h_diff
+                if(this.v_info.width>default_width && this.v_info.height>default_height){
+                    wd=this.v_info.w_diff
+                    hd=this.v_info.h_diff
+                }
+                else if(this.v_info.width>default_width){
+                    hd = default_height / this.v_info.width
+                }
+                else if(this.v_info.height>default_height){
+                    wd = default_width / this.v_info.height
+                }
             }
             //            if(w>cw){ // samzinu lai ietilptu platumā
             //                var ratio=w/cw
@@ -725,7 +753,7 @@ ITH.ImageFileVersions=function(){
         },
         //Nostrādā kad maina reģionu
         show_preview:function(coords){
-            var self=ITH.PictureVersions
+            var self=ITH.ImageFileVersions
             self.set_coords(coords);
             var rx =(default_width/self.diffs.width) / coords.w;
             var ry =(default_height/self.diffs.height)/coords.h;

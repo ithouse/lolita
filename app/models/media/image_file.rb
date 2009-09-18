@@ -7,11 +7,11 @@ class Media::ImageFile < Media::FileBase
   VERSIONS={
     :cropped=>"420x420",
     :thumb =>"124x124"
-  }
+  }.freeze
   image_column :name,:store_dir=>proc{|inst, attr|
     time=inst.created_at ? inst.created_at : Time.now #vienīgā šaize var būt, ja mēneše pēdējā dienā 23:59:59 uploado
     "image_file/name/#{time.strftime("%Y_%m")}/#{inst.id}"
-  },:versions => VERSIONS
+  },:versions => VERSIONS.dup
 
   before_save :assign_position
   before_save :singularize_main
@@ -174,12 +174,12 @@ class Media::ImageFile < Media::FileBase
   def versions
     if block_given?
       self.cropped_versions.each{|key,value|
-        yield key,dimensions_in_parts(value).merge({:t=>t(:"image file.versions.#{key}")})
+        yield key,dimensions_in_parts(value).merge({:t=>I18n.t(:"image file.versions.#{key}")})
       }
     else
       result={}
       self.cropped_versions.each{|key,value|
-        result[key]=dimensions_in_parts(value).merge({:t=>t(:"image file.versions.#{key}")})
+        result[key]=dimensions_in_parts(value).merge({:t=>I18n.t(:"image file.versions.#{key}")})
       }
       result
     end
