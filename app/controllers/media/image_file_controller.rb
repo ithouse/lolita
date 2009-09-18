@@ -6,11 +6,20 @@ class Media::ImageFileController < Media::ControllerFileBase
     :destroy,:new_create,
     :get_large_picture,
     :remove_large_picture,
+    :load_all_versions,
     :attributes,
     :save_attributes,
     :recreate
   ]
 
+  def load_all_versions
+    if picture=Media::ImageFile.find_by_id(params[:id])
+      render :json=>picture.versions.to_json
+    else
+      render :json=>{}
+    end
+  end
+  
   def only_image
     if params[:id] && request.get?
       @picture=Media::ImageFile.find_by_id(params[:id])

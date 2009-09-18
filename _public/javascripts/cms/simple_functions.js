@@ -38,7 +38,7 @@ function SimpleRequest(r_object,r_config){
     var object=r_object
     if(!config) config={}
     var stop=false
-    if(config.confirm) var question=config(config.confirm)
+    if(config.confirm) var question=confirm(config.confirm)
     if(!config.confirm || question){
         if(config.before) eval(config.before)
         var request={
