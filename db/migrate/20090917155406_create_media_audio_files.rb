@@ -1,6 +1,6 @@
-class CreateAudioFiles < ActiveRecord::Migration
+class CreateMediaAudioFiles < ActiveRecord::Migration
   def self.up
-    create_table :audio_files do |t|
+    create_table :media_audio_files do |t|
       t.string    :name
       t.string    :audio_type
       t.integer   :audio_id
@@ -8,10 +8,10 @@ class CreateAudioFiles < ActiveRecord::Migration
       t.decimal   :name_filesize
       t.timestamps
     end
-    add_index :audio_files, [:audio_type,:audio_id]
+    add_index :media_audio_files, [:media_audio_type,:audio_id]
   end
 
   def self.down
-    drop_table :audio_files
+    drop_table :media_audio_files
   end
 end

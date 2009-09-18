@@ -3,8 +3,8 @@ class CreateMediaGoogleMaps < ActiveRecord::Migration
     create_table :media_google_maps do |t|
       t.integer :mappable_id
       t.string  :mappable_type
-      t.float :lat
-      t.float :lng
+      t.decimal :lat, :precision => 11, :scale => 11
+      t.decimal :lng, :precision => 11, :scale => 11
       t.text  :description
       t.timestamps
     end
