@@ -23,16 +23,24 @@ module Extensions::MenuHelper
       menu=Admin::Menu.find_by_menu_name(menu_name)
       menu=Admin::MenuItem.find_by_branch_name(menu_name) unless menu
       menu_items = menu.menu_items.find(:all, :conditions=>['menuable_type=? AND menuable_id=? AND is_published=1',type,id])
-    else
-      return nil
     end
-    menu_item=menu_items.empty? ? nil : Admin::MenuItem.get_deepest_item(menu_items)
+    menu_item=menu_items.nil? || menu_items.empty? ? nil : Admin::MenuItem.get_deepest_item(menu_items)
     unless menu_item
       menu_item=get_menu_item_with_action(menu_name)
     end
     unless menu_item
-      object=type.constantize
-      menu_item=object.find_related_menu_item(menu_name,id) if object.respond_to?(:find_related_menu_item)
+      begin
+        object=type.constantize
+        menu_item=object.find_related_menu_item(menu_name,id) if object.respond_to?(:find_related_menu_item)
+      rescue #table-less objects, e.g. start page
+        menu=Admin::Menu.find_by_menu_name(menu_name)
+        item=menu.menu_items.first
+        if !item.nil?
+          return item.root
+        else
+          return nil
+        end
+      end
       unless menu_item
         menu_item = session["last_selected_#{menu_name.downcase}_item"] unless session["last_selected_#{menu_name.downcase}_item"].nil? 
       end
