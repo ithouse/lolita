@@ -29,7 +29,7 @@ namespace :lolita do
     unless Admin::Role.find_by_name("administrator")
       ActiveRecord::Base.transaction do
         role=Admin::Role.create!(:name=>'administrator', :built_in=>true)
-        Admin::User.create!(
+        Admin::SystemUser.create!(
           :login=>'admin',:email=>'admin@example.com',
           :password=>'admin',:password_confirmation=>'admin',
           :roles=>[role]
