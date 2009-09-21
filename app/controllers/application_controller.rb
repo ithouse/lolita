@@ -39,16 +39,6 @@ class ActionController::Base
 
   protected
 
-  def get_main_portal
-    @main_portal||=Admin::Portal.find_by_root(true)
-    @main_portal
-  end
-
-  def not_main_portal?()
-    domain=request.domain(Lolita.config.domain_depth)
-    domain==get_main_portal.domain ? nil : Admin::Portal.find_by_domain(domain)
-  end
-  
   def load_cache
     if allow_caching
       path=request.path
@@ -78,17 +68,6 @@ class ActionController::Base
     ActionController::Base.perform_caching && request.get?
   end
 
-  def layout_name(category=nil)
-    if category && design=category.design
-      "cms/#{design.name}"
-    elsif portal=not_main_portal?
-        "cms/#{portal.design}"
-    else
-      "cms/#{Cms::Design.find_by_root(true).name}"
-    end
-  end
-  
-
   def is_local_request?
     request.host=="localhost"
   end
@@ -96,6 +75,7 @@ class ActionController::Base
   def namespace
     params[:controller].to_s.split("/").first
   end
+
   def only_controller
     params[:controller].to_s.split("/").last
   end
@@ -138,7 +118,6 @@ class ActionController::Base
   end
 
   def local_request? #:doc:
-    #FIXME: wtf?
     false #request.remote_addr == LOCALHOST and request.remote_ip == LOCALHOST
   end
  

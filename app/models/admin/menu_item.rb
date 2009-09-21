@@ -1,5 +1,5 @@
 class Admin::MenuItem < Cms::Manager
-  set_table_name :menu_items
+  set_table_name :admin_menu_items
 
   belongs_to :menuable, :polymorphic => true
   belongs_to :menu, :class_name=>"Admin::Menu"
