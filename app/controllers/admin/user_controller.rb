@@ -27,7 +27,7 @@ class Admin::UserController < Managed
       if logged_in?
         update_token()
         #TODO: šeit jāiet uz admin sadaļu ja system/login
-        redirect_to(Lolita.config.system :start_page_url,:is_ajax=>params[:is_ajax])
+        redirect_to(Lolita.config.system :start_page_url)
       else
         render :layout=>"admin/login"#TODO jāpadomā ko darīt ja lapai nav paredzēta publiskā daļa
       end
