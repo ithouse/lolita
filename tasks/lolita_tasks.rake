@@ -47,12 +47,16 @@ namespace :lolita do
           :module_type=>'web'
         )
         menu_root=menu.menu_items.first.root
+        first_item=Admin::MenuItem.create!(
+          :name=>"Administration",
+          :menu_id=>menu.id
+        ).move_to_child_of(menu_root)
         ["/admin/user","/admin/role","/admin/access","/admin/table"].each{|controller|
           Admin::MenuItem.create!(
               :name=>controller.split("/").last.pluralize.capitalize,
               :menu_id=>menu.id,
               :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
-          ).move_to_child_of(menu_root)
+          ).move_to_child_of(first_item)
         }
         
         [[3435,true],[1819,false],[5556,false]].each{|language|

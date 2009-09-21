@@ -1,4 +1,32 @@
 module Media::GoogleMapHelper
+
+  #Render Google map.
+  #
+  # ====Options
+  #
+  # <tt>:unique_id</tt> - unique Integer or String value.<br/>
+  # <tt>:class_name</tt> - optional, map container html class name, if with google-map is not enough.<br/>
+  # <tt>:lat</tt> - Array with latitudes, if <tt>:object</tt> passed then <tt>:lat</tt> and <tt>:lng</tt> will be overwritten.<br/>
+  # <tt>:lng</tt> - Array with longitudes.<br/>
+  # <tt>:width</tt> - map container with in px, default 600.<br/>
+  # <tt>:height</tt> - map container height in px, default 400.<br/>
+  # <tt>:object</tt> - ActiveRecord object that refrers to Media::GoogleMap object.<br/>
+  # <tt>:zoom</tt> - level of magnification.<br/>
+  # <tt>:map_prefix</tt> - map container HTML id prefix (:map_prefix=>"contacts_map").
+  #
+  # ====Example
+  #
+  #   # Renders map from object with one or more GoogleMap points
+  #   public_google_map :object=>@my_map
+  #
+  #   # Renders map with given locations and size
+  #   public_google_map :lat=>[12.094323,14.123069],:lng=>[30.123432,50.124543],:width=>250,:height=>150
+  #
+  def public_google_map(options={})
+    options[:unique_id]||=(Time.now.to_f*1000).to_i
+    render :partial=>"media/google_map/public_container",:object=>options
+  end
+
   def lolita_google_map_tab(options,tab)
     p_options=(tab.delete_if{|v,k| k==:type}).merge(default_media_tab_options(tab)).merge({
         :read_only=>@read_only,
@@ -21,8 +49,11 @@ module Media::GoogleMapHelper
       conf[:lat]=locations[:lat]
       conf[:lng]=locations[:lng]
     end
-    conf[:id_prefix]="public_map"
+    conf[:id_prefix]||="public_map"
     conf[:read_only]=true
+    conf=conf.delete_if{|k,v| k==:object}
+    raise "Unique ID not specified!" if conf[:unique_id].to_s.size==0
     conf
   end
+
 end

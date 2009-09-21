@@ -3,7 +3,7 @@
  * Attribūti
  *  options - tiek saņemts caur konstruktoru
  *      read_only(Boolean) - vai ir marķieris kustināms vai ir noklusētais marķieris redzams
- *      id_prefix(String) - konteinera id sākums, piemērs, id="my_map_134", id_prefix="my_map"
+ *      map_prefix(String) - konteinera id sākums, piemērs, id="my_map_134", map_prefix="my_map"
  *      icon(GIcon) - marķiera ikona
  *      unique_id - unikāls identifikātors obligāti jānorāda
  *      center_marker (bool) - nocentrē karti pārvietojot marķieri
@@ -38,7 +38,7 @@ LolitaGoogleMap.prototype={
      */
     load_map:function(){
         if (GBrowserIsCompatible()){// Do Map if Compatible Browser only
-            this.map = new GMap2(elementById((this.options.id_prefix || "map")+"_"+this.options.unique_id));
+            this.map = new GMap2(elementById((this.options.map_prefix || "map")+"_"+this.options.unique_id));
             if(!this.options.read_only) this.map.enableScrollWheelZoom();
             this.add_controls() // add Gmap controls to map
             this.set_default_center()
@@ -60,7 +60,7 @@ LolitaGoogleMap.prototype={
             setTimeout(function(that){
                 that.add_markers()
                 if (that.options.center_marker && that.last_marker()){
-                 that.change_center(that.last_marker(),true,that.options.zoom)
+                    that.change_center(that.last_marker(),true,that.options.zoom)
                 }
             },1000,this)
         }catch(e){
@@ -222,15 +222,18 @@ LolitaGoogleMap.prototype={
             address,
             function(point){
                 if (!point) {
-                    alert(address + " not found!");
+                    return "Not Found"
                 } else{
-                    if (typeof(that.last_marker())=="undefined"){
-                        var icon=that.create_icon();
-                        that.add_new_marker(point.lat,point.lng,icon)
-                    }else{
-                        that.last_marker().setPoint(point)
+                    if(!this.options.read_only){
+                        if (typeof(that.last_marker())=="undefined"){
+                            var icon=that.create_icon();
+                            that.add_new_marker(point.lat,point.lng,icon)
+                        }else{
+                            that.last_marker().setPoint(point)
+                        }
                     }
                     that.change_center(that.last_marker(),true)
+                    return true
                 }
             }
             )

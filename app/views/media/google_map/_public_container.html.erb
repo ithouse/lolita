@@ -1,5 +1,5 @@
 <% cfg=public_google_map_configuration(public_container) %>
-<div id="public_map_<%=cfg[:unique_id]%>" class="google-map <%=cfg[:class_name]%>" style="width:<%=cfg[:width] || '600px'%>;height:<%=cfg[:height] || '400px'%>;"></div>
+<div id="<%=cfg[:map_prefix]%>_<%=cfg[:unique_id]%>" class="google-map <%=cfg[:class_name]%>" style="width:<%=cfg[:width] || '600px'%>;height:<%=cfg[:height] || '400px'%>;"></div>
 <%
 # Allowed configuration
 # :unique_id - unique Integer or String value
@@ -8,7 +8,7 @@
 # :height - map container height in px, default 400
 # :object - ActiveRecord object that refrers to locations
 # :lat - Array with latitudes, if object passed then that will be overwiritten
-# :lng - same as :lat only for longitudes
+# :lng - same as :lat only for longitudes.
 %>
 <% if Lolita.config.google :key %>
   <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%=Lolita.config.google :key%>"></script>
