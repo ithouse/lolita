@@ -593,7 +593,7 @@ ITH.ImageFileVersions=function(){
                         y:this.coords.y,
                         version:this.current_version,
                         id:this.current_id,
-                        authenticity_token:encodeURIComponent(AUTH_TOKEN)
+                        authenticity_token:AUTH_TOKEN
                     },
                     success:function(json){
                         that.v_info=json.info;
