@@ -2,28 +2,28 @@ namespace :lolita do
   desc "Setup lolita"
   task :setup => :environment do
     # Create static file link
-#    unless File.exists?("#{RAILS_ROOT}/public/lolita")
-#      FileUtils.ln_s("#{RAILS_ROOT}/vendor/plugins/lolita/_public/","#{RAILS_ROOT}/public/lolita")
-#      puts "[new] #{RAILS_ROOT}/public/lolita"
-#    end
-#
+    unless File.exists?("#{RAILS_ROOT}/public/lolita")
+      FileUtils.ln_s("#{RAILS_ROOT}/vendor/plugins/lolita/_public/","#{RAILS_ROOT}/public/lolita")
+      puts "[new] #{RAILS_ROOT}/public/lolita"
+    end
+
 #    # copy lolita's YAML config file
-#    unless File.exists?("#{RAILS_ROOT}/config/lolita.yml")
-#      FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/lolita.yml","#{RAILS_ROOT}/config/lolita.yml")
-#      puts "[new] config/lolita.yml"
-#    end
-#
+    unless File.exists?("#{RAILS_ROOT}/config/lolita.yml")
+      FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/lolita.yml","#{RAILS_ROOT}/config/lolita.yml")
+      puts "[new] config/lolita.yml"
+    end
+
 #    # copy lolita's initializer
-#    unless File.exists?("#{RAILS_ROOT}/config/initializers/lolita_init.rb")
-#      FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/initializers/lolita_init.rb","#{RAILS_ROOT}/config/initializers/lolita_init.rb")
-#      puts "[new] config/initializers/lolita_init.rb"
-#    end
-#
+    unless File.exists?("#{RAILS_ROOT}/config/initializers/lolita_init.rb")
+      FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/initializers/lolita_init.rb","#{RAILS_ROOT}/config/initializers/lolita_init.rb")
+      puts "[new] config/initializers/lolita_init.rb"
+    end
+
 #    # create blank CSS file used by TinyMCE
-#    unless File.exists?("#{RAILS_ROOT}/public/stylesheets/tinymcestyle.css")
-#      File.open("#{RAILS_ROOT}/public/stylesheets/tinymcestyle.css", "w")
-#      puts "[new] public/stylesheets/tinymcestyle.css"
-#    end
+    unless File.exists?("#{RAILS_ROOT}/public/stylesheets/tinymcestyle.css")
+      File.open("#{RAILS_ROOT}/public/stylesheets/tinymcestyle.css", "w")
+      puts "[new] public/stylesheets/tinymcestyle.css"
+    end
 
     # Insert must have data into DB
     unless Admin::Role.find_by_name("administrator")
