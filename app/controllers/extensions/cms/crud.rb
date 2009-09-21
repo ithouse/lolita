@@ -61,10 +61,10 @@ module Extensions
           handle_special_fields(true)
           @object=object.find_by_id(my_params[:id])
           return false unless @object
-          @translation=@object.clone if Lolita.config.translation
+          @translation=@object.clone if Lolita.config.i18n :translation
           @metadata=MetaData.by_metaable(@object.id,@config[:object_name]) || MetaData.new
           if my_params[:object]
-            if Lolita.config.translation && has_tab_type?(:translate)
+            if Lolita.config.i18n :translation && has_tab_type?(:translate)
               current_language=params[:translation_locale]
               base_lang = session[:locale] || Admin::Language.find_base_language.short_name
               Globalize::Locale.set("#{base_lang}-#{base_lang=='en' ? "US" : base_lang.upcase}")
@@ -73,7 +73,7 @@ module Extensions
             MetaData.transaction do
               handle_before_functions 'update'
               handle_has_many_relation
-              if Lolita.config.translation && has_tab_type?(:translate)
+              if Lolita.config.i18n :translation && has_tab_type?(:translate)
                 @object.switch_language(current_language) do
                   @object.update_attributes!(my_params[:translation])
                 end

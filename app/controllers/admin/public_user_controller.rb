@@ -5,7 +5,7 @@ class Admin::PublicUserController < Managed
     if user=Admin::PublicUser.register(params[:code])
       user.register
       register_user_in_session(user)
-      if !Lolita.config.multi_domain_portal || is_local_request?
+      if !Lolita.config.system :multi_domain_portal || is_local_request?
         redirect_authenticated_user
       end
     else
@@ -59,7 +59,7 @@ class Admin::PublicUserController < Managed
         end
         if @user.registered?
           register_user_in_session(@user)
-          if !Lolita.config.multi_domain_portal || is_local_request?
+          if !Lolita.config.system :multi_domain_portal || is_local_request?
             session[:return_to]=nil
             if params[:save]
               redirect_authenticated_user
@@ -138,28 +138,13 @@ class Admin::PublicUserController < Managed
     render :layout=>request.xml_http_request? ? false : layout_name
   end
 
-  #  def message
-  #    if request.post? && params[:user_message] && !(params[:user_message][:subject].empty? && params[:user_message][:content].empty?)
-  #      body_data={
-  #        :header=>params[:user_message][:subject],
-  #        :body=>[]
-  #      }
-  #      sender = "\"#{Admin::User.current_user.login}\" <#{Admin::User.current_user.email}>"
-  #      body_data[:body]<<{:title=>"from",:value=>sender}
-  #      body_data[:body]<<{:title=>"content",:value=>params[:user_message][:content]}
-  #      RequestMailer::deliver_mail("valdis@ithouse.lv","#{body_data[:header]}",body_data)
-  #      flash[:notice]=:"profile.message.thank you"
-  #    end
-  #    render :layout=>request.xml_http_request? ? false : "cms/public"
-  #  end
-
   def login
     flash[:error]=nil
     if request.post?
       if user = Admin::PublicUser.authenticate(params[:login], params[:password])
         remember_me(user)
         register_user_in_session(user)
-        if !Lolita.config.multi_domain_portal || is_local_request?
+        if !Lolita.config.system :multi_domain_portal || is_local_request?
           redirect_authenticated_user
         end
       else
@@ -177,7 +162,7 @@ class Admin::PublicUserController < Managed
 
   def logout
     if ogged_in?
-      reset_sso if Lolita.config.multi_domain_portal
+      reset_sso if Lolita.config.system :multi_domain_portal
       reset_remember_me
       reset_session
       flash[:notice] = t(:"flash.logout success")
@@ -203,23 +188,18 @@ class Admin::PublicUserController < Managed
   end
 
   def reset_sso #lai varētu šeit ielik vēl ko ja vajadzēs
-    Admin::Token.destroy_all(["user_id=? OR updated_at<?",current_user.id,1.day.ago]) if Lolita.config.multi_domain_portal && !is_local_request?
+    Admin::Token.destroy_all(["user_id=? OR updated_at<?",current_user.id,1.day.ago]) if Lolita.config.system :multi_domain_portal && !is_local_request?
     cookies.delete(:sso_token)
   end
   
   def send_registration_email user,header,text
-    body_data={}
-    body_data[:kods]={:title=>t(:"admin_email.registration code"),:value=>user.registration_code}
-    body_data[:header]=header.to_s>0 ? header : t(:"admin_email.confirmation header")
-    body_data[:link]={:title=>"URL",:value=>"http://telegraf.ithouse.lv/registration_confirmation/#{user.registration_code}"}
-    body_data[:welcome]={:title=>"",:value=>text}
-    user.send_registration_email(body_data[:header],body_data)
+  #FIXME
   end
   
   def register_user_in_session user
     session.data.delete(:user)
     set_current_user user
-    if Lolita.config.multi_domain_portal && !is_local_request?
+    if Lolita.config.system :multi_domain_portal && !is_local_request?
       token=Admin::Token.find_by_token(cookies[:sso_token])
       if token
         token.update_attributes!(:user=>user,:uri=>url_for(session[:return_to]) || home_url)

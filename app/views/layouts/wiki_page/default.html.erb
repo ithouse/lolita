@@ -6,7 +6,7 @@
     <meta HTTP-EQUIV="EXPIRES" CONTENT="01 Jan 1970 00:00:00 GMT"/>
     <meta HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE"/>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-    <title><%=Admin::Configuration.get_value_by_name('system_title')%></title>
+    <title><%=Lolita.config.system :cms_title%></title>
     <%= stylesheet_link_tag 'admin/default', 'cms' %>
     <%= javascript_include_tag 'tiny_mce/tiny_mce.js' %>
   </head>

@@ -19,7 +19,7 @@ class ActionController::Base
   #include Extensions::AdvancedFilterExtension
   #include Extensions::Sso
   
-  #if Lolita.config.translation
+  #if Lolita.config.i18n :translation
   before_filter :set_locale
   #end
 
@@ -97,9 +97,9 @@ class ActionController::Base
     #{msg}
     </pre>"
     RequestMailer::deliver_mail(
-      "bugs@ithouse.lv",
+      Lolita.config.email :bugs_from,
       "#{request.host_with_port} automātiskais kļūdas paziņojums (#{500})",
-      {:header=>msg},"bugs@telegraf.lv"
+      {:header=>msg},Lolita.config.email(:bugs_to)
     )
   end
   

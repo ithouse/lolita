@@ -1,6 +1,9 @@
 development:
   system:
     domain: localhost
+    start_page_url: /admin/user/list
+    cms_name: Lolita CMS
+    cms_title: Lolita CMS
     multi_domain_portal: false
     domain_depth: 0
     items_per_page: 20
@@ -14,6 +17,8 @@ development:
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
+    bugs_from: "www@example.com"
+    bugs_to: "bugs@example.com"
   access:
     allow:
       system_in_public: true
@@ -27,6 +32,9 @@ development:
 production:
   system:
     domain: localhost
+    start_page_url: /admin/user/list
+    cms_name: Lolita CMS
+    cms_title: Lolita CMS
     multi_domain_portal: false
     domain_depth: 0
     items_per_page: 20
@@ -40,6 +48,8 @@ production:
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
+    bugs_from: "www@example.com"
+    bugs_to: "bugs@example.com"
   access:
     allow:
       system_in_public: true
@@ -53,6 +63,9 @@ production:
 test:
   system:
     domain: localhost
+    start_page_url: /admin/user/list
+    cms_name: Lolita CMS
+    cms_title: Lolita CMS
     multi_domain_portal: false
     domain_depth: 0
     items_per_page: 20
@@ -66,6 +79,8 @@ test:
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
+    bugs_from: "www@example.com"
+    bugs_to: "bugs@example.com"
   access:
     allow:
       system_in_public: true

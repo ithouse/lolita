@@ -23,7 +23,7 @@ module BaseHelper
   #   :simple - vienkārša lapa vai nē
   def creator_link(options={})
     locale=cookies[:locale] || session[:locale]
-    locale=Lolita.config.language_code if !locale && Lolita.config.language_code
+    locale=Lolita.config.i18n :language_code if !locale && Lolita.config.i18n(:language_code)
     if locale=="en"
       text="Web development"
       title="Web development / Website development"
@@ -55,7 +55,7 @@ module BaseHelper
   end
 
   def not_main_portal?()
-    domain=request.domain(Lolita.config.domain_depth)
+    domain=request.domain(Lolita.config.system :domain_depth)
     domain==get_main_portal.domain ? nil : Admin::Portal.find_by_domain(domain)
   end
   
