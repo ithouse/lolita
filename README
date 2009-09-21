@@ -5,7 +5,7 @@ Lolita - sexy CMS
 
 Requires
 ========
-  - rails >= 2.3.3
+  - rails >= 2.3.4
   - rmagick >= 2.11
   - rspec >= 1.2.8
   - rspec-rails >= 1.2.7.1
@@ -16,6 +16,10 @@ cd <your project>
 ruby script/plugin install git@github.com:ithouse/lolita.git
 ruby script/plugin install git://github.com/lazyatom/engines.git # Before Rails 3.0
 rake lolita:setup
+
+# add this line in config/environment.rb before config block
+
+  require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 
 # add these lines in config/environment.rb in config block
 
@@ -30,7 +34,7 @@ rake db:migrate:all
 ruby script/server
 
 Open http://localhost:3000/system/login
-  - login: admin@example.com
-  - password: lolita
+  - login: admin
+  - password: admin
 
 Copyright (c) 2009 IT House ltd., released under the MIT license
