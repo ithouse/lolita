@@ -12,17 +12,14 @@ class Managed < ApplicationController
   include Extensions::Cms::Crud
   include Extensions::Cms::Callbacks
   include Extensions::Cms::HandleErrors
-  include Extensions::Cms::Language if Lolita.config.system.i18n :translation
+  include Extensions::Cms::Language if Lolita.config.i18n(:translation)
 
 
   # Pēc noklusējuma index dara to pašu ko list, un tādēļ ir atļauta uz 'read' pieejas veidu modulim.
   # Gadījumā kad index dara darbību ar citu pieejas veidu, tad vajadzētu norādīt citu pieejas līmeni
   # Skatīt ApplicationController#allow un Admin::User#can_do_special_action_in_controller?
   # Līdzīgi ir ar open
-  def index
-    show
-  end
-
+  
   def open
     get_id.to_i>0 ? redirect_to(params.merge(:action=>:update)) : list
   end

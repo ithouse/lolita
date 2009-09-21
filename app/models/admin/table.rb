@@ -39,7 +39,6 @@ class Admin::Table < Cms::Base
   
   def self.remove_tables tables
     (tables).each{|name|
-      Admin::Field.remove_by_table(name)
       self.find_by_name(name).destroy
     }
   end

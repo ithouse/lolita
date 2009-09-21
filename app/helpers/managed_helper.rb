@@ -152,7 +152,7 @@ module ManagedHelper
     if field.is_a?(Symbol) && field.to_s.split(".").size>1
       t(field)
     else
-      Admin::Field.by_table_and_field(controller || (@config ? @config[:parent_name] : nil) || params[:controller],field) if field
+      field
     end
   end
 

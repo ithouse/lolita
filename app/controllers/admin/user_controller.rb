@@ -53,7 +53,7 @@ class Admin::UserController < Managed
             params[:user].delete(:old_pass)
             if @user.update_attributes(params[:user]) && @user.errors.size<1
               register_user_in_session @user
-              redirect_to :controller=>Admin::Configuration.get_value_by_name("start_page") || "/", :is_ajax=>params[:is_ajax]
+              redirect_to Lolita.config.system(:start_page_url)
               return
             end
           else

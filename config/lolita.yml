@@ -72,10 +72,10 @@ test:
     public_user_model: "Admin::PublicUser"
     public_user_table: admin_users
     flash_actions:
-      - /picture/new_create,
+      - /image_file/new_create,
       - /video_file/new_create,
       - /audio_file/new_create,
-      - /file/new_create
+      - /simple_file/new_create
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
