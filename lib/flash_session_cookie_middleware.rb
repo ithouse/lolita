@@ -8,13 +8,11 @@ class FlashSessionCookieMiddleware
 
   def call(env)
     if env['HTTP_USER_AGENT'] =~ /^(Adobe|Shockwave) Flash/
-
       req = Rack::Request.new(env)
-      unless req.params[@session_key].nil?
+      if Lolita.config.flash_actions.include?(req.params['action']) && !req.params[@session_key].nil?
         env['HTTP_COOKIE'] = "#{@session_key}=#{req.params[@session_key]}".freeze
       end
     end
-
     @app.call(env)
   end
 end

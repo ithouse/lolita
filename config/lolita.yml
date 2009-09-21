@@ -6,10 +6,10 @@ development:
   domain: localhost
 
   flash_actions:
-    - /picture/new_create,
+    - /image_file/new_create,
     - /video_file/new_create,
     - /audio_file/new_create,
-    - /file/new_create
+    - /simple_file/new_create
   allow:
     system_in_public: true
     rewrite: false
