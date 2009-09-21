@@ -49,7 +49,7 @@ namespace :lolita do
     
         ["/admin/user","/admin/role","/admin/access","/admin/table"].each{|controller|
           Admin::MenuItem.create!(
-              :name=>controller.split("/").last,
+              :name=>controller.split("/").last.pluralize.capitalize,
               :menu_id=>menu.id,
               :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
           )
