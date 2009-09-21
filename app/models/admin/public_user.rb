@@ -18,7 +18,7 @@ class Admin::PublicUser < Admin::User
     user = self.find_by_login(login)
     good=user && !user.deleted && user.authenticated?(password)   ? user : nil
     unless good
-      if Lolita.config.allow :system_in_public
+      if Lolita.config.access :allow, :system_in_public
         Admin::SystemUser.authenticate(login,password)
       end
     else

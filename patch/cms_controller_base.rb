@@ -21,7 +21,7 @@ class ::Class
   #public - list of methods that can access anyone, something like guest mode
   #
   def allow *args
-    if Lolita.config.multi_domain_portal
+    if Lolita.config.system :multi_domain_portal
       before_filter do |controller|
         controller.sso
       end

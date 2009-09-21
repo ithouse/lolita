@@ -90,7 +90,7 @@ module ManagedHelper
     
   end
   def is_translatable? options={}
-    options[:in_form] && Lolita.config.translation &&  params[:action]=="update"
+    options[:in_form] && Lolita.config.i18n(:translation) &&  params[:action]=="update"
   end
   def tab_start_end_html tab,index,opened=nil
     start_html=%(<div id="tab#{index}container" name="tab_content" style="display:#{opened ? "block" : "none"};">)

@@ -1,6 +1,6 @@
 <% form_tag({:action=>"login",:controller=>"/admin/user"},{:class=>"dialog loginform"}) do %>
   <div class="top">
-    <span class="big black"><%=Admin::Configuration.get_value_by_name("cms_name") || "ITHouse CMS"%></span>
+    <span class="big black"><%=Lolita.config.system :cms_name%></span>
   </div>
   <div class="pad">
     <div class="big blue" style="<%= flash[:error].to_s.size>0 ? "margin-bottom:8px !important;" : "" %>"><%= t '.authorization' %></div>
