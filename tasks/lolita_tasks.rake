@@ -26,37 +26,31 @@ namespace :lolita do
     end
 
     # Insert must have data into DB
-    insert("INSERT INTO admin_users (login,email,crypted_password,salt,type) VALUES('admin','admin@example.com','78437eec8760ac08ad9cab98b6dfc516c31be062','f15c1dcd585628112cc4076f8dd31a877e342fce','Admin::SystemUser')")
-
-    insert("INSERT INTO admin_roles (name,built_in) VALUES('administrators',1)")
-    insert("INSERT INTO roles_users (user_id,role_id) VALUES(1,1)")
-
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/user','Lietotāji')")
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/role','Lomas')")
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/access','Pieejas')")
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/url_scope','Draudzīgie nosaukumi')")
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/configuration','Konfigurācija')")
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/table','Sadaļas')")
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/field','Lauki')")
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/menu','Izvēlne')")
-    insert("INSERT INTO admin_tables (name,human_name) VALUES('admin/menu_item','Izvēļņu ieraksti')")
-
-    insert("INSERT INTO menus (menu_name,menu_type,module_name,module_type) VALUES('Admin','app','admin','app')")
-    insert("INSERT INTO menus (menu_name,menu_type,module_name,module_type) VALUES('Saturs','web','admin','web')")
-
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/user','list')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/role','list')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/access','list')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/table','list')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/field','list')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/configuration','list')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/user','signup')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/role','create')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/url_scope','list')")
-    insert("INSERT INTO admin_actions (controller,action) VALUES('/admin/translate','list')") if Lolita.config.translation
-
-    insert("INSERT INTO admin_languages (globalize_languages_id,is_base_locale) VALUES(3435,1)")
-    insert("INSERT INTO admin_languages (globalize_languages_id,is_base_locale) VALUES(1819,0)")
-    insert("INSERT INTO admin_languages (globalize_languages_id,is_base_locale) VALUES(5556,0)")
+    unless Admin::Role.find_by_name("administrator")
+      role=Admin::Role.create!(:name=>'administrator', :built_in=>true)
+      Admin::User.create!(
+        :login=>'admin',:email=>'admin@example.com',
+        :password=>'admin',:password_confirmation=>'admin',
+        :roles=>[role]
+      )
+      Admin::Menu.create!(
+        :menu_name=>'Admin',
+        :menu_type=>'app',
+        :module_name=>'admin',
+        :module_type=>'app'
+      )
+      Admin::Menu.create!(
+        :menu_name=>'Content',
+        :menu_type=>'web',
+        :module_name=>'admin',
+        :module_type=>'web'
+      )
+      ["/admin/user","/admin/role","/admin/access","/admin/table"].each{|controller|
+        Admin::Action.create!(:controller=>controller,:action=>"list")
+      }
+      [[3435,true][1819,false][5556,false]].each{|language|
+        Admin::Language.create!(:globalize_languages_id=>language.first,:is_base_locale=>language.last)
+      }
+    end
   end
 end
