@@ -46,7 +46,7 @@ namespace :lolita do
           :module_name=>'admin',
           :module_type=>'web'
         )
-        menu_root=menu.menu_items.root
+        menu_root=menu.menu_items.first.root
         ["/admin/user","/admin/role","/admin/access","/admin/table"].each{|controller|
           Admin::Action.create!(:controller=>controller,:action=>"list")
           menu_root.move_to_child_of(Admin::MenuItem.create!(
