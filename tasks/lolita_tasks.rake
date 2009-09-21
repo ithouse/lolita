@@ -51,7 +51,8 @@ namespace :lolita do
           Admin::Action.create!(:controller=>controller,:action=>"list")
           menu_root.move_to_child_of(Admin::MenuItem.create!(
               :name=>controller.split("/").last,
-              :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list",:menu_id=>menu.id)
+              :menu_id=>menu.id,
+              :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
           ))
         }
         [[3435,true],[1819,false],[5556,false]].each{|language|
