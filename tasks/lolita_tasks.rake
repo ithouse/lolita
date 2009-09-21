@@ -54,6 +54,7 @@ namespace :lolita do
               :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
           )
         }
+        menu.menu_items.first.root.renumber_full_tree
         [[3435,true],[1819,false],[5556,false]].each{|language|
           Admin::Language.create!(:globalize_languages_id=>language.first,:is_base_locale=>language.last)
         }
