@@ -46,14 +46,13 @@ namespace :lolita do
           :module_name=>'admin',
           :module_type=>'web'
         )
-        menu_root=menu.menu_items.first.root
+    
         ["/admin/user","/admin/role","/admin/access","/admin/table"].each{|controller|
-          Admin::Action.create!(:controller=>controller,:action=>"list")
-          menu_root.move_to_child_of(Admin::MenuItem.create!(
+          Admin::MenuItem.create!(
               :name=>controller.split("/").last,
               :menu_id=>menu.id,
               :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
-          ))
+          )
         }
         [[3435,true],[1819,false],[5556,false]].each{|language|
           Admin::Language.create!(:globalize_languages_id=>language.first,:is_base_locale=>language.last)
