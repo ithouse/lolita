@@ -1,0 +1,18 @@
+----- 2009.09.22. 9:50:29: Job 'Gloresy': ANALYSIS started by User on computer 'KUNGS-PC' (GoodSync v 7.9.6.6) -----
+Gloresy: C:\ruby_docs\gloresy\vendor\plugins\lolita\_public <-> C:\ruby_docs\gloresy\public\lolita, PropDels, SavePrev, TmpDest, EstReq, CopyLocked, Reconnect, CaseSens, ChangeLimit=10
+Exclude Hidden, Exclude System, Exclude licens*.rfo|cache.rfo|mru.rfo|mpp*rfo.rfo|\System Volume Information|Thumbs.db 
+Left : Files: 1 053 (excluded 0). Folders: 247 (excluded 1). C: NTFS, Free: 20,4 GB, Total: 60,2 GB
+Right: Files: 1 053 (excluded 0). Folders: 247 (excluded 1). C: NTFS, Free: 20,4 GB, Total: 60,2 GB
+On disk C: space required for sync is 12,0 KB, you have 20,4 GB
+On disk C: space required for sync is 12,0 KB, you have 20,4 GB
+Changes: 1, Conflicts: 0, CopyTime: 0, CopyState: 0, Errors: 0
+----- 2009.09.22. 9:50:30: Analysis Completed. Time 00:00:01, Speed: 1 300 files/s -----
+
+===== 2009.09.22. 9:50:32: Job 'Gloresy': SYNC started by User on computer 'KUNGS-PC' =====
+Gloresy: C:\ruby_docs\gloresy\vendor\plugins\lolita\_public <-> C:\ruby_docs\gloresy\public\lolita, PropDels, SavePrev, TmpDest, EstReq, CopyLocked, Reconnect, CaseSens, ChangeLimit=10
+Copy Over 'C:\ruby_docs\gloresy\vendor\plugins\lolita\_public\javascripts\cms\media\google_map.js' -> 'C:\ruby_docs\gloresy\public\lolita\javascripts\cms\media\google_map.js'
+Save State File C:\ruby_docs\gloresy\vendor\plugins\lolita\_public\_gsdata_\_file_state._gs
+Save State File C:\ruby_docs\gloresy\public\lolita\_gsdata_\_file_state._gs
+Items Synced OK: 1, Errors: 0
+===== 2009.09.22. 9:50:32: Sync Completed. Time: 00:00:00, Speed: 7,28 MB/s =====
+

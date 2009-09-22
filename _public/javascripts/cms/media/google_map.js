@@ -47,7 +47,7 @@ LolitaGoogleMap.prototype={
                 this.hide_current_tab()
             }
         }else{
-            $("#map_"+this.options.unique_id).html("<div style='color: grey'>Error! Render Google Map</div>") ;
+            $("#"+(this.options.map_prefix || "map")+"_"+this.options.unique_id).html("<div style='color: grey'>Error! Render Google Map</div>") ;
         }
 
     },

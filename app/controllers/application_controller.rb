@@ -5,10 +5,6 @@ require 'extensions/permission_controll'
 require 'extensions/util'
 
 class ActionController::Base
-#  Admin::Token
-#
-#  Admin::SystemUser
-#  Admin::PublicUser
   #helper :all
   include AuthenticatedSystem
   include Extensions::MultimediaManager
@@ -97,7 +93,7 @@ class ActionController::Base
     #{msg}
     </pre>"
     RequestMailer::deliver_mail(
-      Lolita.config.email :bugs_from,
+      Lolita.config.email(:bugs_from),
       "#{request.host_with_port} automātiskais kļūdas paziņojums (#{500})",
       {:header=>msg},Lolita.config.email(:bugs_to)
     )

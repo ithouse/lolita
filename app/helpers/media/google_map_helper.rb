@@ -49,7 +49,7 @@ module Media::GoogleMapHelper
       conf[:lat]=locations[:lat]
       conf[:lng]=locations[:lng]
     end
-    conf[:id_prefix]||="public_map"
+    conf[:map_prefix]||="public_map"
     conf[:read_only]=true
     conf=conf.delete_if{|k,v| k==:object}
     raise "Unique ID not specified!" if conf[:unique_id].to_s.size==0

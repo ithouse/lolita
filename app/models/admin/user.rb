@@ -4,7 +4,7 @@ class Admin::User < Cms::Base
   @area=nil
   acts_as_authorized_user
 
-  set_table_name Lolita.config.system :public_user_table
+  set_table_name Lolita.config.system(:public_user_table)
   attr_accessor :password
   attr_accessor :old_password
   validates_presence_of     :password,                   :if => :password_required?
