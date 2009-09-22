@@ -1,6 +1,7 @@
 lv:
   actions:
     save translation: Saglabāt tulkojumu
+    filter: Filtrēt
   dialogs:
     wait:
       title: Notiek ielāde...

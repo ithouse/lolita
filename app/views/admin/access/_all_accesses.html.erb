@@ -7,12 +7,12 @@
   <div class="admin-list">
     <table>
       <tr>
-        <th style="font-size:10px;width:auto;"><%=t(:"admin_role.title")%></th>
-        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.all")%></th>
-        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.read")%></th>
-        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.write")%></th>
-        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.change")%></th>
-        <th style="font-size:10px;width:50px;"><%=t(:"admin_access.permissions.destroy")%></th>
+        <th style="font-size:10px;width:auto;"><%=t(:"admin.accesses.title")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin.accesses.permissions.all")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin.accesses.permissions.read")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin.accesses.permissions.write")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin.accesses.permissions.change")%></th>
+        <th style="font-size:10px;width:50px;"><%=t(:"admin.accesses.permissions.destroy")%></th>
       </tr>
       <% for access in Admin::Access.find(:all) %>
         <div class="admin-list-row">

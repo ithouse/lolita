@@ -44,7 +44,7 @@ function SimpleRequest(r_object,r_config){
         var request={
             url:config.url,
             type:config.method || "get",
-            data:construct_params(config.params),
+            data:construct_params(config.data),
             dataType: config.dataType || 'html'
         }
         if(config.success){

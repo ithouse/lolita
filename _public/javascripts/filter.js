@@ -1,3 +1,19 @@
+SimpleFilter=function(){
+    return{
+        filter:function(value,url){
+            new SimpleRequest(this,{
+                url:url,
+                data:{
+                    ferret_filter:value,
+                    authenticity_token:AUTH_TOKEN
+                },
+                method:"post",
+                loading:true,
+                container:"#content"
+            })
+        }
+    }
+}()
 AdvancedFilter=function(){
     return{
         hide:function(){

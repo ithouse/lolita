@@ -12,3 +12,11 @@ lv:
           action menu: Sadaļas izvēlne
           url menu: Pilna adrese
           meta menu: Objekta piesaiste no meta url
+      accesses:
+        title: Sadaļa
+        permissions:
+          all: Visas
+          read: Lasīt
+          write: Rakstīt
+          change: Mainīt
+          destroy: Dzēst
