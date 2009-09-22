@@ -1,12 +1,12 @@
 require 'digest/sha1'
 class Admin::User < Cms::Base
-  @current_user=nil
-  @area=nil
-  acts_as_authorized_user
-
-  set_table_name Lolita.config.system(:public_user_table)
+ 
+  set_table_name :admin_users #Lolita.config.system(:public_user_table)
+  has_and_belongs_to_many :roles, :class_name=>"Admin::Role"
+  attr_protected :role_ids
   attr_accessor :password
   attr_accessor :old_password
+
   validates_presence_of     :password,                   :if => :password_required?
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_confirmation_of :password,                   :if => :password_required?
@@ -149,6 +149,11 @@ class Admin::User < Cms::Base
       self.roles<<role
     end
   end
+
+  def has_role?( role_name)
+    self.roles.find_by_name(role_name) ? true : false
+  end
+
   protected
 
   def self.check_options? options,action
