@@ -14,9 +14,9 @@ namespace :lolita do
     end
 
 #    # copy lolita's initializer
-    unless File.exists?("#{RAILS_ROOT}/config/initializers/lolita_init.rb")
-      FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/initializers/lolita_init.rb","#{RAILS_ROOT}/config/initializers/lolita_init.rb")
-      puts "[new] config/initializers/lolita_init.rb"
+    unless File.exists?("#{RAILS_ROOT}/config/initializers/start_lolita.rb")
+      FileUtils.copy("#{RAILS_ROOT}/vendor/plugins/lolita/config/initializers/start_lolita.rb","#{RAILS_ROOT}/config/initializers/lolita_init.rb")
+      puts "[new] config/initializers/start_lolita.rb"
     end
 
 #    # create blank CSS file used by TinyMCE
