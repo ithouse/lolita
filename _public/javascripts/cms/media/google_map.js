@@ -236,8 +236,10 @@ LolitaGoogleMap.prototype={
                         }else{
                             that.last_marker().setPoint(point)
                         }
+                        that.set_marker(that.last_marker(),true)
+                    }else{
+                       that.change_center(point)
                     }
-                    that.set_marker(that.last_marker(),true)
                     return true
                 }
             }
