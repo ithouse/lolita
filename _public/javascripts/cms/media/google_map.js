@@ -219,7 +219,7 @@ LolitaGoogleMap.prototype={
      * Seach for specific address, when found change last marker position to id
      * otherwise alert message that address canot be found
      */
-    show_address:function(address){
+    show_address:function(address,zoom){
         if (!this.map.geocoder)
             this.map.geocoder=new GClientGeocoder();
         var that=this
@@ -236,9 +236,9 @@ LolitaGoogleMap.prototype={
                         }else{
                             that.last_marker().setPoint(point)
                         }
-                        that.set_marker(that.last_marker(),true)
+                        that.set_marker(that.last_marker(),true,zoom)
                     }else{
-                       that.change_center(point)
+                       that.change_center(point,zoom)
                     }
                     return true
                 }
