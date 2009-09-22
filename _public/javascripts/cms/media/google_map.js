@@ -225,7 +225,7 @@ LolitaGoogleMap.prototype={
                 if (!point) {
                     return "Not Found"
                 } else{
-                    if(!this.options.read_only){
+                    if(!that.options.read_only){
                         if (typeof(that.last_marker())=="undefined"){
                             var icon=that.create_icon();
                             that.add_new_marker(point.lat,point.lng,icon)
