@@ -40,9 +40,10 @@ LolitaGoogleMap.prototype={
         if (GBrowserIsCompatible()){// Do Map if Compatible Browser only
             this.map = new GMap2(elementById((this.options.map_prefix || "map")+"_"+this.options.unique_id));
             if(!this.options.read_only) this.map.enableScrollWheelZoom();
+            this.options.zoom=this.options.zoom || 15
             this.add_controls() // add Gmap controls to map
             this.set_default_center()
-            this.options.zoom=this.options.zoom || 15
+            
             if(this.options.type=="multimedia"){ //need close tab if map in system side
                 this.hide_current_tab()
             }

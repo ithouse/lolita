@@ -51,7 +51,7 @@ module Media::GoogleMapHelper
     end
     conf[:map_prefix]||="public_map"
     conf[:read_only]=true
-    conf=conf.delete_if{|k,v| k==:object}
+    conf=conf.delete_if{|k,v| [:object].include?(k)}
     raise "Unique ID not specified!" if conf[:unique_id].to_s.size==0
     conf
   end
