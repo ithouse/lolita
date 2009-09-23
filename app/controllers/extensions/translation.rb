@@ -1,11 +1,17 @@
 module Extensions::Translation
   def set_locale
-    I18n.locale=session[:locale]
-    if params[:locale] && I18n.available_locales.include?(params[:locale].to_sym)
-      I18n.locale = params[:locale]
-      session[:locale]=params[:locale]
+    if Admin::User.area==:public
+      I18n.locale=session[:locale]
+      if params[:locale] && I18n.available_locales.include?(params[:locale].to_sym)
+        I18n.locale = params[:locale]
+        session[:locale]=params[:locale]
+      end
+      Globalize::Locale.set I18n.locale.to_s
+    else
+      locale=Lolita.config.language_code || Admin::Language.find_base_language.short_name
+      I18n.locale=locale
+      Globalize::Locale.set locale
     end
-    Globalize::Locale.set I18n.locale.to_s
   end
 
   def extract_locale_from_tld

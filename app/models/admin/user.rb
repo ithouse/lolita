@@ -55,6 +55,7 @@ class Admin::User < Cms::Base
     allowed=false
     action=action.to_sym
     Admin::User.current_user=nil
+    Admin::User.area=nil
     if action_in?(action,options[:public])
       allowed=true
       Admin::User.area=:public

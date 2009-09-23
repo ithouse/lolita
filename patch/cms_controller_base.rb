@@ -33,7 +33,7 @@ class ::Class
     @roles,@permissions=get_roles_and_options args
     #self.roles=@roles
     #self.permissions=@permissions
-    before_filter do |controller|
+    prepend_before_filter do |controller|
       controller.roles=@roles
       controller.permissions=@permissions
       controller.public_actions=self.public_actions
