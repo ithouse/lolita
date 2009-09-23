@@ -35,10 +35,9 @@
     end
   end
 %>
-
-  <% if is_field?(:textarea,tab) && !@read_only%>
-    <%= render :partial=>"/managed/tinymce", :object=>{:tab=>tab,:mode=>"specific_textareas",:selector=>"textarea-translation"} %>
-  <% end %>
+<script type="text/javascript">
+  toggleTinyMCEFromFields(true)
+</script>
 <%end%>
 <% if params[:action].to_s=="change_language" #need only when reloading via ajax %>
   <div class="clear"></div>
