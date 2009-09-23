@@ -125,7 +125,7 @@ LolitaGoogleMap.prototype={
     create_form_elements:function(values){
         values=values || {}
         var $container=$("#object_map_"+this.options.unique_id+"_container")
-        var fields=["lat","lng","description"]
+        var fields=["lat","lng","description","zoom"]
         for(var i=0;i<fields.length;i++){
             var value=eval("values."+fields[i]+" ? values."+fields[i]+" : 0")
             $container.append('<input type="hidden" '+
@@ -200,6 +200,7 @@ LolitaGoogleMap.prototype={
         var point=marker.getLatLng();
         $('#object_map_'+this.options.unique_id+'_lat_'+marker.counter).attr("value",point.lat());
         $('#object_map_'+this.options.unique_id+'_lng_'+marker.counter).attr("value",point.lng());
+        $('#object_map_'+this.options.unique_id+'_zoom_'+marker.counter).attr("value",zoom || this.current_zoom)
         if(this.options.center_marker || center) this.change_center(point,zoom)//map.getZoom()
         
     },

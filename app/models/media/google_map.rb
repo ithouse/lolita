@@ -9,7 +9,13 @@ class Media::GoogleMap < Media::Base
     options[:params][:map].each{|map_id,maps|
       maps.each{|marker_id,marker|
         if marker[:lng].to_s!="0" && marker[:lat]!="0"
-          points<<self.create!(:lat=>marker[:lat],:lng=>marker[:lng],:mappable_type=>object_class,:mappable_id=>object.id)
+          points<<self.create!(
+            :lat=>marker[:lat],
+            :lng=>marker[:lng],
+            :zoom=>marker[:zoom],
+            :mappable_type=>object_class,
+            :mappable_id=>object.id
+          )
         end
       }
     } if options[:params][:map].is_a?(Hash)

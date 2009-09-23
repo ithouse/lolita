@@ -22,7 +22,7 @@
         <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.init()"%>;
       }catch(e){
         <% if RAILS_ENV=="development"  %>
-                alert(e)
+                console.log(e)
         <% end %>
         setTimeout("init_lolita_google_map_<%=cfg[:unique_id]%>()",500)
       }
