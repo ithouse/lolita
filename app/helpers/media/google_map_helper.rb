@@ -51,9 +51,13 @@ module Media::GoogleMapHelper
     end
     conf[:map_prefix]||="public_map"
     conf[:read_only]=true
+    conf[:include_js]=true if conf[:include_js].nil?
     conf=conf.delete_if{|k,v| [:object].include?(k)}
     raise "Unique ID not specified!" if conf[:unique_id].to_s.size==0
     conf
   end
 
+  def include_google_map_js
+    "<script type=\"text/javascript\" src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.google :key}\"></script>"
+  end
 end
