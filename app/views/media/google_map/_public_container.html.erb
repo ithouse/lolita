@@ -9,6 +9,8 @@
 # :object - ActiveRecord object that refrers to locations
 # :lat - Array with latitudes, if object passed then that will be overwiritten
 # :lng - same as :lat only for longitudes.
+# :include_js - add or note the google_maps JS inline, when this is false you
+#               should call "include_google_map_js" helper method in your page HEAD
 %>
 <% if Lolita.config.google :key %>
   <% if cfg[:include_js] %>
