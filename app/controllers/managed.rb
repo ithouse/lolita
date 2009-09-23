@@ -124,7 +124,7 @@ class Managed < ApplicationController
   #           funkcijai
   #   :table - tabulas nosaukums, tiek izmantots dažādiem laukiem, ja laukam nepieciešams
   #            izmantot ārējo tabulu datu iegūšanai
-  #   :table_options - opcijas, kas tiek padotas find, izmanto kopā ar table
+  #   :find_options - opcijas, kas tiek padotas find, izmanto kopā ar table
   #   :titles - String vai Array, tiek izmantots tikai label tipa laukam un iespējams norādīt
   #             speciālajā formātā, sk. field_to_string_simple (field_helper.rb), arī priekš
   #             select tiek izmantots titles, tikai kā options elementu nosaukums
