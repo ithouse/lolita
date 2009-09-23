@@ -134,6 +134,7 @@ class Managed < ApplicationController
   #   :config - tikai priekš date un datetime tipa laukiem, norāda opcijas, kas specifiskas šiem laukiem
   #   :simple - tikai priekš select tipa, norāda, ka opcijas ir padotas un nav jāmeklē
   #   :options - opcijas tikai priekš select, masīvs formā [["nosaukums",id]]
+  #    tulkojamām masīvu opcijām var padot lambda {} bloku, citādi valoda var nesakrist ar CMS valodu
   #   :default_value - tikai select noklusētā vērtība, ja nav atrasta tekošā vērtība, parasti pirmā
   #   :parent_link - tikai select, norāda vai ir saite uz saistīta tipa elementa izveidi
   #   :multiple - tikai select, norāda vai ir multiselect
