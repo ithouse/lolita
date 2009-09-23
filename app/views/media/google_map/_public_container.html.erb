@@ -21,12 +21,12 @@
     loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
     function init_lolita_google_map_<%=cfg[:unique_id]%>(){
       try{
-        <%="PublicGMap.public_map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>)
-        <%="PublicGMap.public_map_#{cfg[:unique_id]}.init()" %>
+        <%="PublicGMap.#{cfg[:map_prefix]}_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>)
+        <%="PublicGMap.#{cfg[:map_prefix]}_#{cfg[:unique_id]}.init()" %>
       }catch(e){
         setTimeout("init_lolita_google_map_<%=cfg[:unique_id]%>()",500)
       }
     }
     init_lolita_google_map_<%=cfg[:unique_id]%>()
-  </script>
+   </script>
 <%end%>
