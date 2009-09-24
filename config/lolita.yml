@@ -14,6 +14,7 @@ development:
       - /media/video_file/new_create,
       - /media/audio_file/new_create,
       - /media/simple_file/new_create
+    geokit: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
@@ -45,6 +46,7 @@ production:
       - /video_file/new_create,
       - /audio_file/new_create,
       - /file/new_create
+    geokit: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
@@ -76,6 +78,7 @@ test:
       - /video_file/new_create,
       - /audio_file/new_create,
       - /simple_file/new_create
+    geokit: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"

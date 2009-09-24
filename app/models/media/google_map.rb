@@ -1,6 +1,7 @@
 class Media::GoogleMap < Media::Base
   set_table_name :media_google_maps
   belongs_to :mappable, :polymorphic=>true
+  acts_as_mappable if Lolita.config.system :geokit
 
   def self.after_parent_save(memory_id,object,options)
     self.find_by_parent(object).each{|m| m.destroy}
