@@ -12,7 +12,7 @@
 # :include_js - add or note the google_maps JS inline, when this is false you
 #               should call "include_google_map_js" helper method in your page HEAD
 %>
-<% if Lolita.config.google :key %>
+<% if Lolita.config.google :maps_key %>
   <% if cfg[:include_js] %>
     <%=  include_google_map_js %>
   <% end %>

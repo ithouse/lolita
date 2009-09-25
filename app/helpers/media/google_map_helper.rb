@@ -58,6 +58,6 @@ module Media::GoogleMapHelper
   end
 
   def include_google_map_js
-    "<script type=\"text/javascript\" src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.google :key}\"></script>"
+    "<script type=\"text/javascript\" src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.google :maps_key}\"></script>"
   end
 end

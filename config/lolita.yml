@@ -28,7 +28,8 @@ development:
     translation: true
     language_code: lv
   google:
-    key: false
+    maps_key: false
+    analytics_key: false
 
 production:
   system:
@@ -60,7 +61,8 @@ production:
     translation: true
     language_code: lv
   google:
-    key: false
+    maps_key: false
+    anlytics_key: false
 
 test:
   system:
@@ -92,4 +94,5 @@ test:
     translation: true
     language_code: lv
   google:
-    key: false
+    maps_key: false
+    anlytics_key: false
