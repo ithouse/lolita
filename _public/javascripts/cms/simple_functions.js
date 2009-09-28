@@ -428,7 +428,7 @@ function URLEncode(str){
 function observe_languages(id,tab,url,params){
     $(document).ready(function(e){
         $(id).unbind("change").change(function(){
-            toggleTinyMCEFromFields(false,["translation"])
+            unloadTinyMCEfields(["translation"])
             ITH.Cms.wait.show()
             $.ajax({
                 url:url,

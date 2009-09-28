@@ -4,7 +4,7 @@
 # Pievieno no parametriem visas tās vertības kuru atslēgas atbilds _id
 %>
 <% if is_field?(:textarea,tab) && !@read_only%>
-  <%= render :partial=>"/managed/tinymce", :object=>{:tab=>tab,:mode=>"specific_textareas",:selector=>"textarea-#{@config[:tabs][tab][:object] || :object}"} %>
+  <%= render :partial=>"/managed/tinymce" %>
 <% end %>
 <% fields=fields_for_tab(tab).clone %>
 <%  if  fields &&  fields.respond_to?('each') %>
