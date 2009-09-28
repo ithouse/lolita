@@ -66,7 +66,9 @@ module Extensions
           if my_params[:object]
             if Lolita.config.i18n :translation && has_tab_type?(:translate)
               current_language=params[:translation_locale]
-              base_lang = session[:locale] || Admin::Language.find_base_language.short_name
+              #base_lang = session[:locale] || Admin::Language.find_base_language.short_name
+              #jf: session[:locale] may come from frontend and mess up backend
+              base_lang = Lolita.config.i18n :language_code || Admin::Language.find_base_language.short_name
               Globalize::Locale.set("#{base_lang}-#{base_lang=='en' ? "US" : base_lang.upcase}")
               @object=object.find_by_id(my_params[:id])
             end            
