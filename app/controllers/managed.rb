@@ -113,7 +113,7 @@ class Managed < ApplicationController
   # :fields - masīvs, katrs masīvas elements ir Hash masīvs, ar šādām
   #           iespējamājām vērtībām:
   #   :type - ievades lauka tikps, kāds no sistēmā definētajiem
-  #           (text,textarea,datetime,checkbox,select utt.), skatīt field_helper
+  #           (text,textarea,datetime,checkbox,checkboxgroup,select utt.), skatīt field_helper
   #   :name - lauka nosaukums, reālais nosaukums kāds ir DB,
   #   :title - virsraksts kas parādās pie lauka,
   #   :html - html opcijas, kas, ja nepieciešams, tiek izmantotas lauku ģenerēšanā
