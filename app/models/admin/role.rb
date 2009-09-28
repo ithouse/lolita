@@ -1,5 +1,5 @@
 class Admin::Role < Cms::Base
-  ADMIN="administrators"
+  ADMIN="administrator"
   set_table_name :admin_roles
   
   has_and_belongs_to_many :users, :class_name=>"Admin::User"

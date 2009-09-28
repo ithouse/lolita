@@ -37,7 +37,7 @@
           <div><!--[if !IE]>for ie to expand height correctly<![endif]--></div>
         </div><!--[if !IE]>banner area<![endif]-->
         <input type="submit" class="btn" value="<%=t(:"actions.confirm")%>"  /> vai
-        <%= link_to t(:"actions.cancel"),:controller=>Admin::Configuration.get_value_by_name('start_page'),:html=>{:class=>"blue"}%>
+        <%= link_to t(:"actions.cancel"),Lolita.config.system(:start_page_url),:html=>{:class=>"blue"}%>
       <% } %>
 
     </div><!--[if !IE]>tabarea<![endif]-->

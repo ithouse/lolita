@@ -90,7 +90,7 @@ module ManagedHelper
     
   end
   def is_translatable? options={}
-    options[:in_form] && Lolita.config.translation &&  params[:action]=="update"
+    options[:in_form] && Lolita.config.i18n(:translation) &&  params[:action]=="update"
   end
   def tab_start_end_html tab,index,opened=nil
     start_html=%(<div id="tab#{index}container" name="tab_content" style="display:#{opened ? "block" : "none"};">)
@@ -152,7 +152,7 @@ module ManagedHelper
     if field.is_a?(Symbol) && field.to_s.split(".").size>1
       t(field)
     else
-      Admin::Field.by_table_and_field(controller || (@config ? @config[:parent_name] : nil) || params[:controller],field) if field
+      field
     end
   end
 

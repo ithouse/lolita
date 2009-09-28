@@ -90,7 +90,7 @@ module Extensions::LinkHelper
     options[:params][:authenticity_token]=form_authenticity_token if !options[:params][:authenticity_token]
     request_configuration={
       :url=>url_for(base_params),
-      :params=>url_for((options[:params]||{}).merge(:only_path=>true,:escape=>false)).split("?")[1],
+      :data=>url_for((options[:params]||{}).merge(:only_path=>true,:escape=>false)).split("?")[1],
       :success=>options[:on_success] || options[:on_complete],
       :failure=>options[:on_failure] || options[:on_complete],
       :before=>options[:before],

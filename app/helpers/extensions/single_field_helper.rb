@@ -114,6 +114,7 @@ module Extensions::SingleFieldHelper
   end
   
   def cms_select_field object,options
+    options[:options] = options[:options].call if options[:options].is_a?(Proc)
     select_options=get_data_for_select_field(options).collect{|row| row[0].is_a?(Symbol) ? [t(row[0]),row[1]] : row}
     current_value=get_current_value_for_select_field(object,options)
     current_value=current_value.is_a?(Symbol) ? t(current_value) : current_value

@@ -1,12 +1,12 @@
 require 'digest/sha1'
 class Admin::User < Cms::Base
-  @current_user=nil
-  @area=nil
-  acts_as_authorized_user
-
-  set_table_name Lolita.config.public_user_table
+ 
+  set_table_name :admin_users #Lolita.config.system(:public_user_table)
+  has_and_belongs_to_many :roles, :class_name=>"Admin::Role"
+  attr_protected :role_ids
   attr_accessor :password
   attr_accessor :old_password
+
   validates_presence_of     :password,                   :if => :password_required?
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_confirmation_of :password,                   :if => :password_required?
@@ -44,8 +44,8 @@ class Admin::User < Cms::Base
     area=:public unless area
     if area==:public
       user = ses[:user][:user_class].find_by_id(ses[:user][:user_id])
-      (Lolita.config.allow :system_in_public && user.is_a?(Admin::SystemUser))||
-        (Lolita.config.allow :rewrite && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
+      (Lolita.config.access :allow, :system_in_public && user.is_a?(Admin::SystemUser))||
+        (Lolita.config.access :allow, :rewrite && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
       user.is_a?(Admin::PublicUser)
     elsif area==:system
     end
@@ -55,6 +55,7 @@ class Admin::User < Cms::Base
     allowed=false
     action=action.to_sym
     Admin::User.current_user=nil
+    Admin::User.area=nil
     if action_in?(action,options[:public])
       allowed=true
       Admin::User.area=:public
@@ -149,6 +150,11 @@ class Admin::User < Cms::Base
       self.roles<<role
     end
   end
+
+  def has_role?( role_name)
+    self.roles.find_by_name(role_name) ? true : false
+  end
+
   protected
 
   def self.check_options? options,action

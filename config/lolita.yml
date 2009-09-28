@@ -1,98 +1,98 @@
-# all these variables are available via LOLITA_***, key also is upcased
-
 development:
-  language_code: lv
-  translation: true
-  domain: localhost
-
-  flash_actions:
-    - /picture/new_create,
-    - /video_file/new_create,
-    - /audio_file/new_create,
-    - /file/new_create
-  allow:
-    system_in_public: true
-    rewrite: false
-  default_from: "dev@ithouse.lv"
-  default_to: "dev@ithouse.lv"
-  #comment_table: "Cms::Comment"
-  #vote_table: "Cms::Vote"
-  multi_domain_portal: false
-  domain_depth: 0
-  cms_per_page: 20
-  gmaps_key: nil
-  # vajag abus, jo no Admin::User nevar izsaukt constantize Lesor tabulai, kura extendo pašu Admin::User
-  public_user_model: "Admin::PublicUser"
-  public_user_table: admin_users
-
-production:
-  language_code: lv
-  translation: true
-  domain: localhost
-
-  flash_actions:
-    - /picture/new_create,
-    - /video_file/new_create,
-    - /audio_file/new_create,
-    - /file/new_create
-  allow:
-    system_in_public: true
-    rewrite: false
-  default_from: "dev@ithouse.lv"
-  default_to: "dev@ithouse.lv"  #comment_table: "Cms::Comment"
-  #vote_table: "Cms::Vote"
-  multi_domain_portal: false
-  domain_depth: 0
-  cms_per_page: 20
-  gmaps_key: nil
-  # vajag abus, jo no Admin::User nevar izsaukt constantize Lesor tabulai, kura extendo pašu Admin::User
-  public_user_model: "Admin::PublicUser"
-  public_user_table: admin_users
+  system:
+    domain: localhost
+    start_page_url: /admin/user/list
+    cms_name: Lolita CMS
+    cms_title: Lolita CMS
+    multi_domain_portal: false
+    domain_depth: 0
+    items_per_page: 20
+    public_user_model: "Admin::PublicUser"
+    public_user_table: admin_users
+    flash_actions:
+      - /media/image_file/new_create,
+      - /media/video_file/new_create,
+      - /media/audio_file/new_create,
+      - /media/simple_file/new_create
+    geokit: false
+  email:
+    default_from: "info@example.com"
+    default_to: "info@example.com"
+    bugs_from: "www@example.com"
+    bugs_to: "bugs@example.com"
+  access:
+    allow:
+      system_in_public: true
+      rewrite: false
+  i18n:
+    translation: true
+    language_code: lv
+  google:
+    maps_key: false
+    analytics_key: false
 
 production:
-  language_code: lv
-  translation: true
-  domain: localhost
-
-  flash_actions:
-    - /picture/new_create,
-    - /video_file/new_create,
-    - /audio_file/new_create,
-    - /file/new_create
-  allow:
-    system_in_public: true
-    rewrite: false
-  default_from: "dev@ithouse.lv"
-  default_to: "dev@ithouse.lv"  #comment_table: "Cms::Comment"
-  #vote_table: "Cms::Vote"
-  multi_domain_portal: false
-  domain_depth: 0
-  cms_per_page: 20
-  gmaps_key: nil
-  # vajag abus, jo no Admin::User nevar izsaukt constantize Lesor tabulai, kura extendo pašu Admin::User
-  public_user_model: "Admin::PublicUser"
-  public_user_table: admin_users
+  system:
+    domain: localhost
+    start_page_url: /admin/user/list
+    cms_name: Lolita CMS
+    cms_title: Lolita CMS
+    multi_domain_portal: false
+    domain_depth: 0
+    items_per_page: 20
+    public_user_model: "Admin::PublicUser"
+    public_user_table: admin_users
+    flash_actions:
+      - /picture/new_create,
+      - /video_file/new_create,
+      - /audio_file/new_create,
+      - /file/new_create
+    geokit: false
+  email:
+    default_from: "info@example.com"
+    default_to: "info@example.com"
+    bugs_from: "www@example.com"
+    bugs_to: "bugs@example.com"
+  access:
+    allow:
+      system_in_public: true
+      rewrite: false
+  i18n:
+    translation: true
+    language_code: lv
+  google:
+    maps_key: false
+    anlytics_key: false
 
 test:
-  language_code: lv
-  translation: true
-  domain: localhost
-
-  flash_actions:
-    - /picture/new_create,
-    - /video_file/new_create,
-    - /audio_file/new_create,
-    - /file/new_create
-  allow:
-    system_in_public: true
-    rewrite: false
-  default_from: "new@nomaspunkts.lv"
-  #comment_table: "Cms::Comment"
-  #vote_table: "Cms::Vote"
-  multi_domain_portal: false
-  domain_depth: 0
-  cms_per_page: 20
-  gmaps_key: nil
-  # vajag abus, jo no Admin::User nevar izsaukt constantize Lesor tabulai, kura extendo pašu Admin::User
-  public_user_model: "Admin::PublicUser"
-  public_user_table: admin_users
+  system:
+    domain: localhost
+    start_page_url: /admin/user/list
+    cms_name: Lolita CMS
+    cms_title: Lolita CMS
+    multi_domain_portal: false
+    domain_depth: 0
+    items_per_page: 20
+    public_user_model: "Admin::PublicUser"
+    public_user_table: admin_users
+    flash_actions:
+      - /image_file/new_create,
+      - /video_file/new_create,
+      - /audio_file/new_create,
+      - /simple_file/new_create
+    geokit: false
+  email:
+    default_from: "info@example.com"
+    default_to: "info@example.com"
+    bugs_from: "www@example.com"
+    bugs_to: "bugs@example.com"
+  access:
+    allow:
+      system_in_public: true
+      rewrite: false
+  i18n:
+    translation: true
+    language_code: lv
+  google:
+    maps_key: false
+    anlytics_key: false

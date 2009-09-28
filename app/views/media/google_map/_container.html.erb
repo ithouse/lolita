@@ -13,7 +13,7 @@
   <%= field_render field[:type],field %>
 <%  } %>
 <script type="text/javascript">
-<% if Lolita.config.gmaps_key %>
+<% if Lolita.config.google :maps_key %>
     ITH.GoogleMaps=ITH.GoogleMaps||{}
     loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
     function init_lolita_google_map_<%=cfg[:unique_id]%>(){
@@ -22,7 +22,7 @@
         <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.init()"%>;
       }catch(e){
         <% if RAILS_ENV=="development"  %>
-                alert(e)
+                console.log(e)
         <% end %>
         setTimeout("init_lolita_google_map_<%=cfg[:unique_id]%>()",500)
       }

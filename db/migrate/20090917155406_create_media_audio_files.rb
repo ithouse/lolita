@@ -8,7 +8,7 @@ class CreateMediaAudioFiles < ActiveRecord::Migration
       t.decimal   :name_filesize
       t.timestamps
     end
-    add_index :media_audio_files, [:media_audio_type,:audio_id]
+    add_index :media_audio_files, [:audio_type,:audio_id]
   end
 
   def self.down

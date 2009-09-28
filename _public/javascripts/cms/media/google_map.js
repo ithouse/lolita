@@ -3,7 +3,7 @@
  * Attribūti
  *  options - tiek saņemts caur konstruktoru
  *      read_only(Boolean) - vai ir marķieris kustināms vai ir noklusētais marķieris redzams
- *      id_prefix(String) - konteinera id sākums, piemērs, id="my_map_134", id_prefix="my_map"
+ *      map_prefix(String) - konteinera id sākums, piemērs, id="my_map_134", map_prefix="my_map"
  *      icon(GIcon) - marķiera ikona
  *      unique_id - unikāls identifikātors obligāti jānorāda
  *      center_marker (bool) - nocentrē karti pārvietojot marķieri
@@ -38,16 +38,17 @@ LolitaGoogleMap.prototype={
      */
     load_map:function(){
         if (GBrowserIsCompatible()){// Do Map if Compatible Browser only
-            this.map = new GMap2(elementById((this.options.id_prefix || "map")+"_"+this.options.unique_id));
+            this.map = new GMap2(elementById((this.options.map_prefix===false ? "map" : this.options.map_prefix)+"_"+this.options.unique_id));
             if(!this.options.read_only) this.map.enableScrollWheelZoom();
+            this.options.zoom=this.options.zoom || 15
             this.add_controls() // add Gmap controls to map
             this.set_default_center()
-            this.options.zoom=this.options.zoom || 15
+            
             if(this.options.type=="multimedia"){ //need close tab if map in system side
                 this.hide_current_tab()
             }
         }else{
-            $("#map_"+this.options.unique_id).html("<div style='color: grey'>Error! Render Google Map</div>") ;
+            $("#"+(this.options.map_prefix===false ? "map" : this.options.map_prefix)+"_"+this.options.unique_id).html("<div style='color: grey'>Error! Render Google Map</div>") ;
         }
 
     },
@@ -60,7 +61,7 @@ LolitaGoogleMap.prototype={
             setTimeout(function(that){
                 that.add_markers()
                 if (that.options.center_marker && that.last_marker()){
-                 that.change_center(that.last_marker(),true,that.options.zoom)
+                    that.set_marker(that.last_marker(),true,that.options.zoom)
                 }
             },1000,this)
         }catch(e){
@@ -124,7 +125,7 @@ LolitaGoogleMap.prototype={
     create_form_elements:function(values){
         values=values || {}
         var $container=$("#object_map_"+this.options.unique_id+"_container")
-        var fields=["lat","lng","description"]
+        var fields=["lat","lng","description","zoom"]
         for(var i=0;i<fields.length;i++){
             var value=eval("values."+fields[i]+" ? values."+fields[i]+" : 0")
             $container.append('<input type="hidden" '+
@@ -158,7 +159,7 @@ LolitaGoogleMap.prototype={
                     if(that.last_marker()){
                         that.last_marker().setPoint(point)
                         that.current_zoom=this.getZoom();
-                        that.change_center(that.last_marker())
+                        that.set_marker(that.last_marker())
                     }
                 }
             });
@@ -168,7 +169,7 @@ LolitaGoogleMap.prototype={
             marker.enableDragging()
             GEvent.addListener(marker,'dragend',function() {
                 that.current_zoom=that.map.getZoom();
-                that.change_center(this)
+                that.set_marker(this)
             });
         //            GEvent.addListener(marker,'click',function(){
         //                this.openInfoWindowHtml("<b>asdf</b><span>Arturs</span>");
@@ -195,17 +196,22 @@ LolitaGoogleMap.prototype={
             return this.options.icon
         }
     },
+    set_marker:function(marker,center,zoom){
+        var point=marker.getLatLng();
+        $('#object_map_'+this.options.unique_id+'_lat_'+marker.counter).attr("value",point.lat());
+        $('#object_map_'+this.options.unique_id+'_lng_'+marker.counter).attr("value",point.lng());
+        $('#object_map_'+this.options.unique_id+'_zoom_'+marker.counter).attr("value",zoom || this.current_zoom)
+        if(this.options.center_marker || center) this.change_center(point,zoom)//map.getZoom()
+        
+    },
     /*
      * @@PRIVATE
      * marker(GMarker) - must be specified
      * center(Boolean) - optional, center or not
      * zoom(Integer) - optional, map zoom to set
      */
-    change_center:function(marker,center,zoom){
-        var point=marker.getLatLng();
-        if(this.options.center_marker || center) this.map.setCenter(point,zoom ||this.current_zoom);//map.getZoom()
-        $('#object_map_'+this.options.unique_id+'_lat_'+marker.counter).attr("value",point.lat());
-        $('#object_map_'+this.options.unique_id+'_lng_'+marker.counter).attr("value",point.lng());
+    change_center:function(point,zoom){
+        this.map.setCenter(point,zoom ||this.current_zoom);
     },
     last_marker:function(){
         return this.markers[this.markers.length-1]
@@ -214,7 +220,7 @@ LolitaGoogleMap.prototype={
      * Seach for specific address, when found change last marker position to id
      * otherwise alert message that address canot be found
      */
-    show_address:function(address){
+    show_address:function(address,zoom){
         if (!this.map.geocoder)
             this.map.geocoder=new GClientGeocoder();
         var that=this
@@ -222,15 +228,20 @@ LolitaGoogleMap.prototype={
             address,
             function(point){
                 if (!point) {
-                    alert(address + " not found!");
+                    return "Not Found"
                 } else{
-                    if (typeof(that.last_marker())=="undefined"){
-                        var icon=that.create_icon();
-                        that.add_new_marker(point.lat,point.lng,icon)
+                    if(!that.options.read_only){
+                        if (typeof(that.last_marker())=="undefined"){
+                            var icon=that.create_icon();
+                            that.add_new_marker(point.lat,point.lng,icon)
+                        }else{
+                            that.last_marker().setPoint(point)
+                        }
+                        that.set_marker(that.last_marker(),true,zoom)
                     }else{
-                        that.last_marker().setPoint(point)
+                       that.change_center(point,zoom)
                     }
-                    that.change_center(that.last_marker(),true)
+                    return true
                 }
             }
             )

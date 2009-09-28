@@ -12,17 +12,14 @@ class Managed < ApplicationController
   include Extensions::Cms::Crud
   include Extensions::Cms::Callbacks
   include Extensions::Cms::HandleErrors
-  include Extensions::Cms::Language if Lolita.config.translation
+  include Extensions::Cms::Language if Lolita.config.i18n(:translation)
 
 
   # Pēc noklusējuma index dara to pašu ko list, un tādēļ ir atļauta uz 'read' pieejas veidu modulim.
   # Gadījumā kad index dara darbību ar citu pieejas veidu, tad vajadzētu norādīt citu pieejas līmeni
   # Skatīt ApplicationController#allow un Admin::User#can_do_special_action_in_controller?
   # Līdzīgi ir ar open
-  def index
-    show
-  end
-
+  
   def open
     get_id.to_i>0 ? redirect_to(params.merge(:action=>:update)) : list
   end
@@ -127,7 +124,7 @@ class Managed < ApplicationController
   #           funkcijai
   #   :table - tabulas nosaukums, tiek izmantots dažādiem laukiem, ja laukam nepieciešams
   #            izmantot ārējo tabulu datu iegūšanai
-  #   :table_options - opcijas, kas tiek padotas find, izmanto kopā ar table
+  #   :find_options - opcijas, kas tiek padotas find, izmanto kopā ar table
   #   :titles - String vai Array, tiek izmantots tikai label tipa laukam un iespējams norādīt
   #             speciālajā formātā, sk. field_to_string_simple (field_helper.rb), arī priekš
   #             select tiek izmantots titles, tikai kā options elementu nosaukums
@@ -137,6 +134,7 @@ class Managed < ApplicationController
   #   :config - tikai priekš date un datetime tipa laukiem, norāda opcijas, kas specifiskas šiem laukiem
   #   :simple - tikai priekš select tipa, norāda, ka opcijas ir padotas un nav jāmeklē
   #   :options - opcijas tikai priekš select, masīvs formā [["nosaukums",id]]
+  #    tulkojamām masīvu opcijām var padot lambda {} bloku, citādi valoda var nesakrist ar CMS valodu
   #   :default_value - tikai select noklusētā vērtība, ja nav atrasta tekošā vērtība, parasti pirmā
   #   :parent_link - tikai select, norāda vai ir saite uz saistīta tipa elementa izveidi
   #   :multiple - tikai select, norāda vai ir multiselect

@@ -1,4 +1,5 @@
 nbproject/
 _public/_gsdata
 .DS_Store
+_public/_gsdata_/*
 *~

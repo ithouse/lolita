@@ -16,7 +16,7 @@ class Admin::UserController < Managed
       if user = Admin::SystemUser.authenticate(params[:login], params[:password])
         update_token(user)
         register_user_in_session user
-        redirect_to(:controller=>Admin::Configuration.get_value_by_name('start_page'))
+        redirect_to(Lolita.config.system :start_page_url)
       else
         if params[:password] && params[:login]
           flash[:error]=I18n.t(:"errors.unknown_user")
@@ -27,7 +27,7 @@ class Admin::UserController < Managed
       if logged_in?
         update_token()
         #TODO: šeit jāiet uz admin sadaļu ja system/login
-        redirect_to(:controller=>Admin::Configuration.get_value_by_name('start_page'),:is_ajax=>params[:is_ajax])
+        redirect_to(Lolita.config.system :start_page_url)
       else
         render :layout=>"admin/login"#TODO jāpadomā ko darīt ja lapai nav paredzēta publiskā daļa
       end
@@ -53,7 +53,7 @@ class Admin::UserController < Managed
             params[:user].delete(:old_pass)
             if @user.update_attributes(params[:user]) && @user.errors.size<1
               register_user_in_session @user
-              redirect_to :controller=>Admin::Configuration.get_value_by_name("start_page") || "/", :is_ajax=>params[:is_ajax]
+              redirect_to Lolita.config.system(:start_page_url)
               return
             end
           else
@@ -84,11 +84,11 @@ class Admin::UserController < Managed
           :reset_password_expires_at=>Time.now()+(3*60*60*24)
         )
         body_data={}
-        body_data[:header]="#{I18n.t(:"system_user.form.title")} #{Admin::Configuration.get_value_by_name("system_title")}"
+        body_data[:header]="#{I18n.t(:"system_user.form.title")} #{Lolita.config.system :cms_title}"
         body_data[:a]={:title=>I18n.t(:"system_user.form.name"),:value=>@user.login}
         body_data[:b]={:title=>I18n.t(:"system_user.form.password"),:value=>temp_pass}
         #body_data[:c]={:title=>"",:value=>"Pieteikšanās sistēmā jāveic 3 dienu laikā!"}
-        email_sent(@user.email,"#{I18n.t(:"system_user.form.title")} #{Admin::Configuration.get_value_by_name("system_title")}",body_data)
+        email_sent(@user.email,"#{I18n.t(:"system_user.form.title")} #{Lolita.config.system :cms_title}",body_data)
         redirect_to :action=>"login"
       else
         flash[:error]= I18n.t(:"flash.user not found")
@@ -134,13 +134,13 @@ class Admin::UserController < Managed
   private
 
   def update_token(user=nil)
-    if Lolita.config.multi_domain_portal && !is_local_request?
+    if Lolita.config.system :multi_domain_portal && !is_local_request?
       token=Admin::Token.find_by_token(cookies[:sso_token])
       if token
         if user
-          token.update_attributes!(:user=>user,:uri=>url_for(Admin::Configuration.get_value_by_name('start_page')))
+          token.update_attributes!(:user=>user,:uri=>Lolita.config.system(:start_page_url))
         else
-          token.update_attributes!(:uri=>url_for(Admin::Configuration.get_value_by_name('start_page')))
+          token.update_attributes!(:uri=>Lolita.config.system(:start_page_url))
         end
       end
     end

@@ -7,7 +7,7 @@ function addFormCleaner(form,fields){
     clearForm()
     FormInformation.form=form //need set because tinyMCE loading depends on it
     FormInformation.fields=fields
-  
+
     FormCleaner=setInterval(function(form,fields){
         try{
             if(!$(form).length){

@@ -11,7 +11,7 @@ module Extensions::TinyMceExtensions
     end
     obj.gsub!(/src=\"\/\.\.\//,'src="/');
 #    obj.gsub!(/href=\"\.\.\/\.\./,'href="');
-#    obj.gsub!(/href=\"http:\/\/#{Lolita.config.domain}/,'href="')
+#    obj.gsub!(/href=\"http:\/\/#{Lolita.config.system(:domain)}/,'href="')
 #    obj.gsub!(/href=\"\/(\/|\w)+\"/){|match|
 #      change_url(match)
 #    }

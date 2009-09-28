@@ -181,7 +181,7 @@ class Cms::Base < ActiveRecord::Base
     end
     
     def per_page
-      @per_page||=Admin::Configuration.get_value_by_name("list_per_page").to_i
+      @per_page||=Lolita.config.system :items_per_page
       @per_page
     end
 

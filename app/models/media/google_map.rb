@@ -1,6 +1,7 @@
 class Media::GoogleMap < Media::Base
   set_table_name :media_google_maps
   belongs_to :mappable, :polymorphic=>true
+  acts_as_mappable if Lolita.config.system :geokit
 
   def self.after_parent_save(memory_id,object,options)
     self.find_by_parent(object).each{|m| m.destroy}
@@ -9,7 +10,13 @@ class Media::GoogleMap < Media::Base
     options[:params][:map].each{|map_id,maps|
       maps.each{|marker_id,marker|
         if marker[:lng].to_s!="0" && marker[:lat]!="0"
-          points<<self.create!(:lat=>marker[:lat],:lng=>marker[:lng],:mappable_type=>object_class,:mappable_id=>object.id)
+          points<<self.create!(
+            :lat=>marker[:lat],
+            :lng=>marker[:lng],
+            :zoom=>marker[:zoom],
+            :mappable_type=>object_class,
+            :mappable_id=>object.id
+          )
         end
       }
     } if options[:params][:map].is_a?(Hash)

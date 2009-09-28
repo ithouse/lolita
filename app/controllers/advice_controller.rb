@@ -18,16 +18,16 @@ class AdviceController < ApplicationController
       }
       if @errors.empty?
         body_data={
-          :header=>"#{Admin::Configuration.get_value_by_name("default_title")} #{t(:"simple words.advice")}",
+          :header=>"#{Lolita.config.system :cms_title} #{t(:"simple words.advice")}",
           :body=>[]
         }
         body_data[:body]<<{:title=>t(:"advice.description"),:value=>data[:text]}
         body_data[:body]<<{:title=>t(:"advice.sender"),:value=>data[:submitter]}
-        email_sent("bugs@ithouse.lv",body_data[:header],body_data)
+        email_sent(Lolita.config.email :bugs_to,body_data[:header],body_data)
       end
     end
     if @errors.empty? && request.post?
-      redirect_to :controller=>Admin::Configuration.get_value_by_name("start_page")
+      redirect_to Lolita.config.system :start_page_url
     else
       render :layout=>"cms/simple"
     end

@@ -1,5 +1,5 @@
 class Admin::Menu < Cms::Manager
-  set_table_name :menus
+  set_table_name :admin_menus
 
   has_many :menu_items, :dependent => :destroy, :class_name=>"Admin::MenuItem"
   

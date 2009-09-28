@@ -3,7 +3,7 @@ module Extensions
     module HandleMetadata
 
       def save_metadata_translation
-        if Lolita.config.translation
+        if Lolita.config.i18n :translation
           handle_params
           @object=object.find(params[:id])
           save_metadata_with_translation()
@@ -18,7 +18,7 @@ module Extensions
         unless @metadata || @metadata=MetaData.by_metaable(@object.id,@config[:object_name])
           @metadata=MetaData.new(:metaable_type=>@config[:object_name].camelize,:metaable_id=>@object.id)
         end
-        if Lolita.config.translation && my_params[:meta_translation_locale]
+        if Lolita.config.i18n :translation && my_params[:meta_translation_locale]
           #raise Globalize::Wrong language error if first language switched and then saved
           # work good if block given
           @metadata.switch_language(my_params[:meta_translation_locale]) do

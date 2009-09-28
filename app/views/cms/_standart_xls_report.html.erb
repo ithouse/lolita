@@ -33,9 +33,7 @@ xml.Workbook({
             xml.Row do
                 for column_name in object.column_names
                     unless column_name.match(/_id\z/) || column_name=="id"
-                        field=Admin::Field.find_by_name(column_name)
-                        name=field ? (field.human_name.to_s.size>0 ? field.human_name : column_name) : column_name
-                        xml.Cell { xml.Data name.capitalize, 'ss:Type' => 'String' }
+                        xml.Cell { xml.Data column_name.capitalize, 'ss:Type' => 'String' }
                     end
                 end
             end

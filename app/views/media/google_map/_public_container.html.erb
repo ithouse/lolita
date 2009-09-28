@@ -1,5 +1,5 @@
 <% cfg=public_google_map_configuration(public_container) %>
-<div id="public_map_<%=cfg[:unique_id]%>" class="google-map <%=cfg[:class_name]%>" style="width:<%=cfg[:width] || '600px'%>;height:<%=cfg[:height] || '400px'%>;"></div>
+<div id="<%=cfg[:map_prefix]%>_<%=cfg[:unique_id]%>" class="google-map <%=cfg[:class_name]%>" style="width:<%=cfg[:width] || '600px'%>;height:<%=cfg[:height] || '400px'%>;"></div>
 <%
 # Allowed configuration
 # :unique_id - unique Integer or String value
@@ -8,21 +8,25 @@
 # :height - map container height in px, default 400
 # :object - ActiveRecord object that refrers to locations
 # :lat - Array with latitudes, if object passed then that will be overwiritten
-# :lng - same as :lat only for longitudes
+# :lng - same as :lat only for longitudes.
+# :include_js - add or note the google_maps JS inline, when this is false you
+#               should call "include_google_map_js" helper method in your page HEAD
 %>
-<% if Lolita.config.gmaps_key %>
-  <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%=Lolita.config.gmaps_key%>"></script>
+<% if Lolita.config.google :maps_key %>
+  <% if cfg[:include_js] %>
+    <%=  include_google_map_js %>
+  <% end %>
   <script type="text/javascript">
     if(typeof(PublicGMap)=="undefined") PublicGMap={}
     loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
     function init_lolita_google_map_<%=cfg[:unique_id]%>(){
       try{
-        <%="PublicGMap.public_map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>)
-        <%="PublicGMap.public_map_#{cfg[:unique_id]}.init()" %>
+        <%="PublicGMap.#{cfg[:map_prefix]}_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>)
+        <%="PublicGMap.#{cfg[:map_prefix]}_#{cfg[:unique_id]}.init()" %>
       }catch(e){
         setTimeout("init_lolita_google_map_<%=cfg[:unique_id]%>()",500)
       }
     }
     init_lolita_google_map_<%=cfg[:unique_id]%>()
-  </script>
+   </script>
 <%end%>
