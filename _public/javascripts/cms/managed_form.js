@@ -27,7 +27,7 @@ function clearForm(force){
             //alert(FormInformation.fields)
             clearInterval(FormCleaner)
             FormCleaner=null
-            toggleTinyMCEFromFields(FormInformation.fields,false)
+            unloadTinyMCEfields()
             FormInformation.form=null
             FormInformation.fields=null
         }
@@ -54,12 +54,21 @@ function submitForm(form_id,on_success){
         }
     })
 }
-function toggleTinyMCEFromFields(is_on){
+function toggleTinyMCEFromFields(is_on,acceptable_objects){
     var tab_fields=FormInformation.fields
+    acceptable_objects=acceptable_objects || []
     for(var i in tab_fields){
         var object=tab_fields[i][0]
         var field=tab_fields[i][1]
-        if (field.type=='textarea'  && !field.simple){
+        var object_is_good=acceptable_objects.length==0 ? true : false
+        if(!object_is_good){
+            for(var p in acceptable_objects){
+                if(acceptable_objects[p]==object){
+                    object_is_good=true;break;
+                }
+            }
+        }
+        if (object_is_good && field.type=='textarea'  && !field.simple){
             toggleTinyMCE(is_on,object+"_"+field.field)
         }
     }
@@ -70,13 +79,30 @@ function toggleTinyMCE(is_on,id){
         if(is_on && tinyMCE.getInstanceById(id) == null){
             tinyMCE.execCommand('mceAddControl', false,id );
         }else{
-            if(tinyMCE.getInstanceById(id) != null){
+            if(!is_on && tinyMCE.getInstanceById(id) != null){
                 tinyMCE.execCommand('mceRemoveControl', false,id );
             }
         }
     }catch(err){
         window.location.reload() //If error acured when trying to add tinyMCE editors,
     }                        //User do not know what went wrong
-    
-    
+}
+function unloadTinyMCEfields(acceptable_objects){
+    var tab_fields=FormInformation.fields
+    acceptable_objects=acceptable_objects || []
+    for(var i in tab_fields){
+        var object=tab_fields[i][0]
+        var field=tab_fields[i][1]
+        var object_is_good=acceptable_objects.length==0 ? true : false
+        if(!object_is_good){
+            for(var p in acceptable_objects){
+                if(acceptable_objects[p]==object){
+                    object_is_good=true;break;
+                }
+            }
+        }
+        if (object_is_good && field.type=='textarea'  && !field.simple){
+            tinyMCE.execCommand('mceRemoveControl', false,object+"_"+field.field );
+        }
+    }
 }

@@ -427,7 +427,8 @@ function URLEncode(str){
 }
 function observe_languages(id,tab,url,params){
     $(document).ready(function(e){
-        $(id).change(function(){
+        $(id).unbind("change").change(function(){
+            unloadTinyMCEfields(["translation"])
             ITH.Cms.wait.show()
             $.ajax({
                 url:url,
