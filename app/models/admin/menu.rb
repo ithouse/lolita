@@ -376,5 +376,20 @@ class Admin::Menu < Cms::Manager
     ) if !menu && namespace=="cms"
     return menu ? menu.initialization_data : nil
   end
-
+  # Use this to add new menu items from migrations
+  def self.insert menu_name, position, name, controller
+    #Admin::Menu.insert("Admin", :last, "Room types", "/catalog/room_type")
+    menu = self.find_by_menu_name(menu_name)
+    case position
+    when :first
+      sibling = menu.menu_items.first.root.children.first
+    when :last
+      sibling = menu.menu_items.first.root.children.last
+    end
+    Admin::MenuItem.create!(
+        :name=>name,
+        :menu_id=>menu.id,
+        :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
+    ).move_to_right_of(sibling) if sibling
+  end
 end
