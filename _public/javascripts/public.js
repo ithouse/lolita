@@ -22,3 +22,15 @@ function elementById(id){
         return document.layers[id];
     return false;
 }
+Array.prototype.in_array = function(p_val) {
+	for(var i = 0, l = this.length; i < l; i++) {
+		if(this[i] == p_val) {
+			return true;
+		}
+	}
+	return false;
+}
+Array.prototype.remove=function(s){
+var i = this.indexOf(s);
+if(this.indexOf(s) != -1)this.splice(i, 1);
+}
