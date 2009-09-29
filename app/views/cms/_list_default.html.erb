@@ -2,7 +2,7 @@
   <% @config[:list][:columns]=default_cms_columns unless @config[:list][:columns] %>
   <tr>
     <% @config[:list][:columns].each{|column| %>
-      <%= list_header_cell :width=>column[:width], :title=>field_title(column[:title] || column[:field]),
+      <%= list_header_cell :width=>column[:width], :title=>field_title(column[:title] || @page.parent.human_attribute_name(column[:field])),
       :sort_column=>column[:sortable] || column[:default] ? (column[:sort_field] ? column[:sort_field] : column[:field]) : nil %>
     <%}%>
     <% if @config[:list][:options] %>
