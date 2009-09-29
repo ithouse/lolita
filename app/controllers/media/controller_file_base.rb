@@ -5,7 +5,6 @@ class Media::ControllerFileBase < Media::ControllerBase
   def new_create
     params[params[:media].to_sym]={:name=>params['Filedata']}
     if file
-      media_class.delete_all_files(parent,new?) if single?
       @file=media_class.respond_to?(:new_from_params) ? media_class.new_from_params(params) : media_class.new_file(params)
       begin
         @file.save!
@@ -13,6 +12,7 @@ class Media::ControllerFileBase < Media::ControllerBase
           @file.destroy()
           @error_msg="#{t(:"media.bad type")}!"
         else
+          media_class.delete_all_files(parent,new?,@file) if single?
           media_class.add_to_memory(parent,@file.id) if new?
         end
         render :text=>"OK"

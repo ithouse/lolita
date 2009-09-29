@@ -14,11 +14,15 @@ class Managed < ApplicationController
   include Extensions::Cms::HandleErrors
   include Extensions::Cms::Language if Lolita.config.i18n(:translation)
 
+  managed_after_open :set_instance_variable_for_nested_attributes
 
-  # Pēc noklusējuma index dara to pašu ko list, un tādēļ ir atļauta uz 'read' pieejas veidu modulim.
-  # Gadījumā kad index dara darbību ar citu pieejas veidu, tad vajadzētu norādīt citu pieejas līmeni
-  # Skatīt ApplicationController#allow un Admin::User#can_do_special_action_in_controller?
-  # Līdzīgi ir ar open
+  # <b>Callbacks</b>
+  # All after_ callbacks are called before render action is performed
+  # <tt>before_new</tt> - is called in <i>new</i> action, before @object and @metadata inicialized
+  # <tt>after_new</tt> - is called in <i>new</i> action, after @object and @metadata inicialized
+  # <tt>before_edit</tt> - is called in <i>edit</i> action, before @object and @metadata is found
+  # <tt>after_edit</tt> - is called in <i>edit</i> action, after @object and @metadata is found
+  # <tt>before_open</tt> - is called when <tt>before_open</tt> or <tt>before_edit</tt> is exacuted
   
   def open
     get_id.to_i>0 ? redirect_to(params.merge(:action=>:update)) : list
@@ -29,7 +33,7 @@ class Managed < ApplicationController
   end
   
   protected
-
+  
   def after_allow
     handle_params
   end

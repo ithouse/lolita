@@ -145,8 +145,8 @@ ITH.Element=function(){
         },
         loading:function(type){
             var types={
-                "small":"/images/cms/small-loading.gif",
-                "large":"/images/cms/loading.gif"
+                "small":"/lolita/images/cms/small-loading.gif",
+                "large":"/lolita/images/cms/loading.gif"
             }
             var element=document.createElement("img")
             element.src=types[type]
@@ -562,9 +562,9 @@ ITH.ImageFileVersions=function(){
     var default_width=220;
     var default_height=220
     $(document).ready(function(){
-        loadjscssfile("/javascripts/jquery/Jcrop/jquery.Jcrop.js","js");
-        loadjscssfile("/stylesheets/jquery.Jcrop.css","css")
-        loadjscssfile("/stylesheets/admin/image.cropper.css","css")
+        loadjscssfile("/lolita/javascripts/jquery/Jcrop/jquery.Jcrop.js","js");
+        loadjscssfile("/lolita/stylesheets/jquery.Jcrop.css","css")
+        loadjscssfile("/lolita/stylesheets/admin/image.cropper.css","css")
     })
     return {
         set_versions:function(versions){
