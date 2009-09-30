@@ -12,10 +12,11 @@ Requires
 
 Example
 =======
+set up your config/database.yml
 cd <your project>
 ruby script/plugin install git@github.com:ithouse/lolita.git
 ruby script/plugin install git://github.com/lazyatom/engines.git # Before Rails 3.0
-rake lolita:setup
+rake globalize:setup
 
 # add this line in config/environment.rb before config block
 
@@ -29,12 +30,13 @@ rake lolita:setup
   config.i18n.load_path << Dir[File.join(RAILS_ROOT, 'config', 'locales', '**', '*.{rb,yml}')]
   config.i18n.load_path << Dir[File.join(RAILS_ROOT, 'vendor', 'plugins', 'lolita', 'config', 'locales', '**', '*.{rb,yml}')]
 
-rake globalize:setup
 rake db:migrate:all
+rake lolita:setup
+
+Provide administrator credentials. If everything went well, you should be up and running with
+
 ruby script/server
 
-Open http://localhost:3000/system/login
-  - login: admin
-  - password: admin
+Log in to the backend through http://localhost:3000/system/login
 
 Copyright (c) 2009 IT House ltd., released under the MIT license

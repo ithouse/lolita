@@ -1,4 +1,4 @@
-class Media::ImageFileController < Media::ControllerBase
+class Media::GoogleMapController < Media::ControllerBase
   allow
   
 end

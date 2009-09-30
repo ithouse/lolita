@@ -1,6 +1,7 @@
 class Admin::TableController < Managed
   allow Admin::Role.admin
   access_control :exclude=>[:destroy,:edit,:new], :redirect_to=>{:action=>:list}
+  managed_before_list :collect_accessable_classes
   def index
     redirect_to :action=>'list', :all=>params
   end
@@ -33,7 +34,7 @@ class Admin::TableController < Managed
   
   private
 
-  def before_list
+  def collect_accessable_classes
     unless params[:paging]
       Admin::Table.collect_modules
     end
