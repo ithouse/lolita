@@ -3,7 +3,7 @@ class Admin::User < Cms::Base
  
   set_table_name :admin_users #Lolita.config.system(:public_user_table)
   has_and_belongs_to_many :roles, :class_name=>"Admin::Role"
-  attr_protected :role_ids
+  attr_protected :role_ids,:crypted_password,:salt
   attr_accessor :password
   attr_accessor :old_password
 

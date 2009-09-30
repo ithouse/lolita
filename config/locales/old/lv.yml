@@ -150,24 +150,3 @@ lv:
     new: Jauns sižets
   source_type:
     intro: Avotu tipu pārvaldīšana
-  ActiveRecord:
-    errors:
-        inclusion: nav iekļauts sarakstā
-        exclusion: ir rezervēts
-        invalid: ir nederīgs
-        confirmation: nesakrīt ar apstiprinājuma lauku
-        accepted: jābūt apstiprinātam
-        empty: nedrīkst būt tukšs
-        blank: nedrīkst būt neaizpildīts
-        too_long: ir ar garu (maksimāli %d simboli)
-        too_short: ir par īsu (minimums %d simboli)
-        wrong_length: ir nepareizs garums (jābūt %d simboliem)
-        taken: ir jau aizņemts
-        not_a_number: nav skaitlis
-        greater_than: jābūt lielākam par %d
-        greater_than_or_equal_to: jābūt lielākam vai vienādam ar %d
-        equal_to: jābūt vienādam ar %d
-        less_than: jābūt mazākam par %d
-        less_than_or_equal_to: jābūt mazākam vai vienādam par %d
-        odd: jābūt nepāra
-        even: jābūt pāra

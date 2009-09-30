@@ -119,7 +119,7 @@ lv:
         empty: "ir jābūt aizpildītam"
         blank: "ir jābūt aizpildītam"
         too_long: "ir par garu (maksimums ir {{count}} zīmes)"
-        too_short: "ir par īsu (minimums ir {{count}} zīmes)"
+        too_short: "ir par īsu (minimums ir %d zīmes)"
         wrong_length: "ir nepareizs garums (jābūt {{count}} zīmēm)"
         taken: "ir jau aizņemts"
         not_a_number: "nav skaitlis"
