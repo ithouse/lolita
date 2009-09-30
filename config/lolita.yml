@@ -20,6 +20,13 @@ development:
     default_to: "info@example.com"
     bugs_from: "www@example.com"
     bugs_to: "bugs@example.com"
+    smtp_settings:
+      address: "smtp.gmail.com"
+      port: 587
+      domain: domain.com
+      user_name: "user@domain.com"
+      password: "password"
+      authentication: plain
   access:
     allow:
       system_in_public: true
@@ -53,6 +60,13 @@ production:
     default_to: "info@example.com"
     bugs_from: "www@example.com"
     bugs_to: "bugs@example.com"
+    smtp_settings:
+      address: "smtp.gmail.com"
+      port: 587
+      domain: domain.com
+      user_name: "user@domain.com"
+      password: "password"
+      authentication: plain
   access:
     allow:
       system_in_public: true
@@ -86,6 +100,13 @@ test:
     default_to: "info@example.com"
     bugs_from: "www@example.com"
     bugs_to: "bugs@example.com"
+    smtp_settings:
+      address: "smtp.gmail.com"
+      port: 587
+      domain: domain.com
+      user_name: "user@domain.com"
+      password: "password"
+      authentication: plain 
   access:
     allow:
       system_in_public: true
