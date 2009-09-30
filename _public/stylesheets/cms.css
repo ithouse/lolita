@@ -769,6 +769,10 @@ span.splitter{
 }
 .field-error-explanation{
 }
+div.checkbox {
+  float:left;
+  width:200px;
+}
 #picture_gallery1 .bd {
   overflow:auto;
   height:400px;

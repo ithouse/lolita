@@ -13,16 +13,29 @@ class Media::FileBase < Media::Base
     )
   end
 
-  #Delete all files with given memeory_id
-  def self.delete_all_files(memory_id,in_memory)
+  #Delete all files with given memeory_id, if files are in memory otherwise
+  # delete all files only current
+  def self.delete_all_files(memory_id,in_memory,current=nil)
     if in_memory
       media_ids=[]
       conditions=["media=? AND memory_id=? AND user_id=?",self.to_s,memory_id,Admin::User.current_user.id]
       Media::MediaFileTempMemory.find(:all, :conditions=>conditions).each{|mem|
         media_ids<<mem.media_file_id
       }
-      self.destroy_all(["id IN (?)",media_ids]) unless media_ids.empty?
+      self_conditions=["id IN (?)",media_ids]
+      if current
+        self_conditions[0]<<" AND id!=?"
+        self_conditions<<current.id
+      end
+      self.destroy_all() unless media_ids.empty?
       Media::MediaFileTempMemory.delete_all(conditions)
+    else
+      if current
+        polymorphic_name=media_get_polymorphic_name
+        self.destroy_all(["id!=? AND #{polymorphic_name}_type=? AND #{polymorphic_name}_id=?",
+            current.id,current.send(:"#{polymorphic_name}_type"),current.send(:"#{polymorphic_name}_id")
+        ])
+      end
     end
   end
 
@@ -68,7 +81,7 @@ class Media::FileBase < Media::Base
   #End of new functions added when changed to media namespace
   def self.new_file(params)
     file=self.new()
-     polymorphic_name=media_get_polymorphic_name
+    polymorphic_name=media_get_polymorphic_name
     if params[:tempid]!="true" && params[:parent_id]
       parent=params[:parent].camelize.constantize.find_by_id(params[:parent_id])
       file.send("#{polymorphic_name}=",parent) if parent

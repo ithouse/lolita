@@ -32,20 +32,9 @@ module Extensions
       # end
       # šī funkcija tiks izsaukta pirms edit, funkcijas, taču tai būs pieejami visi mainīgie
       # tādī kā @config, @all u.c.
-      def handle_before_functions fnc,*args
-        handle_function("before_#{fnc}",args[0])
-        handle_function("before_save",args[0]) if fnc=='create' || fnc=='update'
-        handle_function("before_open",args[0]) if fnc=="new" || fnc=="edit"
-      end
-
-      def handle_after_functions fnc, *args
-        handle_function("after_#{fnc}",args[0])
-        handle_function("after_save",args[0]) if fnc=='create' || fnc=='update'
-        handle_function("after_open",args[0]) if fnc=="new" || fnc=="edit"
-      end
-
-      def handle_function fnc, *args
-        self.send(fnc) if self.respond_to?(fnc,true)
+     
+      def handle_function fnc
+        self.exacute_managed_callbacks(fnc)
       end
 
       #beidzas funkcijas

@@ -31,7 +31,7 @@ module Extensions
 
       def list configuration={}
         params[:action]="list" unless configuration[:keep_action]
-        handle_before_functions "list"
+        handle_function "before_list"
 
         prepare_list(configuration) do |object,options|
           @accepted_params={} #glabā tās vērtības kas ir pieņamtas kā saistīto moduļu filtri
@@ -57,7 +57,7 @@ module Extensions
           else
             @page=object.find(:all,:conditions=>options[:conditions],:joins=>options[:joins],:group=>options[:group],:order=>options[:sort_column] ? "#{options[:sort_column]} #{options[:sort_direction]}" : nil)
           end
-          handle_after_functions "list"
+          handle_function "after_list"
           if configuration[:report] || @config[:list][:report]
             return @page
           else

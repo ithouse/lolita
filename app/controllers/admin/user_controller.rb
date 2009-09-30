@@ -2,21 +2,13 @@ class Admin::UserController < Managed
   allow Admin::Role.admin,:all=>[:edit_self], :public=>[:login,:logout,:forgot_password]
   #menu_actions :system=>{:view_log=>I18n.t(:"user.log")}
   
-  def index
-    if params[:id]
-      redirect_to :action=>'edit', :id=>params[:id], :is_ajax=>params[:is_ajax]
-    else
-      redirect_to :action=>'list', :is_ajax=>params[:is_ajax]
-    end
-  end
-  
   def login
     flash[:error]=nil
     if request.post?
       if user = Admin::SystemUser.authenticate(params[:login], params[:password])
         update_token(user)
         register_user_in_session user
-        redirect_to(Lolita.config.system :start_page_url)
+        redirect_to(Lolita.config.system(:start_page_url))
       else
         if params[:password] && params[:login]
           flash[:error]=I18n.t(:"errors.unknown_user")
@@ -27,7 +19,7 @@ class Admin::UserController < Managed
       if logged_in?
         update_token()
         #TODO: šeit jāiet uz admin sadaļu ja system/login
-        redirect_to(Lolita.config.system :start_page_url)
+        redirect_to(Lolita.config.system(:start_page_url))
       else
         render :layout=>"admin/login"#TODO jāpadomā ko darīt ja lapai nav paredzēta publiskā daļa
       end
@@ -123,14 +115,6 @@ class Admin::UserController < Managed
     render :partial=>'all_users', :locals=>{:role=>@role}
   end
 
-  def view_log
-    @text=Admin::User.user_activities
-  end
-
-  def clear_log
-    Admin::User.clear_user_activities
-    redirect_to :action=>"view_log"
-  end
   private
 
   def update_token(user=nil)
@@ -160,7 +144,7 @@ class Admin::UserController < Managed
       :object=>"Admin::SystemUser",
       :tabs=>[
         {:type=>:content,:in_form=>true,:opened=>true,:fields=>:default},
-        {:type=>:pictures,:in_form=>true,:single=>true}
+        {:type=>:multimedia,:media=>:image_file,:single=>true}
       ],
       :list=>{
         :options=>[:edit,:destroy],
