@@ -3,3 +3,4 @@ _public/_gsdata
 .DS_Store
 _public/_gsdata_/*
 *~
+doc/
