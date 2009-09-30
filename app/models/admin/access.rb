@@ -5,8 +5,8 @@ class Admin::Access < Cms::Base
 
   def self.collect_all
     old_access_list=Admin::Access.find(:all)
-    temp_access=Util::System.get_models.collect{|table|
-      Admin::Table.is_valid_object?(table[:name].camelize.constantize) ? Admin::Access.find_or_create_by_name(table[:name]) : nil
+    temp_access=Util::System.load_classes.collect{|table|
+      Admin::Access.find_or_create_by_name(table[:name])
     }.compact
     remove_array=old_access_list-temp_access
     Admin::Access.delete(remove_array)

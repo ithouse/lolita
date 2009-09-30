@@ -15,7 +15,7 @@ class Admin::Table < Cms::Base
   }
   def self.collect_modules
     existing=existing_table_names
-    unneeded=existing-collect_real_tables(Util::System.get_models,existing)
+    unneeded=existing-collect_real_tables(Util::System.load_classes,existing)
     remove_tables(unneeded)
   end
 
@@ -28,7 +28,7 @@ class Admin::Table < Cms::Base
   def self.collect_real_tables(fs_modules,existing_tables)
     real_tables=[]
     fs_modules.each{|table|
-      real_tables<<table[:name] if is_valid_object?(table[:name].camelize.constantize,:all=>true)
+      real_tables<<table[:name]
       unless existing_tables.include?(table[:name])
         existing_tables<<table[:name]
         self.create(:name=>table[:name])
@@ -44,12 +44,12 @@ class Admin::Table < Cms::Base
   end
 
 
-  def self.is_valid_object?(object,options={})
-    ancestors=object.ancestors
-    valid_ancestors=ancestors.include?(Cms::Manager) || ancestors.include?(Cms::Content)
-    is_abstract=object.respond_to?("abstract_class?") && object.abstract_class?
-    (!is_abstract || (is_abstract && valid_ancestors)) && ((valid_ancestors) || (options[:all] && ancestors.include?(Cms::Base)))
-  end
+#  def self.is_valid_object?(object,options={})
+#    ancestors=object.ancestors
+#    valid_ancestors=ancestors.include?(Cms::Manager) || ancestors.include?(Cms::Content)
+#    is_abstract=object.respond_to?("abstract_class?") && object.abstract_class?
+#    (!is_abstract || (is_abstract && valid_ancestors)) && ((valid_ancestors) || (options[:all] && ancestors.include?(Cms::Base)))
+#  end
 
   def humanized_name
     self.human_name.to_s.size>0 ? self.human_name : self.name.split("/").last.humanize

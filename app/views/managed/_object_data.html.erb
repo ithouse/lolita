@@ -17,7 +17,7 @@
       <% if value[:title] && value[:title].is_a?(String)
         title=value[:title]
       else
-        title=field_title(@object.class.human_attribute_name value[:field])
+        title=field_title(@object.class.human_attribute_name(value[:field]))
       end
     %>
       <div class="managed-create-line">

@@ -91,7 +91,7 @@ class Admin::Menu < Cms::Manager
           modules_for_display << {:display_name=>table_names[module_hsh[:name]], :system_name=>module_hsh[:name]}
         else
           modules_for_display << {:display_name=>module_hsh[:name].camelize, :system_name=>module_hsh[:name]}
-        end if (!options[:all] && [Cms::Content,TableLess].include?(module_hsh[:object].constantize.superclass)) || (options[:all])
+        end if (!options[:all] && module_hsh[:object].ancestors.include?(Managed)) || (options[:all])
       }
       modules_for_display.sort!{|x,y| x[:display_name] <=> y[:display_name] }
       modules_for_display.each{|model|
@@ -102,7 +102,7 @@ class Admin::Menu < Cms::Manager
 
   def existing_modules
     #a=Util::System.list_directory "app/models/#{self.module_name}", :include_root=>true
-    a = Util::System.get_data_models
+    a = Util::System.load_classes
     a
   end
 
@@ -110,11 +110,11 @@ class Admin::Menu < Cms::Manager
     #Valdis: atsakamies no namespece ierobežojumiem veidojot menu
     table_names={}
     if namespace
-      Admin::Table.in_namespace(self.module_name,all).exclude_names(excluded).by_human_name.each{|table|
+      Admin::Table.in_namespace(self.module_name,all).exclude_names(excluded).by_human_name("asc").each{|table|
         table_names[table.name]=table.human_name if table.human_name.to_s.size>0
       }
     else
-      Admin::Table.exclude_names(excluded).by_human_name.each{|table|
+      Admin::Table.exclude_names(excluded).by_human_name("asc").each{|table|
         table_names[table.name] = "#{table.name.split('/')[0].humanize}::#{table.human_name}" if table.human_name.to_s.size>0
       }
     end

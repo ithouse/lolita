@@ -1,7 +1,7 @@
 class Admin::AccessController < Managed
   allow Admin::Role.admin
   access_control :exclude=>[:edit,:update,:new,:create,:destroy]
-  
+  managed_before_list :collect_all_accessable_classes
   def index
     redirect_to :action=>:list, :is_ajax=>params[:is_ajax]
   end
@@ -51,7 +51,7 @@ class Admin::AccessController < Managed
  
   private 
 
-  def before_list
+  def collect_all_accessable_classes
     if !@accesses
       Admin::Access.collect_all
     end
