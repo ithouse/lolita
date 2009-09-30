@@ -376,7 +376,8 @@ class Admin::Menu < Cms::Manager
     ) if !menu && namespace=="cms"
     return menu ? menu.initialization_data : nil
   end
-  # Use this to add new menu items from migrations
+  
+  # Add new menu items from migrations
   def self.insert menu_name, position, name, controller
     #Admin::Menu.insert("Admin", :last, "Room types", "/catalog/room_type")
     menu = self.find_by_menu_name(menu_name)
@@ -391,5 +392,11 @@ class Admin::Menu < Cms::Manager
         :menu_id=>menu.id,
         :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
     ).move_to_right_of(sibling) if sibling
+  end
+
+  # Remove menu items from migrations
+  def self.remove menu_name, controller
+    menu = self.find_by_menu_name(menu_name)
+    MenuItem.destroy_all(["menuable_type = ? AND menuable_id IN (?) AND menu_id = ?"],"Admin::Action",Admin::Action.find_all_by_action_and_controller("list",controller).collect{|a| a.id },menu.id)
   end
 end
