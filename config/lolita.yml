@@ -21,6 +21,7 @@ development:
     bugs_from: "www@example.com"
     bugs_to: "bugs@example.com"
     smtp_settings:
+      tls: true
       address: "smtp.gmail.com"
       port: 587
       domain: domain.com
@@ -61,6 +62,7 @@ production:
     bugs_from: "www@example.com"
     bugs_to: "bugs@example.com"
     smtp_settings:
+      tls: true
       address: "smtp.gmail.com"
       port: 587
       domain: domain.com
@@ -101,6 +103,7 @@ test:
     bugs_from: "www@example.com"
     bugs_to: "bugs@example.com"
     smtp_settings:
+      tls: true
       address: "smtp.gmail.com"
       port: 587
       domain: domain.com
