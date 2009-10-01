@@ -256,12 +256,12 @@ class Admin::User < Cms::Base
        #iespējams piekļūta arī actioniem, ja tie ir pieejami viesiem vai publiski
       result=can_access_built_in_actions?(action,options) if options.is_a?(Hash)
       found=result
-    elsif action_accessable.is_a?(Symbol)
-      result=(action_accessable==:all ? self.can_all?(controller) : (action_accessable==:any ? self.can_anything?(controller) : self.can_access_simple_special_action?(action_accessable,controller)))
-    elsif action_accessable.is_a?(String)
-      result=self.can_access_simple_special_action?(action_accessable)
+    elsif action_accessable.to_s=~/all|any|read|write|update|delete/
+      result=(action_accessable.to_sym==:all ? self.can_all?(controller) : (action_accessable.to_sym==:any ? self.can_anything?(controller) : self.can_access_simple_special_action?(action_accessable,controller)))
     elsif action_accessable.is_a?(Array)
       result=action_accessable.detect{|access| self.can_access_simple_special_action?(access,controller)} ? true : nil
+    else
+      result=self.can_access_simple_special_action?(action_accessable)
     end
     return result,found
   end
@@ -273,9 +273,9 @@ class Admin::User < Cms::Base
   end
   
   def can_access_simple_special_action? action_accessable,controller=nil
-    if action_accessable.is_a?(Symbol) && controller && [:write,:read,:update,:delete].include?(action_accessable)
+    if action_accessable.to_s=~/read|write|update|delete/
       self.send("can_#{action_accessable}?",controller)
-    elsif action_accessable.is_a?(String)
+    else
       self.has_role?(action_accessable)
     end
   end
