@@ -8,7 +8,7 @@ module Extensions::Translation
       end
       Globalize::Locale.set I18n.locale.to_s
     else
-      locale=Lolita.config.language_code || Admin::Language.find_base_language.short_name
+      locale=Lolita.config.i18n :language_code || Admin::Language.find_base_language.short_name
       I18n.locale=locale
       Globalize::Locale.set locale
     end
