@@ -6,12 +6,12 @@ class Admin::PublicUserController < ApplicationController
     flash[:error]=nil
     if request.post? && params[:user]
       user = klass.authenticate(params[:user][login],params[:user][password])
-      loged_in=yield user if user
+      loged_in=yield user
       if user && loged_in
         register_user_in_session user
         redirect_to options[:login_url] || home_url
       else
-        flash[:error]=flash[:error] || I18n.t(:"flash.login failed")
+        flash[:error]||=I18n.t(:"flash.login failed")
       end
     else
       redirect_to options[:login_url] || home_url if logged_in?
