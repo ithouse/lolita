@@ -40,34 +40,30 @@ class Admin::User < Cms::Base
     end
   end
 
-  def self.access_to_area?(ses,area=false)
-    return false unless ses[:user]
-    area=:public unless area
-    if area==:public_system
-      user = ses[:user][:user_class].find_by_id(ses[:user][:user_id])
-      (Lolita.config.access :allow, :system_in_public && user.is_a?(Admin::SystemUser))||
-        (Lolita.config.access :allow, :rewrite && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
-      user.is_a?(ses[:user][:user_class])
-    elsif area==:system
-    end
+  def self.access_to_area?(user,area=false)
+    true #FIXME
+#    return false unless ses[:user]
+#    area=:public unless area
+#    if area==:public_system
+#      (Lolita.config.access :allow, :system_in_public && user.is_a?(Admin::SystemUser))||
+#        (Lolita.config.access :allow, :rewrite && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
+#      user.is_a?(ses[:user][:user_class])
+#    elsif area==:system
+#    end
   end
   
-  def self.authenticate_in_controller action,controller,user=nil,options={},roles=nil
-    allowed=false
-    action=action.to_sym
-    Admin::User.current_user=nil
-    Admin::User.area=nil
-    if action_in?(action,options[:public])
-      Admin::User.area=:public
-      allowed=true
-    elsif !action_in?(action,options[:all_public]) && user && user.is_a?(Admin::SystemUser) && user.is_real_user?
-      Admin::User.current_user=user
-      Admin::User.area=:system
-      allowed=user.is_admin? || action_in?(action,options[:all]) || ((!except?(options,action)||only?(options,action)) && user.has_access?(roles,action,controller,options))
-    elsif self.access_to_area?({:user => user}) && user.is_real_user?
-      Admin::User.current_user=user
-      Admin::User.area=:public_system
-      allowed=action_in?(action,options[:all_public]) || user.has_access?(roles,action,controller,options)
+  def self.authenticate_in_controller options={}
+    options[:permissions]||={}
+    set_area_and_user()
+    allowed=if action_in?(options,:public)
+      set_area_and_user(:public)
+      true
+    elsif !action_in?(options,:all_public) && options[:user] && options[:user].is_a?(Admin::SystemUser) && options[:user].is_real_user?
+      set_area_and_user(:system,options[:user])
+      options[:user].is_admin? || action_in?(options,:all) || ((!except?(options)||only?(options)) && options[:user].has_access?(options))
+    elsif self.access_to_area?(options[:user]) && options[:user].is_real_user?
+      set_area_and_user(:public_system,options[:user])
+      action_in?(options,:all_public) || options[:user].has_access?(options)
     end
     return allowed
   end
@@ -163,8 +159,9 @@ class Admin::User < Cms::Base
   #   /cms/news/list = > atļauj, ja lietotājam ir loma "editor"
   # allow
   #   /cms/news/list = > atļauj, ja lietotājam ir kāda loma ar :read tiesībām Cms::News modulim
-  def has_access? roles,action=nil,controller=nil,options={}
-    roles=[roles] if roles.is_a?(String)
+  def has_access? options={}
+    #roles,action=nil,controller=nil,options={}
+    roles=[options[:roles]] if options[:roles].is_a?(String)
     if roles && !roles.empty?
       Admin::User.find_by_sql(["
         SELECT admin_users.id FROM admin_users
@@ -173,7 +170,7 @@ class Admin::User < Cms::Base
           (SELECT id FROM admin_roles WHERE name IN (?)) AND roles_users.user_id=?
         LIMIT 1",roles,self.id]).empty? ? false : true
     else
-      return self.can_access_action?(action,controller,options)
+      return self.can_access_action?(options[:action],options[:controller],options[:permissions])
     end
   end
 
@@ -239,7 +236,7 @@ class Admin::User < Cms::Base
   end
   protected
 
-   #var norādīt kontrolierī ka ir pieejamas speciāli actioni
+  #var norādīt kontrolierī ka ir pieejamas speciāli actioni
   # allow actions=>{
   #     :show_graphic=>:all,
   #     :remove_links=>:delete
@@ -253,7 +250,7 @@ class Admin::User < Cms::Base
     action_accessable= options && options[:actions] ? options[:actions][action.to_sym] : false
     found=true
     if !action_accessable && Admin::User.area==:system
-       #iespējams piekļūta arī actioniem, ja tie ir pieejami viesiem vai publiski
+      #iespējams piekļūta arī actioniem, ja tie ir pieejami viesiem vai publiski
       result=can_access_built_in_actions?(action,options) if options.is_a?(Hash)
       found=result
     elsif action_accessable.to_s=~/all|any|read|write|update|delete/
@@ -268,8 +265,8 @@ class Admin::User < Cms::Base
 
   def can_access_built_in_actions?(action,options={})
     return self.class.action_in?(action,options[:all]) ||
-    self.class.action_in?(action,options[:public]) ||
-    (Lolita.config.access :allow, :system_in_public && self.class.action_in?(action,options[:all_public]))
+      self.class.action_in?(action,options[:public]) ||
+      (Lolita.config.access :allow, :system_in_public && self.class.action_in?(action,options[:all_public]))
   end
   
   def can_access_simple_special_action? action_accessable,controller=nil
@@ -303,18 +300,24 @@ class Admin::User < Cms::Base
     end
   end
 
-  def self.except? options,action
-    check_options? options[:except],action
+  def self.except? options
+    check_options? options[:permissions][:except],options[:action]
   end
-  def self.only? options,action
-    check_options? options[:only],action
+  def self.only? options
+    check_options? options[:permissions][:only],options[:action]
   end
-  def self.public? options,action
-    check_options? options[:public],action
+  def self.public? options
+    check_options? options[:permissions][:public],options[:action]
   end
 
-  def self.action_in? action,options
-    (options && options.is_a?(Hash) ? options.keys.include?(action) : (options.is_a?(Array) ? options.include?(action) : nil))
+  def self.action_in? options,area
+    perm=options[:permissions][area]
+    (perm && perm.is_a?(Hash) ? perm.keys.include?(options[:action]) : (perm.is_a?(Array) ? perm.include?(options[:action]) : nil))
+  end
+
+  def self.set_area_and_user(area=nil,user=nil)
+    Admin::User.area=area
+    Admin::User.current_user=user
   end
   def encrypt_password
     return if password.blank?

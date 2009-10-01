@@ -309,7 +309,12 @@ class Admin::Menu < Cms::Manager
     else
       contr_object=@existing_controllers[controller.camelize]
     end
-    Admin::User.authenticate_in_controller(action,controller,Admin::User.current_user,contr_object.permissions)
+    Admin::User.authenticate_in_controller(
+      :action=>action.to_sym,
+      :controller=>controller,
+      :user=>Admin::User.current_user,
+      :permissions=>contr_object.permissions
+    )
   end
   
   def create_new_tree(tree)
