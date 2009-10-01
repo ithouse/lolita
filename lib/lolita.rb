@@ -36,7 +36,8 @@ module Lolita
     end
 
     def method_missing(key,*args)
-      eval "self.conf['#{key}']#{args ? args.collect{|a| "['#{a}']"}.join : ""}"
+      value = eval "self.conf['#{key}']#{args ? args.collect{|a| "['#{a}']"}.join : ""}"
+      value.is_a?(Hash) ? value.symbolize_keys! : value
     end
 
     def update *args
