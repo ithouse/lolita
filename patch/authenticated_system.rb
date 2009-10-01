@@ -26,6 +26,10 @@ module AuthenticatedSystem
       @current_user = new_user
     end
 
+    def reset_current_user
+      session[:user]=nil
+      @current_user=nil
+    end
     # Check if the user is authorized.
     #
     # Override this method in your controllers if you want to restrict access

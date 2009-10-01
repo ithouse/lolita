@@ -26,27 +26,6 @@ class Admin::SystemUser < Admin::User
 #    return !all_accesses(controller_name).empty?
 #  end
 
-  # Nosaka vai ir pieeja
-  # 1. gadījumā, ja ir pieeja lomai vai lomām, tad atļauj ja lietotājam ir šī loma
-  # 2. gadījums, ja ir kāda loma, kam ir pieeja dotajam modulim ar doto notikumu, dotajam pieejas līmenim
-  # allow "editor"
-  #   /cms/news/list = > atļauj, ja lietotājam ir loma "editor"
-  # allow
-  #   /cms/news/list = > atļauj, ja lietotājam ir kāda loma ar :read tiesībām Cms::News modulim
-  def has_access? roles,action=nil,controller=nil,options={}
-    roles=[roles] if roles.is_a?(String)
-    if roles && !roles.empty?
-      Admin::SystemUser.find_by_sql(["
-        SELECT admin_users.id FROM admin_users
-        INNER JOIN roles_users ON roles_users.user_id=admin_users.id
-        WHERE roles_users.role_id IN
-          (SELECT id FROM admin_roles WHERE name IN (?)) AND roles_users.user_id=?
-        LIMIT 1",roles,self.id]).empty? ? false : true
-    else
-      return self.can_access_action?(action,controller,options)
-    end
-  end
-
   def is_real_user?
     real_user=Admin::SystemUser.find_by_login(self.login)
     real_user==self

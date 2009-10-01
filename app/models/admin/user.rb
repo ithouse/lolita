@@ -156,6 +156,27 @@ class Admin::User < Cms::Base
     self.roles.find_by_name(role_name) ? true : false
   end
 
+  # Nosaka vai ir pieeja
+  # 1. gadījumā, ja ir pieeja lomai vai lomām, tad atļauj ja lietotājam ir šī loma
+  # 2. gadījums, ja ir kāda loma, kam ir pieeja dotajam modulim ar doto notikumu, dotajam pieejas līmenim
+  # allow "editor"
+  #   /cms/news/list = > atļauj, ja lietotājam ir loma "editor"
+  # allow
+  #   /cms/news/list = > atļauj, ja lietotājam ir kāda loma ar :read tiesībām Cms::News modulim
+  def has_access? roles,action=nil,controller=nil,options={}
+    roles=[roles] if roles.is_a?(String)
+    if roles && !roles.empty?
+      Admin::User.find_by_sql(["
+        SELECT admin_users.id FROM admin_users
+        INNER JOIN roles_users ON roles_users.user_id=admin_users.id
+        WHERE roles_users.role_id IN
+          (SELECT id FROM admin_roles WHERE name IN (?)) AND roles_users.user_id=?
+        LIMIT 1",roles,self.id]).empty? ? false : true
+    else
+      return self.can_access_action?(action,controller,options)
+    end
+  end
+
   def can_all? controller_name
     actions=can_what? controller_name
     actions[:read] && actions[:write] && actions[:update] && actions[:delete]

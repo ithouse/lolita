@@ -96,7 +96,7 @@ class Admin::UserController < Managed
   
   def add_role
     if params[:role] and params[:user]
-      user=Admin::SystemUser.find_by_id(params[:user])
+      user=Admin::User.find_by_id(params[:user])
       user.has_role(params[:role]) if user
     end
     render :text=>"OK"
@@ -104,7 +104,7 @@ class Admin::UserController < Managed
   
   def remove_role
     if params[:role] and params[:user]
-      user=Admin::SystemUser.find(params[:user])
+      user=Admin::User.find(params[:user])
       user.has_no_role(params[:role]) if user
     end
     render :text=>'OK'
