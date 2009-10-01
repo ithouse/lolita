@@ -11,7 +11,7 @@ class Admin::PublicUserController < ApplicationController
         register_user_in_session user
         redirect_to options[:login_url] || home_url
       else
-        flash[:error]||=I18n.t(:"flash.login failed")
+        flash[:error]||=I18n.t(:"flash.error.auth failed")
       end
     else
       redirect_to options[:login_url] || home_url if logged_in?
