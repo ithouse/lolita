@@ -153,7 +153,7 @@ class Admin::User < Cms::Base
   end
 
   def has_role?(role)
-    self.roles.find_by_name(role_name.is_a?(Admin::Role) ? role.name : role.to_s) ? true : false
+    self.roles.find_by_name(role.is_a?(Admin::Role) ? role.name : role.to_s) ? true : false
   end
 
   # Nosaka vai ir pieeja
