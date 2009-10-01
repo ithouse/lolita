@@ -58,10 +58,10 @@ class Admin::User < Cms::Base
     allowed=if action_in?(options,:public)
       set_area_and_user(:public)
       true
-    elsif !action_in?(options,:all_public) && options[:user] && options[:user].is_a?(Admin::SystemUser) && options[:user].is_real_user?
+    elsif !action_in?(options,:all_public) && options[:user] && options[:user].is_a?(Admin::SystemUser)
       set_area_and_user(:system,options[:user])
       options[:user].is_admin? || action_in?(options,:all) || ((!except?(options)||only?(options)) && options[:user].has_access?(options))
-    elsif self.access_to_area?(options[:user]) && options[:user].is_real_user?
+    elsif self.access_to_area?(options[:user])
       set_area_and_user(:public_system,options[:user])
       action_in?(options,:all_public) || options[:user].has_access?(options)
     end
