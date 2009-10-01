@@ -43,7 +43,7 @@ class Admin::User < Cms::Base
   def self.access_to_area?(ses,area=false)
     return false unless ses[:user]
     area=:public unless area
-    if area==:public
+    if area==:public_system
       user = ses[:user][:user_class].find_by_id(ses[:user][:user_id])
       (Lolita.config.access :allow, :system_in_public && user.is_a?(Admin::SystemUser))||
         (Lolita.config.access :allow, :rewrite && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā

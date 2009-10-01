@@ -9,13 +9,22 @@ class Admin::PublicUserController < ApplicationController
       loged_in=yield user
       if user && loged_in
         register_user_in_session user
-        redirect_to options[:login_url] || home_url
+        redirect_to options[:url] || home_url
       else
         flash[:error]||=I18n.t(:"flash.error.auth failed")
       end
     else
-      redirect_to options[:login_url] || home_url if logged_in?
+      redirect_to options[:url] || home_url if logged_in?
     end
+  end
+
+  def logout_public_user options={}
+    if logged_in?
+      self.current_user.forget_me
+      reset_current_user
+      flash[:success]||= I18n.t(:"flash.success.logout success")
+    end
+    redirect_to options[:url] || home_url
   end
   
   def remember_me(user)
@@ -44,7 +53,7 @@ class Admin::PublicUserController < ApplicationController
   end
   
   def register_user_in_session user
-    session.data.delete(:user)
+    session.to_hash.delete(:user)
     set_current_user user
   end
 
