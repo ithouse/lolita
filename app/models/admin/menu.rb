@@ -397,6 +397,6 @@ class Admin::Menu < Cms::Manager
   # Remove menu items from migrations
   def self.remove menu_name, controller
     menu = self.find_by_menu_name(menu_name)
-    MenuItem.destroy_all(["menuable_type = ? AND menuable_id IN (?) AND menu_id = ?"],"Admin::Action",Admin::Action.find_all_by_action_and_controller("list",controller).collect{|a| a.id },menu.id)
+    MenuItem.destroy_all(["menuable_type = ? AND menuable_id IN (?) AND menu_id = ?","Admin::Action",Admin::Action.find_all_by_action_and_controller("list",controller).collect{|a| a.id },menu.id])
   end
 end
