@@ -39,13 +39,13 @@ module Extensions::PermissionControll
     unless params[:action].to_sym==:allow
       flash[:notice]=nil if flash[:notice]==t(:"flash.access.denied") || flash[:notice]==t(:"flash.need to login")
       authenticate_from_cookies unless logged_in?
-      allowed=Admin::User.authenticate_in_controller(
+      allowed=Admin::User.authenticate_in_controller({
         :action=>params[:action].to_sym,
         :controller=>params[:controller],
         :user=>current_user,
         :permissions=>self.permissions,
         :roles=>self.roles
-      )
+      })
       session[:return_to]=params if Admin::User.area==:public && request.get? && !params[:format]
       after_allow if allowed && self.respond_to?("after_allow",true)
     end

@@ -61,7 +61,7 @@ class Admin::Menu < Cms::Manager
   
   def action_item(params)
     actions=Admin::Action.find(:all,:conditions=>["controller=? AND action=?","/#{params[:controller]}",params[:action]])
-    self.menu_items.find(:all,:conditions=>["menu_items.menuable_type=? AND menuable_id IN (?)","Admin::Action",actions])
+    self.menu_items.find(:all,:conditions=>["menuable_type=? AND menuable_id IN (?)","Admin::Action",actions])
   end
 
   def save_full_tree tree
@@ -309,12 +309,12 @@ class Admin::Menu < Cms::Manager
     else
       contr_object=@existing_controllers[controller.camelize]
     end
-    Admin::User.authenticate_in_controller(
+    Admin::User.authenticate_in_controller({
       :action=>action.to_sym,
       :controller=>controller,
       :user=>Admin::User.current_user,
       :permissions=>contr_object.permissions
-    )
+    })
   end
   
   def create_new_tree(tree)
