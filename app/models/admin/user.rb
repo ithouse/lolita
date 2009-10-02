@@ -60,10 +60,10 @@ class Admin::User < Cms::Base
       true
     elsif !action_in?(options,:all_public) && options[:user] && options[:user].is_a?(Admin::SystemUser)
       set_area_and_user(:system,options[:user])
-      options[:user].is_admin? || action_in?(options,:all) || ((!except?(options)||only?(options)) && options[:user].has_access?(options))
+      options[:user].is_admin? || action_in?(options,:all) || ((!except?(options)||only?(options)) && (options[:user] && options[:user].has_access?(options)))
     elsif self.access_to_area?(options[:user])
       set_area_and_user(:public_system,options[:user])
-      action_in?(options,:all_public) || options[:user].has_access?(options)
+      action_in?(options,:all_public) || (options[:user] && options[:user].has_access?(options))
     end
     return allowed
   end
