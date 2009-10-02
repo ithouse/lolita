@@ -38,7 +38,7 @@ module Util
         file_name=File.join(namespaces+[base_name])
         klass_name=file_name.camelize
         klass=klass_name.constantize
-        if klass.is_a?(Class) && klass.ancestors.include?(ApplicationController) && klass!=ApplicationController
+        if klass.is_a?(Class) && klass.to_s!="ApplicationController"
           yield :object=>klass,:name=>file_name.gsub(/_controller$/,"")
         end
       end

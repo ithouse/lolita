@@ -3,7 +3,7 @@
   <div class="box">
     <div class="top">
       <div class="fl big blue"><%= cms_title list_template[:controller] || params[:controller] %></div>
-      <div class="fr"><%=new_link :html=>{:class=>"add ntd black"},:title=>t(:"actions.new record") %></div>
+      <div class="fr"><%=new_link :html=>{:class=>"add ntd black"},:title=>t(:"actions.new record") unless @excluded_actions && @excluded_actions.include?(:new) %></div>
     </div>
     <br class="clear" />
     <div class="hr"></div>
