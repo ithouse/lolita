@@ -9,12 +9,13 @@ class Admin::PublicUserController < ApplicationController
       loged_in=yield user
       if user && loged_in
         register_user_in_session user
-        return redirect_to options[:url] || home_url
+        redirect_to options[:url] || home_url
       else
         flash[:error]||=I18n.t(:"flash.error.auth failed")
+        render :status => 400
       end
     else
-      return redirect_to options[:url] || home_url if logged_in?
+      redirect_to options[:url] || home_url if logged_in?
     end
   end
 
