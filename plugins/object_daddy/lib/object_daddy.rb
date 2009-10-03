@@ -118,7 +118,7 @@ module ObjectDaddy
   
     # we define an underscore helper ourselves since the ActiveSupport isn't available if we're not using Rails
     def underscore(string)
-      string.gsub(/([a-z])([A-Z])/, '\1_\2').downcase
+      string.gsub(/([a-z])([A-Z])/, '\1_\2').downcase.gsub("::","/")
     end
     
     def record_generator_for(handle, generator)
