@@ -12,7 +12,7 @@ class Admin::PublicUserController < ApplicationController
         redirect_to options[:url] || home_url
       else
         flash[:error]||=I18n.t(:"flash.error.auth failed")
-        render :status => 400
+        response.headers["Status"] = "400"
       end
     else
       redirect_to options[:url] || home_url if logged_in?
