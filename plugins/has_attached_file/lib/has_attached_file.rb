@@ -9,7 +9,7 @@ module ITHouse
     end
 
     module ClassMethods
-      attr_reader :upload_column_versions
+      attr_reader :upload_column_versions,:upload_column_modify_methods
 
       def has_attached_image_file name, options={}
         configure_attached_picture(options)
@@ -24,7 +24,8 @@ module ITHouse
 
       def configure_attached_picture options={}
         @upload_column_versions=options[:versions] ? options[:versions].dup : {}
-        options=options.delete_if{|k,v| k==:versions}
+        @upload_column_modify_methods=options[:modify] ? options[:modify].dup : nil
+        options=options.delete_if{|k,v| [:versions,:modify].include?(k)}
       end
     end
 

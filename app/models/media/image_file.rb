@@ -344,6 +344,15 @@ class Media::ImageFile < Media::FileBase
     end
     options
   end
+  def name_after_upload(picture)
+    object=self.pictureable
+    versions_class=object.class
+    if versions_class.respond_to?(:upload_column_modify_methods) && methods=versions_class.upload_column_modify_methods
+      methods.each{|m|
+        object.send(m,picture)
+      }
+    end
+  end
   private
 
   def singularize_main
@@ -393,4 +402,6 @@ class Media::ImageFile < Media::FileBase
     }.merge(options)
     Media::ImageFile.find(:all,:conditions=>["pictureable_type=? AND pictureable_id=?",self.pictureable_type,self.pictureable_id],:order=>options.sort)
   end
+
+ 
 end
