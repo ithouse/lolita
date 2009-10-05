@@ -2,6 +2,29 @@ namespace :lolita do
   desc "Setup lolita"
   task :setup => :environment do
 
+    # create db if needed
+    config = ActiveRecord::Base.configurations[RAILS_ENV]
+    begin
+      ActiveRecord::Base.establish_connection(config)
+      ActiveRecord::Base.connection.active?
+    rescue
+      charset   = ENV['CHARSET']   || 'utf8'
+      collation = ENV['COLLATION'] || 'utf8_general_ci'
+      ActiveRecord::Base.establish_connection(config.merge('database' => nil))
+      ActiveRecord::Base.connection.create_database(config['database'], :charset => (config['charset'] || charset), :collation => (config['collation'] || collation))
+      ActiveRecord::Base.establish_connection(config)
+    end
+
+    # create schema migrations table
+    unless ActiveRecord::Base.connection.respond_to?(:initialize_schema_information)
+      ActiveRecord::Base.connection.initialize_schema_migrations_table
+      ActiveRecord::Base.connection.assume_migrated_upto_version(0)
+    end
+    
+    ENV["NAME"] = "lolita"
+    Rake::Task["db:migrate:plugin"].invoke
+
+
 =begin rdoc
 Prompts the user to input something in the console and either returns the
 string result or the result of a case-insensitive comparison of input/expected.
@@ -133,6 +156,8 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
           Admin::Language.create!(:globalize_languages_id=>language.first,:is_base_locale=>language.last)
         }
       end
+
+      Rake::Task["db:migrate:all"].invoke
     end
   end
 end
