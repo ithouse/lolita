@@ -15,7 +15,7 @@ class Media::Base < Cms::Base
   def self.all_media_names
     media=[]
     Find.find(File.dirname(__FILE__)) do |path|
-      unless File.directory?(path)
+      unless File.directory?(path)|| path.match(/_extensions/)
         base_name=File.basename(path,".rb")
         klass_name="Media::#{base_name.camelize}".constantize
         is_abstract=klass_name.respond_to?("abstract_class?") ? klass_name.abstract_class? : false
