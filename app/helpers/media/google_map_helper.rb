@@ -48,6 +48,9 @@ module Media::GoogleMapHelper
       locations=Media::GoogleMap.collect_coords(conf[:object])
       conf[:lat]=locations[:lat]
       conf[:lng]=locations[:lng]
+    else
+      conf[:lat]||=[]
+      conf[:lng]||=[]
     end
     conf[:map_prefix]||="public_map"
     conf[:read_only]=true

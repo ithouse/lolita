@@ -13,8 +13,8 @@ module Lolita
     
     MANAGED_CALLBACKS=%w(
         before_create before_open before_update before_list before_destroy
-        before_save before_edit before_new after_new after_update after_save
-        after_create after_edit after_destroy after_list after_open on_save_error
+        before_save before_edit before_new before_show after_new after_update after_save
+        after_create after_edit after_destroy after_list after_open after_show on_save_error
     )
     def self.create_managed_callback_methods
       MANAGED_CALLBACKS.collect{|cb|

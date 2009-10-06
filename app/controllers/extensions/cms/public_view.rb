@@ -11,7 +11,7 @@ module Extensions
       # :joins=>SQL, kas joino ar saistītajām tabulām
       def show
         if @config[:public]
-          handle_before_functions "show"
+          handle_function "before_show"
           error=false
           @config[:public][:conditions]||=[]
           @config[:public][:conditions]=object.cms_merge_conditions(@config[:public][:conditions],valid_filter_from_params)
@@ -33,7 +33,7 @@ module Extensions
           else
             error=true
           end
-          handle_after_functions "show" unless error
+          handle_function "after_show" unless error
           error ? redirect_view(:error=>true) : redirect_view(:only_layout=>true)
         end
       end
