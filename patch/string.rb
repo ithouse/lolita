@@ -150,7 +150,8 @@ class ::String
 
   # strips tags and add's \n in place of br,p,h1,h2... and save's links
   def to_text
-    self.gsub!(/(<\/[^>]*(p|h1|h2|h3)>|<br\s?\/?>)/,"\n")
+    self.gsub!(/<\/[^>]*(p|h1|h2|h3)>/,"\n\n")
+    self.gsub!(/<br\s?\/?>/,"\n")
     self.gsub!(/<a[^>]*href=\"(.*)\">([^<]*)<\/[^>]*>/){|m|
       m.match(/href=\"(.*)\">([^<]*)</)
       "#{$2} #{$1}"
