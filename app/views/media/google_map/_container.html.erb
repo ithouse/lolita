@@ -21,10 +21,12 @@
         <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>);
         <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.init()"%>;
       }catch(e){
+        if(e.message == "PublicGMap.map_<%=cfg[:unique_id]%> is undefined" || e.message == "PublicGMap.map_<%=cfg[:unique_id]%>.map is undefined"){
         <% if RAILS_ENV=="development"  %>
                 console.log(e)
         <% end %>
-        setTimeout("init_lolita_google_map_<%=cfg[:unique_id]%>()",500)
+        setTimeout("init_lolita_google_map_<%=cfg[:unique_id]%>()",500);
+        }
       }
     }
     init_lolita_google_map_<%=cfg[:unique_id]%>()
