@@ -1,25 +1,44 @@
 module Extensions
   module Cms
     module PublicView
-      #Pieejamās opcijas var tikt norādītas jau konfigurācijā, vai arī iekš before_show funkcijas
-      # :conditions=>tiek pievienots find, kā :conditions
-      # :sort_column=>kolonnu(-as) nosaukums(-i), ja vairāki atdalīti ar komatiem
-      # :sort_direction=>kārtošanas virziens, jēga tikai tad ja ir kārtošnas kolonna(-as)
-      # :single=> vai atlasīt vienu vai vairākus ierakstus, ja tiek atlasīti vairāki, tad tie pieejami caur
-      #           @page, ja viens tad caur @object, @page ir Ith.Paginator klases objekts
-      # :per_page => cik ierakstus iekļaut atlasēs lapā, pēc noklusējuma Ith.Paginator noklusētais
-      # :joins=>SQL, kas joino ar saistītajām tabulām
+      
+      # Configuration is received through managed configuration :public attribute.
+      # Common attributes for #show and #index actions, that are recieved through :public.
+      #   :template - template name to render, default "show"
+      #   :layout - layout name to render, default false
+      #   :on_error_url - URL to redirect when #Exception raised, default home_url
+      #   :single - must be set to true
+      #   :conditions - find conditions
+      #
+      # Default #Managed function for single resource handling.
+      # Default #show action works only if :single atrribute is set to True.
       def show
-        if @config[:public]
-          handle_function "before_show"
-          error=false
-          @config[:public][:conditions]||=[]
-          @config[:public][:conditions]=object.cms_merge_conditions(@config[:public][:conditions],valid_filter_from_params)
-          @config[:public][:conditions]=@config[:public][:conditions].empty? ? nil : @config[:public][:conditions]
-          if @config[:public][:single] && get_id.to_i>0
-            @object=object.find_by_id(get_id,:conditions=>@config[:public][:conditions])
-            error=true unless @object
-          elsif !@config[:public][:single] && get_id.to_i<1
+        begin
+          if @config[:public] && @config[:public][:single]
+            handle_function "before_show"
+            @object=object.find(get_id,:conditions=>@config[:public][:conditions])
+            handle_function "after_show"
+            render :action=>@config[:public][:template]||"show", :layout=>@config[:public][:layout]
+          else
+            raise "Bad configuration for #{(params[:controller]+"_controller").camelize}"
+          end
+        rescue Exception=>e
+          handle_function "on_show_error"
+          redirect_to @config[:public][:on_error_url] || home_url
+        end
+      end
+
+      # Default #Managed action for many resources.
+      # Work only if :single attribute is set to False
+      # Accpted attributes
+      #   :sort_column - sort column
+      #   :sort_direction - sort direction, "asc" or "desc"
+      #   :joins - array of joins, sql format
+      #   :per_page - record count in one page
+      def index
+        begin
+          if @config[:public] && !@config[:public][:single]
+            handle_function "before_show"
             join,sort_columns=public_sort_column
             @page=object.paginate(
               :conditions=>@config[:public][:conditions],
@@ -29,28 +48,19 @@ module Extensions
               :per_page=>@config[:public][:per_page],
               :page=>params[:page].to_i
             )
-            
+            handle_function "after_show" 
+            render :action=>@config[:public][:template]||"show", :layout=>@config[:public][:layout]
           else
-            error=true
+            raise "Bad configuration for #{(params[:controller]+"_controller").camelize}"
           end
-          handle_function "after_show" unless error
-          error ? redirect_view(:error=>true) : redirect_view(:only_layout=>true)
+        rescue Exception=>e
+          handle_function "on_show_error"
+          redirect_to @config[:public][:on_error_url] || home_url
         end
+
       end
       
       private
-
-      def valid_filter_from_params
-        sql=""
-        values=[]
-        params.each{|key,value|
-          if value.to_i>0 && key.to_s.match(/\w+_id$/) &&  object.respond_to?(key)
-            sql<<" `#{object.table_name}`.`#{key}`=?"
-            values<< value.to_i
-          end
-        }
-        return [sql]+values
-      end
 
       def public_sort_column
         if params[:sort_column]

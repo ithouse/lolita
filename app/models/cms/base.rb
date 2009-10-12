@@ -2,39 +2,18 @@ class Cms::Base < ActiveRecord::Base
   self.abstract_class = true
   
   class << self
-    #    def spell_number real_number,options={},round=0
-    #      simple=["nulle","vien","div","trīs","četr","piec","seš","septiņ","astoņ","deviņ"]
-    #      rounds=[
-    #        ["tūkstotis","tūkstoši"],
-    #        ["miljons","miljons"],
-    #        ["miljards","miljardi"],
-    #        ["triljons","triljoni"]
-    #      ]
-    #      middle=[
-    #        ["padmist","desmit"],
-    #        ["simts","simti"]
-    #      ]
-    #
-    #      number=real_number.to_s
-    #      number=number[(number.size-4>=0 ? number.size-4 : 0)..number.size]
-    #      base_number=real_number.to_s
-    #      base_number=number.size-4>=0 ? base_number[0..number.size-4] : ""
-    #      number.reverse!
-    #      ones,tens,hundreds=number.split("")
-    #      number_name=[]
-    #      number_name<<"#{hundreds.to_i>1 ? "#{simple[hundreds.to_i]}#{hundreds.to_i==1 ? options[:singular] : options[:plural]}" : ""}#{middle[1][hundreds.to_i==1 ? 0 : 1]}" if hundreds
-    #      number_name<<(ones.to_i>0 ? "#{simple[tens.to_i]}#{middle[0][tens.to_i==1 ? 0 : 1]}" : "#{middle[0][1]}") if tens && tens.to_i>0
-    #      number_name<<"#{simple[ones.to_i]}#{ones.to_i==1 ? options[:singular] : options[:plural]}" if ones && ones.to_i>0
-    #      singular=ones.to_i==1 || (ones.to_i==0 && tens.to_i==1) || (ones.to_i==0 && tens.to_i==0 && hundreds.to_i==1) if number_name.size>0
-    #      number_name<<"#{rounds[round-1][singular ? 0 : 1]}" if round>0 && !number_name.empty?
-    #      if base_number.size>0
-    #        return "#{self.spell_number(base_number.to_i,options,round+1)} #{number_name.join}"
-    #      else
-    #        return number_name.join(" ")
-    #      end
-    #
-    #    end
-    
+
+    def cms_create_conditions_from(data)
+      table_name=self.table_name
+      conditions=[""]
+      (self.column_names.collect{|cn| cn.to_sym} & (data.keys-[:action,:controller])).each{|valid_column|
+        match_sign=data[valid_column].is_a?(Array) ? " IN " : "="
+        conditions[0]<<"`#{table_name}`.`#{valid_column}`#{match_sign}(?)"
+        conditions<<data[valid_column]
+      }
+      conditions
+    end
+
     def exclude_array conditions=[],arr=[],column=nil,include=false
       conditions[0]||=""
       unless arr.empty?
@@ -75,6 +54,7 @@ class Cms::Base < ActiveRecord::Base
         end
       }.compact
     end
+    
     def complex_sort sort_fields=[],allowed_fields=[]
       sort_columns,join_statements=[],[]
       sort_fields.each{|field|

@@ -13,7 +13,7 @@ class Admin::Access < Cms::Base
   end
   
   def can_all_with_role(role_name)
-    if role_access=get_role_access(role_name)
+    if role_access=get_role_access(role_name.to_s)
       role_access.can_all
     end
   end
@@ -52,12 +52,12 @@ class Admin::Access < Cms::Base
     self.roles.find_by_name(role_name) ? true : false
   end
 
-  def has_role (role_name)
-    role = get_role(role_name)
-    if role && !self.roles.exists?( role.id )
-      #role = Role.create( :name => role_name )
+  def has_role (role)
+    if role.is_a?(Admin::Role)
       Admin::AccessesRoles.create(:role_id=>role.id,:access_id=>self.id)
-      # manage_functional_permissions(accesses,role.id)
+    elsif role.is_a?(String) || role.is_a?(Symbol)
+      role=Admin::Role.find_by_name(role.to_s) || Admin::Role.create!(:name=>role.to_s)
+      Admin::AccessesRoles.create(:role_id=>role.id,:access_id=>self.id)
     end
   end
 
