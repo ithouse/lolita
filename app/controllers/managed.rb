@@ -21,8 +21,11 @@ class Managed < ApplicationController
   # <tt>before_new</tt> - is called in <i>new</i> action, before @object and @metadata inicialized
   # <tt>after_new</tt> - is called in <i>new</i> action, after @object and @metadata inicialized
   # <tt>before_edit</tt> - is called in <i>edit</i> action, before @object and @metadata is found
+  # <tt>allow_metadata_edit</tt> - is checked in <i>edit</i> action, when @object and @metadata are known
+  #                              it should either return a False value thus prohibiting updating all metadata
+  #                              or a hash with {:key=>False value} to disable specific field updates
   # <tt>after_edit</tt> - is called in <i>edit</i> action, after @object and @metadata is found
-  # <tt>before_open</tt> - is called when <tt>before_open</tt> or <tt>before_edit</tt> is exacuted
+  # <tt>before_open</tt> - is called when <tt>before_open</tt> or <tt>before_edit</tt> is executed
   
   def open
     get_id.to_i>0 ? redirect_to(params.merge(:action=>:update)) : list
