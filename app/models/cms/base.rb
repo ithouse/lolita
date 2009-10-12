@@ -166,7 +166,7 @@ class Cms::Base < ActiveRecord::Base
     end
 
     def paginate options={}
-      paginator=Ith::Paginator.new(self,options)
+      paginator=Lolita::Paginator.new(self,options)
       paginator.find_records
       paginator
     end

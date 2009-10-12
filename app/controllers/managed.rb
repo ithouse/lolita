@@ -1,5 +1,6 @@
 
 class Managed < ApplicationController
+  include Extensions::Cms::Paging
   include Extensions::Cms::HandleRelations
   include Extensions::Cms::HandleMenu
   include Extensions::Cms::List

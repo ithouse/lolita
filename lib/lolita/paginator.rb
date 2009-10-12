@@ -1,4 +1,4 @@
-module Ith
+module Lolita
   class Paginator
     include Enumerable
     #include Comparable

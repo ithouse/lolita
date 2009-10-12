@@ -1,4 +1,4 @@
-module Extensions::Paging
+module Extensions::Cms::Paging
 
   private
   def paging (parent,options={})
