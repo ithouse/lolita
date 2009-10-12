@@ -21,7 +21,7 @@
         <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>);
         <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.init()"%>;
       }catch(e){
-        if(e.message == "PublicGMap.map_<%=cfg[:unique_id]%> is undefined" || e.message == "PublicGMap.map_<%=cfg[:unique_id]%>.map is undefined"){
+        if(typeof(PublicGMap.map_<%=cfg[:unique_id]%>) == "undefined" || typeof(PublicGMap.map_<%=cfg[:unique_id]%>.map) == "undefined"){
         <% if RAILS_ENV=="development"  %>
                 console.log(e)
         <% end %>
