@@ -1,8 +1,6 @@
 class MetaData < Cms::Base
   #belongs_to :menu_items
   belongs_to :metaable, :polymorphic => true
-  #validates_uniqueness_of   :url, :scope => [:metaable_type], :case_sensitive => false ,:allow_blank=>true
-  #validates_presence_of :title, :tags
   before_save :normalize_url
   before_save :singularize_metaable
   translates :title,:url,:tags,:description

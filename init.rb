@@ -18,4 +18,4 @@ Dir.glob(File.join(File.dirname(__FILE__),'app','helpers','*_helper.rb')) do |pa
   end
 end
 
-require "#{File.join(File.dirname(__FILE__))}/lib/lolita.rb"
+require "#{File.join(File.dirname(__FILE__))}/lib/init_lolita.rb"
