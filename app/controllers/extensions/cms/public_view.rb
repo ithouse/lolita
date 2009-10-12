@@ -14,14 +14,10 @@ module Extensions
       # Default #show action works only if :single atrribute is set to True.
       def show
         begin
-          if @config[:public] && @config[:public][:single]
-            handle_function "before_show"
-            @object=object.find(get_id,:conditions=>@config[:public][:conditions])
-            handle_function "after_show"
-            render :action=>@config[:public][:template]||"show", :layout=>@config[:public][:layout]
-          else
-            raise "Bad configuration for #{(params[:controller]+"_controller").camelize}"
-          end
+          handle_function "before_show"
+          @object=object.find(get_id,:conditions=>@config[:public][:conditions])
+          handle_function "after_show"
+          render :action=>@config[:public][:template]||"show", :layout=>@config[:public][:layout]
         rescue Exception=>e
           handle_function "on_show_error"
           redirect_to @config[:public][:on_error_url] || home_url
@@ -37,22 +33,18 @@ module Extensions
       #   :per_page - record count in one page
       def index
         begin
-          if @config[:public] && !@config[:public][:single]
-            handle_function "before_show"
-            join,sort_columns=public_sort_column
-            @page=object.paginate(
-              :conditions=>@config[:public][:conditions],
-              :sort_directions=>public_sort_direction,
-              :joins=>((@config[:public][:joins] || [])+(join||[])).uniq,
-              :sort_column=>sort_columns,
-              :per_page=>@config[:public][:per_page],
-              :page=>params[:page].to_i
-            )
-            handle_function "after_show" 
-            render :action=>@config[:public][:template]||"show", :layout=>@config[:public][:layout]
-          else
-            raise "Bad configuration for #{(params[:controller]+"_controller").camelize}"
-          end
+          handle_function "before_show"
+          join,sort_columns=public_sort_column
+          @page=object.paginate(
+            :conditions=>@config[:public][:conditions],
+            :sort_directions=>public_sort_direction,
+            :joins=>((@config[:public][:joins] || [])+(join||[])).uniq,
+            :sort_column=>sort_columns,
+            :per_page=>@config[:public][:per_page],
+            :page=>params[:page].to_i
+          )
+          handle_function "after_show"
+          render :action=>@config[:public][:template]||"show", :layout=>@config[:public][:layout]
         rescue Exception=>e
           handle_function "on_show_error"
           redirect_to @config[:public][:on_error_url] || home_url
