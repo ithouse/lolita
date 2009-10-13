@@ -9,6 +9,7 @@ class Admin::PublicUserController < ApplicationController
       loged_in=yield user
       if user && loged_in
         register_user_in_session user
+        remember_me user
         redirect_to options[:url] || home_url
       else
         flash[:error]||=I18n.t(:"flash.error.auth failed")
@@ -28,19 +29,8 @@ class Admin::PublicUserController < ApplicationController
   end
   
   def remember_me(user)
-    cookies.delete :remember_me unless user.remember_token
-    domain=request.domain()
-    if params[:remember_me] && !user.remember_token
-      user.update_attributes!(:remember_token=>Digest::SHA1.hexdigest("$$#{Time.now.to_s}$$#{params[:login]}$$"))
-      cookies[:remember_me]={:value=>user.remember_token,:expires=>7.days.from_now,:domain=>domain}
-    elsif user.remember_token
-      cookies[:remember_me]={:value=>user.remember_token,:expires=>7.days.from_now,:domain=>domain}
-    end
-  end
-  
-  def reset_remember_me
-    current_user.update_attributes!(:remember_token=>nil) if public_user? && current_user.remember_token
-    cookies.delete(:remember_me)
+    user.remember_me if !user.remember_token? && params[:user][:remember_user]
+    cookies[:auth_token] = { :value => user.remember_token , :expires => user.remember_token_expires_at }
   end
 
   def reset_sso #lai varētu šeit ielik vēl ko ja vajadzēs

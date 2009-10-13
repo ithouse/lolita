@@ -119,6 +119,11 @@ class Admin::User < Cms::Base
     save(false)
   end
 
+  #can be used in forms as a checkbox field
+  def remember_user
+    remember_token?
+  end
+
   def forget_me
     self.remember_token_expires_at = nil
     self.remember_token            = nil

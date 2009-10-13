@@ -42,6 +42,10 @@ module Lolita
         @current_user = (session[:user] && session[:user][:user_class].find_by_id(session[:user][:user_id])) || nil
         @current_user
       end
+
+      def current_user=(user)
+        @current_user=user
+      end
     end
 
     module ControllerClassMethods
