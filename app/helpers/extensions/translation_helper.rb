@@ -1,21 +1,19 @@
 module Extensions::TranslationHelper
   def all_languages id,current_object
-    all_langs = Admin::Language.find(:all,:include=>:globalize_language)
+    all_langs = Admin::Language.find(:all,:include=>:globalize_language,:order=>"is_base_locale desc")
     base_lang=Globalize::Locale.base_language
-    all_combined=[[]]
-
-    all_langs.collect{|x|
+    languages=all_langs.collect{|x|
       unless x.language==base_lang
-        all_combined<<["#{x.name} (#{x.short_name.upcase})",x.short_name]
-        unless current_object.language_code
-          current_object.switch_language(x.short_name)
-        end
+        ["#{x.name} (#{x.short_name.upcase})",x.short_name]
+#        unless current_object.language_code
+#          current_object.switch_language(x.short_name)
+#        end
       else
-        all_combined[0]=["#{x.name} (#{x.short_name.upcase})",x.short_name]
+        ["#{x.name} (#{x.short_name.upcase})",x.short_name]
       end
     }
-    current_object.switch_language(params[:locale]) if params[:locale]
-    languages=all_combined
+    #current_object.switch_language(params[:locale]) if params[:locale]
+    #languages=all_combined
     current=current_object.language_code
     select_tag(id, options_for_select(languages, current),:class=>"select")
   end
