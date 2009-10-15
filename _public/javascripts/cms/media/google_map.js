@@ -177,10 +177,17 @@ LolitaGoogleMap.prototype={
         }
     },
     add_controls:function(){
-        this.map.addControl(new GLargeMapControl());
+        if(this.options.small_map_controlls){
+          this.map.addControl(new GSmallMapControl());
+        }else{
+          this.map.addControl(new GLargeMapControl());
+        }
         this.map.addControl(new GMapTypeControl());
-        this.map.addControl(new GScaleControl()) ;
-        this.map.addControl(new GOverviewMapControl()) ;
+        if(this.options.scale_control){
+          this.map.addControl(new GScaleControl());
+        }
+        if(this.options.overview_map_control)
+        this.map.addControl(new GOverviewMapControl());
     },
     
     create_icon:function(){

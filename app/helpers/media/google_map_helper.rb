@@ -55,6 +55,10 @@ module Media::GoogleMapHelper
     conf[:map_prefix]||="public_map"
     conf[:read_only]=true
     conf[:include_js]=true if conf[:include_js].nil?
+    conf[:small_map_controlls]=false if conf[:small_map_controlls].nil?
+    conf=conf.delete_if{|k,v| [:object].include?(k)}
+    conf[:scale_control]=true if conf[:scale_control].nil?
+    conf[:overview_map_control]=true if conf[:overview_map_control].nil?
     conf=conf.delete_if{|k,v| [:object].include?(k)}
     raise "Unique ID not specified!" if conf[:unique_id].to_s.size==0
     conf
