@@ -65,7 +65,7 @@ module Extensions
           @translation=@object.clone if Lolita.config.i18n :translation
           @metadata=MetaData.by_metaable(@object.id,@config[:object_name]) || MetaData.new
           if my_params[:object]
-            if Lolita.config.i18n :translation && has_tab_type?(:translate)
+            if Lolita.config.i18n(:translation) && my_params[:translation]
               current_language=params[:translation_locale]
               #base_lang = session[:locale] || Admin::Language.find_base_language.short_name
               #jf: session[:locale] may come from frontend and mess up backend
@@ -76,7 +76,7 @@ module Extensions
             MetaData.transaction do
               handle_function "before_update"
               handle_has_many_relation
-              if Lolita.config.i18n :translation && has_tab_type?(:translate)
+              if Lolita.config.i18n(:translation) && my_params[:translation]
                 @object.switch_language(current_language) do
                   assign_object_attributes(@object,my_params[:translation])
                   @object.save!

@@ -4,9 +4,9 @@
   <%= all_languages("translation_locale",@object) %>
 </div>
 <script type="text/javascript">
-  observe_languages("#translation_locale",<%=tab.to_i%>,"<%=url_for(:action=>"change_language",:locale=>nil)%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
+  observe_languages("#translation_locale",<%=tab.to_i%>,"<%=url_for(:action=>"change_language")%>","<%="id=#{@object.id}&tab=#{tab}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")
 </script>
-<% unless @object.language_code==Globalize::Locale.base_language.code %>
+<% if @translation && @translation.language_code!=Globalize::Locale.base_language.code %>
   <% fields=fields_for_tab(tab).clone %>
   <%  if  fields &&  fields.respond_to?('each') %>
     <% fields.each do |field| %>

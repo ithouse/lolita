@@ -8,11 +8,12 @@ module Extensions
       def change_language
         #begin
         handle_params
-        Globalize::Locale.set("#{params[:translation_locale]}-#{params[:translation_locale]=='en' ? "US" : params[:translation_locale].upcase}")
+        base_lang = Lolita.config.i18n :language_code || Admin::Language.find_base_language.short_name
+        Globalize::Locale.set("#{base_lang}-#{base_lang=='en' ? "US" : base_lang.upcase}")
+        @translation=object.find(params[:id]) #TODO pārbaudīt vai to dara, vajag lai nepārraksta objektu
+        @translation.switch_language(params[:translation_locale])
         @object=object.find(params[:id])
         @object.switch_language(params[:translation_locale])
-        @translation=@object.clone if @object
-        # end
         render :partial=>'/managed/translate',:layout=>false,:locals=>{:read_only=>false,:tab=>params[:tab]}
         #rescue
         #end
