@@ -10,4 +10,6 @@ ActionController::Base.send :include, Lolita::Multimedia
 ActionController::Base.send :include, Lolita::Translation
 #Load utilities
 ActionController::Base.send :include, Lolita::ControllerUtilities
+#Load routes hack
+ActionController::Routing::RouteSet.send :include, Lolita::RouteHack
 
