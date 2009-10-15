@@ -1,5 +1,10 @@
 module Lolita
-  module RouteHack
+  # RouteHack allows to append lolita's routes after the routes of the project using lolita
+  #
+  # Lolita's routes can be found in lolita/config/lolita_routes.rb,
+  # if any routes need to be appended after lolita's routes you can do so by adding
+  # RAILS_ROOT/config/routes_tail.rb file with all the content required for any routes.rb
+  module RouteHack #:doc:
     
     def self.included(base)
       base.class_eval{
