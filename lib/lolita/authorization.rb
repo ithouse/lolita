@@ -132,12 +132,12 @@ module Lolita
       #
       def get_roles_and_options args
         args=args[0].is_a?(Array) ? args[0] : args
-        if args[0].is_a?(String)
-          r=args[0]
-          p=args[1]
-        elsif args[0] && !args[0].empty?
+        if args[0] && args[0].is_a?(Hash)
           r=args[0][:roles]
           p=args[0].delete_if{|key,value| key==:roles}
+        else
+          r=args[0].to_s
+          p=args[1]
         end
         return r,p||{}
       end
