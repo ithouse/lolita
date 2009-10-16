@@ -130,3 +130,4 @@ lv:
         less_than_or_equal_to: "ir jābūt mazākam vai vienādam ar {{count}}"
         odd: "ir jābūt nepāra skaitlim"
         even: "ir jābūt pāra skaitlim"
+        record_invalid: "Ievadīti kļūdaini dati: {{errors}}"

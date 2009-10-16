@@ -1,3 +1,5 @@
+require 'spec/rake/spectask'
+
 namespace :lolita do
   desc "Setup lolita"
   task :setup => :environment do
@@ -166,5 +168,11 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
     Rake::Task["globalize:setup"].invoke
 
     puts "Setup has finished, now you can run test server 'ruby script/server' and open http://localhost:3000/system/login"
+  end
+
+  desc "Run RSpec tests"
+  Spec::Rake::SpecTask.new(:spec) do |t|
+    t.spec_files = FileList["#{File.dirname(__FILE__)}/../spec/**/*_spec.rb"]
+    t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/../spec/spec.opts\""]
   end
 end

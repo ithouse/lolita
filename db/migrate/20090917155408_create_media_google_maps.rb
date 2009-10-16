@@ -5,7 +5,6 @@ class CreateMediaGoogleMaps < ActiveRecord::Migration
       t.string  :mappable_type
       t.decimal :lat, :precision => 15, :scale => 10
       t.decimal :lng, :precision => 15, :scale => 10
-      t.integer :zoom, :null => true
       t.text  :description
       t.timestamps
     end

@@ -1,0 +1,105 @@
+# Logfile created on Fri Oct 16 19:52:37 +0300 2009 by logger.rb/22285
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mSQLite3::SQLException: no such table: events: DROP TABLE "events"[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mAdmin::EmailTemplate Columns (0.8ms)[0m   [0;1mSHOW FIELDS FROM admin_email_templates[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Columns (1.0ms)[0m   [0;1mSHOW FIELDS FROM globalize_languages[0m
+  [4;35;1mGlobalize::Language Load (0.7ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mAdmin::EmailTemplate Create (0.2ms)[0m   [0mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 1', 'commercial_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 1', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;36;1mSQL (20.8ms)[0m   [0;1mCOMMIT[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mGlobalize::Language Load (0.1ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mAdmin::EmailTemplate Create (0.2ms)[0m   [0;1mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 2', 'gloresy_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 2', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mCOMMIT[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mAdmin::User Columns (0.8ms)[0m   [0mSHOW FIELDS FROM admin_users[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mGlobalize::Language Load (0.1ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mAdmin::EmailTemplate Create (0.2ms)[0m   [0;1mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 3', 'commercial_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 3', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mCOMMIT[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mGlobalize::Language Load (0.4ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mAdmin::EmailTemplate Create (0.2ms)[0m   [0mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 4', 'gloresy_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 4', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCOMMIT[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mAdmin::EmailTemplate Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM admin_email_templates[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Columns (2.1ms)[0m   [0;1mSHOW FIELDS FROM globalize_languages[0m
+  [4;35;1mGlobalize::Language Load (0.3ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mAdmin::EmailTemplate Create (0.5ms)[0m   [0mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 1', 'commercial_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 1', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;36;1mSQL (39.0ms)[0m   [0;1mCOMMIT[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Load (0.3ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mGlobalize::Language Load (0.1ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mAdmin::EmailTemplate Create (0.3ms)[0m   [0;1mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 2', 'gloresy_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 2', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mCOMMIT[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mGlobalize::Language Load (0.1ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mAdmin::EmailTemplate Create (0.2ms)[0m   [0mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 3', 'commercial_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 3', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCOMMIT[0m
+  [4;35;1mSQL (0.0ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mGlobalize::Language Load (0.1ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mAdmin::EmailTemplate Create (0.5ms)[0m   [0;1mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 4', 'gloresy_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 4', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;35;1mSQL (30.5ms)[0m   [0mCOMMIT[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mAdmin::User Columns (1.0ms)[0m   [0mSHOW FIELDS FROM admin_users[0m
+  [4;36;1mSQL (1.4ms)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mSET NAMES 'utf8'[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSET SQL_AUTO_IS_NULL=0[0m
+  [4;36;1mAdmin::EmailTemplate Columns (0.7ms)[0m   [0;1mSHOW FIELDS FROM admin_email_templates[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Columns (1.5ms)[0m   [0;1mSHOW FIELDS FROM globalize_languages[0m
+  [4;35;1mGlobalize::Language Load (0.2ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mGlobalize::Language Load (0.3ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mAdmin::EmailTemplate Create (0.2ms)[0m   [0mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 1', 'commercial_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 1', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;36;1mSQL (35.3ms)[0m   [0;1mCOMMIT[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Load (0.3ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mGlobalize::Language Load (0.3ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mAdmin::EmailTemplate Create (0.5ms)[0m   [0;1mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 2', 'gloresy_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 2', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mCOMMIT[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.1ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mGlobalize::Language Load (0.1ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mAdmin::EmailTemplate Create (0.4ms)[0m   [0mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 3', 'commercial_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 3', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCOMMIT[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mBEGIN[0m
+  [4;36;1mGlobalize::Language Load (0.1ms)[0m   [0;1mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;35;1mGlobalize::Language Load (0.2ms)[0m   [0mSELECT * FROM `globalize_languages` WHERE (`globalize_languages`.`iso_639_1` = 'lv') LIMIT 1[0m
+  [4;36;1mAdmin::EmailTemplate Create (0.2ms)[0m   [0;1mINSERT INTO `admin_email_templates` (`name`, `code`, `body`, `subject`, `description`) VALUES('Baigais e-pasts 4', 'gloresy_user_registration', '<h1>{USERNAME}</h1><p>Spied <a href=\"http://lapa.lv\">te</a></p>', 'Virsraksts 4', 'Pieejamais mainīgais {USERNAME}')[0m
+  [4;35;1mSQL (0.7ms)[0m   [0mCOMMIT[0m
+  [4;36;1mSQL (0.0ms)[0m   [0;1mBEGIN[0m
+  [4;35;1mAdmin::User Columns (0.9ms)[0m   [0mSHOW FIELDS FROM admin_users[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1mROLLBACK[0m
