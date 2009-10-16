@@ -15,8 +15,13 @@ module Lolita
       end
 
       def render_500(status=500)
+        options = {:template => "errors/error_500", :status => status }
+        begin
+          options[:layout] = false if request.path == home_path
+        rescue # if home_path doesn't exist
+        end
         respond_to do |type|
-          type.html { render :template => "errors/error_500", :status => status }
+          type.html { render options}
           type.all  { render :nothing => true, :status => status }
         end
       end
