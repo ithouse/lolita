@@ -4,3 +4,4 @@ _public/_gsdata
 _public/_gsdata_/*
 *~
 doc/
+spec/debug.log
