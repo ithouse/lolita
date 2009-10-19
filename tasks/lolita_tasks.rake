@@ -24,6 +24,9 @@ namespace :lolita do
       ActiveRecord::Base.connection.assume_migrated_upto_version(0)
     end
 
+    puts "Setup globalize..."
+    Rake::Task["globalize:setup"].invoke
+    
     ENV["NAME"] = "lolita"
     Rake::Task["db:migrate:plugin"].invoke
 
@@ -163,9 +166,6 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
 
     puts "Migrating other plugins..."
     Rake::Task["db:migrate:all"].invoke
-
-    puts "Setup globalize..."
-    Rake::Task["globalize:setup"].invoke
 
     puts "Setup has finished, now you can run test server 'ruby script/server' and open http://localhost:3000/system/login"
   end
