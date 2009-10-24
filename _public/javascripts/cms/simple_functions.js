@@ -59,9 +59,9 @@ function SimpleRequest(r_object,r_config){
                 if(status!="success"){
                     ITH.Cms.warning.show()
                 }else{
-                    if(config.container){
-                        var p=config.container.match(/^#/) ? "" : "#"
-                        $(p+config.container).html(xhr.responseText)
+                    if(config["container"]){
+                        var p=config["container"].match(/^#/) ? "" : "#"
+                        $(p+config["container"]).html(xhr.responseText)
                     }
                 }
             }catch(err){}
