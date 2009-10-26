@@ -100,7 +100,7 @@ class ActiveRecord::Base # :nodoc:
     def operate_switch_language_on_associations(code)
       self.class.reflect_on_all_associations.each do |ref|
         association = instance_variable_get("@#{ref.name}".to_sym)
-        if not association.nil?
+        if !association.nil? && !ref.options[:polymorphic] #Arturs Meisters
           if association.kind_of? ref.klass
             send(ref.name).switch_language(code)
           else
