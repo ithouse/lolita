@@ -7,53 +7,37 @@ module Extensions::MenuHelper
   end
 
   def get_current_menu_branch (menu_name)
-    cur_in_menu = get_current_menu_item(menu_name)
-    if cur_in_menu
-      cur_in_menu.self_and_ancestors
-    else
-      []
-    end
+    curs_in_menu = get_current_menu_items(menu_name)
+    curs_in_menu.inject([]){|result, item| result += item.self_and_ancestors}.uniq
   end
 
-  def get_current_menu_item(menu_name)
-    id = get_id
- 
-    type = params[:controller].camelize
-    if id
-      menu=Admin::Menu.find_by_menu_name(menu_name)
-      menu=Admin::MenuItem.find_by_branch_name(menu_name) unless menu
-      menu_items = menu.menu_items.find(:all, :conditions=>['menuable_type=? AND menuable_id=? AND is_published=1',type,id])
-    end
-    menu_item=menu_items.nil? || menu_items.empty? ? nil : Admin::MenuItem.get_deepest_item(menu_items)
-    unless menu_item
-      menu_item=get_menu_item_with_action(menu_name)
-    end
-    unless menu_item
-      begin
-        object=type.constantize
-        menu_item=object.find_related_menu_item(menu_name,id) if object.respond_to?(:find_related_menu_item)
-      rescue #table-less objects, e.g. start page
-        menu=Admin::Menu.find_by_menu_name(menu_name)
-        item=menu.menu_items.first
-        if !item.nil?
-          return item.root
-        else
-          return nil
-        end
-      end
-      unless menu_item
-        menu_item = session["last_selected_#{menu_name.downcase}_item"] unless session["last_selected_#{menu_name.downcase}_item"].nil? 
-      end
-    else
-      session["last_selected_#{menu_name.downcase}_item"] = menu_item
-    end
-    menu_item
-  end
-
-  def get_menu_item_with_action(menu_name)
+  def get_current_menu_items(menu_name)
+    id = get_id || -1
     menu=Admin::Menu.find_by_menu_name(menu_name)
-    menu_items=menu ? menu.action_item(params) : []
-    menu_items.empty? ? nil : Admin::MenuItem.get_deepest_item(menu_items)
+    type = params[:controller].camelize
+    actions=Admin::Action.find_by_controller_and_action("/#{params[:controller]}",params[:action])
+    conditions = ['((menuable_type=? AND menuable_id=?) OR
+                    (menuable_type="Admin::Action" AND menuable_id IN (?))) AND is_published=1',
+                    type,id,actions]
+    menu_items = if menu
+      menu.menu_items.find(:all, :conditions=>conditions)
+    else
+      Admin::MenuItem.find_in_branch(menu_name, conditions)
+    end
+    if menu_items.empty?
+      menu_items = begin
+        object=type.constantize
+        object.find_related_menu_item(menu_name,id) if object.respond_to?(:find_related_menu_item) #FIXME vajag iestrādāt lai meklē arī brānčā kas nav menu bet gan menu_items
+      rescue #table-less objects, e.g. start page
+        [menu.menu_items.first.root]
+      end
+    end
+    if menu_items.empty?
+      menu_items = session["last_selected_#{menu_name.downcase}_item"] unless session["last_selected_#{menu_name.downcase}_item"].nil?
+    else
+      session["last_selected_#{menu_name.downcase}_item"] = menu_items
+    end
+    menu_items
   end
   
   def get_menu_editors(id,namespace,object,menu_id)
