@@ -9,13 +9,14 @@ module Lolita
 
     module InstanceMethods
       def set_locale
+        session[:locale]=Lolita.config.i18n :language_code || Admin::Language.find_base_language.short_name unless session[:locale]
         if Admin::User.area==:public
-          I18n.locale=session[:locale]
-          if params[:locale] && I18n.available_locales.include?(params[:locale].to_sym)
-            I18n.locale = params[:locale]
-            session[:locale]=params[:locale]
+          switch_locale=params[:locale]
+          if switch_locale && I18n.available_locales.include?(switch_locale.to_sym)
+            session[:locale]=switch_locale
           end
-          Globalize::Locale.set I18n.locale.to_s
+          I18n.locale = session[:locale].to_s
+          Globalize::Locale.set session[:locale].to_s
         else
           locale=Lolita.config.i18n :language_code || Admin::Language.find_base_language.short_name
           I18n.locale=locale

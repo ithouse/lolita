@@ -33,9 +33,11 @@
       <br class="clear" />
       <br/>
     <% end %>
-    <% list_template[:partials][:top].each{|p|%>
-      <%= render :partial=>p, :object=>list_template%>
-    <% } if list_template[:partials] && list_template[:partials][:top] #FIXME %>
+    <% if list_template[:partials] && list_template[:partials][:top] #FIXME
+         list_template[:partials][:top].each{|p|%>
+           <%= render :partial=>p, :object=>list_template%>
+    <%   }
+       end %>
     <div id="form_list">
       <%= render :partial=>list_template[:partial],
         :object=>{
@@ -47,9 +49,11 @@
         :params=>list_template[:params]
       } %>
     </div>
-    <% list_template[:partials][:bottom].each{|p|%>
-      <%= render :partial=>p, :object=>list_template%>
-    <% } if list_template[:partials] && list_template[:partials][:bottom] #FIXME %>
+    <% if list_template[:partials] && list_template[:partials][:bottom] #FIXME
+         list_template[:partials][:bottom].each{|p|%>
+           <%= render :partial=>p, :object=>list_template%>
+    <%   }
+       end %>
   </div>
   <%= list_end_tags %>
 </div>
