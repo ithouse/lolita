@@ -7,6 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect  'system/logout',  :controller=>'admin/user', :action=>'logout', :path_prefix => '/:locale'
 
   map.connect ':controller/:action', :path_prefix => '/:locale'
+  map.connect ':controller/:action.:format', :path_prefix => '/:locale'
   map.connect ':controller/:action/:id', :path_prefix => '/:locale'
   map.connect ':controller/:action/:id.:format', :path_prefix => '/:locale'
 
