@@ -1,16 +1,45 @@
 module Extensions::PagingHelper
-
-  def public_pages page_object,options={}
-    result=""
-    page_numbers(page_object,options) do |link|
-      if block_given?
-        yield link
+  # Options
+  # :controller - controller to call
+  # :action - action to call
+  # :params - additional params for url
+  # :last_page - last page to render
+  # :first_page - first page to render
+  # :html - html options
+  # :container - container that html will be replaced with response, mean that need to
+  # create AJAX request
+  def public_page page,options={},page_number=nil
+    if page.total_pages>1
+      url={
+        :controller=>options[:controller] || params[:controller],
+        :action=>options[:action]|| params[:action],
+        :page=>page_number
+      }
+      options[:html]||={}
+      options[:params]||={}
+      unless page_number
+        (options[:first_page] || page.first_page).upto(options[:last_page] || page.last_page) do |page_nr|
+          options[:params][:page]=page_nr
+          options[:html][:class]="#{options[:html][:class]} current" if page_nr==page.current_page
+          yield public_page_link(page_nr,url,options)
+        end
       else
-        result<<link
+        if block_given?
+          yield public_page_link(page_number,url,options)
+        else
+          public_page_link(page_number,url,options)
+        end
       end
     end
-    return result
   end
+
+  def public_page_link(page_number,url,options={})
+    name=options[:page_name] ? options[:page_name].to_s % page_number : page_number
+    options[:html][:onclick]="ajax_paginator('#{url_for(url.merge(:only_path=>true))}','#{options[:container]}',#{options[:params].to_json});return false;" if options[:container]
+    link_to(name, url_for(url.merge(options[:params] || {})),options[:html])
+  end
+  
+  ### END of public page helper methods ###
   def sort_direction
     if params[:sort_direction]
       params[:sort_direction]=="desc" ? "asc" : "desc"

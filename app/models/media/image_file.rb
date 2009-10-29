@@ -348,8 +348,8 @@ class Media::ImageFile < Media::FileBase
     object=self.pictureable
     versions_class=object.class
     if versions_class.respond_to?(:upload_column_modify_methods) && methods=versions_class.upload_column_modify_methods
-      methods.each{|m|
-        object.send(m,picture)
+      methods.each{|m,values|
+        object.send(m,picture,values)
       }
     end
   end

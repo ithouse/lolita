@@ -1,3 +1,14 @@
+function ajax_paginator(url,container,params){
+    $.ajax({
+        url:url,
+        type:"GET",
+        dataType:"html",
+        data:params,
+        success:function(response){
+            $(container).html(response)
+        }
+    })
+}
 function loadjscssfile(filename, filetype){
     if (filetype=="js"){ //if filename is a external JavaScript file
         var fileref=document.createElement('script')
