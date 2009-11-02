@@ -64,8 +64,13 @@ module Media::GoogleMapHelper
     conf
   end
 
-  def include_google_map_js
-    #%(<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&key=#{Lolita.config.google(:maps_key)}"></script>)
-    "<script type=\"text/javascript\" src=\"http://maps.google.com/maps?file=api&amp;v=3&amp;key=#{Lolita.config.google :maps_key}\"></script>"
+  def include_google_map_js options = {}
+    options = {:version => 2, :sensors => false}.merge!(options)
+    case options[:version]
+    when 2
+      %(<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.google(:maps, :api_key, request.host.to_sym)}"></script>)
+    when 3
+      %(<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=#{options[:sensors] ? 'true' : 'false'}"></script>)
+    end
   end
 end

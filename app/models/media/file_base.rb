@@ -82,9 +82,8 @@ class Media::FileBase < Media::Base
   def self.new_file(params)
     file=self.new()
     polymorphic_name=media_get_polymorphic_name
-    if params[:tempid]!="true" && params[:parent_id]
-      parent=params[:parent].camelize.constantize.find_by_id(params[:parent_id])
-      file.send("#{polymorphic_name}=",parent) if parent
+    if params[:parent_id] && parent=params[:parent].camelize.constantize.find_by_id(params[:parent_id])
+      file.send("#{polymorphic_name}=",parent)
     else
       file.send("#{polymorphic_name}_type=",params[:parent].camelize)
     end
@@ -105,7 +104,7 @@ class Media::FileBase < Media::Base
     Media::MediaFileTempMemory.delete_all(["media_file_id IN (?)",memory_ids]) unless memory_ids.empty?
   end
 
-  #Function is called from file_manager.rb extensions.
+  #Function is called from multimedia lib extensions.
   #Update all files with given memory_id, that are kept in memory, with
   #real object id and right type.
   #Delete object references from temp media memory and refresh real object

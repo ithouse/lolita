@@ -36,8 +36,11 @@ development:
     translation: true
     language_code: lv
   google:
-    maps_key: false
-    analytics_key: false
+    maps:
+      api_key:
+        localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
+    analytics:
+      id: false
 
 production:
   system:
@@ -77,8 +80,11 @@ production:
     translation: true
     language_code: lv
   google:
-    maps_key: false
-    anlytics_key: false
+    maps:
+      api_key:
+        localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
+    analytics:
+      id: false
 
 test:
   system:
@@ -118,5 +124,8 @@ test:
     translation: true
     language_code: lv
   google:
-    maps_key: false
-    anlytics_key: false
+    maps:
+      api_key:
+        localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
+    analytics:
+      id: false

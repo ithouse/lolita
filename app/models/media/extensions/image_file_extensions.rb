@@ -1,7 +1,7 @@
 module Media::Extensions::ImageFileExtensions
   # round image corners
   def image_file_round_corners picture,options={}
-    (options[:versions] || []).each{|version|
+    (options && options[:versions] || []).each{|version|
       picture.send(version).process! do |image|
         width = image.columns
         height = image.rows

@@ -1,3 +1,4 @@
+# coding:utf-8
 module Lolita
   module ControllerKernel
     def self.included(base)

@@ -1,3 +1,4 @@
+# coding:utf-8
 module Extensions::FieldHelper
   include Extensions::SingleFieldHelper
 

@@ -1,3 +1,4 @@
+# coding:utf-8
 module Extensions::SingleFieldHelper
 
   def create_counter id, options={},html={}
