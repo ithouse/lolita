@@ -8,10 +8,10 @@ module Lolita
     end
 
     module InstanceMethods
-      def render_404(status=404)
+      def render_404(status=404,layout="default")
         respond_to do |type|
-          type.html { render :template => "errors/error_404", :status => status }
-          type.all  { render :nothing => true, :status => status }
+          type.html { render :template => "errors/error_404", :status => status, :layout=>layout}
+          type.all  { render :nothing => true, :status => status,:layout=>layout }
         end
       end
 

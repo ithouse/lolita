@@ -15,7 +15,7 @@ class Admin::PublicUserController < ApplicationController
         flash[:error]||=I18n.t(:"flash.error.auth failed")
       end
     else
-      redirect_to options[:url] || home_url if logged_in?
+      redirect_to home_url if logged_in?
     end
   end
 

@@ -1,0 +1,22 @@
+en:
+  actions:
+    save translation: Save translation
+    filter: Filter
+  dialogs:
+    wait:
+      title: Loading...
+    warning:
+      title: Error
+      content text: There was an error!<br/>We are informed about it and will avoid it in the shortest possible time. 
+  notice:
+    translation saved: Translation saved
+  tabs:
+    default: Tab
+    content: Content
+    translate: Translate
+    google_map: Map
+    metadata: Metadata
+    image_file: Image
+    simple_file: Files
+    audio_file: Audio
+    video_file: Video

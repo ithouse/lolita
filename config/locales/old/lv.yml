@@ -113,7 +113,7 @@ lv:
     list: Lietotāju saraksts
   public_user:
     signup email subject: Reģistrācija telegraf.lv
-    signup email text: Apsveica, Jūs esat veiksmīgi reģistrēts!
+    signup email text: Apsveicam, Jūs esat veiksmīgi reģistrēts!
   admin_access:
     show_action: Pieeju saraksts
   admin_field:
@@ -129,7 +129,7 @@ lv:
     has user: Jau nosūtīts
     dont send: Nesūtīt
     dialog:
-        header: Ievadite nosūtīšanas tekstu
+        header: Ievadiet nosūtīšanas tekstu
         invitation text: Nosūtīšanas teksts
         subject: E-pasta virsraksts
   news:

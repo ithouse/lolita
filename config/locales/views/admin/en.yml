@@ -1,0 +1,22 @@
+en:
+  lolita:
+    admin:
+      user:
+        login:
+          authorization: Authorization
+          login name: Name
+          password: Password
+          forgot password: Forgot password?
+      menu_item:
+        content_menu_editor:
+          action menu: Action menu
+          url menu: Full address
+          meta menu: Object attraction to meta url
+      accesses:
+        title: Title
+        permissions:
+          all: All
+          read: Read
+          write: Write
+          change: Change
+          destroy: Delete

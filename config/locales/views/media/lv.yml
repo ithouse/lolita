@@ -8,7 +8,7 @@ lv:
         image_file_list_body:
           open attributes: Atvērt attēla atribūtus
           delete picture: Dzēst attēlu
-          open other versions: Atvērt cias attēla versijas
+          open other versions: Atvērt citas attēla versijas
       image_file:
         dialog:
           header: Bilžu dialogs

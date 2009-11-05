@@ -1,6 +1,23 @@
 class Media::FileBase < Media::Base
   self.abstract_class = true
 
+  #Return temp id that is used as memory id when uploading files.
+  #IMPORTANT
+  #For all file uploads for one object, use same memory id, so when updating 
+  #files you can update all at same time, otherwise you must call update_memorized_files
+  #with different memory id
+  def self.get_memory_id(size=15,options={})
+    number=lambda{Array.new(size){|i| rand(10)}.join("").to_i}
+    if options[:strong]
+      num=number.call
+      while Media::MediaFileTempMemory.find_by_memory_id(num)
+        num=number.call
+      end
+      num
+    else
+      number.call
+    end
+  end
   #Add file to memory, need when save file without real parent id.
   #Example:
   # Media::ImageFile.add_to_memory(1234567,5)
@@ -27,22 +44,28 @@ class Media::FileBase < Media::Base
         self_conditions[0]<<" AND id!=?"
         self_conditions<<current.id
       end
-      self.destroy_all() unless media_ids.empty?
+      self.destroy_all(self_conditions) unless media_ids.empty?
       Media::MediaFileTempMemory.delete_all(conditions)
     else
       if current
         polymorphic_name=media_get_polymorphic_name
         self.destroy_all(["id!=? AND #{polymorphic_name}_type=? AND #{polymorphic_name}_id=?",
             current.id,current.send(:"#{polymorphic_name}_type"),current.send(:"#{polymorphic_name}_id")
-        ])
+          ])
       end
     end
   end
 
-  #Delete media file with given id
-  def self.delete_file(file_id)
-    real_file=self.find_by_id(file_id)
-    real_file.destroy if real_file
+  #Delete media file with given id or object
+  def self.delete_file(file)
+    file_id=if(file.is_a?(Media::FileBase))
+      file.destroy
+      file.id
+    else
+      real_file=self.find_by_id(file)
+      real_file.destroy if real_file
+      file
+    end
     self.delete_file_from_memory(file_id)
   end
 
@@ -57,27 +80,37 @@ class Media::FileBase < Media::Base
   end
 
   #Find all media objects with given memory id
-  def self.find_in_memory(memory_id,conditions={})
+  def self.find_in_memory(memory_id,conditions=[])
     temp_table=Media::MediaFileTempMemory.table_name
     memory=Media::MediaFileTempMemory.find(:all,:conditions=>self.cms_merge_conditions(["#{temp_table}.memory_id=? AND #{temp_table}.user_id=? AND #{temp_table}.media=?",memory_id,Admin::User.current_user.id,self.to_s],conditions))
     self.find(:all,:conditions=>["#{self.table_name}.id IN (?)",memory.collect{|m| m.media_file_id}])
   end
 
   #Find all existing media object, that are not kept in memory
-  def self.find_existing(class_name,parent_id)
+  def self.find_existing(class_name,parent_id,conditions=[])
     polymorphic_name=media_get_polymorphic_name
-    self.find(:all,:conditions=>["#{polymorphic_name}_type=? AND #{polymorphic_name}_id=?",class_name.camelize,parent_id]) if polymorphic_name
+    if polymorphic_name
+      conditions=self.cms_merge_conditions(
+        ["#{polymorphic_name}_type=? AND #{polymorphic_name}_id=?",class_name.camelize,parent_id],
+        conditions
+      )
+      self.find(:all,:conditions=>conditions)
+    end
   end
 
   #Find existing media object or ones that are in memory
-  def self.find_current_files class_name,memory_id
+  def self.find_current_files class_name,memory_id,conditions=[]
     if self.has_memory_container?(memory_id)
-      self.find_in_memory(memory_id)
+      self.find_in_memory(memory_id,conditions)
     else
-      self.find_existing(class_name,memory_id)
+      self.find_existing(class_name,memory_id,conditions)
     end
   end
-  
+
+  def self.find_files_from_ids(class_name,memory_id,ids=[])
+    conditions=["#{self.has_memory_container?(memory_id) ? "#{Media::MediaFileTempMemory.table_name}.media_file_id" : "#{self.table_name}.id"} IN (?)",ids]
+    self.find_current_files(class_name,memory_id,conditions)
+  end
   #End of new functions added when changed to media namespace
   def self.new_file(params)
     file=self.new()
