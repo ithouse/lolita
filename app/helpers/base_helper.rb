@@ -373,5 +373,16 @@ module BaseHelper
       yield link_to(lang.short_name.upcase,url,{:class=>current==lang.short_name.upcase ? "active" : ""})
     }
   end
+
+  # insteed of <%= yield :main_content %> you do
+  # <% default_content_for :main_content do %>
+  #   <p>This is default content</p>
+  # <% end %>
+  def default_content_for(name, &block)
+    name = name.kind_of?(Symbol) ? ":#{name}" : name
+    out = eval("yield #{name}", block.binding)
+    concat(out || capture(&block), block.binding)
+  end
+
 end
 
