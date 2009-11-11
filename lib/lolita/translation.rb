@@ -3,14 +3,13 @@ module Lolita
     def self.included(base)
       base.class_eval{
         include InstanceMethods
-        before_filter :set_locale
       }
     end
 
     module InstanceMethods
-      def set_locale
+      def set_locale 
         session[:locale]=Lolita.config.i18n :language_code || Admin::Language.find_base_language.short_name unless session[:locale]
-        if Admin::User.area==:public
+        unless system_user?
           switch_locale=params[:locale]
           if switch_locale && I18n.available_locales.include?(switch_locale.to_sym)
             session[:locale]=switch_locale

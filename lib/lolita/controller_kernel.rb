@@ -42,6 +42,7 @@ module Lolita
       end
 
       def send_bug msg, title=''
+        #FIXME: move all this mess to template
         msg = "
     <h3>Pieprasījums</h3>
     <dl>

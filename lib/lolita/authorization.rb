@@ -17,13 +17,17 @@ module Lolita
       protected
       
       def public_user?
-        !current_user.is_a? Admin::SystemUser if logged_in?
+        Admin::User.area==:public
+        #!current_user.is_a? Admin::SystemUser if logged_in?
       end
 
       def system_user?
-        !public_user? if logged_in?
+        Admin::User.area==:system && Admin::User.current_user
       end
 
+      def public_system_user?
+        Admin::User.area==:public_system && Admin::User.current_user
+      end
       # Returns true or false if the user is logged in.
       # Preloads @current_user with the user model if they're logged in.
       def logged_in?
@@ -74,6 +78,7 @@ module Lolita
           controller.public_actions=self.public_actions
           controller.system_actions=self.system_actions
           controller.allow
+          controller.set_locale
         end
       end
 

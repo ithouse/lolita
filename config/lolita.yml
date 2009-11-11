@@ -15,6 +15,7 @@ development:
       - /media/audio_file/new_create
       - /media/simple_file/new_create
     geokit: false
+    enable_path_rewrite: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
@@ -59,6 +60,7 @@ production:
       - /audio_file/new_create
       - /file/new_create
     geokit: false
+    enable_path_rewrite: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
@@ -103,6 +105,7 @@ test:
       - /audio_file/new_create
       - /simple_file/new_create
     geokit: false
+    enable_path_rewrite: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"

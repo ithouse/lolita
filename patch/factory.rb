@@ -30,4 +30,4 @@ module Lolita #:nodoc:
 
   end
 end
-Factory.send(:include,Lolita::FactoryPatch)
+Factory.send(:include,Lolita::FactoryPatch) if RAILS_ENV == "test"
