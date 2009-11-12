@@ -17,10 +17,16 @@ module Extensions::PagingHelper
       }
       options[:html]||={}
       options[:params]||={}
+      class_name=""
       unless page_number
         (options[:first_page] || page.first_page).upto(options[:last_page] || page.last_page) do |page_nr|
           options[:params][:page]=page_nr
-          options[:html][:class]="#{options[:html][:class]} current" if page_nr==page.current_page
+          if page_nr==page.current_page
+            class_name=options[:html][:class] ? options[:html][:class].dup : nil
+            options[:html][:class]="#{options[:html][:class]} current"
+          else
+            options[:html][:class]=class_name
+          end
           yield public_page_link(page_nr,url,options)
         end
       else
@@ -36,7 +42,11 @@ module Extensions::PagingHelper
   def public_page_link(page_number,url,options={})
     name=options[:page_name] ? options[:page_name].to_s % page_number : page_number
     options[:html][:onclick]="ajax_paginator('#{url_for(url.merge(:only_path=>true))}','#{options[:container]}',#{options[:params].to_json});return false;" if options[:container]
-    link_to(name, url_for(url.merge(options[:params] || {})),options[:html])
+    unless options[:ajax]
+      link_to(name, url_for(url.merge(options[:params] || {})),options[:html])
+    else
+      options
+    end
   end
   
   ### END of public page helper methods ###

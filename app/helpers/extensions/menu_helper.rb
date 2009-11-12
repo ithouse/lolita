@@ -18,7 +18,7 @@ module Extensions::MenuHelper
     actions=Admin::Action.find_by_controller_and_action("/#{params[:controller]}",params[:action])
     conditions = ['((menuable_type=? AND menuable_id=?) OR
                     (menuable_type="Admin::Action" AND menuable_id IN (?))) AND is_published=1',
-                    type,id,actions]
+      type,id,actions]
     menu_items = if menu
       menu.menu_items.find(:all, :conditions=>conditions)
     else
@@ -27,9 +27,13 @@ module Extensions::MenuHelper
     if menu_items.empty?
       menu_items = begin
         object=type.constantize
-        object.find_related_menu_item(menu_name,id) if object.respond_to?(:find_related_menu_item) #FIXME vajag iestrādāt lai meklē arī brānčā kas nav menu bet gan menu_items
+        if object.respond_to?(:find_related_menu_item)
+          object.find_related_menu_item(menu_name,id)
+        else
+          []
+        end #FIXME vajag iestrādāt lai meklē arī brānčā kas nav menu bet gan menu_items
       rescue #table-less objects, e.g. start page
-        [menu.menu_items.first.root]
+        menu ? [menu.menu_items.first.root] : []
       end
     end
     if menu_items.empty?
@@ -131,43 +135,39 @@ module Extensions::MenuHelper
     #    select_tag(menu_select_name(namespace),options_for_select(get_tables_for_menu(menu_id,{:simple=>true,:include=>incl}),current_table),:class=>"select")
   end
   
-  #  def public_web_menu_select menu_item,namespace,menu_id
-  #    public_menu=Admin::Menu.find_by_id(menu_id)
-  #    menu = public_menu ? Admin::Menu.web_menu(public_menu.module_name).first : nil
-  #    return "" unless menu
-  #    menu_items=menu.all_menu_items
-  #    items=[["-Nav norādīts-",0]]
-  #    menu_items.each{|item|
-  #      items<<["#{'--'*(item.level-1)}#{item.name}",item.id]
-  #    }
-  #    if menu_item && menu_item.menuable_type && menu_item.menuable_type!="Admin::Action" && menu_item.url.to_s.size<1
-  #      current_item=menu.menu_items.find(:first,:conditions=>["menuable_type=? and menuable_id=?",menu_item.menuable_type,menu_item.menuable_id])
-  #      current_item=current_item ? current_item.id : 0
-  #    elsif menu_item && menu_item.menuable_type=="Admin::Action" && menu_item.menuable
-  #      current_action=menu_item.menuable.action
-  #      current_table=menu_item.menuable.controller
-  #      controller="#{current_table}_controller".camelize.constantize
-  #      allowed_actions=controller.public_actions.collect!{|action|
-  #        name=action.first.is_a?(Symbol) ? t(action.first) : action.first
-  #        name=name.to_s.size>0 ? name : nil
-  #        [name || action.last.to_s.humanize, action.last]
-  #      }
-  #    elsif menu_item && menu_item.url.to_s.size>0
-  #      url=menu_item.url
-  #    end
-  #    render :partial=>"admin/menu_item/public_web_menu_select", :locals=>{
-  #      :current=>current_action ? :action : (url ? :url : :content),
-  #      :url=>url,
-  #      :content=>{:options=>options_for_select(items,current_item),:name=>menu_select_name(namespace,"item")},
-  #      :actions=>{
-  #        :table_options=>options_for_select(get_tables_for_menu(menu_id),current_table),
-  #        :action_options=>options_for_select(allowed_actions || [],current_action),
-  #        :namespace=>namespace,
-  #        :current_item_id=>menu_item ? menu_item.id : 0
-  #      }
-  #    }
+  # If block given return struct Object else returns Array
+  # Input:
+  #   name - branch_name
+  #   options -
+  #     :show_hidden - show hidden menu items, default not shown
+  # Output:
+  #   :link - String (url, href ...)
+  #   :is_active - Boolean
+  #   :menu_item - Admin::MenuItem
   #
+  # Example:
+  #  items = []
+  #  render_menu "top_menu" do |item|
+  #    items << content_tag("li", item.link, :class => item.is_active ? "active" : nil)
   #  end
+  #  content_tag("ul",items.join("\n"),options)
+  #
+  def render_menu name, options = {}
+    root_item = Admin::MenuItem.find_by_branch_name(name)
+    current_branch = get_current_menu_branch(name)
+    items = [] unless block_given?
+    new_item = Struct.new(:link,:is_active,:menu_item)
+    root_item.children.each do |item|
+      unless (options[:show_hidden] && !item.is_published)
+        if block_given?
+          yield new_item.new(item.link, current_branch.include?(item) ? :active : nil, item)
+        else
+          items << item
+        end
+      end
+    end if root_item && root_item.children
+    items unless block_given?
+  end
   
   def menu_splitter
     '<span >|&nbsp;</span>'
