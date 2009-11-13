@@ -62,6 +62,9 @@ module ITHouse
       # example above):
       #  company.logo_url
       #  company.logo.url
+      #  company.logo.name.url
+      #  company.logo.name.url(:version)
+      #  company.logo.name.version.url
       #  company.logo.main_image.url
       #  company.logo.url(:small_grayscale)
       #
