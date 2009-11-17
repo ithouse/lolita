@@ -13,4 +13,20 @@ module Media::Extensions::ImageFileExtensions
       end
     }
   end
+  #converts the image to grayscale
+  def image_file_grayscale picture,options={}
+    (options && options[:versions] || []).each{|version|
+      picture.send(version).process! do |image|
+        image.quantize(256, Magick::GRAYColorspace)
+      end
+    }
+  end
+  #approximates the number of gradients to saturate colors and raise contrast between them
+  def image_file_auto_contrast picture,options={}
+    (options && options[:versions] || []).each{|version|
+      picture.send(version).process! do |image|
+        image.normalize
+      end
+    }
+  end
 end
