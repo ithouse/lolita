@@ -141,6 +141,7 @@ module Extensions::MenuHelper
   #   options -
   #     :show_hidden - show hidden menu items, default not shown
   # Output:
+  #   :name - String
   #   :link - String (url, href ...)
   #   :is_active - Boolean
   #   :menu_item - Admin::MenuItem
@@ -148,7 +149,7 @@ module Extensions::MenuHelper
   # Example:
   #  items = []
   #  render_menu "top_menu" do |item|
-  #    items << content_tag("li", item.link, :class => item.is_active ? "active" : nil)
+  #    items << content_tag("li", link_to(item.name,item.link), :class => item.is_active ? "active" : nil)
   #  end
   #  content_tag("ul",items.join("\n"),options)
   #
@@ -156,11 +157,11 @@ module Extensions::MenuHelper
     root_item = Admin::MenuItem.find_by_branch_name(name)
     current_branch = get_current_menu_branch(name)
     items = [] unless block_given?
-    new_item = Struct.new(:link,:is_active,:menu_item)
+    new_item = Struct.new(:name,:link,:is_active,:menu_item)
     root_item.children.each do |item|
       unless (options[:show_hidden] && !item.is_published)
         if block_given?
-          yield new_item.new(item.link, current_branch.include?(item) ? :active : nil, item)
+          yield new_item.new(item.name,item.link, current_branch.include?(item) ? :active : nil, item)
         else
           items << item
         end

@@ -11,7 +11,7 @@ module Lolita
       def render_404(status=404,layout="default")
         respond_to do |type|
           type.all  { render :nothing => true, :status => status }
-          if controller
+          unless params.empty?
             type.html { render :template => "errors/error_404", :status => status, :layout=>layout}
           else
             render :nothing => true, :status => status

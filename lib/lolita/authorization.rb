@@ -219,7 +219,11 @@ module Lolita
         return unless self.respond_to?( :redirect_to )
         flash[:notice] = t(:"flash.need to login")
         session[:return_to]=request.request_uri unless params[:format]
-        redirect_to home_url
+        if request.xhr?
+          render :text=>"Access denied!"
+        else
+          redirect_to home_url
+        end
         return false
       end
 
