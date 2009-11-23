@@ -4,23 +4,28 @@ class Media::GoogleMap < Media::Base
   acts_as_mappable if Lolita.config.system :geokit
 
   def self.after_parent_save(memory_id,object,options)
-    self.find_by_parent(object).each{|m| m.destroy}
-    object_class=object.class.base_class.to_s
-    points=[]
-    options[:params][:map].each{|map_id,maps|
-      maps.each{|marker_id,marker|
-        if marker[:lng].to_s!="0" && marker[:lat]!="0"
-          points<<self.create!(
-            :lat=>marker[:lat],
-            :lng=>marker[:lng],
-            :zoom=>marker[:zoom],
-            :mappable_type=>object_class,
-            :mappable_id=>object.id
-          )
-        end
+    #FIXME vajag izdomāt, kā notiekt, ka tiek ne no CMS puses pievienots punkts kkādā
+      # citā stilā, un tad tur izmainīt
+    if options[:params][:map].is_a?(Hash)
+      self.find_by_parent(object).each{|m| m.destroy}
+      object_class=object.class.base_class.to_s
+      points=[]
+      options[:params][:map].each{|map_id,maps|
+        maps.each{|marker_id,marker|
+          if marker[:lng].to_s!="0" && marker[:lat]!="0"
+            points<<self.create!(
+              :lat=>marker[:lat],
+              :lng=>marker[:lng],
+              :zoom=>marker[:zoom],
+              :mappable_type=>object_class,
+              :mappable_id=>object.id
+            )
+          end
+        }
       }
-    } if options[:params][:map].is_a?(Hash)
-    object.class.assing_polymorphic_result_to_object(object,points,:mappable)
+      object.class.assing_polymorphic_result_to_object(object,points,:mappable)
+    end
+    
   end
 
   def self.find_by_parent(object)

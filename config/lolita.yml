@@ -15,6 +15,7 @@ development:
       - /media/audio_file/new_create
       - /media/simple_file/new_create
     geokit: false
+    enable_path_rewrite: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
@@ -36,8 +37,11 @@ development:
     translation: true
     language_code: lv
   google:
-    maps_key: false
-    analytics_key: false
+    maps:
+      api_key:
+        localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
+    analytics:
+      id: false
 
 production:
   system:
@@ -56,6 +60,7 @@ production:
       - /audio_file/new_create
       - /file/new_create
     geokit: false
+    enable_path_rewrite: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
@@ -77,8 +82,11 @@ production:
     translation: true
     language_code: lv
   google:
-    maps_key: false
-    anlytics_key: false
+    maps:
+      api_key:
+        localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
+    analytics:
+      id: false
 
 test:
   system:
@@ -97,6 +105,7 @@ test:
       - /audio_file/new_create
       - /simple_file/new_create
     geokit: false
+    enable_path_rewrite: false
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
@@ -118,5 +127,8 @@ test:
     translation: true
     language_code: lv
   google:
-    maps_key: false
-    anlytics_key: false
+    maps:
+      api_key:
+        localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
+    analytics:
+      id: false

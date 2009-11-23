@@ -140,7 +140,8 @@ class Media::ImageFile < Media::FileBase
           p.add_watermark(watermark,n) if watermark
           GC.start
         }
-      rescue
+        p.name_after_upload(p.name)
+      rescue Exception=>e
         errors<<"Unable rebuild #{p.id}"
       end
     }
@@ -346,6 +347,7 @@ class Media::ImageFile < Media::FileBase
     end
     options
   end
+  
   def name_after_upload(picture)
     object=self.pictureable
     versions_class=object.class

@@ -6,16 +6,17 @@ class Admin::PublicUserController < ApplicationController
     flash[:error]=nil
     if request.post? && params[:user]
       user = klass.authenticate(params[:user][login],params[:user][password])
-      loged_in=yield user
+      loged_in=yield user if user
       if user && loged_in
         register_user_in_session user
         remember_me user
-        redirect_to options[:url] || home_url
+        redirect_logged_in_user options
       else
-        flash[:error]||=I18n.t(:"flash.error.auth failed")
+        flash[:error]||=I18n.t(:"flash.error.auth failed") unless options[:no_flash]
+        render_partial options
       end
     else
-      redirect_to options[:url] || home_url if logged_in?
+      redirect_logged_in_user options if logged_in?
     end
   end
 
@@ -23,11 +24,30 @@ class Admin::PublicUserController < ApplicationController
     if logged_in?
       self.current_user.forget_me
       reset_current_user
-      flash[:success]||= I18n.t(:"flash.success.logout success")
+      flash[:success]||= I18n.t(:"flash.success.logout success") unless options[:no_flash]
     end
     redirect_to options[:url] || home_url
   end
-  
+
+  def redirect_logged_in_user options = {}
+    unless options[:partial]
+      redirect_to options[:url] || home_url
+    else
+      render_partial options
+    end
+  end
+
+  def render_partial options
+    if options[:partial]
+      render_options = {
+        :partial => options[:partial],
+        :status => logged_in? ? 200 : 401
+      }
+      render_options[:locals] = options[:locals] if options[:locals]
+      render render_options
+    end
+  end
+
   def remember_me(user)
     user.remember_me if !user.remember_token? && params[:user][:remember_user]
     cookies[:auth_token] = { :value => user.remember_token , :expires => user.remember_token_expires_at }
@@ -39,7 +59,7 @@ class Admin::PublicUserController < ApplicationController
   end
   
   def send_registration_email user,header,text
-  #FIXME
+    #FIXME
   end
   
   def register_user_in_session user

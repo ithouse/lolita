@@ -1,2 +1,12 @@
 en:
-  hello: world
+  date:
+    formats:
+      default: "%m/%d/%Y"
+      short: "%e. %B"
+      long: "%Y. year %e. %B"
+
+  time:
+    formats:
+      default: "%Y. year %e. %B, %H:%M"
+      short: "%m/%d/%Y, %H:%M"
+      long: "%Y. year %e. %B, %H:%M:%S"

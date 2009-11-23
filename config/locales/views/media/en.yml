@@ -1,0 +1,25 @@
+en:
+  lolita:
+    media:
+      google_map:
+        container:
+          move_to_address: Go to the address
+      media_dialog:
+        image_file_list_body:
+          open attributes: Open image preferences
+          delete picture: Delete image
+          open other versions: Open another image versions
+      image_file:
+        dialog:
+          header: Image dialogue
+        thumb_list:
+          change attributes: Change image attibutes
+          all sizes: All sizes
+        resize_dialog:
+          all sizes: All sizes
+          versions: Versions
+          original image: Original image
+          cropped image: Cropped image
+          real look: Real look
+          back: Back
+          save: Save

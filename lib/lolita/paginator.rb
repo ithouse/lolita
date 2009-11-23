@@ -62,7 +62,7 @@ module Lolita
       elsif self.parent.has_advanced_filter?
         self.parent.advanced_filter_count(self.advanced_filter,self.find_options.delete_if{|key,value| [:readonly,:lock].include?(key)})
       else
-        self.parent.count(:all,:joins=>self.find_options[:joins], :conditions=>self.find_options[:conditions],:group=>self.find_options[:group])
+        self.parent.count(:all,:include=>self.find_options[:include],:joins=>self.find_options[:joins], :conditions=>self.find_options[:conditions],:group=>self.find_options[:group])
       end
       self.total_records=count.is_a?(Array) ? count.size : count
     end
@@ -91,21 +91,49 @@ module Lolita
     alias :page_count :total_pages
 
     def next_page
-      self.start_row+self.per_page>self.total_records.to_i ? 1 : self.page+1
+      self.start_row+self.per_page>self.total_records.to_i ? self.total_pages : self.page+1
     end
 
     def previous_page
       self.start_row-self.per_page<0 ? 1 : self.page-1
     end
 
+    # Last page in paginator
+    # Always trys to return page number of 2 times padding + current page
+    # Example
+    #  padding=3
+    #  current_page = 2
+    #  total_pages = 50
+    #  page.last_page => 7
     def last_page
-      self.page+self.padding>self.total_pages ? self.total_pages : self.page+self.padding
+      if self.page+self.padding>self.total_pages
+        self.total_pages
+      elsif self.page+self.padding<self.padding*2+1
+        self.padding*2+1>self.total_pages ? self.total_pages : self.padding*2+1
+      else
+        self.page+self.padding
+      end
     end
 
+    # First page in paginator
+    # Example:
+    #  padding=3
+    #  current_page=9
+    #  page.first_page => 6
     def first_page
       self.page-self.padding<1 ? 1 : self.page-self.padding
     end
 
+    # Return first record index, starts with 1, if no records than 0
+    def first_index
+      self.total_records==0 ? 0 : self.start_row+1
+    end
+    # Return last record index, if less than per page than return total records, else
+    # current record index + records per page
+    def last_index
+      self.start_row+self.per_page>self.total_records ? self.total_records : self.start_row+self.per_page
+    end
+    
     def simple_sort_column
       self.sort_column.split(",").collect{|col| col.split(".").last.gsub("`","")}.join(",") if self.sort_column
     end

@@ -1,3 +1,4 @@
+# coding:utf-8
 module Extensions::ReportsHelper
   def report_menu config, options={}
     content_tag("div",

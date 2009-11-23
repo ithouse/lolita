@@ -220,18 +220,18 @@ module BaseHelper
     result
   end
   
-  def month_name nr, loc="kas?"
-    m=[{"Janvār"=>1},{"Februār"=>1},{"Mart"=>0},{"Aprīl"=>1},{"Maij"=>0},
-      {"Jūnij"=>0},{"Jūlij"=>0},{"August"=>0},{"Septembr"=>1},{"Oktobr"=>1},
-      {"Novembr"=>1},{"Decembr"=>1}
-    ]
-    dekl=[
-      {"kas?"=>"s","kā?"=>"a","kam?"=>"am","ko?"=>"u","kur?"=>"ā"},
-      {"kas?"=>"is","kā?"=>"a","kam?"=>"im","ko?"=>"i","kur?"=>"ī"}
-    ]
-    "#{m[nr-1].keys.first}#{dekl[m[nr-1].values.first][loc]}"
-  end
-  
+#  def month_name nr, loc="kas?"
+#    m=[{"Janvār"=>1},{"Februār"=>1},{"Mart"=>0},{"Aprīl"=>1},{"Maij"=>0},
+#      {"Jūnij"=>0},{"Jūlij"=>0},{"August"=>0},{"Septembr"=>1},{"Oktobr"=>1},
+#      {"Novembr"=>1},{"Decembr"=>1}
+#    ]
+#    dekl=[
+#      {"kas?"=>"s","kā?"=>"a","kam?"=>"am","ko?"=>"u","kur?"=>"ā"},
+#      {"kas?"=>"is","kā?"=>"a","kam?"=>"im","ko?"=>"i","kur?"=>"ī"}
+#    ]
+#    "#{m[nr-1].keys.first}#{dekl[m[nr-1].values.first][loc]}"
+#  end
+#  
   def is_active_sort_column?(sort_column)
     if params[:sort_columns]==sort_column
       "active"
@@ -373,5 +373,16 @@ module BaseHelper
       yield link_to(lang.short_name.upcase,url,{:class=>current==lang.short_name.upcase ? "active" : ""})
     }
   end
+
+  # insteed of <%= yield :main_content %> you do
+  # <% default_content_for :main_content do %>
+  #   <p>This is default content</p>
+  # <% end %>
+  def default_content_for(name, &block)
+    name = name.kind_of?(Symbol) ? ":#{name}" : name
+    out = eval("yield #{name}", block.binding)
+    concat(out || capture(&block))
+  end
+
 end
 

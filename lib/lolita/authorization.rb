@@ -1,3 +1,4 @@
+# coding:utf-8
 module Lolita
   module Authorization
     def self.included(base)
@@ -16,13 +17,17 @@ module Lolita
       protected
       
       def public_user?
-        !current_user.is_a? Admin::SystemUser if logged_in?
+        Admin::User.area==:public
+        #!current_user.is_a? Admin::SystemUser if logged_in?
       end
 
       def system_user?
-        !public_user? if logged_in?
+        Admin::User.area==:system && Admin::User.current_user
       end
 
+      def public_system_user?
+        Admin::User.area==:public_system && Admin::User.current_user
+      end
       # Returns true or false if the user is logged in.
       # Preloads @current_user with the user model if they're logged in.
       def logged_in?
@@ -73,6 +78,7 @@ module Lolita
           controller.public_actions=self.public_actions
           controller.system_actions=self.system_actions
           controller.allow
+          controller.set_locale
         end
       end
 
@@ -213,7 +219,11 @@ module Lolita
         return unless self.respond_to?( :redirect_to )
         flash[:notice] = t(:"flash.need to login")
         session[:return_to]=request.request_uri unless params[:format]
-        redirect_to home_url
+        if request.xhr?
+          render :text=>"Access denied!"
+        else
+          redirect_to home_url
+        end
         return false
       end
 

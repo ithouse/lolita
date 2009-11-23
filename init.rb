@@ -23,4 +23,4 @@ require "#{File.join(File.dirname(__FILE__))}/lib/load_lolita_core.rb"
 # load factories
 Dir.glob("#{File.join(File.dirname(__FILE__))}/spec/factories/*/*.rb").each do |path|
   require path
-end
+end if RAILS_ENV == "test"

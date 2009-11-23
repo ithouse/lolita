@@ -13,6 +13,15 @@ class Admin::MenuItem < Cms::Manager
   before_save :allow_branch_name_only_on_first_level
   translates :name,:alt_text
 
+  def self.find_in_branch(branch_name, conditions=nil)
+    root = self.find_by_branch_name(branch_name)
+    if root
+      self.find(:all, :conditions=>self.cms_merge_conditions(conditions, ['lft > ? and rgt < ?', root.lft, root.rgt]))
+    else
+      []
+    end
+  end
+
   def remove_action
     if self.menuable && self.menuable.is_a?(Admin::Action)
       self.menuable.destroy
@@ -68,6 +77,35 @@ class Admin::MenuItem < Cms::Manager
       hsh[:controller]="/"
     end
     hsh
+    #TODO consider upgrading to the following code
+#    hsh={:locale=>I18n.locale}
+#    item = self.menuable ? self : (child = get_first_child) ? child : self
+#
+#    if item.respond_to?(:meta_data) && item.meta_data && !(item.meta_data.url.to_s =~ /^-\d+/)
+#      hsh[:controller] = "/#{item.meta_data.url}"
+#    elsif item.menuable && item.menuable.respond_to?(:meta_data) && item.menuable.meta_data && !(item.menuable.meta_data.url.to_s =~ /-\d+/)
+#      hsh[:controller] = "/#{item.menuable.meta_data.url}"
+#    elsif item.menuable_type=="Url"
+#      return item.menuable.name
+#    elsif item.menuable_type && !item.menuable_type.include?("::StartPage")
+#      if item.menuable_type=="Admin::Action"
+#        if item.menuable && item.menuable.controller && item.menuable.action
+#          hsh[:controller]=item.menuable.controller
+#          hsh[:action]=item.menuable.action
+#        end
+#      else
+#        hsh[:controller]="/#{item.menuable_id.to_i>0 ? item.menuable_type.to_s.underscore : ""}"
+#        hsh[:action]=item.menuable_id.to_i>0 ? "show" : "index"
+#      end
+#
+#      hsh[:id]=item.menuable_type=="Admin::Action" ?
+#        nil  :
+#        (item.menuable_id.to_i>0 ? item.menuable_id : nil)
+#    else
+#      hsh[:controller]="/"
+#    end
+#    hsh
+
   end
 
   def remove_content

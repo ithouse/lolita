@@ -1,0 +1,9 @@
+en:
+  activerecord:
+    attributes:
+      media/image_file:
+        position: Position
+        alt: Alternative text
+        title: Title
+        caption: Caption
+        name: Name

@@ -1,3 +1,4 @@
+# coding:utf-8
 module Lolita
   module ControllerKernel
     def self.included(base)
@@ -7,10 +8,14 @@ module Lolita
     end
 
     module InstanceMethods
-      def render_404(status=404)
+      def render_404(status=404,layout="default")
         respond_to do |type|
-          type.html { render :template => "errors/error_404", :status => status }
           type.all  { render :nothing => true, :status => status }
+          unless params.empty?
+            type.html { render :template => "errors/error_404", :status => status, :layout=>layout}
+          else
+            render :nothing => true, :status => status
+          end
         end
       end
 
@@ -21,8 +26,8 @@ module Lolita
         rescue # if home_path doesn't exist
         end
         respond_to do |type|
-          type.html { render options}
           type.all  { render :nothing => true, :status => status }
+          type.html { render options}
         end
       end
 
@@ -41,6 +46,7 @@ module Lolita
       end
 
       def send_bug msg, title=''
+        #FIXME: move all this mess to template
         msg = "
     <h3>Pieprasījums</h3>
     <dl>

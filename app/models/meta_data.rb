@@ -66,7 +66,7 @@ class MetaData < Cms::Base
           
           end
         end
-      end
+      end unless self.metaable_type=='Admin::MenuItem'
     end
   end
 
