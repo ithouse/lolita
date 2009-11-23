@@ -1,4 +1,4 @@
-# 
+# coding:utf-8 
 # SIA ITHouse
 # Artūrs Meisters
 module ManagedHelper

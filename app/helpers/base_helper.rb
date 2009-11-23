@@ -1,3 +1,4 @@
+# coding:utf-8
 # Methods added to this helper will be available to all templates in the application.
 module BaseHelper
   include Extensions::PermissionHelper
@@ -146,7 +147,7 @@ module BaseHelper
   def cms_options_for_select container,selected=nil,escaped=true
     container = container.to_a if Hash === container
     options_for_select = container.inject([]) do |options, element|
-      text, value,html = cms_text_value_html_from_element element
+      text, value, html = cms_text_value_html_from_element element
       if (selected.is_a?(Array) && selected.include?(value)) || selected==value
         selected_attribute = ' selected="selected"'
       end

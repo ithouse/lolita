@@ -125,12 +125,61 @@ module Extensions
         redirect_me
       end
 
+      def multi_input_existing obj,attr,hsh
+        hsh.delete('hook')
+        if hsh.empty?
+          obj.send(attr).destroy_all
+        else
+          hsh.each { |id,args|
+            if my_params[:object]["multi_input_deletable_existing_#{attr}"].nil? ||
+                my_params[:object]["multi_input_deletable_existing_#{attr}"][id.to_s].nil?
+              assoc=obj.send(attr).find_by_id(id.to_i)
+              assoc.update_attributes( args ) if assoc
+            end
+          }
+        end
+      end
+
+      def multi_input_deletable_existing obj,attr,hsh
+        klass=attr.singularize.camelize.constantize
+        klass.find( :all,
+          :conditions=>[ "#{klass.primary_key} IN(?)", hsh.collect{|id,value| id} ]
+        ).each{ |assoc_element| assoc_element.destroy }
+      end
+
+      def multi_input_new obj,attr,collection
+        obj.send(attr).reload()#won't succeed otherwise
+        if collection.is_a?(Array)
+          collection.each { |args|
+            begin
+              #obj.send("build_#{attr}",args)[.save]/obj.send(attr).build/create
+              #don't [always] work; most probably on obj.new_record
+              attr.singularize.camelize.constantize.create( args.merge({
+                    "#{obj.class.to_s.singularize.downcase}_#{obj.class.primary_key}".to_sym=>
+                      obj.send(obj.class.primary_key)
+                  }) )
+            rescue
+              obj.errors.add("Subelement #{args.to_yaml}",'probably repeated')
+            end
+          }
+        else
+          collection.each{|meaningless_id,args|
+            obj.send(attr).build(args)
+          }
+        end
+      end
+
       private
 
       def assign_object_attributes(obj=nil,data=nil)
         obj=object.new unless obj
         (data || my_params[:object]).each{|k,v|
-          obj.send(:"#{k}=",v)
+          if k.match('multi_input') && !obj.respond_to?(:"#{k}=")
+            parts=k.match(/(multi_input_(?:deletable_existing|existing|new))_(.+)/)
+            self.send(parts[1],obj,parts[2],v) #e.g. multi_input_new(obj,"existing_options",hash)
+          else
+            obj.send(:"#{k}=",v)
+          end
         }
         obj
       end

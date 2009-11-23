@@ -22,6 +22,11 @@ lv:
 
     am: "priekšpusdiena"
     pm: "pēcpusdiena"
+    than:
+      days: dienām
+      weeks: nedēļām
+      months: mēnešiem
+      years: gadiem
 
   datetime:
     distance_in_words:

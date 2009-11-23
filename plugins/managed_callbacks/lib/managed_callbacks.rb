@@ -2,6 +2,16 @@
 # Artūrs Meisters
 
 module Lolita
+  # With managed callbacks you can modify the object and related objects before and after different events.
+  # Usage - put this function call in your controller (should be extended of Managed):
+  #
+  #   add_managed_callback :before_save, [:update_metadata]
+  #
+  #   def update_metadata
+  #     @my_params[:metadata][:url] = @my_params['object']['title'].to_url if @my_params[:metadata][:url].to_s.empty?
+  #   end
+  #   
+  #
   module ManagedCallbacks
 
     def self.included(base)

@@ -17,7 +17,9 @@ module UploadColumn
     private
 
     def destroy_uploaded_files
-      self.class.reflect_on_upload_columns.each{|k,v| self.send(k).remove_directory(self.send(k).dir)}
+      self.class.reflect_on_upload_columns.each{ |k,v|
+        self.send(k).remove_directory(self.send(k).dir) if self.send(k)
+      }
     end
 
     def save_uploaded_files
@@ -87,7 +89,7 @@ module UploadColumn
       # [+old_files+] Determines what happens when a file becomes outdated. It can be set to one of <tt>:keep</tt>, <tt>:delete</tt> and <tt>:replace</tt>. If set to <tt>:keep</tt> UploadColumn will always keep old files, and if set to :delete it will always delete them. If it's set to :replace, the file will be replaced when a new one is uploaded, but will be kept when the associated object is deleted. Default to :delete.
       # [+permissions+] Specify the Unix permissions to be used with UploadColumn. Defaults to 0644. Remember that permissions are usually counted in octal and that in Ruby octal numbers start with a zero, so 0644 != 644.
       # [+root_dir+] The root path where image will be stored, it will be prepended to store_dir and tmp_dir
-      # 
+      #
       # it also accepts the following, less common options:
       # [+web_root+] Prepended to all addresses returned by UploadColumn::UploadedFile.url
       # [+extensions+] A white list of files that can be used together with validates_integrity_of to secure your uploads against malicious files.
@@ -100,7 +102,7 @@ module UploadColumn
         define_method( name ) { get_upload_column(name) }
         define_method( "#{name}=" ) { |file| set_upload_column(name, file) }
         
-        define_submethod( name, "temp" ) { get_upload_column_temp(name) }      
+        define_submethod( name, "temp" ) { get_upload_column_temp(name) }
         define_submethod( name, "temp=" ) { |path| set_upload_column_temp(name, path) }
 
         define_submethod( name, "public_path" ) { get_upload_column(name).public_path rescue nil }
@@ -130,7 +132,7 @@ module UploadColumn
       
       # Validates whether the images extension is in the array passed to :extensions.
       # By default this is the UploadColumn.extensions array
-      # 
+      #
       # Use this to prevent upload of files which could potentially damage your system,
       # such as executables or script files (.rb, .php, etc...).
       def validates_integrity_of(*attr_names)

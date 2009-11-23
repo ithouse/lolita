@@ -1,23 +1,7 @@
-SimpleFilter=function(){
-    return{
-        filter:function(value,url){
-            new SimpleRequest(this,{
-                url:url,
-                data:{
-                    ferret_filter:value,
-                    authenticity_token:AUTH_TOKEN
-                },
-                method:"post",
-                loading:true,
-                container:"#content"
-            })
-        }
-    }
-}()
 AdvancedFilter=function(){
     return{
         hide:function(){
-            $("#advanced_filter_dialog").hide(300)
+            $("#advanced_filter_dialog").hide()
         },
         show:function(action){
             AdvancedFilter.filter_action=action
@@ -31,6 +15,19 @@ AdvancedFilter=function(){
                     loading:true,
                     container:"#content"
                 })
+        },
+        destroy:function(url,action){
+            var filter_id=$("#saved_filters").val()
+            if(filter_id>0)
+            {
+                new SimpleRequest(this,{
+                    url:url,
+                    method:"post",
+                    data:"id="+filter_id+"&filter_action="+action,
+                    loading:true,
+                    container:"#content"
+                })
+            }
         },
         clear:function(url){
             new SimpleRequest(this,{
@@ -49,11 +46,10 @@ AdvancedFilter=function(){
             })
             var select=elementById('saved_filters')
             if(select.selectedIndex>0){
-                 $(input).val(select.options[select.selectedIndex].innerHTML);
+                $(input).val(select.options[select.selectedIndex].innerHTML);
             }else{
                 $(input).val()
             }
-
             AdvancedFilter.hide()
         },
         send:function(form_id,url){
@@ -62,8 +58,10 @@ AdvancedFilter=function(){
                 data:$(form_id).serialize(),
                 loading:true,
                 success:function(html){
-                    var flex_app=getFlexApp('aquamet_readout');
-                    if(flex_app)flex_app.refreshList()
+                    var flex_app=navigator.appName.indexOf("Microsoft") !=-1 ? window['aquamet_readout'] : document['aquamet_readout']
+                    if (flex_app) {
+                        flex_app.refreshList()
+                    }
                     $('#form_list').html(html)
                 }
             })
@@ -91,19 +89,5 @@ AdvancedFilter=function(){
         }
     }
 }()
-$(function(){
-    AdvancedFilter.dialog=$("#advanced_filter_dialog_container").buildContainers({
-        containment:"document",
-        elementsPath:"/images/jquery/elements/"
-    });
-});
-// This function returns the appropriate reference,
-// depending on the browser.
-function getFlexApp(appName) {
-    if (navigator.appName.indexOf ("Microsoft") !=-1) {
-        return window[appName];
-    } else {
-        return document[appName];
-    }
-}
-    
+
+

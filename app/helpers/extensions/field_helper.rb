@@ -1,3 +1,4 @@
+# coding:utf-8
 module Extensions::FieldHelper
   include Extensions::SingleFieldHelper
 
@@ -181,6 +182,10 @@ module Extensions::FieldHelper
       cms_select_field object,options
     when :checkboxgroup
       cms_checkboxgroup_field object,options
+    when :multi_select
+      cms_multi_select_field options
+    when :multi_input
+      cms_multi_input_field options
     else
       ""
     end

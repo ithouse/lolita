@@ -3,20 +3,51 @@
 # Artūrs Meisters
 # 07.08.2008
 %>
-
-<% %>
+<div id="advanced_filter_dialog" style="display:none;">
+  <div id="advanced_filter_dialog_container" class="containerPlus"
+       buttons=""
+       style="width:365px;top:35%;left:35%;position:fixed"
+       skin="black">
+    <div class="no">
+      <div class="ne">
+        <div class="n"><%=t(:"dialogs.advanced filter.header")%></div>
+      </div>
+      <div class="o">
+        <div class="e">
+          <div class="c">
+            <div class="content">
+              <label for="title"><%=  t(:"simple words.caption")%>: </label><input id="advanced_filter_dialog_name" size="33" type="text" name="title" />
+              <input type="button" onclick="AdvancedFilter.save('#advanced_filter_dialog_name','#advanced_filter_form','<%=  url_for(:controller=>params[:controller],:action=>"save_filter")%>');return false;" id="advanced_filter_dialog_ok" class="btn dialog-button"  style="margin-left:10px" value="<%=t(:"actions.save")%>" />
+              <input type="button"  onclick="AdvancedFilter.hide();return false;" class="btn dialog-button" value="<%=t(:"actions.cancel")%>"  style="margin-left:10px" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="so">
+          <div class="se">
+            <div class="s"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <%= javascript_response %>
 <br />
- <div id="filter-head">
-    <div class="fl" style="font-weight: bold;"><%= image_tag("/lolita/images/cms/arrow_blue_s.gif", :onclick=>"$('filters').toggle();toggle_images(this,['arrow_blue_s','arrow_blue_e'])") %>&nbsp;Atlase</div>
-    <div class="fr">Saglabātie atlases nosacījumi:
-      <select style="vertical-align: top;" class="select-small" id="saved_filters" onchange="<%= change_advanced_filter :url=>{:action=>advanced_filter[:list_action]} %>">
-        <%= saved_filters(advanced_filter[:filter])%>
-      </select>
-    </div>
-    <div class="clear nopad"></div>
+<div id="filter-head">
+  <div class="fl" style="font-weight: bold;"><%= image_tag("/lolita/images/cms/arrow_blue_s.gif", :onclick=>"$('#filters').toggle();toggle_images(this,['arrow_blue_s','arrow_blue_e'])") %>&nbsp;<%=t(:"advanced filter.selection")%></div>
+  <div class="fr"><%=t(:"advanced filter.saved conditions")%>:
+    <select style="vertical-align: top;" class="select-small" id="saved_filters" onchange="<%= change_advanced_filter :url=>{:action=>advanced_filter[:list_action]} %>">
+      <%= saved_filters(advanced_filter[:filter])%>
+    </select>
+    <input type="image" src="/lolita/images/icons/trash.gif"
+           onload="if ($('#saved_filters')[0].options.length==1) {this.style['display']='none'}"
+           onclick="AdvancedFilter.destroy('<%=url_for(:action=>"destroy_advanced_filter")%>','<%= params[:action] %>')" />
   </div>
-<% remote_form_for :advanced_filter,{:complete=>"flex_app=getFlexApp('aquamet_readout');if(flex_app){flex_app.refreshList()};$('form_list').update(request.responseText)",:url=>{:action=>advanced_filter[:list_action]},:html=>{:id=>"advanced_filter_form"}} do |f| %>
+  <div class="clear nopad"></div>
+</div>
+<% form_for :advanced_filter,{:url=>{:action=>advanced_filter[:list_action]},:html=>{:id=>"advanced_filter_form"}} do |f| %>
   <div id="filters">
     <table width="100%">
       <tbody><tr>
@@ -24,17 +55,15 @@
             <table>
               <tbody>
                 <% create_filter(advanced_filter[:filter]){|row|%>
-                    <%= row%>
+                  <%= row%>
                 <%}%>
                 <tr class="filter add-filter">
                   <td class="first-column">
-                    Pievienot jaunu atlases lauku
+                    <%= t(:"advanced filter.add new selection field") %>
                   </td>
                   <td colspan="2">
                     <div>
-                      <select style="width:150px" onchange="add_filter(this,this.selectedIndex);" name="advanced_filter[select]" id="add_filter_select" class="select-small"><option value=""/>
-                        <%= filter_columns(advanced_filter[:filter]) %>
-                      </select>
+                      <%= select_tag "advanced_filter[select]", "<option>Izvēlies lauku</option>" + filter_columns(advanced_filter[:filter]), {:style => "width: 150px", :id => "add_filter_select", :class => "select-small", :onchange => "AdvancedFilter.add(this,this.selectedIndex);"} %>
                     </div>
                   </td>
                 </tr>
@@ -42,20 +71,23 @@
                   <td colspan="3"></td>
                 </tr>
               </tbody>
-           </table>
+            </table>
           </td>
         </tr>
-    </tbody></table>
+      </tbody></table>
 
     <p class="buttons">
-      <a onclick="$('advanced_filter_form').onsubmit(); return false;" class="icon icon-checked">Filtrēt</a>
-      <%= link_to_remote "Attīrīt",
-            :url=>{:action=>advanced_filter[:list_action],:advanced_filter=>{:clear_filter=>true}},
-            :update=>"content",
-            :html=>{:class=>"icon icon-reload"}
-       %>
-      <a onclick="ask_for_form_name('save_filter','advanced_filter_form','<%=advanced_filter[:list_action]%>')" class="icon icon-save" >Saglabāt</a>
+      <a onclick="AdvancedFilter.send('#advanced_filter_form','<%=url_for(:action=>advanced_filter[:list_action])%>'); return false;" class="icon icon-checked"><%=t(:"actions.filter")%></a>
+      <a class="icon icon-reload" onclick="AdvancedFilter.clear('<%=url_for(:action=>advanced_filter[:list_action],:advanced_filter=>{:clear_filter=>true})%>')"><%= t(:"actions.clear") %></a>
+      <a onclick="AdvancedFilter.show('<%=advanced_filter[:list_action]%>')" class="icon icon-save" ><%=t(:"actions.save")%></a>
     </p>
   </div>
 <% end %>
-
+<script type="text/javascript">
+  $(document).ready(function(){
+    AdvancedFilter.dialog=$("#advanced_filter_dialog_container").buildContainers({
+      containment:"document",
+      elementsPath:"/images/jquery/elements/"
+    });
+  });
+</script>

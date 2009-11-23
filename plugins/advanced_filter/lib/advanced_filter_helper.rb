@@ -63,7 +63,12 @@ module ITHouse
             :style=>"float:left;"
           )+"<span style='float:left'>&#37;</span> "
         when :datetime
-          %(<input type="hidden" name="advanced_filter[conditions][#{options[:name]}]" id="conditions_#{options[:name]}" value="smaller_or_same"/>)
+          #%(<input type="hidden" name="advanced_filter[conditions][#{options[:name]}]" id="conditions_#{options[:name]}" value="smaller_or_same"/>)
+          default=options[:condition] || (options[:conditions][0].is_a?(Array) ? options[:conditions][0][1] : options[:conditions][0])
+          options[:conditions].collect!{|value| value<<{:style=>"font-size:14px;"}}
+          %(<select style="vertical-align: top;" name="advanced_filter[conditions][#{options[:name]}]" id="conditions_#{options[:name]}" class="small">
+            #{cms_options_for_select options[:conditions],default,false}
+          </select>) #izmantoju CMS
         end
       end
 

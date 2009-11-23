@@ -1,3 +1,4 @@
+# coding:utf-8
 class ::String
 
   def translit options = {}
@@ -150,12 +151,13 @@ class ::String
 
   # strips tags and add's \n in place of br,p,h1,h2... and save's links
   def to_text
-    self.gsub!(/<\/[^>]*(p|h1|h2|h3)>/,"\n\n")
-    self.gsub!(/<br\s?\/?>/,"\n")
-    self.gsub!(/<a[^>]*href=\"(.*)\">([^<]*)<\/[^>]*>/){|m|
+    result = self.gsub(/>(\s)+</){|m| ">#{$2}<"}
+    result = result.gsub(/<\/[^>]*(p|h1|h2|h3)>/,"\n\n")
+    result = result.gsub(/<br\s?\/?>/,"\n")
+    result = result.gsub(/<a[^>]*href=\"(.*)\">([^<]*)<\/[^>]*>/){|m|
       m.match(/href=\"(.*)\">([^<]*)</)
       "#{$2} #{$1}"
     }
-    self.gsub!(/<\/?[^>]*>/, "")
+    result.gsub(/<\/?[^>]*>/, "")
   end
 end

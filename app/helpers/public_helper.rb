@@ -1,3 +1,4 @@
+# coding:utf-8
 module PublicHelper
   def public_menu name,options={}
     current_branch = get_current_menu_branch(name)

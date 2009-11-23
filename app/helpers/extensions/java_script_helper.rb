@@ -32,7 +32,7 @@ module Extensions::JavaScriptHelper
   
   def change_advanced_filter options={:url=>{:action=>"list"}}
     url=url_for({:escape=>false}.merge(options[:url]))
-    %!change_advanced_filter(this.value,'#{url}')!
+    %Q{AdvancedFilter.change(this.value,'#{url}')}
   end
   
   def yui_draggable_element id,options={}
