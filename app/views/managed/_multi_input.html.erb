@@ -1,0 +1,52 @@
+<% unless @multi_input_includes %>
+  <link href="/lolita/stylesheets/multiedit.css" type="text/css" rel="stylesheet" />
+  <script src="/lolita/javascripts/multiedit.js" type="text/javascript"></script>
+  <% @multi_input_includes=true %>
+<% end %>
+<div class="multiedit">
+  <!-- so that if existing part is/becomes empty, an empty array is passed to update -->
+  <input type="hidden" name="<%=hsh[:object]%>[multi_input_existing_<%=hsh[:attribute]%>][hook]" value="1" />
+  <% if hsh[:maximum]  %>
+    <!-- non-li element with class="max" which can be val()d to set maximum item count -->
+    <input type="hidden" class="max" value="<%=hsh[:maximum]%>" />
+  <% end %>
+  <ol>
+    <!-- template for future li's -->
+    <li class="template">
+      <% if hsh[:template] %>
+        <%=hsh[:template]%>
+      <% else %>
+        <input type="text" name="{attr}[][<%=hsh[:property]%>]" value="{text}" />
+        <input type="hidden" class="mirror" title="{text}" value="{value}"/>
+        <span class="toggle">
+          <img src="/lolita/images/icons/trash.gif" alt="trash" />
+        </span>
+      <% end %>
+    </li>
+
+    <!-- output existing items mirroring the structure above -->
+    <% hsh[:existing].each{|option| %>
+      <li>
+        <input type="text"
+               name="<%=hsh[:object]%>[multi_input_existing_<%=hsh[:attribute]%>][<%=option[1]%>][<%=hsh[:property]%>]"
+               value="<%=option[0]%>" />
+        <span class="deletable">
+          <img src="/lolita/images/icons/trash.gif" alt="trash" />
+        </span>
+        <input type="hidden"
+               class="mirror"
+               title="<%=option[0]%>"
+               value="<%=option[1]%>" />
+      </li>
+    <%} if hsh[:existing] %>
+
+    <li class="control">
+      <select>
+        <!-- to allow adding new input -->
+        <option></option>
+      </select>
+      <img onclick="multi_attr_stack(this,'<%=hsh[:object]%>[multi_input_new_<%=hsh[:attribute]%>]')"
+           src="/lolita/images/icons/add.png" alt="+" />
+    </li>
+  </ol>
+</div> <!-- multi_input out -->
