@@ -118,7 +118,7 @@ class Admin::UserController < Managed
   private
 
   def update_token(user=nil)
-    if Lolita.config.system :multi_domain_portal && !is_local_request?
+    if Lolita.config.system(:multi_domain_portal) && !is_local_request?
       token=Admin::Token.find_by_token(cookies[:sso_token])
       if token
         if user
