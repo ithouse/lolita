@@ -1,7 +1,36 @@
+# This controller is meant to be used as a _superclass_ for project spefific user controllers.
+# ==login_public_user
+# Method authenticate user by receiving +klass+, +login+ and +password+ and if
+# authentication is successful then yield user, so any specific rules for user can
+# be defined.
+# * <tt>klass</tt> - User class where user belongs
+# Also +options+ can be speficied.
+# * <tt>:partial</tt> - If specified than always return that partial with appropriate status code.
+# * <tt>:locals</tt> - Is used as locals when rendering :partial.
+# * <tt>:url</tt> - The URL to redirect on successful login unless :partial is specified.
+# * <tt>:flash_auth_failed</tt> - Message that is set in <tt>flash[:error]</tt> if failed to login.
+# * <tt>:no_flash</tt> - If is set to _true_ than no message is written in <tt>flash[:error]</tt>
+# ====Example
+#   login_public_user BlogUser, 'user', 'password', :url=>blogs_start_page_url do |user|
+#    user.is_accepted?
+#   end
+# ==logout_public_user
+# Logout user from any part of system by deleting :user from session. An +options+ can be specified.
+# * <tt>:url</tt> - The URL where to redirect after logout, default home_url
+# * <tt>:no_flash</tt> - If set to _true_ than nothing is set in <tt>flash[:success]</tt>
+# ====Example
+#   logout_public_user :url=>"/", :no_flash=>true
+# ==remember_me
+# Remember user if params[:user][:remember_user] is specified, this method is called from <tt>login_public_user</tt>,
+# but can be used seperate.
+# ==render_partial
+# Render if +options+ is spefified :partial value.
+# * <tt>:partial</tt> - Render partial spefied as value.
+# * <tt>:locals</tt> - Locals for render
 class Admin::PublicUserController < ApplicationController
 
   private
-
+  
   def login_public_user klass,login,password,options={}
     flash[:error]=nil
     if request.post? && params[:user]
@@ -12,7 +41,7 @@ class Admin::PublicUserController < ApplicationController
         remember_me user
         redirect_logged_in_user options
       else
-        flash[:error]||=I18n.t(:"flash.error.auth failed") unless options[:no_flash]
+        flash[:error]||=options[:flash_auth_failed] || I18n.t(:"flash.error.auth failed") unless options[:no_flash]
         render_partial options
       end
     else

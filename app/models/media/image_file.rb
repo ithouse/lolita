@@ -351,7 +351,12 @@ class Media::ImageFile < Media::FileBase
     versions_class=object.class
     if versions_class.respond_to?(:upload_column_modify_methods) && methods=versions_class.upload_column_modify_methods
       methods.each{|m,values|
-        object.send(m,picture,values)
+        begin
+          object.send(m,picture,values)
+          puts "Successfuly modified picture #{self.id} with #{m}"
+        rescue Exception=>e
+          puts "Error calling method #{m} on picture with ID #{self.id}. Error: #{e}"
+        end
       }
     end
   end
