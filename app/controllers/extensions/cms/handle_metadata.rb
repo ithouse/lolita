@@ -29,7 +29,7 @@ module Extensions
           end
         end
 
-        if Lolita.config.i18n :translation && my_params[:meta_translation_locale]
+        if Lolita.config.i18n(:translation) && my_params[:meta_translation_locale]
           #raise Globalize::Wrong language error if first language switched and then saved
           # work good if block given
           @metadata.switch_language(my_params[:meta_translation_locale]) do

@@ -5,8 +5,8 @@
 %>
 <table summary="<%= only_controller%>">
   <tr>
-    <%= list_header_cell :width=>300, :sort_column=>"Nosaukums" %>
-    <%= list_header_cell :width=>50, :title=>"Dzēst" %>
+    <%= list_header_cell(:width=>300, :sort_column=>"Nosaukums") %>
+    <%= list_header_cell(:width=>50, :title=>"Dzēst") %>
   </tr>
   <% for adv in @page %>
     <tr>
@@ -16,4 +16,4 @@
   <% end %>
 </table>
 <br />
-<%= cms_pages list%>
+<%= cms_pages list %>

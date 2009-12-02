@@ -10,7 +10,7 @@
     <% draw_draggable_pictures(thumb_list,4) do |group| %>
       <tr >
         <% for picture in group %>
-          <td class="media-image-list"><%= picture %></td>
+          <td class="media-image-list"><%= raw picture %></td>
         <% end %>
       </tr>
     <% end %>
