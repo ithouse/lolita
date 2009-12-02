@@ -11,7 +11,9 @@ class Media::ImageFile < Media::FileBase
   image_column :name,:store_dir=>proc{|inst, attr|
     time=inst.created_at ? inst.created_at : Time.now #vienīgā šaize var būt, ja mēneše pēdējā dienā 23:59:59 uploado
     "image_file/name/#{time.strftime("%Y_%m")}/#{inst.id}"
-  },:versions => VERSIONS.dup
+
+  },:versions => VERSIONS.dup,
+    :process => Lolita.config.system(:default_image_size) #RB: Šis tikai nomaspunktā
 
   before_save :assign_position
   before_save :singularize_main

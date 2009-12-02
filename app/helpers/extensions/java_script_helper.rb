@@ -32,7 +32,7 @@ module Extensions::JavaScriptHelper
   
   def change_advanced_filter options={:url=>{:action=>"list"}}
     url=url_for({:escape=>false}.merge(options[:url]))
-    %!change_advanced_filter(this.value,'#{url}')!
+    %Q{AdvancedFilter.change(this.value,'#{url}')}.html_safe!
   end
   
   def yui_draggable_element id,options={}
@@ -44,11 +44,11 @@ module Extensions::JavaScriptHelper
     options=default.merge(options)
     url=url_for({:escape=>false}.merge(options[:url]))
     options[:url]=url
-    javascript_tag(%(try{new DraggableElement(#{id.to_json},#{options.to_json})}catch(err){}))
+    javascript_tag(%(try{new DraggableElement(#{id.to_json},#{options.to_json})}catch(err){})).html_safe!
   end
   
   def yui_drop_receiving_element id, group=nil
-    javascript_tag( %(try{new DropReceivingElement(#{id.to_json},#{group.to_json})}catch(err){}))
+    javascript_tag( %(try{new DropReceivingElement(#{id.to_json},#{group.to_json})}catch(err){})).html_safe!
   end
   
   def get_actions_js container,menu_item_id,public=false
@@ -64,7 +64,7 @@ module Extensions::JavaScriptHelper
         controller_name:this.value
         }
       })
-    !
+    !.html_safe!
   end
  
   def number_field(object, method, options={})
@@ -73,7 +73,7 @@ module Extensions::JavaScriptHelper
     else
       onchange="if (this.value!=parseInt(this.value)){this.value=isNaN(parseInt(this.value))?'':parseInt(this.value)}"
     end
-    result = ActionView::Helpers::InstanceTag.new(object, method, self).to_input_field_tag("text", options.merge(:onkeyup=>onchange))
+    ActionView::Helpers::InstanceTag.new(object, method, self).to_input_field_tag("text", options.merge(:onkeyup=>onchange)).html_safe!
   end
  
   def date_field(object,method,options={})
@@ -84,11 +84,11 @@ module Extensions::JavaScriptHelper
  
   def auto_uploadable(action,form_id,element_id,event="",target="",config={})
     if (action && form_id && element_id)
-      javascript_tag(auto_uploadable_js(action,form_id,element_id,event,target,config))
+      javascript_tag(auto_uploadable_js(action,form_id,element_id,event,target,config)).html_safe!
     end
   end
   
   def auto_uploadable_js(action,form_id,element_id,event="",target="",overwrite=false)
-    %!new AutoUploadForm(#{action.to_json},#{form_id.to_json},#{element_id.to_json},#{event.to_json},#{target.to_json},#{overwrite.to_json});!
+    %!new AutoUploadForm(#{action.to_json},#{form_id.to_json},#{element_id.to_json},#{event.to_json},#{target.to_json},#{overwrite.to_json});!.html_safe!
   end
 end

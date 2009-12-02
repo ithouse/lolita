@@ -380,7 +380,8 @@ module ITHouse
           arr={
             :bool=>["same","not_same"],
             :string=>["same","not_same","like"],
-            :integer=>["same","not_same","greater","greater_or_same","smaller","smaller_or_same"]
+            :integer=>["same","not_same","greater","greater_or_same","smaller","smaller_or_same"],
+            :datetime => ["same","greater","greater_or_same","smaller","smaller_or_same"]
           }[type.to_sym]
           (arr || []).collect{|item| [ADVANCED_FILTER_CONDITIONS[item],item]}
         end
@@ -543,7 +544,7 @@ module ITHouse
         end
 
         def get_sign_for_field(field_name)
-          if @form[:values][field_name].size>1 && self.column_by_name(field_name).type!=:datetime
+          if @form[:values][field_name].size>1 && self.column_by_name(field_name).type != :datetime
             MULTISIGN[@form[:conditions][field_name]]
           else
             SINGLESIGN[@form[:conditions][field_name]]

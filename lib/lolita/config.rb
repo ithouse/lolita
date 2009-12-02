@@ -1,3 +1,19 @@
+class Hash
+  def fetch_all(key)
+    return [] if not self.has_key?(key)
+    value = self.fetch(key)
+    [ value ] + [ value ].fetch_all(key)
+  end
+end
+
+class Array
+  def fetch_all(key)
+    self.find_all{|x| x.respond_to? :fetch_all} \
+      .map{|x| x.fetch_all(key) } \
+      .inject( [] ){|a,b| a + b }
+  end
+end
+
 module Lolita
   class Config
     # Lolita's configuration tool
@@ -24,12 +40,23 @@ module Lolita
     def initialize
       yaml_root = YAML::parse_file("#{RAILS_ROOT}/config/lolita.yml")
       current_env = yaml_root.select("/.")[0].transform.keys.include?(RAILS_ENV) ? RAILS_ENV : 'development'
-      self.conf = yaml_root.select("/#{current_env}")[0].transform
+      self.conf = yaml_root.select("/#{current_env}")[0].transform.symbolize_keys!
     end
 
     def method_missing(key,*args)
-      value = eval "self.conf['#{key}']#{args ? args.collect{|a| "['#{a}']"}.join : ""}"
-      value.is_a?(Hash) ? value.symbolize_keys! : value
+      last_item = @conf[key.to_sym]
+      unless last_item.nil?
+        deepth = 0
+        while args.length > deepth
+          last_item = last_item[args[deepth].to_sym]
+          unless last_item.nil?
+            deepth += 1
+          else
+            break
+          end
+        end
+      end if args.length > 0
+      last_item
     end
 
     def update *args

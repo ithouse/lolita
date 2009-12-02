@@ -1,9 +1,8 @@
 # coding:utf-8
 require 'digest/sha1'
 class Admin::User < Cms::Base
- 
-  set_table_name :admin_users #Lolita.config.system(:public_user_table)
-  
+  self.abstract_class = true
+
   attr_protected :role_ids,:crypted_password,:salt
   attr_accessor :password
   attr_accessor :old_password
@@ -13,7 +12,7 @@ class Admin::User < Cms::Base
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_confirmation_of :password,                   :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
-  validates_uniqueness_of   :email, :allow_nil => true, :scope=>:type
+  #validates_uniqueness_of   :email, :allow_nil => true, :scope=>:type
   before_save :encrypt_password
 
   def self.authenticate(login, password)
@@ -43,14 +42,14 @@ class Admin::User < Cms::Base
 
   def self.access_to_area?(user,area=false)
     true #FIXME
-#    return false unless ses[:user]
-#    area=:public unless area
-#    if area==:public_system
-#      (Lolita.config.access :allow, :system_in_public && user.is_a?(Admin::SystemUser))||
-#        (Lolita.config.access :allow, :rewrite && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
-#      user.is_a?(ses[:user][:user_class])
-#    elsif area==:system
-#    end
+    #    return false unless ses[:user]
+    #    area=:public unless area
+    #    if area==:public_system
+    #      (Lolita.config.access :allow, :system_in_public && user.is_a?(Admin::SystemUser))||
+    #        (Lolita.config.access :allow, :rewrite && user.is_a?(Admin::SystemUser)) || #ielogojoties vienā tiek otrā
+    #      user.is_a?(ses[:user][:user_class])
+    #    elsif area==:system
+    #    end
   end
   
   def self.authenticate_in_controller options={}

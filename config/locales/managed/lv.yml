@@ -20,3 +20,9 @@ lv:
     simple_file: Faili
     audio_file: Audio
     video_file: Video
+  advanced filter:
+    saved conditions: Saglabātie atlases nosacījumi
+    selection: Atlase
+    saved: Filtrs saglabāts
+    add new selection field: Pievienot jaunu atlases lauku
+    new filter: Jauns filtrs

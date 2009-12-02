@@ -136,6 +136,127 @@ module Extensions::SingleFieldHelper
     end
   end
 
+  # renders a has_and_belongs_to_many relationship in form of a
+  # list of existing associated records and <select> of other possibilities
+  #
+  # field - attribute to access associated objects,
+  #  should be of {singularized}_ids form, e.g. :equipment_ids
+  #  or will be autoconverted from pluralized form, e.g. :equipments=>:equipment_ids
+  # optional parameters:
+  # :title - to use for label, default t(".{field}")
+  # :object - parent object, e.g. :product, default is 'object'
+  # :existing - an array of [title,id,[css_class]] for display of existing items in the list
+  #  or :symbol of method to get them for current object
+  #  if absent, expects "@{:object}" variable to be present and collects
+  #  [{:property},{singularized property}] of the plularized form of specified field
+  #  e.g. field=product_ids,{:object=>:batch,:property=>:price} results in
+  #   :existing=>@batch.products.collect{|product| [product.price,product.product_id]}
+  # :property - only used in case of missing :existing
+  #
+  # :suggest - an array of [title,value,[css_class]], usually object.attribute less :existing
+  #  other possible elements in the control select
+  #  or :symbol method to return such array
+  #
+  # :possible - if :suggest absent, collection of elements to filter :suggest from
+  #   e.g. :existing=>@batch.products.collect{...},:possible=>Products.all
+  # if both :suggest and :possible are absent, {field}.all is assumed
+  #  e.g. multi_select(:car_class_ids)
+  #   :existing=>@object.car_classes ...
+  #   :possible=>CarClass.all
+  #   :suggest=>:possible less :existing by comparing their ids
+  # :maximum - max elelements allowed,
+  #   model should contain according validates_length_of attributes,:maximum=>?
+  # :limit - {:class_name=>number, ...}
+  #  additional limit on specific elements can be set via assigning them a css class name
+  #  in both existing and suggest elements
+  #  list automatically switches to numbered on display
+  # :template - future element template to use instead of standard,
+  #  placeholders for {text}, {attr}, {value} will be substituted by javascript
+  #
+  # samples:
+  #
+  # show list of existing @object.equipments and other possible from Equipment.all:
+  # multiedit_select(:equipments)
+  #
+  # multiedit_select(:equipment_ids,
+  #  t(:".car_equipments"),
+  #  :maximum=>CarClass::maximum_equipment_count,
+  #  :existing=>@object.equipments.collect{|equip|
+  #    [
+  #      "#{equip.name}#{equip.is_combo? ? ' (combo)':''}",
+  #      equip.equipment_id,
+  #      equip.is_combo? ? 'combo' : ''
+  #    ]},
+  #  :suggest=>Equipment.excluding(@object.equipments).collect{|equip|
+  #    [
+  #      "#{equip.name}#{equip.is_combo? ? ' (combo)':''}",
+  #      equip.id,
+  #      equip.is_combo? ? 'combo' : ''
+  #    ]
+  #  },
+  #  :limit=>{:combo=>3}
+  #)
+  def cms_multi_select_field(hsh={})
+    field=hsh[:field]
+    field="#{field.to_s.singularize}_ids" unless field.to_s.match('_ids')
+    hsh[:title]||=t(".#{field}")
+    hsh[:object]||='object'
+    hsh[:attribute]||=field
+    hsh[:property]||=:name
+    [:existing,:suggest].each{|key|
+      hsh[key]=eval("@#{hsh[:object]}").send(hsh[key]) if hsh[key].is_a?(Symbol)
+    }
+    hsh[:existing]=eval("@#{hsh[:object]}").
+      send( hsh[:attribute].to_s.gsub('_ids','').pluralize ).collect { |item|
+      [item.send(hsh[:property]),item.send(hsh[:attribute].to_s.singularize)]
+    } if hsh[:existing].nil?
+    hsh[:possible]=hsh[:attribute].to_s.gsub('_ids','').
+      camelize.constantize.all if hsh[:suggest].nil? && hsh[:possible].nil?
+    if hsh[:suggest].nil? && hsh[:possible]
+      ids=hsh[:existing].collect {|option| option[1] }
+      filtered=hsh[:possible].reject { |item| ids.include?(item.id) }
+      hsh[:suggest]=filtered.collect {|item| [item.send(hsh[:property]),item.id]}
+    end
+    render(:partial=>"managed/multi_select",:locals=>{:hsh=>hsh},:layout=>false)
+  end
+
+  # allows editing/creating has_many associated records
+  #
+  # field - attribute to access associated objects,
+  #  should be of pluralized form, e.g. :equipment_options
+  # optional parameters:
+  # :title - to use for label, default t(".{field}")
+  # :object - parent object e.g. :product, default is :object
+  # :property - attribute of the bound object for input, default :name
+  # :existing - an array of [title,id] for display of existing items in the list
+  #  if absent, expects "@{:object}" variable to be present and collects
+  #  [{:property},id] of the specified field
+  #  e.g. multi_input(:products,:object=>:batch,:property=>:price) results in
+  #   :existing=>@batch.products.collect{|product| [product.price,product.id]}
+  # :maximum - max elelements allowed,
+  #   model should contain according validates_length_of attributes,:maximum=>?
+  # :template - future element template to use instead of standard,
+  #  placeholders for {text}, {attr}, {value} will be substituted by javascript
+  #
+  # NOTE: if you need to override how the values are manipulated,
+  # create according methods in your model that are named:
+  #  multi_input_new_{attr}= (e.g. multi_input_new_products=)
+  #  multi_input_existing_{attr}=
+  #  multi_input_deletable_existing_{attr}=
+  def cms_multi_input_field(hsh={})
+    hsh[:title]||=t(".#{hsh[:field]}")
+    hsh[:object]||='object'
+    hsh[:attribute]||=hsh[:field]
+    hsh[:property]||=:name
+    [:existing,:suggest].each{|key|
+      hsh[key]=eval("@#{hsh[:object]}").send(hsh[key]) if hsh[key].is_a?(Symbol)
+    }
+    hsh[:existing]=eval("@#{hsh[:object]}").send(hsh[:attribute]).collect { |item|
+      [item.send(hsh[:property]),item.id]
+    } if hsh[:existing].nil?
+    render(:partial=>"managed/multi_input",:locals=>{:hsh=>hsh},:layout=>false)
+  end
+
   def get_current_value_for_select_field object,options={}
     if options[:without_default_value]
       nil

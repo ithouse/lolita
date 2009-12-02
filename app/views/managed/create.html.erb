@@ -40,7 +40,7 @@
     <%end %>
     <% all_fields=create_fields_for_js(tabs_fields(nil,:in_form=>true,:with_object=>true)).to_json() %>
     <script type="text/javascript">
-      addFormCleaner("#object_form",<%=  all_fields %>)
+      addFormCleaner("#object_form",<%= raw all_fields %>)
     </script>
     <div class="managed-form-submit-container">
       <% if @config[:do_not_redirect]%>

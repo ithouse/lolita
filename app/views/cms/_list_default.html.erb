@@ -2,11 +2,11 @@
   <% @config[:list][:columns]=default_cms_columns unless @config[:list][:columns] %>
   <tr>
     <% @config[:list][:columns].each{|column| %>
-      <%= list_header_cell :width=>column[:width], :title=>field_title(column[:title] || @page.parent.human_attribute_name(column[:field])),
-      :sort_column=>column[:sortable] || column[:default] ? (column[:sort_field] ? column[:sort_field] : column[:field]) : nil %>
+      <%= raw list_header_cell(:width=>column[:width], :title=>field_title(column[:title] || @page.parent.human_attribute_name(column[:field])),
+      :sort_column=>column[:sortable] || column[:default] ? (column[:sort_field] ? column[:sort_field] : column[:field]) : nil) %>
     <%}%>
     <% if @config[:list][:options] %>
-      <%= list_header_cell :width=>@config[:list][:options].size*35, :title=>t(:"list.options") %>
+      <%= raw list_header_cell(:width=>@config[:list][:options].size*35, :title=>t(:"list.options")) %>
     <% end %>
   </tr>
   <% for element in list_default[:page] %>
@@ -20,12 +20,12 @@
           end
         %>
           <%  if column[:link] %>
-            <%= edit_link :id=>element.id,:title=>value %>
+            <%= raw edit_link(:id=>element.id,:title=>value) %>
           <% else
             if column[:function] %>
-              <%= element.send column[:function]%>
+              <%= raw element.send(column[:function])%>
             <% else %>
-              <%=value%>
+              <%= raw value%>
             <% end %>
           <%end%>
         </td>
@@ -33,7 +33,7 @@
       <% if @config[:list][:options] %>
         <td>
           <% list_options(element) do |option| %>
-            <%= option %>&nbsp;
+            <%= raw option %>&nbsp;
           <% end %>
         </td>
       <%end%>
@@ -41,4 +41,4 @@
   <% end %>
 </table>
 <br />
-<%= cms_pages list_default  %>
+<%= raw cms_pages(list_default) %>

@@ -1,6 +1,7 @@
 
 class Managed < ApplicationController
   include Extensions::Cms::Paging
+  include Extensions::AdvancedFilterExtension
   include Extensions::Cms::HandleRelations
   include Extensions::Cms::HandleMenu
   include Extensions::Cms::List
@@ -150,6 +151,9 @@ class Managed < ApplicationController
   #   :include_blank - vai iekļaut tukšo elementu, tikai select
   #   :translate - vai lauks ir tulkojams
   #
+  #   :multi_edit - edit associated has_many records
+  #   :multi_select - edit associated has_and_belongs_to_many records
+  #     for explanation of params see according cms_multi*_field helper
   def config
     {} #tikai uzskatāmībai, config jāatrodas iekš katra kontroliera un jāatgriež Hash
   end
