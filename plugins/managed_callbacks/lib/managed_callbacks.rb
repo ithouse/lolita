@@ -45,7 +45,7 @@ module Lolita
   #
   module ManagedCallbacks
 
-    def self.included(base)
+    def self.included(base) # :nodoc:
       base.extend(ControllerClassMethods)
       base.class_eval do
         include ControllerInstanceMethods
@@ -99,18 +99,18 @@ module Lolita
       def exacute_managed_callbacks(callback,klass=self.class)
         raise "Must be subclass of Managed" unless klass.ancestors.include?(Managed)
         unless klass==Managed
-          exacute_managed_callbacks(callback,klass.superclass)
+          result=exacute_managed_callbacks(callback,klass.superclass)
         end
         if klass==self.class
           if callback.to_s.match(/_new|_edit/)
-            exacute_managed_callbacks(callback.to_s.gsub(/_new|_edit/,"_open"),klass)
+            result=exacute_managed_callbacks(callback.to_s.gsub(/_new|_edit/,"_open"),klass)
           elsif callback.to_s.match(/_create|_update/)
-            exacute_managed_callbacks(callback.to_s.gsub(/_create|_update/,"_save"),klass)
+            result=exacute_managed_callbacks(callback.to_s.gsub(/_create|_update/,"_save"),klass)
           end
         end
-        if klass.managed_callbacks && klass.managed_callbacks[callback.to_sym]
+        if !result.is_a?(FalseClass) && klass.managed_callbacks && klass.managed_callbacks[callback.to_sym]
           klass.managed_callbacks[callback.to_sym].each{|method|
-            self.send(method)
+            return self.send(method)
           }
         end
       end
