@@ -1,19 +1,19 @@
-
+# Manage system requests for CRUD actions and others (See #ControllerExtensions for detail)
 class Managed < ApplicationController
-  include Extensions::Cms::Paging
-  include Extensions::AdvancedFilterExtension
-  include Extensions::Cms::HandleRelations
-  include Extensions::Cms::HandleMenu
-  include Extensions::Cms::List
-  include Extensions::Cms::PublicView
-  include Extensions::Cms::HandleMetadata
-  include Extensions::Cms::HandleParams
-  include Extensions::Cms::HandleSpecialFields
-  include Extensions::Cms::Reports
-  include Extensions::Cms::Crud
-  include Extensions::Cms::Callbacks
-  include Extensions::Cms::HandleErrors
-  include Extensions::Cms::Language if Lolita.config.i18n(:translation)
+  include ControllerExtensions::Cms::Paging
+  include ControllerExtensions::AdvancedFilterExtension
+  include ControllerExtensions::Cms::HandleRelations
+  include ControllerExtensions::Cms::HandleMenu
+  include ControllerExtensions::Cms::List
+  include ControllerExtensions::Cms::PublicView
+  include ControllerExtensions::Cms::HandleMetadata
+  include ControllerExtensions::Cms::HandleParams
+  include ControllerExtensions::Cms::HandleSpecialFields
+  include ControllerExtensions::Cms::Reports
+  include ControllerExtensions::Cms::Crud
+  include ControllerExtensions::Cms::Callbacks
+  include ControllerExtensions::Cms::HandleErrors
+  include ControllerExtensions::Cms::Language if Lolita.config.i18n(:translation)
 
   managed_after_open :set_instance_variable_for_nested_attributes
 

@@ -12,6 +12,37 @@ module Lolita
   #   end
   #   
   #
+  # Handle #Managed events and execute all methods that are specified in _controller_ and its _superclasses_.
+  # To register callback in _controller_ that ancestors must include #Managed class.
+  # All callbacks are exacuted form #Managed down to current _controller_.
+  # Available +callbacks+ are
+  # * <tt>:before_create</tt> - Also :before_open is called
+  # * <tt>:before_open</tt> - Execute on :before_new and :before_edit
+  # * <tt>:before_update</tt> - Also :before_save is called
+  # * <tt>:before_list</tt>
+  # * <tt>:before_destroy</tt>
+  # * <tt>:before_save</tt> - Execute on :before_create and :before_update
+  # * <tt>:before_edit</tt> - Also :before_open is called
+  # * <tt>:before_new</tt> - Also :before_open is called
+  # * <tt>:before_show</tt>
+  # * <tt>:after_new</tt> - Also :after_open is called
+  # * <tt>:after_update</tt> - Also :after_save is called
+  # * <tt>:after_save</tt> - Execute on :after_create and :after_update
+  # * <tt>:after_create</tt> - Also :after_save is called
+  # * <tt>:after_edit</tt> - Also :after_open is called
+  # * <tt>:after_destroy</tt>
+  # * <tt>:after_list</tt>
+  # * <tt>:after_open</tt> - Execute on :after_edit and :after_new
+  # * <tt>:after_show</tt>
+  # * <tt>:on_save_error</tt>
+  # * <tt>:on_show_error</tt>
+  # * <tt>:on_create_error</tt>
+  #
+  # ====Examples
+  #
+  # managed_after_save :send_registration_email, :add_default_roles
+  # managed_on_save_errors :copy_errors_to_main_object
+  #
   module ManagedCallbacks
 
     def self.included(base)
@@ -27,6 +58,11 @@ module Lolita
         after_create after_edit after_destroy after_list after_open after_show on_save_error
         on_show_error on_create_error
     )
+
+    # Define all methods by creating _ControllerClassMethods_ module.
+    # All class methods for registering _callbacks_ is called <b>managed_{callback name}</b>
+    # These methods can be called form any _controller_, but it raise error if that _controller_
+    # is not _subclass_ of #Managed
     def self.create_managed_callback_methods
       MANAGED_CALLBACKS.collect{|cb|
         %!
@@ -56,7 +92,12 @@ module Lolita
       ^)
     module ControllerInstanceMethods
 
+      # Execute all methods for given _callback_ and _klass_ (default current _controller_ class).
+      # Recursively execute all callbacks from #Managed to _self_ class.
+      # Private methods can be called as well.
+      # Error will be raised if _self_ is not _subclass_ of #Managed
       def exacute_managed_callbacks(callback,klass=self.class)
+        raise "Must be subclass of Managed" unless klass.ancestors.include?(Managed)
         unless klass==Managed
           exacute_managed_callbacks(callback,klass.superclass)
         end
