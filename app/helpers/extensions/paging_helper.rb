@@ -86,7 +86,7 @@ module Extensions::PagingHelper
       }) do |page|
       page_container<<page
     end
-    "#{page_container}</div>"
+    "#{page_container}</div>".html_safe!
   end
   
   def page_numbers page,options={}

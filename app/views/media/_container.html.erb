@@ -13,18 +13,18 @@
     loadjscssfile("/lolita/stylesheets/admin/uploadify.css","css")
     $(document).ready(function() {
       <%="#{cfg[:media]}_upload_settings"%>={
-              '<%= session_key_name %>' : encodeURIComponent('<%= u cookies[session_key_name] %>'),
-              'authenticity_token'  : encodeURIComponent('<%= u form_authenticity_token if protect_against_forgery? %>'),
-              <%= cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>},
-      $('#<%=cfg[:media]%>fileInput').uploadify({
+              '<%= session_key_name %>' : encodeURIComponent('<%= raw(u(cookies[session_key_name])) %>'),
+              'authenticity_token'  : encodeURIComponent('<%= raw(u(form_authenticity_token)) if protect_against_forgery? %>'),
+              <%= raw cfg.collect{|k,v| "'#{k}':'#{v}'"}.join(",") %>},
+      $('#<%= raw(cfg[:media])%>fileInput').uploadify({
         'uploader': '/lolita/swf/uploadify.swf',
         'script': "/media/<%=cfg[:media]%>/new_create",
         'cancelImg': '/lolita/images/cms/cancel.png',
         'simUploadLimit':10,
         'multi':true,
         'method':'GET',
-        'fileDesc':"<%=file_extensions_description(cfg)%>",
-        'fileExt':"<%=file_extensions(cfg[:media])%>",
+        'fileDesc':"<%=raw file_extensions_description(cfg)%>",
+        'fileExt':"<%=raw file_extensions(cfg[:media])%>",
         'scriptData':<%="#{cfg[:media]}_upload_settings"%>,
         'displayData':'speed',
         'onError':function(){
