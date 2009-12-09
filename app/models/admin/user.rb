@@ -150,7 +150,7 @@ class Admin::User < Cms::Base
     elsif role.is_a?(String) || role.is_a?(Symbol)
       role=Admin::Role.find_by_name(role.to_s) || Admin::Role.create!(:name=>role.to_s)
       self.roles<<role
-    end
+    end unless self.has_role?(role)
   end
 
   def has_role?(role)
