@@ -7,7 +7,7 @@ development:
     multi_domain_portal: false
     domain_depth: 0
     items_per_page: 20
-    public_user_model: Admin::PublicUser
+    public_user_model: "Admin::PublicUser"
     public_user_table: admin_users
     flash_actions:
       - /media/image_file/new_create
