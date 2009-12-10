@@ -161,4 +161,12 @@ class ::String
     }
     result.gsub(/<\/?[^>]*>/, "")
   end
+
+  # Truncates text to given character length where closest word ends
+  def smart_truncate max_chars=150, continue="..."
+    striped_desc = self.gsub(/<\/?[^>]*>/, "")
+    lid = striped_desc.rindex(" ", max_chars) ? striped_desc[0, striped_desc.rindex(" ", max_chars)] : striped_desc
+    lid << continue if striped_desc.size > max_chars
+    lid
+  end
 end
