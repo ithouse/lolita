@@ -94,9 +94,10 @@ module Lolita
 
       # Execute all methods for given _callback_ and _klass_ (default current _controller_ class).
       # Recursively execute all callbacks from #Managed to _self_ class.
+      # When callback method return *false* (not *nil*) then execution of other methods will stop
       # Private methods can be called as well.
       # Error will be raised if _self_ is not _subclass_ of #Managed
-      def exacute_managed_callbacks(callback,klass=self.class)
+      def exacute_managed_callbacks(callback,klass=self.class) #FIXME wrong english
         raise "Must be subclass of Managed" unless klass.ancestors.include?(Managed)
         unless klass==Managed
           result=exacute_managed_callbacks(callback,klass.superclass)
@@ -110,8 +111,10 @@ module Lolita
         end
         if !result.is_a?(FalseClass) && klass.managed_callbacks && klass.managed_callbacks[callback.to_sym]
           klass.managed_callbacks[callback.to_sym].each{|method|
-            return self.send(method)
+            result=self.send(method)
+            return result if result.is_a?(FalseClass)
           }
+          return result
         end
       end
     end

@@ -1,13 +1,17 @@
 # coding:utf-8
 module Lolita
   module ControllerKernel
-    def self.included(base)
+    def self.included(base) # :nodoc: 
       base.class_eval{
         include InstanceMethods
       }
     end
 
     module InstanceMethods
+      # Render <i>404</i> error with given *status* and *layout*.
+      # Try to find error template in /public directory, it can be
+      # 404.<i>:locale</i>.html or 404.html.
+      # If none of templates found in /public, then render from /errors/error_404 in *lolita*.
       def render_404(status=404,layout="default")
         respond_to do |type|
           type.all  { render :nothing => true, :status => status }
@@ -26,6 +30,8 @@ module Lolita
         end
       end
 
+      # Render 500 error template with given *status* code.
+      # See #render_404 for details.
       def render_500(status=500)
         options = {:template => "errors/error_500", :status => status }
         begin
@@ -59,6 +65,9 @@ module Lolita
         params[:controller].to_s.split("/").last
       end
 
+      # Send error e-mail to email -> :bugs_to, from email -> :bugs_from.
+      # By default _request_ information are added to email body, separately
+      # error <i>message</i> and <i>title</i> can be specified.
       def send_bug msg, title=''
         #FIXME: move all this mess to template
         msg = "

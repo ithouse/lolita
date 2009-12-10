@@ -1,4 +1,5 @@
 # Manage system requests for CRUD actions and others (See #ControllerExtensions for detail)
+# See #Lolita::ManagedCallbacks for supported callbacks in _Managed_ controllers.
 class Managed < ApplicationController
   include ControllerExtensions::Cms::Paging
   include ControllerExtensions::AdvancedFilterExtension
@@ -17,49 +18,33 @@ class Managed < ApplicationController
 
   managed_after_open :set_instance_variable_for_nested_attributes
 
-  # <b>Callbacks</b>
-  # All after_ callbacks are called before render action is performed
-  # <tt>before_new</tt> - is called in <i>new</i> action, before @object and @metadata inicialized
-  # <tt>after_new</tt> - is called in <i>new</i> action, after @object and @metadata inicialized
-  # <tt>before_edit</tt> - is called in <i>edit</i> action, before @object and @metadata is found
-  # <tt>allow_metadata_edit</tt> - is checked in <i>edit</i> action, when @object and @metadata are known
-  #                              it should either return a False value thus prohibiting updating all metadata
-  #                              or a hash with {:key=>False value} to disable specific field updates
-  # <tt>after_edit</tt> - is called in <i>edit</i> action, after @object and @metadata is found
-  # <tt>before_open</tt> - is called when <tt>before_open</tt> or <tt>before_edit</tt> is executed
-  
+  # Redirect to _update_ action when params[:id] is set otherwise to _list_ action.
   def open
     get_id.to_i>0 ? redirect_to(params.merge(:action=>:update)) : list
   end
-
-  def insert_row
-    render :partial=>"/managed/remote_list_row",:locals=>{:fields=>params[:fields],:read_only=>params[:read_only]|| false}
-  end
   
   protected
-  
+
+  # Used to set #Managed kind params after allowed action to #Managed controller.
   def after_allow
     handle_params
   end
-  
+
+  # Return @my_params, that is cloned params, but can be modified leaving _params_ unchanged.
   def my_params
     @my_params
   end
 
-  #config satur config mainīgo, kas rodas saņemot no apakšklasēm opciju :configuration
-  #tas nepieciešams lai nodrošinātu katrai apakšklasie nepieciešamības gadījumā pilnīgi atšķirīgu
-  #argumentu reģistrēšanu un apstrādi
-
-  #funkcija apstrādā saņemtos parametrus no apakšklasēm kā arī nosau
-  def process_options
+  def process_options # :nodoc:
     @config=config
     @config[:on_complete]=@config[:on_complete] || "$('#{'#content'}').html(data)"
   end
 
-  
-  # Konfigurācijas Hash iespējamās vērtības
-  # :parent_name=>Cits vecāka elements pēc kura meklēt, ja ir overwrite vai sessijas mainīgais ar ša'du nosaukumu
-  # :overwrite=> Klase pēc kuras meklē ir tā kas norādīt parent_name
+  # In every #Managed controller *conf* method should be created to set _configuration_.
+  # Configuration must be <i>Hash</i>. Allowed configuration values.
+  # * <tt>:parent_name</tt> - Set another <i>class name</i> that is used for records finding. Default is create form params[:controller]
+  # * <tt>:tabs</tt> - Array of tabs configuration, this information is used to create new, edit form.
+  # Allowed tab types
   # :tabs - cilnes, kādās ir sadalīts ievades logs, iespējamie noklusētie tipi,
   #   :metadata,
   #   :multimedia,
