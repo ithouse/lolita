@@ -349,11 +349,11 @@ class Media::ImageFile < Media::FileBase
   end
   
   def name_after_upload(picture)
-    object=self.pictureable
-    versions_class=object.class
+ 
+    versions_class=picture.instance.pictureable_type.constantize
     if versions_class.respond_to?(:upload_column_modify_methods) && methods=versions_class.upload_column_modify_methods
       methods.each{|m,values|
-        object.send(m,picture,values)
+        versions_class.send(m,picture,values)
       }
     end
   end
