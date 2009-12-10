@@ -3,8 +3,8 @@
     <span class="big black"><%=Lolita.config.system :cms_name%></span>
   </div>
   <div class="pad">
-    <div class="big blue" style="<%= flash[:error].to_s.size>0 ? "margin-bottom:8px !important;" : "" %>"><%= t '.authorization' %></div>
-    <div style="color:red;font-weight:bold;"><%=flash[:error].is_a?(Symbol) ? t(flash[:error]) : ""%></div><%= flash[:error] ? "<br/>"  : "" %>
+    <div class="big blue" style="<%= raw(flash[:error].to_s.size>0 ? "margin-bottom:8px !important;" : "") %>"><%= raw t('.authorization') %></div>
+    <div style="color:red;font-weight:bold;"><%= raw(flash[:error].is_a?(Symbol) ? t(flash[:error]) : "")%></div><%= raw (flash[:error] ? "<br/>"  : "") %>
     <label for="login">
       <%= text_field_tag 'login',"",:class=>'txt',:style=>"margin-bottom:2px;" %>
       <%=t(:".login name") %>:
