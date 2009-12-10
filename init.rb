@@ -25,6 +25,7 @@ Dir.glob("#{File.join(File.dirname(__FILE__))}/spec/factories/*/*.rb").each do |
   require path
 end if RAILS_ENV == "test"
 
+require 'rake'
 # load rake tasks for plugins
 Dir.glob("#{RAILS_ROOT}/vendor/plugins/lolita/plugins/**/tasks/*.rake").each do |rake_file|
   Rake.application.add_import rake_file
