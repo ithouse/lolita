@@ -97,14 +97,16 @@ class Media::ImageFile < Media::FileBase
   # Delete all version files
   # Create new file with current dimensions
   # Add watermak if exists
-  def self.rebuild(all=false)
+  # you can pass options
+  # - :conditions => will rebuild these pictures only
+  def self.rebuild(options = {})
     errors=[]
     temp_path="#{RAILS_ROOT}/tmp/picture_rebuild"
     Dir.mkdir(temp_path) unless File.exist?(temp_path)
     watermark=self.get_watermark
 
     start_time=Time.now
-    all_pictures=Media::ImageFile.find(:all)#,:conditions=>["created_at>?",1.month.ago]
+    all_pictures=Media::ImageFile.find(:all,:conditions => options[:conditions])
     count=all_pictures.size
     decs=1
     border_count=count/10
