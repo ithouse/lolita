@@ -97,14 +97,16 @@ class Media::ImageFile < Media::FileBase
   # Delete all version files
   # Create new file with current dimensions
   # Add watermak if exists
-  def self.rebuild(all=false)
+  # you can pass options
+  # - :conditions => will rebuild these pictures only
+  def self.rebuild(options = {})
     errors=[]
     temp_path="#{RAILS_ROOT}/tmp/picture_rebuild"
     Dir.mkdir(temp_path) unless File.exist?(temp_path)
     watermark=self.get_watermark
 
     start_time=Time.now
-    all_pictures=Media::ImageFile.find(:all)#,:conditions=>["created_at>?",1.month.ago]
+    all_pictures=Media::ImageFile.find(:all,:conditions => options[:conditions])
     count=all_pictures.size
     decs=1
     border_count=count/10
@@ -349,16 +351,11 @@ class Media::ImageFile < Media::FileBase
   end
   
   def name_after_upload(picture)
-    object=self.pictureable
-    versions_class=object.class
+ 
+    versions_class=picture.instance.pictureable_type.constantize
     if versions_class.respond_to?(:upload_column_modify_methods) && methods=versions_class.upload_column_modify_methods
       methods.each{|m,values|
-        begin
-          object.send(m,picture,values)
-          puts "Successfuly modified picture #{self.id} with #{m}"
-        rescue Exception=>e
-          puts "Error calling method #{m} on picture with ID #{self.id}. Error: #{e}"
-        end
+        versions_class.send(m,picture,values)
       }
     end
   end

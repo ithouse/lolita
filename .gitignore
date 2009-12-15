@@ -4,5 +4,6 @@ _public/_gsdata
 _public/_gsdata_/*
 *~
 doc/
+rdoc/
 spec/debug.log
 .git.zip

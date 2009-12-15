@@ -17,7 +17,9 @@ desc 'Generate documentation for the lolita plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'Lolita'
-  rdoc.options << '--line-numbers' << '--inline-source'
+  rdoc.options << '--line-numbers' << '--inline-source' << '-c utf-8'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.rdoc_files.include('app/**/**/**/*.rb')
+  rdoc.rdoc_files.include('patch/*.rb')
 end
