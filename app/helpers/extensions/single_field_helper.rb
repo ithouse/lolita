@@ -1,11 +1,31 @@
 # coding:utf-8
 module Extensions::SingleFieldHelper
 
+  # Create counter for textarea see #cms_statusbar.
+  # Accepted options:
+  # * <tt>:title</tt> - Title for counter, if %d be found in text, then it will be replaces with :maxlength
+  # Accpted html options:
+  # * <tt>:maxlength</tt> - Maximum length that can be displayed in :title it include %d
+  # ====Example
+  #  create_counter("object_text",{:title=>"Symbols left %d"},{:maxlength=>55}) #=>
+  #  <span id='object_text_counter'>Symbols left 55</span>
+  #  <script type="text/javascript">
+  #   new ITH.Editor.TextareaCounter('#object_text')
+  #  </script>
   def create_counter id, options={},html={}
     counter="#{options[:title]%html[:maxlength]}"
     "<span id='#{id}_counter'>#{counter}</span>"+javascript_tag("new ITH.Editor.TextareaCounter('##{id}')")
   end
-  
+
+  # Create statusbar for #cms_textarea and puts counter in it if counter options specified.
+  # Create div tag for statusbar.
+  # Accepted options:
+  # * <tt>:counter</tt> - Hash that be passed to #create_counter as options.
+  # Accpted all options:
+  # * <tt>:html</tt> - Hash with html options that will be passed to #create_counter.
+  # ====Example
+  #   create_statusbar('object_text',{:counter=>{:title=>"Maximum: %d}},{:maxlength=>55}") #=>
+  #   <div id="object_text_statusbar"></div>
   def create_statusbar id, options={},all_options={}
     bar=""
     if options[:counter]
@@ -13,7 +33,20 @@ module Extensions::SingleFieldHelper
     end
     %(<div id="#{id}_statusbar">#{bar}</div>)
   end
-  
+
+  # Create text area field and statusbar if specified.
+  # Accpts _object_ name and options.
+  # Accpeted options:
+  # * <tt>:html</tt> - HTML options, other #text_area html options can be given as well:
+  #   * <tt>:cols</tt> - Column count for textfield.
+  #   * <tt>:class</tt> - Class name, that is combinated with specific *Lolita* class name unless <tt>:simple</tt> is set to true.
+  # * <tt>:simple</tt> - Determinate that textfield is used without *TinyMCE*.
+  # * <tt>:statusbar</tt> - Create status bar specified. See #create_statusbar.
+  # * <tt>:field</tt> - Field name.
+  #
+  # ====Example
+  #   cms_textarea "blog", :field=>"text", :cols=>20
+  #   cms_textarea "blog", :field=>"text", :cols=>20, :statusbar=>{:counter=>{:title=>"Maximum: %d}}, :maxlength=>55
   def cms_textarea object,options
     options[:html][:cols]||=50
     options[:html][:class]||="textarea"
@@ -24,7 +57,7 @@ module Extensions::SingleFieldHelper
     "#{text_area object, options[:field], options[:html]}#{status_bar} <br/>"
   end
   
-  def cms_content_tree_field object,options
+  def cms_content_tree_field object,options # :nodoc: 
     if menu=Admin::Menu.web_menu("Admin").first #Valdis: atejam no namespecotā menu - if menu=Admin::Menu.web_menu(params[:controller].split("/").first).first
       id=params[:action]=='update' ? instance_variable_get("@#{object}").id : 0
       menu_items=menu.all_menu_items
@@ -50,6 +83,24 @@ module Extensions::SingleFieldHelper
     end
   end
 
+  # Create custom field for special use. Method must be accessable from this helper.
+  # Arguments may be passed to that method.
+  # Arguments:
+  # * <tt>object</tt> - Object name, instance variable with this name must exist.
+  # * <tt>options</tt> - Options need to be passed too:
+  #   * <tt>:function</tt> - Function that be called with given instance variable id or 0, field and other arguments.
+  #   * <tt>:args</tt> - Array of optional arguments for method. 1 is passed if :args not specified.
+  #   * <tt>:field</tt> - Field name.
+  # ====Example
+  #   Call blogger_selector method and output results reveived from that method.
+  #   @blogger=Blogger.find(:first) #=> {:id=>2,:blogger_name=>"Blogger Peter"
+  #   params[:blogger_id] #=> 11
+  #   cms_custom_field "blogger", :function=>"blogger_selector", :args=>[params[:bloger_id]],:field=>"blogger_name" #=>
+  #   bloger_selector(2,"blogger_name",11)
+  #
+  #   @user=User.find(:first) #=> {:id=>1}
+  #   cms_custom_field("user",:function=>"password_field_with_strength",:field=>"password") #=>
+  #   password_field_with_strength("user",1,"password",1)
   def cms_custom_field object,options
     out=""
     if options[:function]
@@ -68,6 +119,23 @@ module Extensions::SingleFieldHelper
     out
   end
 
+  # Create span with spefific content.
+  # Receive _object_ as other field helper methods and options.
+  # Accepted options:
+  # * <tt>:table</tt> - Get object from foreign table otherwise use instance variable with _object_ name.
+  # * <tt>:value</tt> - Use this option as span value, works only if *NOT* :titles passed
+  # * <tt>:titles</tt> - Create input and label content from this options. If this is Array then
+  #                      use #field_to_string_simple to get value if not then call it as method on _object_.
+  # ====Example
+  #     @blog=Blog.find(:first)
+  #     @blog.user.name #=> John Deer
+  #     cms_label_field "blog", :table=>"user", :titles=>"name" #=>
+  #     <span class="object-label">John Deer</span>
+  #     
+  #     @blog.name #=> "Blog_22"
+  #     cms_label_field "blog", :titles=>["My ",":name.upcase"] #=>
+  #     <span class="object-label">My BLOG_22</span>
+  #
   def cms_label_field object,options
     if options[:table]
       obj=options[:table].camelize.constantize
@@ -84,10 +152,19 @@ module Extensions::SingleFieldHelper
         result=options[:value]
       end
     end
-    content_tag('input',result,:type=>"text",:readonly=>"readonly",:class=>"txt")
+    #content_tag('input',result,:type=>"text",:readonly=>"readonly",:class=>"txt")
     "<span class='object-label'>#{result}</span>"
   end
 
+  # Create hidden field for given _object_ or with given values in options.
+  # Accpted options:
+  # * <tt>:field</tt> - Field that value is used as input value, not used when :value or :name is passed.
+  # * <tt>:html</tt> - HTML options for field, not used when :name or :value is specified.
+  # * <tt>:value</tt> - Special value not _object_ field value.
+  # * <tt>:name</tt> - Hidden field name, default is name, that links field with _object_, value not taken from _object_.
+  # ====Example
+  #     cms_hidden_field "blog", :field=>"name" #=> <input type="hidden" name="blog[name]" value="blogname"/>
+  #     cms_hidden_field "blog", :value=>"1", :name=>"temp_id" #=> <input type="hidden" name="temp_id" value="1"/>
   def cms_hidden_field object,options
     if options[:value] || options[:name]
       name=options[:name]||"object[#{options[:field]}]"
@@ -96,11 +173,20 @@ module Extensions::SingleFieldHelper
       hidden_field object,options[:field],options[:html]
     end
   end
-  
+
+  # Create text field, call Rails text_field with given object.
+  # Accpeted options:
+  # * <tt>:field</tt> - Field name.
+  # * <tt>:html</tt> - HTML options.
+  # ====Example
+  #     cms_text_field "blog", :field=>"name" #=>
+  #     <input type="text" name="blog[name]" value="blogname"/>
   def cms_text_field object,options
     text_field object, options[:field], options[:html]
   end
 
+  # Create check box group, mostly used for many-to-many relation.
+  #
   def cms_checkboxgroup_field object,options
     base_element=instance_variable_get("@#{object}")
     elements=base_element ? base_element.send(options[:field]) : []

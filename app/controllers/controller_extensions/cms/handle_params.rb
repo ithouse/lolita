@@ -58,7 +58,7 @@ module ControllerExtensions
         #@config[:object] ? @config[:object].camelize.constantize : params[:controller].camelize.constantize
       end
 
-      # Deprecated <tt>@config[:all_params].
+      # Deprecated.
       def all_params
         @config[:all_params]
       end

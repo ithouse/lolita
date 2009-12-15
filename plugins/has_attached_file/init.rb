@@ -3,4 +3,4 @@
 # and open the template in the editor.
 
 require 'has_attached_file'
-ActiveRecord::Base.send(:include, ITHouse::HasAttachedFile)
+ActiveRecord::Base.send(:include, Lolita::HasAttachedFile)

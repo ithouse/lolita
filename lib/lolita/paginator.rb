@@ -1,4 +1,18 @@
 module Lolita
+  # Paginator is used to paginate any of ActiveRecord::Base class records.
+  # But main advantage is usage with Lolita filters. Paginator support simple text filtering
+  # Lolita::Filter::AdvancedFilter and with Ferret.
+  # Paginator instace include #Enumerable and that allow to iterate through it.
+  # ====Example
+  #   paginator=Lolita::Paginator.new(Cms::Blog,{
+  #     :per_page=>10,
+  #     :page=>1,
+  #     :conditions=>["name = ?", "Jim"],
+  #     :sort_column=>"name",
+  #     :sort_direction=>"asc"
+  #   })
+  #   paginator.find_records().map{|r| r.id} #=> [1,2,3]
+  #
   class Paginator
     include Enumerable
     # Record count in page
@@ -13,8 +27,11 @@ module Lolita
     attr_accessor :sort_column
     # Current page number
     attr_accessor :page
+    # Parent class
     attr_reader   :parent
+    # Start row used in MySQL limit
     attr_reader   :start_row
+    # Store ferret filter data
     attr_reader   :do_ferret
     # Ferret filter find _options_
     attr_accessor :ferret_filter
@@ -31,6 +48,19 @@ module Lolita
     # Constructor that receive <i>parent_class</i> and configuration
     # ====Example
     #     Lolita::Paginator.new(Cms::Blog,{:page=>1,:per_page=>20})
+    # Following configuration options are accptable:
+    # * <tt>:per_page</tt> - records in page
+    # * <tt>:page</tt> - current page number, 1 for first page
+    # * <tt>:padding</tt> - number of pages that be displayed before and after current page when displaying paginator bar.
+    # * <tt>:simple_filter</tt> - all content fields would be filtered using this value.
+    # * <tt>:advanced_filter</tt> - advanced filter. See #Lolita::Filter::AdvancedFilter
+    # * <tt>:sort_column</tt> - sort column(-s)
+    # * <tt>:sort_direction</tt> - sort direction
+    # * Any of ActiveRecord::Base#find options. When using AdvancedFilter :read_only and :lock not be used, but when
+    #   Ferret filter, than none of these options.
+    # Other options could be passed that are same with writtable attributes, but that might raise an error or
+    # make other strange side effects.
+    #
     def initialize parent_class,config={}
       @find_options={}
       @results=[]
@@ -63,7 +93,7 @@ module Lolita
 
     # Find records from <em>parent_class</em>.
     # New configuration can be set by supplying _options_.
-    # ===Example
+    # ====Example
     #    paginator=Lolita::Paginator.new(Cms::Blog,:per_page=>2)
     #    page=paginator.create(:per_page=>10)
     #    page.size #=> 10

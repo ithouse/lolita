@@ -1,6 +1,10 @@
+# Handle #Media::VideoFile records and add methods for adding and removing image for video player.
 class Media::VideoFileController < Media::ControllerFileBase
   allow :all=>[:destroy,:show,:add_picture,:remove_picture,:new_create,:refresh]
 
+  # Add picture for video file with given id and return new player with uploaded picture or error message.
+  # ====Example
+  #  params #=> {:video_file=>{:id=>1,:picture=>{:picture=>FileData,:picture_temp=>FileData}}
   def add_picture
     if params[:video_file] && video=VideoFile.find_by_id(params[:video_file][:id])
       picture_attributes=params[:video_file].delete_if{|key,value|
@@ -21,6 +25,7 @@ class Media::VideoFileController < Media::ControllerFileBase
     end
   end
 
+  # Remove picture from video file with given :id and render player without picture or error message.
   def remove_picture
     if params[:id] && video=VideoFile.find_by_id(params[:id])
       begin

@@ -1,9 +1,9 @@
-module ITHouse
+module Lolita
   module Filters
     class CustomFilter
       attr_reader :columns
       def initialize options={}
-        @class_name=options[:class_name] || "ITHouse::Filters::CustomFilter"
+        @class_name=options[:class_name] || "Lolita::Filters::CustomFilter"
         @columns=[]
         @column_names=[]
         options[:columns].each{|configuration|
@@ -62,7 +62,7 @@ module ITHouse
       end
       
       def to_s
-        "ITHouse::Filters::CustomFilterColumn"
+        "Lolita::Filters::CustomFilterColumn"
       end
     end
   end
