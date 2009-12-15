@@ -1,17 +1,13 @@
-module Extensions
+module ControllerExtensions
   module Cms
+    # Responsible for default #Managed actions (#index, #show).
     module PublicView
-      
-      # Configuration is received through managed configuration :public attribute.
-      # Common attributes for #show and #index actions, that are recieved through :public.
-      #   :template - template name to render, default "show"
-      #   :layout - layout name to render, default false
-      #   :on_error_url - URL to redirect when #Exception raised, default home_url
-      #   :single - must be set to true
-      #   :conditions - find conditions
-      #
+
       # Default #Managed function for single resource handling.
-      # Default #show action works only if :single atrribute is set to True.
+      # Configuration is received through managed configuration :public attribute.
+      # Accepted +attributes+
+      # * <tt>:template</tt> - Template name to render, default "show"
+      # * <tt>:layout</tt> - Layout name to render, default false
       def show
         handle_function "before_show"
         @object=object.find(get_id,:conditions=>@config[:public][:conditions])
@@ -19,13 +15,12 @@ module Extensions
         render :action=>@config[:public][:template]||"show", :layout=>@config[:public][:layout]
       end
 
-      # Default #Managed action for many resources.
-      # Work only if :single attribute is set to False
-      # Accpted attributes
-      #   :sort_column - sort column
-      #   :sort_direction - sort direction, "asc" or "desc"
-      #   :joins - array of joins, sql format
-      #   :per_page - record count in one page
+      # Default #Managed action for many entries.
+      # Accpted +attributes+
+      # * <tt>:sort_column</tt> - Sort column
+      # * <tt>:sort_direction</tt> - Sort direction, "asc" or "desc"
+      # * <tt>:joins</tt> - Array of joins, +SQL+ format
+      # * <tt>:per_page</tt> - Count of entries in one page.
       def index
         handle_function "before_show"
         join,sort_columns=public_sort_column

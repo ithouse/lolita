@@ -1,4 +1,4 @@
-class Media::GoogleMapController < Media::ControllerBase
+class Media::GoogleMapController < Media::ControllerBase # :nodoc: 
   allow
   
 end

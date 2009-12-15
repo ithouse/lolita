@@ -1,9 +1,8 @@
-module Extensions
+module ControllerExtensions
   module Cms
     module HandleParams
 
-      #Handl params ir vienota funkcija visām funkcionālajām metodēm kā edit,list,create un delete
-      #tā nodrošina vienotu parametru apstrādes stilu un tātad arī rezultātu atgriešanu
+      # Handle all incoming params and create <em>instance variables</em> that uses other #Managed modules.
       def handle_params
         if params[:all]
           params[:all].each{|key,value|  params[key]=value if (!params[key] && key.to_sym!=:controller && key.to_s!=:action)}
@@ -21,7 +20,14 @@ module Extensions
         get_special_params
       end
 
-      #šī funkcija ir domāta lai norādītu parametrus, kas tiek iegūti zsaucot citas funkcijas
+      # Set special values in <tt>@config</tt> to be used in any place in code.
+      # Available <b>special values</b> in <tt>@config</tt>
+      # * <tt>:refresh_menu</tt> - Detect if menu need to be refreshed
+      # * <tt>:namespace</tt> - Current namepsace of controller
+      # * <tt>:object_name</tt> - Controller name (Deprecated)
+      # * <tt>:all_params</tt> - All params (Deprecated)
+      # * <tt>:object_class</tt> - Class of _object_
+      #
       def get_special_params
         set_back_url
         @config[:refresh_menu]=my_params[:refresh_menu].to_b
@@ -30,6 +36,13 @@ module Extensions
         @config[:all_params]=my_params
         @config[:object_class]=get_object_klass
       end
+
+      # Get _object_ class.
+      # _Object_ class can be specified in these ways in <tt>@config</tt>
+      # * <tt>:object</tt> is a <tt>Hash</tt>, than can be specified <tt>:default</tt>
+      #   _object_ class or for any action.
+      # * <tt>:object</tt> is a <tt>String</tt>
+      #
       def get_object_klass
         if @config[:object]
           if @config[:object].is_a?(Hash)
@@ -44,11 +57,14 @@ module Extensions
         end
         #@config[:object] ? @config[:object].camelize.constantize : params[:controller].camelize.constantize
       end
-      #funkcija kas satur mainīgo all_params kas rodas saņemot parametros :all
+
+      # Deprecated.
       def all_params
         @config[:all_params]
       end
 
+      # Used in #Managed when redirecting.
+      # Set special params and parent params.
       def additional_params
         id=@object.id if @object
         p={
@@ -68,6 +84,7 @@ module Extensions
         return p
       end
 
+      # Set values from params to <tt>@object</tt> when opening new _object_ form.
       def set_parent_values_to_object
         my_params.each{|key,value|
           if key.to_s.include?("_id") && (!@config[:parents] || (@config[:parents] && @config[:parents].include?(key.to_sym))) && @object.respond_to?(key.to_s)
@@ -76,8 +93,7 @@ module Extensions
         }
       end
 
-      #Funkcija no ienākošajiem parametriem var izdot tikai tos kuri atbilsts
-      #vecāka elementa kritērijiem, pēc noklusējuma,tas ir kaut_kas_id
+      # Yield only these params that match given pattern
       def get_parents_from_params object=nil,parent_name=false,pattern="_id"
         object.each{|key,value|
           if key.to_s.include?(pattern) && !key.to_s.include?("temp")
@@ -87,8 +103,6 @@ module Extensions
         }
       end
 
-
-      #beidzas funkcijas
     end
   end
 end

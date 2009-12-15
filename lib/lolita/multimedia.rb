@@ -1,12 +1,17 @@
 module Lolita
   module Multimedia
-    def self.included(base)
+    def self.included(base) # :nodoc: 
       base.class_eval{
         include InstanceMethods
       }
     end
 
+    # To get temporary multimedia id *file_id* should be used.
+    # To check if temporary multimedia id is set <b>has_file_id?</b> should be used.
     module InstanceMethods
+      # Update all multimedia classes with real _object_ id when _object_ is created.
+      # ====Example
+      #     update_multimedia(Cms::Blog.create!(params[:blog]), file_id())
       def update_multimedia(object,id)
         Media::Base.all_media_names.each{|media|
           klass="Media::#{"#{media}".camelize}".constantize

@@ -1,6 +1,7 @@
-module Extensions
+module ControllerExtensions
   module Cms
     module Crud
+      # Open new _object_ form. For detail see #ControllerExtensions
       def new
         params[:action]="create"
         handle_before_create
@@ -11,7 +12,8 @@ module Extensions
         set_parent_values_to_object
         redirect_me :only_render=>true, :layout=>self_layout
       end
-      
+
+      # Create new _object_. For detail see _code_ and/or #ControllerExtensions
       def create
         return false unless request.post?
         begin
@@ -41,6 +43,7 @@ module Extensions
         end
       end
 
+      # Open existing _object_ form for editing. For details see _code_.
       def edit
         params[:action]="update"
         if (my_params[:id].to_i==0)  && !my_params[:object]
@@ -53,7 +56,8 @@ module Extensions
           redirect_me :only_render=>true, :layout=>self_layout
         end
       end
-      
+
+      # Update existing _object_. For details see _code_ and/or #ControllerExtensions
       def update
         return false unless request.post?
         begin
@@ -105,6 +109,9 @@ module Extensions
         end
       end
 
+      # Destroy _object_ by receiving <tt>params[:list_check]</tt> and called to_array on that <tt>String</tt>
+      # and destroy all _objects_ that could be found from _ids_ in that <tt>Array</tt>
+      # Or receive <tt>params[:id]</tt> and try to find and destroy _object_ from it.
       def destroy
         handle_function "before_destroy"
         if my_params[:list_check]

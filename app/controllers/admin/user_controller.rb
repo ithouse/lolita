@@ -1,7 +1,13 @@
 class Admin::UserController < Managed
   allow Admin::Role.admin,:all=>[:edit_self], :public=>[:login,:logout,:forgot_password]
-  #menu_actions :system=>{:view_log=>I18n.t(:"user.log")}
-  
+
+  # Login <em>Admin::SystemUser</em> into <b>Lolita's</b> administrative side.
+  #
+  # If request is _POST_ then do authentication, otherwise redirect to start page
+  # indicated in configuration :system->:start_page_url if logged in, or render loging form
+  # if not logged in.
+  #
+  # When authentication is successful #update_token and #register_user_in_session is called.
   def login
     flash[:error]=nil
     if request.post?
@@ -25,17 +31,21 @@ class Admin::UserController < Managed
       end
     end
   end
-  
+
+  # Logout user from <b>Lolita's</b> administrative side.
+  # Session is cleared and <em>remember me</em> deleted, and next time automatic login
+  # will not be performed. Finaly redirects to #login action.
   def logout
     if logged_in? 
       self.current_user.forget_me 
-      # cookies.delete :auth_token
       reset_session
       flash[:notice] = I18n.t(:"flash.logout success")
     end
     redirect_to :action=>:login
   end
   
+  # ====Deprecated
+  # Any system user can edit their own password. This method allow to do that.
   def edit_self
     if session[:user] && session[:user].is_a?(Admin::SystemUser) && session[:user].is_real_user?
       @user=Admin::SystemUser.find_by_id(params[:id])
@@ -60,7 +70,8 @@ class Admin::UserController < Managed
       to_login_screen
     end
   end
-  
+
+  # Render <em>Forgot password</em> form and send e-mail with new password.
   def forgot_password
     flash[:error]=nil
     redirect_to :action=>"login" if session[:user]
@@ -93,7 +104,13 @@ class Admin::UserController < Managed
       render :layout=>"admin/public"
     end
   end
-  
+
+  # Add role to user received with params :role and :user.
+  #
+  # ====Examples
+  #
+  #   /add_role?user=1&role=blogger
+  #   /add_role?user=1&role=2
   def add_role
     if params[:role] and params[:user]
       user=Admin::User.find_by_id(params[:user])
@@ -101,7 +118,9 @@ class Admin::UserController < Managed
     end
     render :text=>"OK"
   end
-  
+
+  # Remove role from user roles reveived with params :role and :user.
+  # See #add_role
   def remove_role
     if params[:role] and params[:user]
       user=Admin::User.find(params[:user])
@@ -110,6 +129,8 @@ class Admin::UserController < Managed
     render :text=>'OK'
   end
   
+  # ====Deprecated
+  # Render all role users
   def all_users
     @role = Admin::Role.find(params[:id]) if Admin::Role.exists?(params[:id])
     render :partial=>'all_users', :locals=>{:role=>@role}
@@ -117,6 +138,8 @@ class Admin::UserController < Managed
 
   private
 
+  # If in configuration :system->:multi_domain_portal is set to _true_,
+  # then update token information so it can be used in session cloning through #Sso::Controller
   def update_token(user=nil)
     if Lolita.config.system(:multi_domain_portal) && !is_local_request?
       token=Admin::Token.find_by_token(cookies[:sso_token])
@@ -129,13 +152,13 @@ class Admin::UserController < Managed
       end
     end
   end
-  def before_destroy
+  def before_destroy # :nodoc:
     if Admin::SystemUser.find_by_id(params[:id])==session[:user]
       @my_params.delete(:id)
     end
   end
   
-  def before_list
+  def before_list # :nodoc:
     @active_user=Admin::User.find_by_id(params[:id])
   end
 

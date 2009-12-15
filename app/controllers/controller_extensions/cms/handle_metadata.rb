@@ -1,7 +1,12 @@
-module Extensions
+module ControllerExtensions
   module Cms
+    # Used in #Managed to #handle_metadate when saving _object_.
+    # If :i18n->:translation is set to _true_ than when saving #MetaData
+    # it save translation as well and check if all keys is allowed to save.
     module HandleMetadata
 
+      # Can be called as /blog/1/save_meta_translation with translation information
+      # and than that saves metadata translation separately from _object_
       def save_metadata_translation
         if Lolita.config.i18n :translation
           handle_params

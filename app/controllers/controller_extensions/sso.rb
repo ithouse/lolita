@@ -1,4 +1,4 @@
-module Extensions::Sso
+module ControllerExtensions::Sso
   def sso
     return true if controller_name == "sso" || params[:format]=="xml" || is_local_request? || request.env['HTTP_USER_AGENT']=~ /^(Adobe|Shockwave) Flash/ || robot?
     set_current_portal

@@ -1,4 +1,4 @@
-module Extensions::AdvancedFilterExtension
+module ControllerExtensions::AdvancedFilterExtension
   def save_filter
     object=params[:controller].camelize.constantize
     if filter=object.save_advanced_filter(params[:advanced_filter])

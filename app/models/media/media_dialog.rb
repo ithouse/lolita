@@ -1,2 +1,2 @@
-class Media::MediaDialog < Cms::Base
+class Media::MediaDialog < Cms::Base # :nodoc:
 end

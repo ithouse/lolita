@@ -1,7 +1,7 @@
-# SIA ITHouse
+# SIA Lolita
 # Artūrs Meisters
 # 11.08.2008 11:23
-module ITHouse
+module Lolita
   module HasAttachedFile
 
     def self.included(base)

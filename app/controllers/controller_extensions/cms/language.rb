@@ -1,10 +1,19 @@
-module Extensions
+module ControllerExtensions
   module Cms
+    # Do language changing in _object_ create/edit form
     module Language
+
+      # Change language for whole administrative side and redirects to <i>list</i> action.
       def change_language_only
         Globalize::Locale.set("#{params[:translation_locale]}-#{params[:translation_locale]=='en' ? "US" : params[:translation_locale].upcase}")
         redirect_to :action=>'list',:is_ajax=>true,:translation_locale=>params[:translation_locale]
       end
+
+      # Change _object_ language in *translation* tab.
+      # Receive +params+
+      # * <tt>:translation_locale</tt> - Locale code ('en','ru') to switch _object_ language.
+      # * <tt>:id</tt> - _Object_ id.
+      # * <tt>:tab</tt> - Tab index where the translation section is.
       def change_language
         #begin
         handle_params
@@ -18,6 +27,12 @@ module Extensions
         #rescue
         #end
       end
+
+      # Change _metadata_ language.
+      # Receive +params+
+      # * <tt>:id</tt> - _Object_ id (note that it isn't _metadata_ id).
+      # * <tt>:meta_translation_locale</tt> - Language code.
+      # * <tt>:tab</tt> - Tab index where _metadata_ tab is.
       def meta_change_language
         handle_params
         flash[:notice]=nil

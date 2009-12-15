@@ -20,7 +20,7 @@ module BaseHelper
   include ManagedHelper
   include Media::BaseHelper
   # Iespējamās opcijas
-  #   :image - vai nepieciešams tekstā pielikt klāt ITHouse
+  #   :image - vai nepieciešams tekstā pielikt klāt Lolita
   #   :simple - vienkārša lapa vai nē
   def creator_link(options={})
     locale=cookies[:locale] || session[:locale]

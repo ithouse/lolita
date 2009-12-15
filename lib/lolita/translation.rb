@@ -1,12 +1,14 @@
 module Lolita
   module Translation
-    def self.included(base)
+    def self.included(base) # :nodoc: 
       base.class_eval{
         include InstanceMethods
       }
     end
 
     module InstanceMethods
+      # Set *request* locale. Set <i>session[:locale]</i>, <i>I18n.locale</i> and
+      # Globalize.current_locale from <em>params[:locale]</em> or set default locale.
       def set_locale 
         session[:locale]=Lolita.config.i18n :language_code || Admin::Language.find_base_language.short_name unless session[:locale]
         unless system_user?
