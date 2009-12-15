@@ -14,19 +14,13 @@ module Media::Extensions::ImageFileExtensions
     }
   end
   #converts the image to grayscale
+  # can pass :options - it will pass them to modulate function as (brightness=1.0, saturation=1.0, hue=1.0)
   def image_file_grayscale picture,options={}
-    (options && options[:versions] || []).each{|version|
+    (options && options[:versions] || []).each do |version|
       picture.send(version).process! do |image|
-        image.quantize(256, Magick::GRAYColorspace)
+        image.image_type = Magick::GrayscaleType
+        image = image.modulate(*options[:options]) if options[:options]
       end
-    }
-  end
-  #approximates the number of gradients to saturate colors and raise contrast between them
-  def image_file_auto_contrast picture,options={}
-    (options && options[:versions] || []).each{|version|
-      picture.send(version).process! do |image|
-        image.normalize
-      end
-    }
+    end
   end
 end
