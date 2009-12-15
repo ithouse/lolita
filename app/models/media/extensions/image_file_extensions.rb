@@ -23,4 +23,30 @@ module Media::Extensions::ImageFileExtensions
       end
     end
   end
+  #Change brightness, saturation, hue of image
+  #:image_file_modulate=>{:versions=>[:some_version[,...]],
+  #    :some_version=>{ :brightness=>float[,:saturation=>float][,:hue=>float] } }
+  def image_file_modulate picture,options={}
+    (options && options[:versions] || []).each{|version|
+      picture.send(version).process! do |image|
+        bright_sat_hue=options[version]||{}
+        image.modulate(
+          bright_sat_hue[:brightness]||1,
+          bright_sat_hue[:saturation]||1,
+          bright_sat_hue[:hue]||1
+        )
+      end
+    }
+  end
+  # Gamma-correct an image.
+  #:image_file_gamma=>{:versions=>[:some_version[,...]],
+  #    :some_version=>float gamma }
+  # Values typically range from 0.8 (darker) to 2.3 (very light).
+  def image_file_gamma picture,options={}
+    (options && options[:versions] || []).each{|version|
+      picture.send(version).process! do |image|
+        image.gamma_channel( options[version] || 1 )
+      end
+    }
+  end
 end

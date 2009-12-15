@@ -136,66 +136,86 @@ module Extensions::SingleFieldHelper
     end
   end
 
-  # renders a has_and_belongs_to_many relationship in form of a
-  # list of existing associated records and <select> of other possibilities
-  #
-  # field - attribute to access associated objects,
-  #  should be of {singularized}_ids form, e.g. :equipment_ids
-  #  or will be autoconverted from pluralized form, e.g. :equipments=>:equipment_ids
-  # optional parameters:
-  # :title - to use for label, default t(".{field}")
-  # :object - parent object, e.g. :product, default is 'object'
-  # :existing - an array of [title,id,[css_class]] for display of existing items in the list
-  #  or :symbol of method to get them for current object
-  #  if absent, expects "@{:object}" variable to be present and collects
-  #  [{:property},{singularized property}] of the plularized form of specified field
-  #  e.g. field=product_ids,{:object=>:batch,:property=>:price} results in
-  #   :existing=>@batch.products.collect{|product| [product.price,product.product_id]}
-  # :property - only used in case of missing :existing
-  #
-  # :suggest - an array of [title,value,[css_class]], usually object.attribute less :existing
-  #  other possible elements in the control select
-  #  or :symbol method to return such array
-  #
-  # :possible - if :suggest absent, collection of elements to filter :suggest from
-  #   e.g. :existing=>@batch.products.collect{...},:possible=>Products.all
-  # if both :suggest and :possible are absent, {field}.all is assumed
-  #  e.g. multi_select(:car_class_ids)
-  #   :existing=>@object.car_classes ...
-  #   :possible=>CarClass.all
-  #   :suggest=>:possible less :existing by comparing their ids
-  # :maximum - max elelements allowed,
-  #   model should contain according validates_length_of attributes,:maximum=>?
-  # :limit - {:class_name=>number, ...}
-  #  additional limit on specific elements can be set via assigning them a css class name
-  #  in both existing and suggest elements
-  #  list automatically switches to numbered on display
-  # :template - future element template to use instead of standard,
-  #  placeholders for {text}, {attr}, {value} will be substituted by javascript
-  #
-  # samples:
-  #
-  # show list of existing @object.equipments and other possible from Equipment.all:
-  # multiedit_select(:equipments)
-  #
-  # multiedit_select(:equipment_ids,
-  #  t(:".car_equipments"),
-  #  :maximum=>CarClass::maximum_equipment_count,
-  #  :existing=>@object.equipments.collect{|equip|
-  #    [
-  #      "#{equip.name}#{equip.is_combo? ? ' (combo)':''}",
-  #      equip.equipment_id,
-  #      equip.is_combo? ? 'combo' : ''
-  #    ]},
-  #  :suggest=>Equipment.excluding(@object.equipments).collect{|equip|
-  #    [
-  #      "#{equip.name}#{equip.is_combo? ? ' (combo)':''}",
-  #      equip.id,
-  #      equip.is_combo? ? 'combo' : ''
-  #    ]
-  #  },
-  #  :limit=>{:combo=>3}
-  #)
+=begin rdoc
+  Renders a +has_and_belongs_to_many+ relationship in form of a
+  list of existing associated records and <select> of other possibilities.
+
+  Accepts a hash or list of parameters. The only obligatory is:
+  
+  * <tt>:field</tt> - attribute to access associated objects,
+  should be of <i>{singularized}</i>_ids form, e.g. :+equipment_ids+
+  or will be autoconverted from pluralized form, e.g.
+  :+equipments+=>:+equipment_ids+
+
+  Optional parameters:
+  * <tt>:title</tt> - to override label, which by default is <tt>t(".{field}")</tt>
+  * <tt>:object</tt> - parent object, e.g. :+product+, default is <tt>'object'</tt>
+  * <tt>:existing</tt> - 
+    * an array of [+title+,+id+,[+css_class+]] for display of existing items in the list
+    * :+symbol+ of method to get them for current object.
+    If absent, expects an "@{:+object+}" (e.g. <i>@product</i>) variable to be present and collects
+
+    <tt>[{:property},{singularized property}]</tt> of the plularized form of specified field e.g.
+      field=:product_ids,{:object=>:batch,:property=>:price}
+    results in
+      :existing=>@batch.products.collect{|product| [product.price,product.product_id]}
+  * <tt>:property</tt> - only used in case of missing <tt>:existing</tt>
+  * <tt>:suggest</tt> - other possible elements in the control area
+    * an array of [+title+,+value+,[+css_class+]], usually <tt>object.attribute</tt> less :+existing+
+    * or :+symbol+ method to return such array.
+  * <tt>:possible</tt> - if :+suggest+ absent, a collection of elements to filter :+suggest+ from, e.g.
+      :existing=>@batch.products.collect{...},:possible=>Products.all
+  
+    If both :+suggest+ and :+possible+ are absent, <i>{field}.all</i> is assumed, e.g.
+      multi_select(:car_class_ids)
+    is equivalent to:
+      :existing=>@object.car_classes ...
+      :possible=>CarClass.all
+      :suggest=>:possible less :existing by comparing their ids
+  * :maximum - maximum elelements allowed. The model should contain according 
+    <tt>validates_length_of attributes,:maximum=>?</tt> limit.
+  * <tt>:limit</tt> - <tt>{:css_class=>number, ...}</tt>
+
+    Additional limit on specific elements can be set via assigning them a css class name
+    in both +existing+ and +suggest+ elements. The list automatically switches to numbered on display.
+  * <tt>:template</tt> - future element template to use instead of standard.
+    Placeholders for {+text+}, {+attr+}, {+value+} will be substituted by JavaScript.
+  
+  Examples.
+  * Show list of existing @object.equipments and other possible from Equipment.all:
+
+      multiedit_select(:equipments)
+
+  * Limit list of object equipments to a specified number, and among them, allow up to three
+    combo equipments.
+  
+      multiedit_select(
+        :equipment_ids, #field
+
+        t(:".car_equipments"), #title
+
+        :maximum=>CarClass::maximum_equipment_count, #maximum of equipments allowed
+
+        #elements to show in the list, note passing the css class 'combo'
+        :existing=>@object.equipments.collect{|equip|
+        [
+          "#{equip.name}#{equip.is_combo? ? ' (combo)':''}",
+          equip.equipment_id,
+          equip.is_combo? ? 'combo' : ''
+        ]},
+
+        #these will be displayed in the select control for adding
+        :suggest=>Equipment.excluding(@object.equipments).collect{|equip|
+        [
+          "#{equip.name}#{equip.is_combo? ? ' (combo)':''}",
+          equip.id,
+          equip.is_combo? ? 'combo' : ''
+        ]},
+
+        #limit element count with the css class 'combo' to three
+        :limit=>{:combo=>3}
+     )
+=end
   def cms_multi_select_field(hsh={})
     field=hsh[:field]
     field="#{field.to_s.singularize}_ids" unless field.to_s.match('_ids')
@@ -220,29 +240,35 @@ module Extensions::SingleFieldHelper
     render(:partial=>"managed/multi_select",:locals=>{:hsh=>hsh},:layout=>false)
   end
 
-  # allows editing/creating has_many associated records
-  #
-  # field - attribute to access associated objects,
-  #  should be of pluralized form, e.g. :equipment_options
-  # optional parameters:
-  # :title - to use for label, default t(".{field}")
-  # :object - parent object e.g. :product, default is :object
-  # :property - attribute of the bound object for input, default :name
-  # :existing - an array of [title,id] for display of existing items in the list
-  #  if absent, expects "@{:object}" variable to be present and collects
-  #  [{:property},id] of the specified field
-  #  e.g. multi_input(:products,:object=>:batch,:property=>:price) results in
-  #   :existing=>@batch.products.collect{|product| [product.price,product.id]}
-  # :maximum - max elelements allowed,
-  #   model should contain according validates_length_of attributes,:maximum=>?
-  # :template - future element template to use instead of standard,
-  #  placeholders for {text}, {attr}, {value} will be substituted by javascript
-  #
-  # NOTE: if you need to override how the values are manipulated,
-  # create according methods in your model that are named:
-  #  multi_input_new_{attr}= (e.g. multi_input_new_products=)
-  #  multi_input_existing_{attr}=
-  #  multi_input_deletable_existing_{attr}=
+=begin rdoc
+  Allows editing/creating <tt>has_many</tt> associated records.
+
+  Accepts a hash or list of parameters, the only obligatory is:
+
+  * field - attribute to access associated objects, should be of pluralized form, e.g. <tt>:equipment_options</tt>.
+   
+  Otional parameters:
+
+  * <tt>:title</tt> - to override label, which by default is <tt>t(".{field}")</tt>
+  * <tt>:object</tt> - parent object, e.g. :+product+, default is <tt>:object</tt>
+  * <tt>:property</tt> - attribute of the bound object for input, default is <tt>:name</tt>
+  * <tt>:existing</tt> - an array of [+title+,+id+] for display of existing items in the list.
+
+    If absent, expects "@{:object}" (e.g. <i>@product</i>) variable to be present and collects
+    <tt>[{:property},id]</tt> of the specified field, e.g.
+      multi_input(:products,:object=>:batch,:property=>:price)
+    results in
+      :existing=>@batch.products.collect{|product| [product.price,product.id]}
+  * <tt>:maximum</tt> - maximum elelements allowed. The model should contain according
+    <tt>validates_length_of attributes,:maximum=>?</tt> validation.
+  * <tt>:template</tt> - future element template to use instead of standard.
+    Placeholders for <tt>{text}, {attr}, {value}</tt> will be substituted by JavaScript.
+  
+  <b>NOTE:</b> if you need to override how the values are manipulated, create according methods in your model that are named:
+      multi_input_new_{attr}= (e.g. multi_input_new_products=)
+      multi_input_existing_{attr}=
+      multi_input_deletable_existing_{attr}=
+=end
   def cms_multi_input_field(hsh={})
     hsh[:title]||=t(".#{hsh[:field]}")
     hsh[:object]||='object'
