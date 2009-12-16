@@ -15,4 +15,6 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':controller/:action.:format'
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
+
+  map.simple_captcha '/simple_captcha/:action', :controller => 'simple_captcha'
 end
