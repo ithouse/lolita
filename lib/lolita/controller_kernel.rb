@@ -88,7 +88,7 @@ module Lolita
         RequestMailer::deliver_mail(
           Lolita.config.email(:bugs_to),
           "#{request.host_with_port} automātiskais kļūdas paziņojums (#{500})",
-          {:header=>msg},Lolita.config.email(:bugs_from)
+          {:header=>msg.html_safe!},Lolita.config.email(:bugs_from)
         )
       end
 
