@@ -96,14 +96,12 @@ class Media::ImageFile < Media::FileBase
   # Method goin through all pictures
   # Delete all version files
   # Create new file with current dimensions
-  # Add watermak if exists
   # you can pass options
   # - :conditions => will rebuild these pictures only
   def self.rebuild(options = {})
     errors=[]
     temp_path="#{RAILS_ROOT}/tmp/picture_rebuild"
     Dir.mkdir(temp_path) unless File.exist?(temp_path)
-    watermark=self.get_watermark
 
     start_time=Time.now
     all_pictures=Media::ImageFile.find(:all,:conditions => options[:conditions])
@@ -119,35 +117,40 @@ class Media::ImageFile < Media::FileBase
       end
       begin
         path=p.name.path
-        Find.find(p.name.dir){|full_path|
-          unless File.directory?(full_path) || full_path==path
-            File.delete(full_path)
-          end
-        }
-        default_img=::Magick::Image::read(path).first
-        p.full_versions.each{|n,v|
-          main_img=default_img.clone
-          if v.match(/c/)
-            g=v.gsub("c","")
-            g=g.split("x")
-            main_img.crop_resized!(g[0].to_i,g[1].to_i)
-          else
-            g=v.split("x")
-            main_img.resize_to_fit!(g[0].to_i,g[1].to_i)
-          end
-          parts=p.name.filename.split(".")
-          extension=parts.pop
-          basename=parts.join(".")
-          main_img.write("#{p.name.dir}/#{basename}-#{n}.#{extension}")
-          p.add_watermark(watermark,n) if watermark
-          GC.start
-        }
-        p.name_after_upload(p.name)
+        unless File.exists?(p.name.dir)
+          Media::ImageFile.delete p.id
+        else
+          Find.find(p.name.dir){|full_path|
+            unless File.directory?(full_path) || full_path==path
+              File.delete(full_path)
+            end
+          }
+          default_img=::Magick::Image::read(path).first
+          p.full_versions.each{|n,v|
+            main_img=default_img.clone
+            if v.match(/c/)
+              g=v.gsub("c","")
+              g=g.split("x")
+              main_img.crop_resized!(g[0].to_i,g[1].to_i)
+            else
+              g=v.split("x")
+              main_img.resize_to_fit!(g[0].to_i,g[1].to_i)
+            end
+            parts=p.name.filename.split(".")
+            extension=parts.pop
+            basename=parts.join(".")
+            main_img.write("#{p.name.dir}/#{basename}-#{n}.#{extension}")
+            GC.start
+          }
+          p.name_after_upload(p.name)
+        end
       rescue Exception=>e
         errors<<"Unable rebuild #{p.id}"
+        @last_error = e
       end
     }
     puts "Average speed: #{all_pictures.size.to_f/(Time.now-start_time).to_f} (pictures/second)"
+    puts @last_error
     errors
   end
 
@@ -352,7 +355,7 @@ class Media::ImageFile < Media::FileBase
   
   def name_after_upload(picture)
  
-    versions_class=picture.instance.pictureable_type.constantize
+    versions_class=self.pictureable_type.constantize
     if versions_class.respond_to?(:upload_column_modify_methods) && methods=versions_class.upload_column_modify_methods
       methods.each{|m,values|
         versions_class.send(m,picture,values)
