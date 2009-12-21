@@ -19,7 +19,7 @@ module Media::Extensions::ImageFileExtensions
     (options && options[:versions] || []).each do |version|
       picture.send(version).process! do |image|
         image.image_type = Magick::GrayscaleType
-        image = image.modulate(*options[:options]) if options[:options]
+        image.modulate(*options[:options] || 1)
       end
     end
   end
