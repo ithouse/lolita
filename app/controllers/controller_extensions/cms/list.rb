@@ -1,33 +1,37 @@
-module Extensions
+module ControllerExtensions
   module Cms
+    # Creates and displays a list of entries.
     module List
+      # When _controller_ is subclass of #Managed than, this is default action used to render entries list.
       # All list configuration goes in config[:list] like config[:list][:top_partials]=[]
       # List accepts following configuration
-      #   :top_partials -are partials that is rendered list_template before form
-      #   :botttom_partials - are partials that is rendered in list_template after_form
-      #   :sort_column - sort column(-s) name.
-      #     Example: "name" or "name AND surname"
-      #     Default: "created_at"
-      #   :sort_direction - direction withc to sort.
-      #     Values: "asc" or "desc"
-      #     Default: "desc"
-      #   :per_page - how many records are in single page
-      #   :object - object witch is used as model name.
-      #     Example: "user"
-      #   :overwrite - when you use filter in lists and is set :overwrite(must been set :object)
-      #                fields are taken used :object as a Model.
-      #   :parent_name - used for session to keep controller information about page
-      #     Example: "translate"
-      #   :filter - like :conditions, can be String or Array
-      #   :filter_fields - ONLY fields included when you use filter in lists #not used
-      #     Example: ['name','age']
-      #   :group - like :group
-      #   :partial - witch Template form used to render list
-      #     Default: 'form'
-      #     Example: 'my_form'
-      #   :layout - withc Layout used to render view or false
-      #     Default: '/cms/default'
-      #     Example: 'my_template'
+      # * <tt>:top_partials</tt> - Are partials that is rendered in +list_template+ before form
+      # * <tt>:botttom_partials</tt> - Are partials that is rendered in +list_template+ after_form
+      # * <tt>:include</tt> - Is used to create +SQL+ joins when <tt>:parents</tt> is set.
+      # ====Examples
+      #     :parents=>[:user_id,:blog_id]
+      #     <i>Specific sql can be indicated or Symbol to automaticaly create sql</i>
+      #     :include=>{:user_id=>"INNER JOIN users ON users.id=table.author_id",:blog_id=>:blog_id}
+      # * <tt>:parents</tt> - Array of allowed *params*, when given than is used to create +SQL+ joins.
+      # ====Example
+      #     :parents=>[:user_id,:blog_id]
+      # * <tt>:sort_column</tt> - Sort column(-s) name.
+      # ====Example
+      #     "name" or "name AND surname"
+      # =====Default
+      #     "created_at"
+      # * <tt>:sort_direction</tt> - Sort direction ascending (asc) or descending (desc). Default +desc+
+      # * <tt>:per_page</tt> - How many records are in page.
+      # * <tt>:object</tt> - Object that is used as model name.
+      # ====Example
+      #     "user" #=> User
+      # * <tt>:parent_name</tt> - Used for session to keep controller information about page
+      # ====Example
+      #    "translate"
+      # * <tt>:filter</tt> - Same as <tt>:conditions</tt> in find. Can be _String_ or _Array_
+      # * <tt>:group</tt> - Like <tt>:group</tt> in find method.
+      # * <tt>:partial</tt> - Partial template name used to render _list_. Default +form+.
+      # * <tt>:layout</tt> - Layout name used to render _list_ action (may be *false*). Defautl <i>/cms/default</i>
 
       def list configuration={}
         params[:action]="list" unless configuration[:keep_action]
@@ -69,6 +73,8 @@ module Extensions
 
       private
 
+      # Used in #list action.
+      # Create default options and get _module_ and yields to #list.
       def prepare_list configuration
         obj=@config[:object] ? @config[:object].camelize.constantize : object
         opt=@config[:list]
@@ -81,8 +87,9 @@ module Extensions
         }).merge(configuration)
         yield obj,opt
       end
-      # Saņemot parametros vērtību ar nosaukumu, kas atbilst kādam no norādītajiem vecāka elementiem
-      # [:user_id,:news_id] utt. Izveido INNER JOIN sql un iekš WHERE ieliek tabulas_nosaukums.user_id=vērtība.to_i
+      # When receiving in *params* values that ends with <i>_id</i>, then create <tt>INNER JOIN</tt>
+      # with corresponding tables.
+      # Joins are created only when :parents are specified.
       def filter_and_include_sql object
         @config[:parents].each{|parent_column|
           #-1 ir reset, tjipa rāda atkal visus
@@ -99,6 +106,8 @@ module Extensions
         } if @config[:parents]
       end
 
+      # Yield <tt>sort_column</tt>, <tt>sort_directions</tt> and <tt>join_statement</tt> when
+      # sorting by remote field.
       def sort_options obj,options
         if params[:sort_column]
           column,direction=params[:sort_column],params[:sort_direction]
@@ -109,6 +118,7 @@ module Extensions
         yield sort_column,direction,join_statement
       end
 
+      # Yield default <tt>sort_column</tt> and <tt>sort_direction</tt>
       def default_sort_options
         sort_column=@config[:list][:sort_column]
         sort_direction=@config[:list][:sort_direction]
@@ -121,6 +131,7 @@ module Extensions
         return sort_column,sort_direction
       end
 
+      # Render <b>:partial</b> of entries or displays report.
       def render_list locals={}
         unless @config[:report]
           partial=params[:advanced_filter].is_a?(Hash) ||  params[:paging].to_b ? locals[:partial] : "/cms/list_template"
@@ -134,6 +145,7 @@ module Extensions
         end
       end
 
+      # Return Hash or variables needed for <em>list_template</em>.
       def local_variables_for_partial
         {
           :page=>@page,
@@ -146,20 +158,23 @@ module Extensions
         }
       end
 
+      # Return partial form.
       def get_partial_form
         @config[:list][:partial]==:default ? "/cms/list_default" : @config[:list][:partial] || "list"
       end
 
+      # Return <em>ferret_filter</em> when ferret is enabled for current _object_ class.
       def ferret_filter obj
         obj.respond_to?('ferret_enabled?') && obj.ferret_enabled? && params[:ferret_filter].to_s.size>0 ? params[:ferret_filter] : nil
       end
-      
+
+      # Set advanced filter. Deprecated.
       def get_advanced_filter
         params[:advanced_filter]=params[:advanced_filter].is_a?(Hash) && params[:advanced_filter][:clear_filter] ? nil : params[:advanced_filter] # lai attīrot no filtra renderētu pilno formu
         params[:advanced_filter]=params[:advanced_filter] && (((params[:advanced_filter].is_a?(Hash) || params[:advanced_filter].is_a?(Array)) && !params[:advanced_filter].empty?)  || params[:advanced_filter].to_i.to_s.size==params[:advanced_filter].to_s.size ) ? params[:advanced_filter] : nil
         params[:advanced_filter]
       end
-      #beidzas modulis
+
     end
   end
 end

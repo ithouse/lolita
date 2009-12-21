@@ -1,7 +1,9 @@
-module Extensions
+module ControllerExtensions
   module Cms
+    # Deprecated!
     module Reports
 
+      # Create <i>XML</i> or <i>CSV</i> report by calling _list_ and from response generate it.
       def report
         obj=@config[:overwrite] ? @config[:object].camelize.constantize : object
         data=list(:report=>{:full=>true})

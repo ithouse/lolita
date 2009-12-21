@@ -7,7 +7,7 @@ require 'advanced_filter_helper'
 require 'models/advanced_filter'
 require 'models/advanced_filter_field'
 require 'models/custom_filter'
-ActiveRecord::Base.send(:include, ITHouse::Filters::AdvancedFilter)
-ActionController::Base.send(:include, ITHouse::Filters::AdvancedFilterController)
-ActionView::Base.send(:include, ITHouse::Filters::AdvancedFilterHelper)
+ActiveRecord::Base.send(:include, Lolita::Filters::AdvancedFilter)
+ActionController::Base.send(:include, Lolita::Filters::AdvancedFilterController)
+ActionView::Base.send(:include, Lolita::Filters::AdvancedFilterHelper)
 #ActionView::Base.send :include, SymetrieCom::Acts::BetterNestedSetHelper

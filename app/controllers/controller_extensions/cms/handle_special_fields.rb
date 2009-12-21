@@ -1,8 +1,8 @@
-module Extensions
+module ControllerExtensions
   module Cms
     module HandleSpecialFields
 
-      #TODO pielikt lai ar laiku var atbrīvoties no pārējiem lauku handliem un iztik ar šo vienu
+      # Handle params when saving <tt>:autocomplete</tt> field.
       def handle_special_fields before_save=false
         special_field_types=[:autocomplete]
         @special_fields={} if before_save

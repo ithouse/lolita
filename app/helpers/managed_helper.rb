@@ -1,5 +1,5 @@
 # coding:utf-8 
-# SIA ITHouse
+# SIA Lolita
 # Artūrs Meisters
 module ManagedHelper
   include Extensions::FieldHelper

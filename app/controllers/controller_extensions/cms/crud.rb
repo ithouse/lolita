@@ -1,6 +1,7 @@
-module Extensions
+module ControllerExtensions
   module Cms
     module Crud
+      # Open new _object_ form. For detail see #ControllerExtensions
       def new
         params[:action]="create"
         handle_before_create
@@ -11,7 +12,8 @@ module Extensions
         set_parent_values_to_object
         redirect_me :only_render=>true, :layout=>self_layout
       end
-      
+
+      # Create new _object_. For detail see _code_ and/or #ControllerExtensions
       def create
         return false unless request.post?
         begin
@@ -41,6 +43,7 @@ module Extensions
         end
       end
 
+      # Open existing _object_ form for editing. For details see _code_.
       def edit
         params[:action]="update"
         if (my_params[:id].to_i==0)  && !my_params[:object]
@@ -53,7 +56,8 @@ module Extensions
           redirect_me :only_render=>true, :layout=>self_layout
         end
       end
-      
+
+      # Update existing _object_. For details see _code_ and/or #ControllerExtensions
       def update
         return false unless request.post?
         begin
@@ -105,6 +109,9 @@ module Extensions
         end
       end
 
+      # Destroy _object_ by receiving <tt>params[:list_check]</tt> and called to_array on that <tt>String</tt>
+      # and destroy all _objects_ that could be found from _ids_ in that <tt>Array</tt>
+      # Or receive <tt>params[:id]</tt> and try to find and destroy _object_ from it.
       def destroy
         handle_function "before_destroy"
         if my_params[:list_check]
@@ -125,6 +132,27 @@ module Extensions
         redirect_me
       end
 
+      #Handles updating of existing habtm objects as generated
+      #by by :type=>:multi_input in your controllers config.
+      #Parameters are interceipted and passed from <tt>assign_object_attributes</tt>, where:
+      #
+      #* <tt>obj</tt> - is the parent object e.g. post
+      #* <tt>attr</tt> - is the attribute of the habtm relation, e.g. +comments+, that are
+      #  prepended with "multi_input_existing_", by the cms_multi_input_field helper
+      #* <tt>hash</tt> - is the portion of (POST) params in form of <i>id of bound object=>
+      #  array of bound object attributes</i>.
+      #  
+      #  E.g. if <tt>{:type=>:multi_input,:field=>:post_comments}</tt> is provided in your config :fields
+      #  an input with the name
+      #   object[multi_input_existing_post_comments][2][name]
+      #  is created in HTML and processed here, whereas <tt>hash</tt> will have a value equivalent
+      #  to <tt>{'2'=>{:name=>'some value'}</tt>,...},
+      #  meaning set the <tt>:name</tt> attribute of the <i>bound post_comment</i>
+      #  with +id+=2 to <i>'some value'</i>
+      #
+      #<b>NOTE:</b> a hidden input field with a name of
+      #<tt>{object}[multi_input_existing_{attr}][*hook*]</tt>
+      #is present in the post data to interceipt a case where all existing options are marked deletable.
       def multi_input_existing obj,attr,hsh
         hsh.delete('hook')
         if hsh.empty?
@@ -139,7 +167,23 @@ module Extensions
           }
         end
       end
-
+      
+      #Handles the destoying of existing related habtm objects as generated
+      #by by :type=>:multi_* in your controllers config.
+      #Parameters are interceipted and passed from <tt>assign_object_attributes</tt>, where:
+      #
+      #* <tt>obj</tt> - is the parent object e.g. post
+      #* <tt>attr</tt> - is the attribute of the habtm relation, e.g. +comments+, that are
+      #  prepended with "multi_input_deletable_existing_", by the cms_multi_input_field helper
+      #* <tt>hash</tt> - is the portion of (POST) params in form of <i>id of bound object=>
+      #  array of bound object attributes</i>.
+      #
+      #  E.g. if <tt>{:type=>:multi_input,:field=>:post_comments}</tt> is provided in your config :fields
+      #  an input with the name
+      #   object[multi_input_deletable_existing_post_comments][2][name]
+      #  is created in HTML and processed here, whereas <tt>hash</tt> will have a value equivalent
+      #  to <tt>{'2'=>{:name=>'some value'}</tt>,...}, meaning to delete the <i>bound post_comment</i>
+      #  with +id+=2
       def multi_input_deletable_existing obj,attr,hsh
         klass=attr.singularize.camelize.constantize
         klass.find( :all,
@@ -147,6 +191,20 @@ module Extensions
         ).each{ |assoc_element| assoc_element.destroy }
       end
 
+      #Handles the creation of new related habtm objects as generated
+      #by by :type=>:multi_* in your controllers config.
+      #Parameters are interceipted and passed from <tt>assign_object_attributes</tt>, where:
+      #
+      #* <tt>obj</tt> - is the parent object e.g. post
+      #* <tt>attr</tt> - is the attribute of the habtm relation, e.g. +comments+, that are
+      #  prepended with "multi_input_new_", by the cms_multi_input_field helper
+      #* <tt>hash</tt> - is the portion of (POST) params in form of
+      #  <i>auto generated client-side id=>array of bound object attributes</i>
+      #  E.g. if <tt>{:type=>:multi_input,:field=>:post_comments}</tt> is provided in your config :fields
+      #  an input with the name
+      #   object[multi_input_new_post_comments][][name]
+      #  is created in HTML and processed here, whereas <tt>hash</tt> will have a value equivalent
+      #  to <tt>{'1'=>{:name=>'some value'}</tt>,...}, where <b>the +id+ part is ignored</b>.
       def multi_input_new obj,attr,collection
         obj.send(attr).reload()#won't succeed otherwise
         if collection.is_a?(Array)

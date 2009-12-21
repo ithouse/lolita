@@ -1,8 +1,8 @@
 #
-# SIA ITHouse
+# SIA Lolita
 # Artūrs Meisters
 # 11.08.2008 11:23
-module ITHouse
+module Lolita
   module Filters #:nodoc:
     module AdvancedFilter #:nodoc:
       if not Object.constants.include? "ADVANCED_FILTER_CONDTIONS"
@@ -48,8 +48,8 @@ module ITHouse
           @object=obj
           @has_advanced_filter=true
           @last_filter=self.default_filter_data_hash
-          include ITHouse::Filters::AdvancedFilter::InstanceMethods
-          extend ITHouse::Filters::AdvancedFilter::ClassMethods
+          include Lolita::Filters::AdvancedFilter::InstanceMethods
+          extend Lolita::Filters::AdvancedFilter::ClassMethods
         end
 
         def has_advanced_filter?

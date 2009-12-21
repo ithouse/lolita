@@ -38,9 +38,14 @@ module Lolita
     attr_accessor :conf
 
     def initialize
-      yaml_root = YAML::parse_file("#{RAILS_ROOT}/config/lolita.yml")
-      current_env = yaml_root.select("/.")[0].transform.keys.include?(RAILS_ENV) ? RAILS_ENV : 'development'
-      self.conf = yaml_root.select("/#{current_env}")[0].transform.symbolize_keys!
+      config_file = "#{RAILS_ROOT}/config/lolita.yml"
+      if File.exist?(config_file)
+        yaml_root = YAML::parse_file(config_file)
+        current_env = yaml_root.select("/.")[0].transform.keys.include?(RAILS_ENV) ? RAILS_ENV : 'development'
+        self.conf = yaml_root.select("/#{current_env}")[0].transform.symbolize_keys!
+      else
+        self.conf = {}
+      end
     end
 
     def method_missing(key,*args)

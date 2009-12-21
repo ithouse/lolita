@@ -1,4 +1,4 @@
-module ITHouse
+module Lolita
   module Filters
     module AdvancedFilterHelper
 

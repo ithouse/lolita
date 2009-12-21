@@ -1,6 +1,8 @@
-module Extensions::Cms::Paging
+# Conduit between #Managed and #Lolita::Paginator
+module ControllerExtensions::Cms::Paging
 
   private
+  # Send params to Cms::Base#paginate.
   def paging (parent,options={})
    # parent=options[:object] ? (options[:object].camelize.constantize) : parent
     session_name=current_session_name
