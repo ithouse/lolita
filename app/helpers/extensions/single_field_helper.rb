@@ -186,7 +186,14 @@ module Extensions::SingleFieldHelper
   end
 
   # Create check box group, mostly used for many-to-many relation.
-  #
+  # Receive object name and options.
+  # Accpted options:
+  # * <tt>:field</tt> - Association name.
+  # * <tt>:find_options</tt> - Find options if need to indicate specific records.
+  # * <tt>:titles</tt> - See #field_to_string_simple.
+  # ====Example
+  #     Create checkbox group of roles that not built in.
+  #     cms_checkboxgroup_field "user", :field=>"roles", :find_options=>{:conditions=>{:built_in=>false}}
   def cms_checkboxgroup_field object,options
     base_element=instance_variable_get("@#{object}")
     elements=base_element ? base_element.send(options[:field]) : []
@@ -200,7 +207,20 @@ module Extensions::SingleFieldHelper
     }
     result
   end
-  
+
+  # Create select field. Select might use remote data or specific data. Also multiselect can be created.
+  # Accepts object name and options.
+  # Allowed options:
+  # * <tt>:options</tt> - Specific options data used in select.
+  # * <tt>:html</tt> - HTML options.
+  # * <tt>:include_blank</tt> - Include blank select option or not.
+  # * <tt>:multiple</tt> - Create multiselect or not.
+  # * <tt>:field</tt> - Field of _object_.
+  # * For specific options and used see #get_data_for_select_field and #get_current_value_for_select_field.
+  # ====Example
+  #     Create select field for post, to allow choose user, by default there none of users are selected, and allow to select
+  #     users that are registered, user is selected by user name and last name.
+  #     cms_select_field "post", :field=>"user_id",:include_blank=>true,:table=>"Users", :find_options=>{:registered=>true}, :titles=>[":name"," ",":last_name"]
   def cms_select_field object,options
     options[:options] = options[:options].call if options[:options].is_a?(Proc)
     select_options=get_data_for_select_field(options).collect{|row| row[0].is_a?(Symbol) ? [t(row[0]),row[1]] : row}
@@ -369,6 +389,12 @@ module Extensions::SingleFieldHelper
     render(:partial=>"managed/multi_input",:locals=>{:hsh=>hsh},:layout=>false)
   end
 
+  # Get current value for #cms_select_field.
+  # Receive object name and options.
+  # Accepted options:
+  # * <tt>:without_default_value</tt> - Determinate that there's no default value.
+  # * <tt>:default_value</tt> - Use specified value as default.
+  # * <tt>:field</tt> - Get value from _object_ field.
   def get_current_value_for_select_field object,options={}
     if options[:without_default_value]
       nil
@@ -381,7 +407,14 @@ module Extensions::SingleFieldHelper
       end
     end
   end
-  
+
+  # Collect data for #cms_select_field and create HTML options or return data.
+  # Accepted options:
+  # * <tt>:options</tt> - User create options for select, :find_options and :table are not used
+  # * <tt>:table</tt> - Table that data is taken.
+  # * <tt>:simple</tt> - If set to true return only data, no HTML.
+  # * <tt>:find_options</tt> - Used to find not all records.
+  # * <tt>:titles</tt> - See #field_to_string_simple.
   def get_data_for_select_field options={}
     data=options[:options] || options[:table].to_s.camelize.constantize.find(:all,options[:find_options])
     options[:simple] ? data : cms_simple_options_for_select(data,options[:titles])
