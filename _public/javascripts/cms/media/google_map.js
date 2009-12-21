@@ -38,7 +38,7 @@ LolitaGoogleMap.prototype={
      */
     load_map:function(){
         if (GBrowserIsCompatible()){// Do Map if Compatible Browser only
-            this.map = new GMap2(elementById((this.options.map_prefix===false ? "map" : this.options.map_prefix)+"_"+this.options.unique_id));
+            this.map = new GMap2(elementById((typeof(this.options.map_prefix)=="undefined" ? "map" : this.options.map_prefix)+"_"+this.options.unique_id));
             if(!this.options.read_only) this.map.enableScrollWheelZoom();
             this.options.zoom=this.options.zoom || 15
             this.add_controls() // add Gmap controls to map

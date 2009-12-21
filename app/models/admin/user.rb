@@ -30,12 +30,20 @@ class Admin::User < Cms::Base
     user && user.authenticated?(password)  ? user : false
   end
 
+  def self.authenticate_by_cookies(token)
+    result=self.find_by_sql(["SELECT type,id FROM admin_users WHERE remember_token=?",token])
+    unless result.empty?
+      user_class=result[0]['type'].constantize
+      user_class.find_by_id(result[0]['id'])
+    end
+  end
+  
   def validate
     allow_password_change?
   end
 
   def allow_password_change?
-    if !(self.new_record? || Admin::User.new.has_role(Admin::Role.admin) || self.authenticated?(self.old_password))
+    if !(self.new_record? || self.has_role(Admin::Role.admin) || self.authenticated?(self.old_password))
       self.errors.add :old_password, "nepareiza vecā parole"
     end
   end

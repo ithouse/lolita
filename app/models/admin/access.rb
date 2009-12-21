@@ -60,36 +60,36 @@ class Admin::Access < Cms::Base
       Admin::AccessesRoles.create(:role_id=>role.id,:access_id=>self.id)
     end unless self.has_role?(role)
   end
-end
 
-def has_no_role(role_name)
-  role = get_role(role_name)
-  if role
-    self.roles.delete(role)
-  end
-end
 
-def has_current_user? (user)
-  access_roles=self.roles.find(:all)
-  result=false
-  access_roles.each do |role|
-    if user.has_role? role.name
-      result=true
-      break;
+  def has_no_role(role_name)
+    role = get_role(role_name)
+    if role
+      self.roles.delete(role)
     end
   end
-  return result
-end
+
+  def has_current_user? (user)
+    access_roles=self.roles.find(:all)
+    result=false
+    access_roles.each do |role|
+      if user.has_role? role.name
+        result=true
+        break;
+      end
+    end
+    return result
+  end
 
 
-private
+  private
 
-def get_role_access role_name
-  role=get_role(role_name)
-  Admin::AccessesRoles.find_by_role_and_access(role.id,self.id) if role
-end
+  def get_role_access role_name
+    role=get_role(role_name)
+    Admin::AccessesRoles.find_by_role_and_access(role.id,self.id) if role
+  end
 
-def get_role (role_name)
-  Admin::Role.find( :first, :conditions => [ 'name = ?', role_name ] )
-end
+  def get_role (role_name)
+    Admin::Role.find( :first, :conditions => [ 'name = ?', role_name ] )
+  end
 end

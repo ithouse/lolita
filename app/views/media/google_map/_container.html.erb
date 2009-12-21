@@ -13,22 +13,24 @@
   <%= field_render field[:type],field %>
 <%  } %>
 <script type="text/javascript">
-<% if Lolita.config.google :maps_key %>
+<% if Lolita.config.google :maps, :api_key,request.host.to_sym %>
     ITH.GoogleMaps=ITH.GoogleMaps||{}
     loadjscssfile("/lolita/javascripts/cms/media/google_map.js","js")
     function init_lolita_google_map_<%=cfg[:unique_id]%>(){
       try{
-        <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json %>);
-        <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.init()"%>;
+  <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}"%>=new LolitaGoogleMap(<%= cfg.to_json.html_safe! %>);
+  <%="ITH.GoogleMaps.map_#{cfg[:unique_id]}.init()"%>;
       }catch(e){
-        if(typeof(PublicGMap.map_<%=cfg[:unique_id]%>) == "undefined" || typeof(PublicGMap.map_<%=cfg[:unique_id]%>.map) == "undefined"){
+        if(typeof(ITH.GoogleMaps.map_<%=cfg[:unique_id]%>) == "undefined" || typeof(ITH.GoogleMaps.map_<%=cfg[:unique_id]%>.map) == "undefined"){
         <% if RAILS_ENV=="development"  %>
-                console.log(e)
+          console.log(e)
         <% end %>
         setTimeout("init_lolita_google_map_<%=cfg[:unique_id]%>()",500);
         }
       }
     }
     init_lolita_google_map_<%=cfg[:unique_id]%>()
-  </script>
+<% else %>
+    $(document).ready(function(){$('map_<%=cfg[:unique_id]%>').hide()})
 <%end%>
+</script>
