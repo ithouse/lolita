@@ -61,7 +61,8 @@
     <%= javascript_include_tag '/lolita/javascripts/filter.js' %>
     <%= javascript_include_tag '/lolita/javascripts/tiny_mce/tiny_mce.js' %>
     <%#= javascript_include_tag '/lolita/javascripts/ufo' %>
-    <%= "<script type=\"text/javascript\" src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.google :maps_key}\"></script>" if Lolita.config.google :maps_key %>
+    <%= include_google_map_js %>
+    <%#= raw("<script type=\"text/javascript\" src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.google :maps, :api_key, request.domain.to_sym}\"></script>") if Lolita.config.google(:maps, :api_key, request.domain.to_sym) %>
     <%#= javascript_include_tag '/lolita/javascripts/highslide/highslide-with-html' %>
   </head>
   <body class=" yui-skin-sam">

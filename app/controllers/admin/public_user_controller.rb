@@ -78,7 +78,7 @@ class Admin::PublicUserController < ApplicationController
   end
 
   def remember_me(user)
-    user.remember_me if !user.remember_token? && params[:user][:remember_user]
+    user.remember_me if !user.remember_token? && params[:user][:remember_user].to_i==1
     cookies[:auth_token] = { :value => user.remember_token , :expires => user.remember_token_expires_at }
   end
 

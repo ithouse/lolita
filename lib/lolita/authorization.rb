@@ -188,7 +188,7 @@ module Lolita
       def allow
         unless params[:action].to_sym==:allow
           flash[:notice]=nil if flash[:notice]==t(:"flash.access.denied") || flash[:notice]==t(:"flash.need to login")
-          login_from_cookie unless logged_in?
+         # login_from_cookie unless logged_in?
           allowed=Admin::User.authenticate_in_controller({
               :action=>params[:action].to_sym,
               :controller=>params[:controller],
@@ -340,9 +340,9 @@ module Lolita
 
       # When called with before_filter :login_from_cookie will check for an :auth_token
       # cookie and log the user back in if apropriate
-      def login_from_cookie
+      def login_from_cookie(user_class)
         return unless cookies[:auth_token] && !logged_in?
-        user = Admin::User.find_by_remember_token(cookies[:auth_token])
+        user = user_class.authenticate_by_cookies(cookies[:auth_token])
         if user && user.remember_token?
           user.remember_me
           self.current_user = user

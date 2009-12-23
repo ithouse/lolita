@@ -1,12 +1,17 @@
+# Provide Lolita's default filter helper methods.
 module Extensions::FilterHelper
 
+  # Get filter value from session.
   def self_filter_value
     session[current_session_name][:ferret_filter]
   end
-  
+
+  # Shorter syntax for rendering simple filter partial form.
   def simple_filter options={}
     render :partial=>"/cms/simple_filter", :object=>options
   end
+
+  # Merge default options with given options for simple filter.
   def simple_filter_options options={}
     default_options={
       :action=>'list',
@@ -15,6 +20,8 @@ module Extensions::FilterHelper
     default_options.merge(options)
   end
 
+  # Create parent filter select for list.
+  # Deprecated!
   def parent_filter controller=nil
     parents=@config[:list][:parent_filter].is_a?(Array) ? @config[:list][:parent_filter] : @config[:parents]
     object=(controller || params[:controller]).camelize.constantize

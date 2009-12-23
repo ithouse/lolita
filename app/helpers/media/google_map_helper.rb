@@ -37,9 +37,9 @@ module Media::GoogleMapHelper
         :single=>Media::GoogleMap.belongs_to_one?(@object),
       }) # last options are important
     unless options[:in_form]
-      render :partial=>"/media/#{tab[:media]}/container", :object=>p_options
+      render(:partial=>"/media/#{tab[:media]}/container", :object=>p_options)
     else
-      render :partial=>"/media/#{tab[:media]}/in_form", :object=>p_options
+      render(:partial=>"/media/#{tab[:media]}/in_form", :object=>p_options)
     end
   end
 
@@ -68,9 +68,9 @@ module Media::GoogleMapHelper
     options = {:version => 2, :sensors => false}.merge!(options)
     case options[:version]
     when 2
-      %(<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.google(:maps, :api_key, request.host.to_sym)}"></script>)
+      %(<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{Lolita.config.google(:maps, :api_key, request.host.to_sym)}"></script>).html_safe!
     when 3
-      %(<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=#{options[:sensors] ? 'true' : 'false'}"></script>)
+      %(<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=#{options[:sensors] ? 'true' : 'false'}"></script>).html_safe!
     end
   end
 end

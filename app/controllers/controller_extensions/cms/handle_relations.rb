@@ -44,6 +44,18 @@ module ControllerExtensions
           end
         }
       end
+
+      # Handle params reveived when using :checkbox type field.
+      def handle_has_many_relation
+        @config[:tabs].each{|tab|
+          tab_fields(tab).each{|field|
+            if field[:type].to_sym==:checkboxgroup && my_params[tab[:object]||:object] && my_params[tab[:object]||:object][field[:field]]
+              remote_object=object.reflect_on_association(field[:field]).klass
+              my_params[tab[:object]||:object][field[:field]].collect!{|id| remote_object.find_by_id(id)}.compact!
+            end
+          }
+        }
+      end
      
     end #module end
   end

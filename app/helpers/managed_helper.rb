@@ -70,7 +70,7 @@ module ManagedHelper
           yield %(#{start_html}#{render(:partial=>"/managed/translate",:locals=>{:tab=>index})}#{end_html}).html_safe! if is_translatable?(options)
         elsif tab[:type]==:multimedia && media_types.include?(tab[:media])
           if self.respond_to?(:"lolita_#{tab[:media]}_tab")
-            yield "#{start_html}#{self.send("lolita_#{tab[:media]}_tab",options,tab)}#{end_html}".html_safe!
+            yield "#{start_html}#{self.send(:"lolita_#{tab[:media]}_tab",options,tab)}#{end_html}".html_safe!
           else
             yield "#{start_html}#{default_lolita_media_tab(options,tab)}#{end_html}".html_safe!
           end

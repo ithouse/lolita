@@ -115,8 +115,12 @@ class Managed < ApplicationController
   #   * <tt>:namespace</tt> - Namespace name if differs from current for :select. Depracated.
   #   * <tt>:include_blank</tt> - Is blank option included in all options for :select.
   #   * <tt>:translate</tt> - Is field translatable, if set to _true_ than shown in :translate tab.
+  #   * <tt>:roles</tt> - Define roles that can or can not edit field:
+  #     * <tt>:include</tt> - Array or Hash or roles that are allowed to edit field. See Extensions::FieldHelper#can_edit_field?
+  #     * <tt>:exclude</tt> - As :include only for excluding
+  #   * <tt>:actions<tt/> - Define actions when field is editable and when not, other options as :roles. See Extensions::FieldHelper#can_edit_field?
   def config
-    {} #tikai uzskatāmībai, config jāatrodas iekš katra kontroliera un jāatgriež Hash
+    {}
   end
 
   # Return array of field for tab.

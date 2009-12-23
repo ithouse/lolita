@@ -1,60 +1,63 @@
 # coding:utf-8
+# Handle #Lolita fields.
 module Extensions::FieldHelper
   include Extensions::SingleFieldHelper
 
   # :roles=>{:include=>["editor"]}
   # :roles=>{:exclude=>{:edit=>["editor"]}
+  # Determine wheteher or not field is editable by current user see Admin::User#current_user.
+  # Needed information are provided via configuration in controllers.
+  # All fields are editable by administrator unless editing is blocked for action.
+  # ====Example
+  #     User < Managed
+  #      def config
+  #       {
+  #         :fields=>[
+  #           {:type=>:text,:field=>:name},
+  #           {:type=>:text, :field=>:login, :actions=>[:new]},
+  #           {:type=>:text, :field=>:card_number, :roles=>{:exclude=>{:new=>[:user_manager]}}}
+  #         ]
+  #       }
+  #      end
+  #     end
+  #     # In helpers or views
+  #     params[:action] #=> :edit
+  #     Admin::User.current_user.has_role?(:admin) #=>true
+  #     can_edit_field?(:login) #=>true
+  #     Admin can edit all fiels, and user_manager too.
+  #     
+  #     params[:action] #=>:new
+  #     Nobody can edit :login field and user manager can't edit :card_number field.
   def can_edit_field? field
     user=Admin::User.current_user
     allow_action=((!field[:actions])||(field[:actions] && field[:actions].include?(params[:action].to_sym)))
     if field[:roles]
-      if field[:roles][:include].is_a?(Hash)
-        include_roles=field[:roles][:include][params[:action].to_sym]
-        has_role=include_roles ? include_roles.detect{|role| user.has_role?(role)} : true
+      include_roles=if field[:roles][:include].is_a?(Hash)
+        field[:roles][:include][params[:action].to_sym]
       else
-        include_roles=field[:roles][:include]
-        has_role=include_roles ? include_roles.detect{|role| user.has_role?(role)} : true
+        field[:roles][:include]
       end
-      if field[:roles][:exclude].is_a?(Hash)
-        exclude_roles=(field[:roles][:exclude][params[:action].to_sym] || [])
-        no_role=exclude_roles.detect{|role| user.has_role?(role)}
+      has_role=include_roles ? include_roles.detect{|role| user.has_role?(role)} : true
+      exclude_roles=if field[:roles][:exclude].is_a?(Hash)
+        (field[:roles][:exclude][params[:action].to_sym] || [])
       else
-        exclude_roles=(field[:roles][:exclude] || [])
-        no_role=exclude_roles.detect{|role| user.has_role?(role)}
+        (field[:roles][:exclude] || [])
       end
+      no_role=exclude_roles.detect{|role| user.has_role?(role)}
     end
     allow_role=(user.is_admin? && (exclude_roles && !exclude_roles.detect{|role| role==Admin::Role.admin}) || !exclude_roles) || !field[:roles] || (field[:roles] && has_role && !no_role)
     allow_action && allow_role
   end
-  
-  def start_page_fields place
-    table_name="object[#{place}]" 
-    menu = Admin::Menu.web_menu(namespace).first
-    menu_items=menu.all_menu_items
-    items=[["-Izvēlieties sadaļu-",0]]
-    menu_items.each{|item|
-      items<<["#{'--'*(item.level-1)}#{item.name}",item.id]
-    }
-    sp=Cms::StartPage.find_by_place(place)
-    mi=sp.menu_item if sp
-    current_item= mi ? mi.id : 0
-    select_tag(table_name,options_for_select(items,current_item),:class=>"start_page_select")
-  end
 
-  # Iespējams norādīt saliktu virsrakstu, kurš ir kā masīvs, kurā katrs masīva elements
-  # var būt vai nu Symbol vai String.
-  # Symbol tipa elementi tiek aizstāti ar attiecīgā objekta ar šādu lauku vērbību.
-  # Piemērs.
-  #     @object={:id=>1, :name=>"test"} - ActiveRecord objekts
-  #     field_to_string_simple ["vārds_",:id],@object
-  # => "vārds_1"
-  # String tipa elementi netiek aizstāti, taču ja sākas ar : tad : un viss līdz
-  # nākamajam ne burtam,skaitlim vai _ tiks aizstāts ar objekta funkcijas izsaukumu,
-  # kas atbilst šim.
-  # Piemērs.
-  #     @object={:id=>1, :name=>"test"}
-  #     field_to_string_simple [":name.gsub('t','')"]
-  # => "es"
+  # Create title for +object+ attribute from Array +field+.
+  # Elements of Array can by Symbol or String.
+  # When Symbols are passed then these elements are replaced with +object+ attribute with same name.
+  # String aren't replaced unless it starts with <b>:</b>. Then anyting from start till first character that isn't
+  # number, letter or _ is replaced like it was Symbol and anything left in string will be evaluted.
+  # ====Example
+  #     @object #=> {:id=>1, :name=>"test"}
+  #     field_to_string_simple(["name_",:id],@object) #=> name_1
+  #     field_to_string_simple([":name.gsub('t','')"]) #=> es
   def field_to_string_simple field,object
     result=""
     field.each{|value|
@@ -71,7 +74,14 @@ module Extensions::FieldHelper
     }
     result
   end
-  
+
+  # Create array from +data+ and +titles+ and return it as 2-dimensional Array.
+  # For +titles+ detail see #field_to_string_simple.
+  # ====Example
+  #     cms_simple_options_for_select(User.find(:all),:login)
+  #     #=> [["admin",1]]
+  #     cms_simple_options_for_select(User.find(:all),[:login,"_",:id]
+  #     #=> [["admin_1",1]]
   def cms_simple_options_for_select(data,titles)
     data.collect{|p|
       if titles && titles.is_a?(Array)
@@ -83,10 +93,13 @@ module Extensions::FieldHelper
     } 
   end
 
+  # Return tab Hash. +Tab+ can be Hash or Integer.
+  # When Hash received than return itself otherwise try to find tab with given index in configuration.
   def get_tab(tab)
     tab.is_a?(Hash) ? tab : (@config[:tabs] ? @config[:tabs][tab] : nil)
   end
 
+  # Create array of field and necessary information about it for lolita form observer javascript.
   def create_fields_for_js(fields)
     result=[]
     fields.each{|f_arr|
@@ -97,15 +110,20 @@ module Extensions::FieldHelper
     result
   end
 
+  # Return all fields configuration for tab (see #get_tab) or empty Array.
   def fields_for_tab(tab)
     tab=get_tab(tab)
-    if tab[:fields]
+    if tab && tab[:fields]
       (tab[:fields]==:default ? @config[:fields] : tab[:fields])
     else
       []
-    end##obligāti jābūt fields
+    end
   end
 
+  # Return all field for single tab or merge all tabs fields or all tabs with object name and field.
+  # Excepts +tab+ as Integer or Hash (see #get_tab) and +options+
+  # * <tt>:with_object</tt> - return array with object name as first and field as last of elements.
+  # * <tt>:in_form</tt> - whether or not tab need to be in form.
   def tabs_fields tab=nil,options={}
     if tab.nil?
       if options[:with_object]
@@ -119,32 +137,34 @@ module Extensions::FieldHelper
       end
     else
       tab=get_tab(tab)
-      if tab[:fields] && (!options[:in_form] || tab[:in_form]==options[:in_form])
+      if tab && tab[:fields] && (!options[:in_form] || tab[:in_form]==options[:in_form])
         ((tab && tab[:fields]==:default)) ? @config[:fields] : tab[:fields]
       else
         []
       end
     end
   end
-  
-  def is_field?(field_name,tab=nil)
+
+  # Determine if exist +field+ with given type in all tabs or in specified +tab+.
+  # Any field with option :simple set to true is ignored.
+  # ====Example
+  #     is_field(:textarea,1) #=> false
+  def is_field?(field_type,tab=nil)
     tabs_fields(tab).each{|value|
-      if value[:type] && value[:type].to_sym==field_name.to_sym && !value[:simple]
+      if value[:type] && value[:type].to_sym==field_type.to_sym && !value[:simple]
         return true
       end
     }
     return false
   end
  
-  # Lauks un tam norādāmie parametri
-  # Kopējie
-  #   :field - lauka nosaukums, tiek izmantots veidojot ievades lauku un dati tiek ielasīti no šāda tipa metodes (lielākoties)
-  # :autocomplete
-  #   :url - adrese no kuras nepieciešams ielādēt datus
-  #   :html - html atribūti
-  #   :class_name - klase, kuras dati tiek ielasīti vai ievadīti laukā
-  #   :save_method - metode kura jāizmanto lai saglabātu datus atbilstošajai klasei
-  #
+  # Render field with given +type+ if Lolita support that kind of field type.
+  # Options also can be specified, common options are described here for detailed information about
+  # field options see #Extensions::SingleFieldHelper.
+  # Common options:
+  # * <tt>:field</tt> - field name
+  # * <tt>:html</tt> - HTML attributes, not all types support it
+  # * <tt>:object</tt> - Object name, by default :object, is used to get value of field from instance variable with same name.
   def field_render (type,options={})
     options[:html]||={}
     object=options[:object] ? options[:object] : :object
