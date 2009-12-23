@@ -1,9 +1,22 @@
+# Include useful error handling method for Lolita forms and views and error list
+# generator method for Lolita forms.
 module Extensions::ErrorHelper
 
+  # Return empty *DIV* tag with class <i>err-marker</i> if object errors has error
+  # in given field.
+  # ====Example
+  #    error_marker(@object.errors,:name)
   def error_marker err_fields=[],field=nil
     err_fields.include?(field.to_sym) ? '<div class="err-marker">&nbsp;</div>' : ""
   end
-  
+
+  # Return error for object, allow error be passed or _object_ named.
+  # ====Example
+  #     # Return @user errors
+  #     get_object_errors(:user)
+  #
+  #     # Return errors itself.
+  #     get_object_errors(@user.errors)
   def get_object_errors(object_name)
     if object_name.is_a?(Hash) && object_name.size>0
       object_name
@@ -13,14 +26,25 @@ module Extensions::ErrorHelper
     end
   end
 
+  # Detect if _object_ errors or collection of errors include error for given +field+.
+  # ====Example
+  #     @user.errors.add(:name, "Not good name")
+  #     # In views or helpers
+  #     has_error?(:user,:name) # => true
   def has_error?(object_name,field)
     (get_object_errors(object_name)||[]).detect{|key,value| key.to_sym==field.to_sym} ? true : nil
   end
 
+  # Return Array containing all _object_ errors fields.
+  # ====Example
+  #     # When user name is not correct
+  #     error_fields_for(:user) #=> [:name]
   def error_fields_for(object_name)
     (get_object_errors(object_name)||[]).collect{|key,value| key.to_sym}
   end
 
+  # Generate and return HTML of _object_ errors. Is used in Lolita forms because of
+  # sepcial structure and classes used in HTML.
   def error_messages_for_cms(object_name)
     object_errors=get_object_errors(object_name)
     if object_errors

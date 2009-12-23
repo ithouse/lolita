@@ -1,3 +1,0 @@
-module Extensions::FileHelper
-  
-end
