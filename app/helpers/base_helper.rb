@@ -42,7 +42,7 @@ module BaseHelper
     text=options[:text] if options[:text]
     %(<a href="#{link}" title="#{title}" target="_blank" style="text-decoration:none;">#{text}#{options[:image] ? "" : ": IT House"}</a>)
   end
-  
+  #:nodoc:
   def domain_link_to title,url,domain=false, options={}
     if domain
       link_to title,"http://#{domain}#{url}",options
@@ -50,32 +50,31 @@ module BaseHelper
       link_to title,url,options
     end
   end
-  def get_main_portal
-    @main_portal||=Admin::Portal.find_by_root(true)
-    @main_portal
-  end
-
-  def not_main_portal?()
-    domain=request.domain(Lolita.config.system :domain_depth)
-    domain==get_main_portal.domain ? nil : Admin::Portal.find_by_domain(domain)
-  end
   
   def current_session_name
     params[:controller].gsub(/^\//,"").gsub("/","_").to_sym
   end
-  
+  # Returns current user in session if exists else returns _nil_
   def user
     session[:user].nil? || session[:user]==:false ? nil : session[:user]
   end
-  
+  #Returns only controller name without the namespace.
   def only_controller
     params[:controller].split("/").last if params[:controller]
   end
-  
+  #Returns only namespace without controller if controller defined with namespace
   def namespace
     params[:controller].split("/").first if params[:controller]
   end
-
+  # Calculates percoents for given values.
+  # Accpet hash paramterer with options :total and :all described below.
+  # Accepted options:
+  # * <tt>:all</tt> - An array element with all the Fixnum values which needs to be calculated in percents.
+  # * <tt>:total</tt> - Fixnum with the total sum of the elements values passed in <em>:all</em> array.
+  # ====Result
+  # Returns an array with each passed value represented in percents in the same order as they were passed in <em>:all</em> parameter
+  # ====Example
+  #   calculate_percents({:total=>100, :all=>[25,25,50]})
   def calculate_percents data={}
     result=[]
     data[:all].each_with_index{|value,index|
@@ -99,7 +98,29 @@ module BaseHelper
     }
     result
   end
-
+  # Creates flv player html from various options passed in to the helper
+  # there are 3 parameter hashes accepted - flash_vars, html_options and flash_options all described in detail below.
+  # Flv player uses default skin located in /lolita/public_swf/player.swf
+  # Accepted options:
+  # * <tt>flash_vars</tt> - The first parameter. All flash_vars are automaticaly formated and passed in to
+  # the SWFObject as 'flashvars' parameter string.
+  # ** <tt>:file</tt> - path to video file.
+  # ** <tt>:image</tt> - optianaly path can be specified to image whcih will be show as the the first frame.
+  # * <tt>html_options</tt> - The second parameter. All the options to modify the players html
+  # ** <tt>:id</tt> - Id which will be set to container wraped around the flv player.
+  # ** <tt>:width</tt> - Sets the flash player width, default:480px
+  # ** <tt>:width</tt> - Sets the flash player height, default:350px
+  # ** <tt>:version</tt> - Version of the macromedia flash player , default:9
+  # * <tt>flash_options</tt> - The third parameter. Options for flv player modification.
+  # All parameters supported by SWFObject can be passed in this option.
+  # ** <tt>:allowfullscreen</tt> - true/false to enable or disable fullscreen mode  , default:true
+  # ** <tt>:allowscriptaccess</tt> - Allow flash player to communicate with the pages html in which it is embanded, possible values are
+  # 'always' - allow access to page html, 'sameDomain' - allow access only if video is on the same domain as page which it is displaying,
+  # 'never' - do not allow acces to html  , default:'always'
+  # ====Result
+  # Returns an array with each passed value represented in percents in the same order as they were passed in <em>:all</em> parameter
+  # ====Example
+  #<%= cms_flv_player({:file => "video.flv",:image=>"poster.jpg"},{:width=>466,:height=>350,:id=>"test_video"},{:allowfullscreen=>'true'}) %>
   def cms_flv_player flash_vars={},html_options={},flash_options={}
     html_options[:id]||= "flash_player_#{rand(10000)}"
     flash_options[:wmode]="transparent"
@@ -110,11 +131,14 @@ module BaseHelper
     }.join("&")
     msg = t(:"flash.get flash player")
     base_options={:player=>"/lolita/public_swf/player.swf",:type=>"player",:width=>html_options[:width] || 480,:height=>html_options[:height] || 350,:version=>html_options[:version] || '9'}
-    %(<div id="#{html_options[:id]}"><div class="no-flash-msg">#{msg}</div><noscript>#{image_tag(flash_vars[:image],:alt=>"")}</noscript></div>)+
+    %(<div id="#{html_options[:id]}"><div class="no-flash-msg">#{msg}</div><noscript>#{image_tag(flash_vars[:image],:alt=>"")}</noscript></div>).html_safe!+
       javascript_tag(
-      %(FlashLoader.create('#{html_options[:id]}',#{base_options.to_json},'#{vars}',#{flash_options.to_json}))
+      "(FlashLoader.create('#{html_options[:id]}',#{base_options.to_json},'#{vars}',#{flash_options.to_json}))".html_safe!
     )
   end
+  #Returns array of localized month names from locale yml file
+  # Accepted options:
+  # * <tt>:capitalize</tt> - if option passed all the month names will be capitalized
   def month_names options={}
     months=[
       t(:"months.january"),t(:"months.february"),
@@ -127,6 +151,7 @@ module BaseHelper
     months.collect!{|month| month.capitalize} if options[:capitalize]
     months
   end
+  #:nodoc:
   def cms_text_value_html_from_element element
     if !element.is_a?(String) && element.respond_to?("last")
       [element.first,element[1],element.last]
@@ -134,7 +159,10 @@ module BaseHelper
       [element,element]
     end
   end
-  
+
+  #Converts html_option hash into string. Useful when appending options directly in html element.
+  # ====Example
+  #%(<a #{cms_html_options(options[:html]}/>Link</a>)
   def cms_html_options html
     if Hash===html
       options=""
@@ -144,12 +172,19 @@ module BaseHelper
       options
     end
   end
+  #Creates a list of html options for select dropdown
+  # Accepted parameters:
+  # * <tt>container</tt> - Array containing array of values and text of the option elemnt
+  # * <tt>selected</tt> - value or array of values to be selected
+  # * <tt>escaped</tt> - if false option text content will not be escaped. default = true
+  # ====Example
+  #content_tag("select",cms_options_for_select([["day",1],["week",7],["month",30],["year",365]], [7]))
   def cms_options_for_select container,selected=nil,escaped=true
     container = container.to_a if Hash === container
     options_for_select = container.inject([]) do |options, element|
       text, value, html = cms_text_value_html_from_element element
       if (selected.is_a?(Array) && selected.include?(value)) || selected==value
-        selected_attribute = ' selected="selected"'
+        selected_attribute = ' selected="selected" '
       end
       html_options=cms_html_options html
       options << %(<option #{html_options} value="#{html_escape(value.to_s)}"#{selected_attribute}>#{escaped ? html_escape(text.to_s) : text.to_s}</option>)
@@ -220,18 +255,18 @@ module BaseHelper
     result
   end
   
-#  def month_name nr, loc="kas?"
-#    m=[{"Janvār"=>1},{"Februār"=>1},{"Mart"=>0},{"Aprīl"=>1},{"Maij"=>0},
-#      {"Jūnij"=>0},{"Jūlij"=>0},{"August"=>0},{"Septembr"=>1},{"Oktobr"=>1},
-#      {"Novembr"=>1},{"Decembr"=>1}
-#    ]
-#    dekl=[
-#      {"kas?"=>"s","kā?"=>"a","kam?"=>"am","ko?"=>"u","kur?"=>"ā"},
-#      {"kas?"=>"is","kā?"=>"a","kam?"=>"im","ko?"=>"i","kur?"=>"ī"}
-#    ]
-#    "#{m[nr-1].keys.first}#{dekl[m[nr-1].values.first][loc]}"
-#  end
-#  
+  #  def month_name nr, loc="kas?"
+  #    m=[{"Janvār"=>1},{"Februār"=>1},{"Mart"=>0},{"Aprīl"=>1},{"Maij"=>0},
+  #      {"Jūnij"=>0},{"Jūlij"=>0},{"August"=>0},{"Septembr"=>1},{"Oktobr"=>1},
+  #      {"Novembr"=>1},{"Decembr"=>1}
+  #    ]
+  #    dekl=[
+  #      {"kas?"=>"s","kā?"=>"a","kam?"=>"am","ko?"=>"u","kur?"=>"ā"},
+  #      {"kas?"=>"is","kā?"=>"a","kam?"=>"im","ko?"=>"i","kur?"=>"ī"}
+  #    ]
+  #    "#{m[nr-1].keys.first}#{dekl[m[nr-1].values.first][loc]}"
+  #  end
+  #
   def is_active_sort_column?(sort_column)
     if params[:sort_columns]==sort_column
       "active"
