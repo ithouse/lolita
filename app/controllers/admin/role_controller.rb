@@ -21,7 +21,7 @@ class Admin::RoleController < Managed
   end
   
   def all_roles
-    render :partial=>'all_roles',:locals=>{:user=>Admin::User.find_by_id(params[:id])}, :layout=>false
+    render :partial=>'all_roles',:locals=>{:user=>Admin::SystemUser.find_by_id(params[:id])}, :layout=>false
   end
   
   def all_access_roles
