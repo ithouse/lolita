@@ -118,7 +118,7 @@ class Managed < ApplicationController
   #   * <tt>:roles</tt> - Define roles that can or can not edit field:
   #     * <tt>:include</tt> - Array or Hash or roles that are allowed to edit field. See Extensions::FieldHelper#can_edit_field?
   #     * <tt>:exclude</tt> - As :include only for excluding
-  #   * <tt>:actions<tt/> - Define actions when field is editable and when not, other options as :roles. See Extensions::FieldHelper#can_edit_field?
+  #   * <tt>:actions</tt> - Define actions when field is editable and when not, other options as :roles. See Extensions::FieldHelper#can_edit_field?
   def config
     {}
   end

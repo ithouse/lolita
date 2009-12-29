@@ -1,9 +1,11 @@
+# Abstract class that add reflection with menu items and class method working with menu items.
+# Is subclass of #Cms::Manager.
 class Cms::Content < Cms::Manager
   self.abstract_class = true
   has_many :menu_items, :as=>:menuable, :dependent=>:nullify, :class_name=>"Admin::MenuItem"
   
   class << self
-    def find_related_menu_item menu_name, id
+    def find_related_menu_item menu_name, id # :nodoc:
       element=self.find_by_id(id)
       result = []
       if element

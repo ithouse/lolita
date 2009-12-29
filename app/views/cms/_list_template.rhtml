@@ -33,38 +33,34 @@
       <br class="clear" />
       <br/>
     <% end %>
-    <% if list_template[:partials] && list_template[:partials][:top] #FIXME
-         list_template[:partials][:top].each{|p|%>
-           <%= render :partial=>p, :object=>list_template%>
-    <%   }
-       end %>
+    <% render_partials(:top).each{|p|%>
+      <%= render :partial=>p, :object=>list_template%>
+    <% }%>
     <div id="form_list">
-      <%= render :partial=>list_template[:partial],
-        :object=>{
-        :controller=>list_template[:controller] || params[:controller],
-        :container=>list_template[:container] || 'form_list',
-        :action=>list_template[:action] || params[:action],
-        :advanced_filter=>list_template[:advanced_filter],
-        :page=>@page || [],
-        :params=>list_template[:params]
-      } %>
+    <%= render :partial=>list_template[:partial],
+      :object=>{
+      :controller=>list_template[:controller] || params[:controller],
+      :container=>list_template[:container] || 'form_list',
+      :action=>list_template[:action] || params[:action],
+      :advanced_filter=>list_template[:advanced_filter],
+      :page=>@page || [],
+      :params=>list_template[:params]
+    } %>
     </div>
-    <% if list_template[:partials] && list_template[:partials][:bottom] #FIXME
-         list_template[:partials][:bottom].each{|p|%>
-           <%= render :partial=>p, :object=>list_template%>
-    <%   }
-       end %>
+  <% render_partials(:bottom).each{|p|%>
+    <%= render :partial=>p, :object=>list_template%>
+  <% }%>
   </div>
-  <%= list_end_tags %>
+<%= list_end_tags %>
 </div>
 <script type="text/javascript">
   window.scrollTo(0,0)
 </script>
 <% if list_template[:refresh_menu] %>
-  <script type="text/javascript">
-    try{
-      ITH.MenuTree.active.app.get_updated_items()
-      if(ITH.MenuTree.active.web) ITH.MenuTree.active.web.get_updated_items()
-    }catch(err){}
-  </script>
+<script type="text/javascript">
+  try{
+    ITH.MenuTree.active.app.get_updated_items()
+    if(ITH.MenuTree.active.web) ITH.MenuTree.active.web.get_updated_items()
+  }catch(err){}
+</script>
 <% end %>
