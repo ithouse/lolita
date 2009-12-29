@@ -68,32 +68,8 @@ module Lolita
       # Send error e-mail to email -> :bugs_to, from email -> :bugs_from.
       # By default _request_ information are added to email body, separately
       # error <i>message</i> and <i>title</i> can be specified.
-      def send_bug msg, title=''
-        #FIXME: move all this mess to template
-        msg = "
-    <h3>Pieprasījums</h3>
-    <dl>
-      <dt>IP</dt> <dd>#{request.remote_ip}</dd>
-      <dt>URL</dt> <dd>#{request.url}</dd>
-      <dt>Metode</dt> <dd>#{request.request_method}</dd>
-      <dt>Pārlūks</dt> <dd>#{request.env['HTTP_USER_AGENT']}</dd>
-      <dt>Izcelsme</dt> <dd>#{request.env["HTTP_REFERER"] || "-Bez izcelsmes-"}</dd>
-      <dt>Ajax</dt> <dd>#{request.xml_http_request?}</dd>
-      <dt>Parametri</dt> <dd>#{join_hash(params)}</dd>
-    </dl>
-    <h3>#{title}</h3>
-    <pre>
-    #{msg}
-    </pre>"
-        RequestMailer::deliver_mail(
-          Lolita.config.email(:bugs_to),
-          "#{request.host_with_port} automātiskais kļūdas paziņojums (#{500})",
-          {:header=>msg.html_safe!},Lolita.config.email(:bugs_from)
-        )
-      end
-
-      def join_hash h
-        "<ul>#{h.collect{|k,v| "<li>#{k} => #{v.instance_of?(HashWithIndifferentAccess)? join_hash(v) : v}</li>"}}</ul>"
+      def send_bug msg=nil, title=nil
+        RequestMailer.deliver_bug(:msg => msg, :title => title, :request => request, :params => params, :session => session)
       end
 
       def rescue_action_in_public(exception)

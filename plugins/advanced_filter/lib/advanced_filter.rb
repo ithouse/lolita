@@ -1,10 +1,16 @@
-#
-# SIA Lolita
-# Artūrs Meisters
-# 11.08.2008 11:23
 module Lolita
   module Filters #:nodoc:
-    module AdvancedFilter #:nodoc:
+    # Manage advanced filter. Filter data, create SQL conditions and provide
+    # #Lolita::Filters::AdvancedFilterHelper with data about model fields and field types
+    # and editor type of field to filter data based on that field.
+    # For detail use of filter see #Lolita::Paginator.
+    # ====Example
+    #     # Simplest use of advanced filter
+    #     class User < ActiveRecord::Base
+    #       advanced_filter
+    #     end
+    #
+    module AdvancedFilter
       if not Object.constants.include? "ADVANCED_FILTER_CONDTIONS"
         ADVANCED_FILTER_CONDITIONS={
           "greater"=>"&gt;",
@@ -38,45 +44,54 @@ module Lolita
           "not_same"=>" NOT IN "
         }
       end
-      def self.included(base)
+      def self.included(base) # :nodoc:
         base.extend(ClassMethods)
       end
+      # Methods available in ActiveRecord::Base classes.
       module ClassMethods
         @@advanced_filter_allowed_keys=[:conditions,:include,:select,:limit,:offset,:group,:order,:joins,:from]
-        # @@last_filter={}
+
+        # Points that class uses AdvancedFilter for filtering by default
+        # when listing model data.
+        # Method expects object as only argument, by default it is NIL.
         def advanced_filter obj=nil
           @object=obj
           @has_advanced_filter=true
           @last_filter=self.default_filter_data_hash
           include Lolita::Filters::AdvancedFilter::InstanceMethods
-          extend Lolita::Filters::AdvancedFilter::ClassMethods
+          extend Lolita::Filters::AdvancedFilter::ClassMethods #FIXME why need this
         end
 
+        # Determine whether class uses AdvancedFilter.
         def has_advanced_filter?
           @has_advanced_filter
         end
-        #īsāks veids kā dabūt modeļa filtru vai nu konkrētu vai arī tekošo vai arī noklusēto, ja neviens
-        #vēl līdz šim nav ticis ielādēst, to izdara load_filter
-        def current_advanced_filter id=0
-          current.empty? ? load_filter(id) : current
-        end
 
+        # Return current used filter id on NIL.
         def loaded_advanced_filter
           current_filter ? current_filter.id  :  nil
         end
 
+        # Return all current object advanced filters as a collection of #Lolita::Filters::AdvancedFilter::Filter objects.
         def advanced_filters
           Filter.find(:all,:conditions=>["class_name=?",filter_object.to_s]) || []
         end
 
+        # Set current user ID. User id is used to use filters specific for every user.
         def set_user(user)
           @user_id=user
         end
-        #atgriež [[nosaukums,id][nosaukum2,id2]]
+        
+        # Return collection of filter name and id for HTML select.
+        # ====Example
+        #     advanced_filter_for_options #=> [[filter1, 1],[filter2, 2]]
         def advanced_filter_for_options
           advanced_filters.collect{|rec| [rec.name,rec.id]}
         end
 
+        # Count total filtered objects.
+        # _Filter_ data must be specified and find options can be passed as well.
+        # 
         def advanced_filter_count filter,base_find_options={}
           base_find_options=base_find_options.delete_if{|k,v| !@@advanced_filter_allowed_keys.include?(k.to_sym)}
           set_form filter
@@ -84,6 +99,7 @@ module Lolita
           find_options[:conditions]=self.filter_conditions(find_options[:conditions])
           self.count_all(self.advanced_filter_merge_find_options(find_options,true))
         end
+        
         #tiek izmantots to_s lai varētu iegūt objektu nos custom filter
         def advanced_filter_find filter, base_find_options={}
           base_find_options=base_find_options.delete_if{|k,v| !@@advanced_filter_allowed_keys.include?(k.to_sym)}
@@ -445,30 +461,13 @@ module Lolita
           if add_f=self.additional_filter
             add_f.columns.each{|column|
               main_options[:group]=self.group_by_options main_options[:group],column
-              #TODO saprast, kaM Šis šeit ir domāts un pielāgot
-              #main_options[:select]=self.custom_select_field(main_options[:select],column,main_options[:group]) unless count
               if column.table
                 main_options[:joins]<<self.filter_object.join_symbols_to_string([column.table.split("::").last.tableize.to_sym])[0]
               end
             }
             main_options[:joins].join(" ") if main_options[:joins].is_a?(Array)
-          else
-            #main_options[:select]=self.custom_select_field(main_options[:select],main_options[:group].to_s.size>0) unless count
           end
           main_options
-        end
-
-        def custom_select_field b_select,group=false
-          #          select=""
-          ##          if column.aggregate_function.to_s.size>0
-          ##            select<<"#{column.aggregate_function}(`#{self.filter_table_name}`.`#{column.name}`) as #{column.name}_#{column.aggregate_function}"
-          ##          end
-          #          if group #lai tiktu summēti vērtību lauki
-          #            select<<(number_columns.collect{|col|
-          #              "sum(`#{self.table_name}`.`#{col.name}`) as group_#{col.name}"
-          #            }.join(","))
-          #          end
-          #          select.size>0 ? "*,#{select}" : "*"
         end
 
         def group_by_options group,column

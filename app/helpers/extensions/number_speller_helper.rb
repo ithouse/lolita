@@ -1,5 +1,5 @@
 # coding:utf-8
-module Extensions::NumberSpellerHelper
+module Extensions::NumberSpellerHelper # :nodoc
 
   
   def num_level_prefix

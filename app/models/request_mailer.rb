@@ -16,4 +16,19 @@ class RequestMailer < ActionMailer::Base
 #      FileItem.delete(with_attachment)
 #    end
   end
+
+  def bug options = {}
+    recipients Lolita.config.email(:bugs_to)
+    from Lolita.config.email(:bugs_from)
+    subject "Bug from #{options[:request].host_with_port}"
+    sent_on Time.now
+    body({
+        :title => options[:title] || "",
+        :msg => options[:msg] || "",
+        :request => options[:request],
+        :params => options[:params],
+        :session => options[:session]
+    })
+    content_type "text/html"
+  end
 end

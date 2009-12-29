@@ -1,13 +1,27 @@
 module Extensions::PagingHelper
-  # Options
-  # :controller - controller to call
-  # :action - action to call
-  # :params - additional params for url
-  # :last_page - last page to render
-  # :first_page - first page to render
-  # :html - html options
-  # :container - container that html will be replaced with response, mean that need to
-  # create AJAX request
+  # Create paginator for public side of page.
+  # Method can be called with block or without for single page link.
+  # #Lolita::Paginator need to pass as +page+. Also +options+ can be provided and current +page_number+
+  # When +page_number+ is given then return link only for that page, block can be provided as well.
+  # Allowed options:
+  # * <tt>:controller</tt> - Controller name for link, default current controller
+  # * <tt>:action</tt> - Action name for link, default current action
+  # * <tt>:params</tt> - Additional params for URL
+  # * <tt>:html</tt> - HTML options that are added to anchor element
+  # * <tt>:first_page</tt> - First page number to show in paginator, default +page+ first page.
+  # * <tt>:last_page</tt> - Last page number to render, default +page+ last page.
+  # * <tt>:container</tt> - If specified than AJAX function on click will be called
+  # * <tt>:ajax</tt> - If set to true, then return options otherwise link, is useful when create specific anchor element.
+  # * <tt>:page_name</tt> - Name of the page, default is page number, but can be string mixed with page number or without it.
+  # ====Example
+  #     @page=Post.paginate({:per_page=>10,:page=>2,:padding=>2})
+  #     public_page(@page,:container=>"posts_container", :action=>"index") do |page_nuber,url,options|
+  #      <%= link_to page_number, url, options %>
+  #     end
+  #     #=> create AJAX paginator from 1 to 4, because padding is 2 and current page is 2.
+  #     public_page(@page,{:container=>"post_container",:page_name=>"<span class='page'>Page %d</span>"},1)
+  #     #=> create AJAX paginator for page 1, and return link with name <i>Page 1</i>.
+  #
   def public_page page,options={},page_number=nil
     if page.total_pages>1
       url={
@@ -27,20 +41,24 @@ module Extensions::PagingHelper
           else
             options[:html][:class]=class_name
           end
-          yield public_page_link(page_nr,url,options)
+          yield public_page_link(page_nr,url,options).html_safe!
         end
       else
         if block_given?
-          yield public_page_link(page_number,url,options)
+          yield public_page_link(page_number,url,options).html_safe!
         else
-          public_page_link(page_number,url,options)
+          public_page_link(page_number,url,options).html_safe!
         end
       end
     end
   end
 
+  # Create link for paginator or return given options with new values added to them.
+  # Wait for +page_number+ and +url+ for link and other options can be passed as well. For details see #public_page.
+  # If paginator need to be created then user #public_page not this method.
   def public_page_link(page_number,url,options={})
     name=options[:page_name] ? options[:page_name].to_s % page_number : page_number
+    options[:html]||={}
     options[:html][:onclick]="ajax_paginator('#{url_for(url.merge(:only_path=>true))}','#{options[:container]}',#{options[:params].to_json});return false;" if options[:container]
     unless options[:ajax]
       link_to(name, url_for(url.merge(options[:params] || {})),options[:html])
@@ -49,7 +67,7 @@ module Extensions::PagingHelper
     end
   end
   
-  ### END of public page helper methods ###
+  # Toggle sort direction from <code>params[:sort_direction]</code>, default is _desc_.
   def sort_direction
     if params[:sort_direction]
       params[:sort_direction]=="desc" ? "asc" : "desc"
@@ -71,6 +89,7 @@ module Extensions::PagingHelper
   #     #=> "/cms/news/list?name=example"
   #     cms_pages :action=>:advanced_list
   #     #=> "/cms/news/advanced_action"
+  # Create paginator for Lolita administrative side. Is useful only in Lolita backend.
   def cms_pages options={}
     #current_class=(@config[:parent_name] || params[:controller].camelize.constantize.name.underscore).to_sym
     options[:params]||={}

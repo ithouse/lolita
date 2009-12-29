@@ -1,0 +1,15 @@
+<h3>Request</h3>
+<dl>
+  <dt>IP</dt> <dd><%= @request.remote_ip %></dd>
+  <dt>URL</dt> <dd><%= @request.url %></dd>
+  <dt>Method</dt> <dd><%= @request.request_method %></dd>
+  <dt>Browser</dt> <dd><%= @request.env['HTTP_USER_AGENT'] %></dd>
+  <dt>Source</dt> <dd><%= @request.env["HTTP_REFERER"] || "-Bez izcelsmes-" %></dd>
+  <dt>Ajax</dt> <dd><%= @request.xml_http_request? %></dd>
+  <dt>Params</dt> <dd><%= raw @params.to_html %></dd>
+  <dt>Session</dt> <dd><%= raw @session.to_html %></dd>
+</dl>
+<h3><%= raw @title %></h3>
+<pre>
+<%= raw @msg %>
+</pre>
