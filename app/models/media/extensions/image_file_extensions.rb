@@ -49,4 +49,31 @@ module Media::Extensions::ImageFileExtensions
       end
     }
   end
+
+  # Create an opacit grayscale version of the image on a solid background.
+  #:image_file_grayout=>{:versions=>[:some_version[,...]],
+  #    :some_version=>float opacity || :some_version=>{:background=>rmagick color,:opacity=>float opacity} }
+  # default opacity is 0.5 (50%), background color "white"
+  def image_file_grayout picture,options={}
+    (options && options[:versions] || []).each{|version|
+      picture.send(version).process! do |img|
+        options[version]||={}
+        options[version][:opacity]=options[version] if options[version].is_a?(Numeric)
+        options[version][:opacity]=0.5 unless options[version][:opacity]
+        options[version][:background]="white" unless options[version][:background]
+        width=img.columns
+        height=img.rows
+        #lay original image over background to avoid transparent areas going inverted
+        opacity_mask = Magick::Image.new(width,height)
+        opacity_mask.background_color=options[version][:background]
+        img.composite!(opacity_mask,Magick::CenterGravity, Magick::DstAtopCompositeOp)
+        img.opacity=Magick::QuantumRange*options[version][:opacity]
+        #lay over background again and grayscale
+        img.composite!(opacity_mask,Magick::CenterGravity, Magick::DstAtopCompositeOp)
+        img.image_type = Magick::GrayscaleType
+        img
+      end
+    }
+  end
+
 end
