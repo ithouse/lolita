@@ -37,13 +37,13 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
       #check if have drive name for RAILS_ROOT -> simple test to know if on Windows
       if RAILS_ROOT.match(/^[a-z]:[\\\/]/i)
         linkd="linkd \"#{RAILS_ROOT}/public/lolita\" \"#{RAILS_ROOT}/vendor/plugins/lolita/_public/\""
-        unless system("linkd")
+        unless system(linkd)
           puts "\n\nIt seems you don't have the linkd.exe tool needed for creation of symlinks on Windows"
           puts "The tool can be obtained through installation of the Windows Resource Kit Tools (WRKT) package."
           puts ""
           puts "*** You may also get this warning if running Git Bash,"
           puts "    which may not have access to the MSDOS utilities."
-          puts "    You should still continue and create the symlink manually."
+          puts "    You should still continue and receive instruction to create the symlink manually."
           puts ""
           link="http://www.microsoft.com/Downloads/details.aspx?FamilyID=9d467a69-57ff-4ae7-96ee-b18c4790cffd"
           if prompt("Would you like to download and install the WRKT now? (y/n)")
@@ -54,14 +54,14 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
           else
             return if !prompt("Would you still like to continue? (y/n)")
           end
-        end
-        #can fail if path contains non-asci chars
-        unless system(linkd)
-          bat="#{RAILS_ROOT}/tmp/linkup.bat"
-          File.open(bat, 'w') {|f| f.write("#{linkd}\npause") }
-          puts "\nCould not symlink Lolita's JavaScript folder"
-          puts "Please do it manually by running:\n   #{linkd}\n"
-          puts "   (The command has been written to: #{bat}\n\n\n"
+          #can fail if path contains non-asci chars
+          unless system(linkd)
+            bat="#{RAILS_ROOT}/tmp/linkup.bat"
+            File.open(bat, 'w') {|f| f.write("#{linkd}\npause") }
+            puts "\nCould not symlink Lolita's JavaScript folder"
+            puts "Please do it manually by running:\n #{linkd}\n"
+            puts "(The command has been written to '#{bat}' for your convenience)\n\n\n"
+          end
         end
       else
         FileUtils.ln_s("#{RAILS_ROOT}/vendor/plugins/lolita/_public/","#{RAILS_ROOT}/public/lolita")
