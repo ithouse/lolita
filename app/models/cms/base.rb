@@ -41,10 +41,15 @@ class Cms::Base < ActiveRecord::Base
       conditions
     end
 
+    # Same as #exclude_array only force last of arguments of that method be true.
     def include_array conditions=[],arr=[],column=nil
       exclude_array conditions,arr,column,true
     end
 
+    # Method refresh AR +object+ +assciation_name+ with new +result+ data of
+    # some calculation. Checks if current object has that kind of reflection and what
+    # kind of macro it uses for correctly assign result to it.
+    # Important! +Result+ always need to be Array.
     def assing_polymorphic_result_to_object(object,result,association_name)
       self.reflections.each{|name,reflection|
         if(reflection.options && reflection.options[:as]==association_name)
