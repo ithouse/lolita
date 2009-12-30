@@ -1,6 +1,28 @@
 require 'spec/rake/spectask'
 
 namespace :lolita do
+=begin rdoc
+Prompts the user to input something in the console and either returns the
+string result or the result of a case-insensitive comparison of input/expected.
+
+Accepts a string to set :title with other params default, or a hash with:
+title:: the text to put for prompt
+expected:: string/answer expected, defaults to "yes" which also accepts "y"
+default:: the fallback string if ENTER was pressed. expected must be set to nil/false
+         the default value is displayed appending "(default): " to the prompt title
+=end
+  def prompt(options={})
+    options={:title=>options} if options.is_a?(String)
+    options={:title=>'Do you want to continue?',:expected=>"yes"}.merge(options)
+    print "#{options[:title]} #{options[:default]?"(#{options[:default]}): ":""}" if options[:title]
+    reply=STDIN.gets().strip
+    if options[:expected]
+      return true if options[:expected]=="yes" && reply[0,1].downcase=="y"
+      return options[:expected].downcase==reply.downcase
+    end
+    return options[:default] if options[:default] && reply==""
+    reply
+  end
 
   desc "Run Lolita's migrations"
   task :migrate do
@@ -14,27 +36,32 @@ namespace :lolita do
     unless File.exists?("#{RAILS_ROOT}/public/lolita")
       #check if have drive name for RAILS_ROOT -> simple test to know if on Windows
       if RAILS_ROOT.match(/^[a-z]:[\\\/]/i)
-        begin
-          `linkd` #falls to rescue unless found
-        rescue
-          puts "It seems you don't have the linkd.exe tool needed for creation of symlinks on Windows"
+        linkd="linkd \"#{RAILS_ROOT}/public/lolita\" \"#{RAILS_ROOT}/vendor/plugins/lolita/_public/\""
+        unless system("linkd")
+          puts "\n\nIt seems you don't have the linkd.exe tool needed for creation of symlinks on Windows"
           puts "The tool can be obtained through installation of the Windows Resource Kit Tools (WRKT) package."
-          link="http://www.microsoft.com/Downloads/details.aspx?FamilyID=9d467a69-57ff-4ae7-96ee-b18c4790cffd&displaylang=en"
-          if prompt("Would you like to download and install the WRKT now?")
+          puts ""
+          puts "*** You may also get this warning if running Git Bash,"
+          puts "    which may not have access to the MSDOS utilities."
+          puts "    You should still continue and create the symlink manually."
+          puts ""
+          link="http://www.microsoft.com/Downloads/details.aspx?FamilyID=9d467a69-57ff-4ae7-96ee-b18c4790cffd"
+          if prompt("Would you like to download and install the WRKT now? (y/n)")
             system("start #{link}")
-            if !prompt("Please confirm that you installed the WRKT")
-              return if !prompt("Would you still like to continue?")
+            if !prompt("Please confirm that you installed the WRKT (y/n)")
+              return if !prompt("Would you still like to continue? (y/n)")
             end
           else
-            return if !prompt("Would you still like to continue?")
+            return if !prompt("Would you still like to continue? (y/n)")
           end
         end
-        begin
-          #can fail if path contains non-asci chars
-          system("linkd \"#{RAILS_ROOT}/public/lolita\" \"#{RAILS_ROOT}/vendor/plugins/lolita/_public/\"")
-        rescue
-          puts "Could not symlink \"#{RAILS_ROOT}/vendor/plugins/lolita/_public/\" to \"#{RAILS_ROOT}/public/lolita\""
-          puts "Please do it manually."
+        #can fail if path contains non-asci chars
+        unless system(linkd)
+          bat="#{RAILS_ROOT}/tmp/linkup.bat"
+          File.open(bat, 'w') {|f| f.write("#{linkd}\npause") }
+          puts "\nCould not symlink Lolita's JavaScript folder"
+          puts "Please do it manually by running:\n   #{linkd}\n"
+          puts "   (The command has been written to: #{bat}\n\n\n"
         end
       else
         FileUtils.ln_s("#{RAILS_ROOT}/vendor/plugins/lolita/_public/","#{RAILS_ROOT}/public/lolita")
@@ -50,7 +77,7 @@ namespace :lolita do
   	require 'rails_generator/scripts/generate'
     #require 'rails_generator/scripts/destroy'
     #unless ARGV[0] == "destroy"
-      Rails::Generator::Scripts::Generate.new.run(ARGV, :generator => "lolita")
+    Rails::Generator::Scripts::Generate.new.run(ARGV, :generator => "lolita")
     #else
     #  Rails::Generator::Scripts::Destroy.new.run("lolita")
     #end
@@ -58,28 +85,6 @@ namespace :lolita do
 
   desc "Setup Lolita"
   task :setup => [:environment,:"globalize:setup", :migrate, :generate] do
-=begin rdoc
-Prompts the user to input something in the console and either returns the
-string result or the result of a case-insensitive comparison of input/expected.
-
-Accepts a string to set :title with other params default, or a hash with:
-title:: the text to put for prompt
-expected:: string/answer expected, defaults to "yes" which also accepts "y"
-default:: the fallback string if ENTER was pressed. expected must be set to nil/false
-         the default value is displayed appending "(default): " to the prompt title
-=end
-    def prompt(options={})
-      options={:title=>options} if options.is_a?(String)
-      options={:title=>'Do you want to continue?',:expected=>"yes"}.merge(options)
-      print "#{options[:title]} #{options[:default]?"(#{options[:default]}): ":""}" if options[:title]
-      reply=STDIN.gets().strip
-      if options[:expected]
-        return true if options[:expected]=="yes" && reply[0,1].downcase=="y"
-        return options[:expected].downcase==reply.downcase
-      end
-      return options[:default] if options[:default] && reply==""
-      reply
-    end
 
     # Insert must have data into DB
     unless Admin::Role.find_by_name("administrator")
