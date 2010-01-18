@@ -15,17 +15,6 @@ class Admin::PublicUser < Admin::User
     Cms::Comment.sum(:total_votes,:conditions=>["user_id=?",self.id])
   end
 
-  def self.authenticate(login, password)
-    user=super
-    unless user
-      if Lolita.config.access :allow, :system_in_public
-        Admin::SystemUser.authenticate(login,password)
-      end
-    else
-      user
-    end
-  end
-
   def self.register code
     self.find_by_registration_code(code) if code.to_s.size==8
   end

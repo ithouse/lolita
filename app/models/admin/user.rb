@@ -20,18 +20,32 @@ class Admin::User < Cms::Base
   before_save :encrypt_password
   before_save :save_type
 
-  def self.authenticate(login, password)
+  # Accepted arguments:
+  # * <tt>:login</tt> - Login name or e-mail for user
+  # * <tt>:password</tt> - Password for user
+  # * <tt>:allowed_classes</tt> - Array of user classes to allow authenticate via this class
+  #                               or Symbol :all if any of user class can authenticate.
+  # ====Example
+  #     Admin::SystemUser.authenticate("login","password") #=> Only system users can authenticate
+  #     Admin::PublicUser.authenticate("login","password",:any) #=> Any type of user can authenticate
+  #     Admin::PublicUser.authenticate("login","password",["Admin::PublicUser","Admin::SpecialUser"])
+  #     #=> As public users can be authenticated PublicUser and SpecialUser but not SystemUser
+  def self.authenticate(login, password, allowed_classes=:none)
     login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
     if $&.to_s.include? "@"
-      self.authenticate_by_email($&, password)
+      self.authenticate_by_email($&, password,allowed_classes)
     else
-      user = self.find(:first,:conditions=>{:login=>login,:type=>self.to_s}) # need to get the salt
+      conditions={:login=>login}
+      conditions[:type]=user_class_types(allowed_classes)
+      user = self.find(:first,:conditions=>conditions) # need to get the salt
       user && user.authenticated?(password)  ? user : false
     end
   end
 
-  def self.authenticate_by_email(email, password)
-    user = self.find(:first,:conditions=>{:email=>email,:type=>self.to_s})
+  def self.authenticate_by_email(email, password,allowed_classes=:none)
+    conditions={:email=>email}
+    conditions[:type]=user_class_types(allowed_classes)
+    user = self.find(:first,:conditions=>conditions)
     user && user.authenticated?(password)  ? user : false
   end
 
@@ -285,6 +299,15 @@ class Admin::User < Cms::Base
   end
   protected
 
+  def self.user_class_allowed?(allowed_classes=:none)
+    if allowed_classes.is_a?(Array)
+      allowed_classes
+    elsif allowed_classes==:all
+      
+    else
+      self.to_s
+    end
+  end
   #var norādīt kontrolierī ka ir pieejamas speciāli actioni
   # allow actions=>{
   #     :show_graphic=>:all,

@@ -104,7 +104,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
         role=Admin::Role.create!(:name=>'administrator', :built_in=>true)
         Admin::SystemUser.create!(
           :login=>login,
-          :password=>password,:password_confirmation=>password,
+          :password=>password,
           :email=>email,:roles=>[role]
         )
         menu=Admin::Menu.create!(
