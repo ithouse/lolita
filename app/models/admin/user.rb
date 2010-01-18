@@ -299,7 +299,8 @@ class Admin::User < Cms::Base
   end
   protected
 
-  def self.user_class_allowed?(allowed_classes=:none)
+
+  def self.user_class_types(allowed_classes=:none)
     if allowed_classes.is_a?(Array)
       allowed_classes
     elsif allowed_classes==:all

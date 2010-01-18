@@ -14,11 +14,11 @@ Example
 set up your config/database.yml
 cd <your project>
 ruby script/plugin install git://github.com/ithouse/lolita.git
-ruby script/plugin install git://github.com/lazyatom/engines.git # Before Rails 3.0
+ruby script/plugin install git://github.com/ithouse/lolita_engines.git # Before Rails 3.0
 
 # add this line in config/environment.rb before config block
 
-  require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
+  require File.join(File.dirname(__FILE__), '../vendor/plugins/lolita_engines/boot')
 
 # add these lines in config/environment.rb in config block
 
