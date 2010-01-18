@@ -157,7 +157,8 @@ class ::String
     result = result.gsub(/<hr\s?\/?>/,"#{"-" * 80}\n")
     result = result.gsub(/<a[^>]*href=\"(.*)\">([^<]*)<\/[^>]*>/){|m|
       m.match(/href=\"(.*)\">([^<]*)</)
-      "#{$2} #{$1}"
+      href,text = $1,$2
+      (href.gsub("mailto:","") == text)? text : "#{text} #{href}"
     }
     result.gsub(/<\/?[^>]*>/, "")
   end

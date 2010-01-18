@@ -165,6 +165,23 @@ module Extensions::FieldHelper
   # * <tt>:field</tt> - field name
   # * <tt>:html</tt> - HTML attributes, not all types support it
   # * <tt>:object</tt> - Object name, by default :object, is used to get value of field from instance variable with same name.
+  # Accepted field types:
+  # * autocomplete
+  # * custom
+  # * label
+  # * content_tree
+  # * hidden
+  # * text
+  # * password
+  # * number
+  # * date
+  # * datetime
+  # * checkbox
+  # * textarea
+  # * select
+  # * checkbox_group
+  # * multi_select
+  # * multi_input
   def field_render (type,options={})
     options[:html]||={}
     object=options[:object] ? options[:object] : :object
@@ -175,8 +192,6 @@ module Extensions::FieldHelper
       cms_content_tree_field(object,options).html_safe!
     when :custom
       cms_custom_field(object,options).html_safe!
-    when :list
-      render :partial=>"/managed/remote_list", :locals=>{:fields=>options[:fields],:parent=>@config[:object_name],:id=>@object.id}
     when :label
       cms_label_field(object,options).html_safe!
     when :hidden

@@ -10,7 +10,6 @@ module BaseHelper
   include Extensions::PagingHelper
   include Extensions::FieldHelper
   include Extensions::MenuHelper
-  include Extensions::HumanControlHelper
   include Extensions::ReportsHelper
   include Extensions::FilterHelper
   include Extensions::LinkHelper

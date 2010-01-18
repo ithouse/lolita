@@ -1,48 +1,22 @@
 # coding:utf-8 
-# SIA Lolita
-# Artūrs Meisters
+# Define #Managed helper methods that is used to create CMS forms, filters and other stuff.
 module ManagedHelper
   include Extensions::FieldHelper
   include Extensions::PagingHelper
   include Extensions::LinkHelper
   include Extensions::TranslationHelper
 
+  # Render partials in <code>list</code> action.
+  # Two +position+ is accepted:
+  # * <tt>:top</tt>
+  # * <tt>:bottom</tt>
   def render_partials position
     partials=@config[:list][:partials][position] if @config[:list] && @config[:list][:partials]
     partials || []
   end
-  
-  def render_list_filters obj
-    if @config[:list] && @config[:list][:parent_filter] && @config[:list][:parent_filter].is_a?(Array)
-      @config[:list][:parent_filter].each{|p_filter|
-        filters=render_list_filter p_filter,obj
-        yield filters if filters
-      }
-    elsif @config[:list]
-      filters=render_list_filter @config[:list][:parent_filter],obj
-      yield filters if filters
-    end
-  end
 
-  def render_list_filter filter,obj
-    if filter.is_a?(String)
-      return render(:partial=>filter, :object=>obj)
-    elsif filter
-      filters=""
-      parent_filter(@config[:object_class].to_s.underscore) do |switch,filter_options|
-        filters<<%(<select class="select parent_filter_select" onchange="#{switch}">#{filter_options}</select>)
-      end
-      return filters
-    else
-      return nil
-    end
-  end
-  
-  def object_variable tab=nil
-    tab=get_tab(tab)
-    tab && tab[:object] ? instance_variable_get("@#{tab[:object]}") : @object
-  end
-  
+  # Return default columns for object that data is displayed in <code>list</code> view.
+  # Collect all columns and return Array of Hashes that is sames as provided by <code>@config</code>.
   def default_cms_columns
     obj=@object ? @object.class : params[:controller].camelize.constantize
     obj.columns.inject([]){|result,column|
@@ -50,8 +24,21 @@ module ManagedHelper
       result<<{:width=>width,:title=>column.name.humanize,:field=>column.name,:default=>obj.columns.first==column,:link=>true,:sortable=>true}
     }
   end
-  
-  def tabs options={}
+
+  # Return all tabs that Managed#config allow.
+  # Expect block and options, work with #Managed and accpet specific options.
+  # Take tabs and all tab information from <code>@config</code> that include all information
+  # provided by <code>config</code> method including :tabs.
+  # Method goes through all tabs and render that kind of partial that match given type or custom partial if given.
+  # Following options are allowed:
+  # * <tt>:in_form</tt> - Determine that now rendering into form, otherwise outside of form.
+  # * For specific type tabs and custom created options is passed to related method and can more other
+  # options can be provided.
+  # ====Example
+  #     tabs(:in_form=>true) do |tab_content|
+  #       <%= tab_content %>
+  #     end
+  def tabs options={} # :yields: tab_content
     opened=false
     media_types=Media::Base.all_media_names.collect{|m| m.to_sym}
     special_types= [:metadata,:translate,:multimedia]
@@ -79,19 +66,17 @@ module ManagedHelper
     }
   end
 
-  def set_map_hidden_fields(object,method)
-    locations=object.send(method)
-    if locations.is_a?(Array)
-
-    else
-      %(<input type="hidden" name="location[lat]" value="#{locations.lat if locations}" id="object_map_lat"/>
-        <input type="hidden" name="location[lng]" value="#{locations.lng if locations}" id="object_map_lng"/>).html_safe!
-    end
-    
-  end
+  # Determine whether to display translation tab.
+  # Accept options with only one key <code>:in_form</code>.
   def is_translatable? options={}
     options[:in_form] && Lolita.config.i18n(:translation) &&  params[:action]=="update"
   end
+
+  # Return tab start and end HTML.
+  # Require +tab+ that is Hash from configuration, and +index+ for ordering tabs and
+  # +opened+ can be passed to display tab or hide.
+  # Also if <code>:partials</code> in tab Hash is given those will be rendered after start HTML
+  # and before end HTML.
   def tab_start_end_html tab,index,opened=nil
     start_html=%(<div id="tab#{index}container" name="tab_content" style="display:#{opened ? "block" : "none"};">)
     tab[:partials][:before].each{|before_partial|
@@ -105,7 +90,9 @@ module ManagedHelper
     return start_html.html_safe!,end_html.html_safe!
   end
 
-  def add_fields_html()
+  # Used to render specific HTML required for fields.
+  # Now has effect when <code>:autcomplete</code> field is used.
+  def add_fields_html() # :yields: field_html
     @config[:tabs].each{|tab|
       fields=fields_for_tab(tab)
       fields.each{|field|
@@ -127,8 +114,11 @@ module ManagedHelper
       } if fields.respond_to?(:each)
     }
   end
-  
-  def tab_headers
+
+  # Render tab headers, for each header see #tab_header.
+  # Goes through all tabs and detect if it is open, that title and if that
+  # tab need to be rendered now.
+  def tab_headers # :yields: tab_header
     opened=nil
     @config[:tabs].each_with_index do |tab,index|
       tab_opened=tab[:opened] && !opened
@@ -140,32 +130,46 @@ module ManagedHelper
     end
   end
 
+  # Return tab header HTML.
+  # Accepts +title+ and +options+
+  # * <tt>:current</tt> - Determine whether tab is visible.
+  # * <tt>:index</tt> - To detect witch tab to be opened when tab header is clicked. 
   def tab_header title,options={}
     index=options[:index]||rand
     current=options[:current] ? "current" : ''
     "<a id='tab#{index}' name='tab_header' class='#{current}' onclick="+'"'+"switch_tabs(this)"+'"'+">#{title}</a>".html_safe!
   end
 
-  #ja ir simbols tad uztvers kā tulkojamu objektu, ja vajag lauku tad jānorāda kā String
-  #simbolam arī ir jāiekļauj punkts, jo pašlaik sistēmā visi tulkojumi tiek dalīti grupās
-  def field_title field=nil,controller=nil
-    if field.is_a?(Symbol) && field.to_s.split(".").size>1
-      t(field)
+  # Return title for field when +title+ is Symbol and in include dot(-s) then
+  # translate it otherwise return +title+.
+  def field_title title=nil
+    if title.is_a?(Symbol) && title.to_s.split(".").size>1
+      t(title)
     else
-      field
+      title
     end
   end
 
+  # Create table title from +controller+, try to find it in Admin::Table
+  # otherwise humanize +controller+ name.
   def table_title controller
     table=Admin::Table.find_by_name(controller)
     table ? table.humanized_name : controller.humanize
   end
-  def list_header options={}
-    #TODO izveidot lai tiek ģenerēts no list[:columns]
-  end
 
+  # Create header cell for <code>list</code> action.
+  # Accpted +options+:
+  # * <tt>:params</tt> - Hash of params added to link:
+  #   * <tt>:sort_direction</tt> - Direction that column data need to be sorted uses <code>params[:sort_direction]</code> see Extensions::PagingHelper#sort_direction
+  #   * <tt>:sort_column</tt> - Column name that is used to sort data.
+  # * <tt>:html</tt> - HTML added to link:
+  #   * <tt>:class</tt> - Default "black".
+  # * <tt>:sort_column</tt> - Shorter way to define <code>options[:params][:sort_column].
+  # * <tt>:container<tt> - DOM element id that is used to put in response text, default "form_list".
+  # * <tt>:title</tt> - Column visible title, uses #field_title to get well formated title.
+  # * <tt>:width</tt> - Column width in px, may not be real width because of HTML table rendering.
+  # Return <code>th</code> element.
   def list_header_cell options={}
-    #current_class=(@config[:parent_name] || params[:controller].camelize.constantize.name.underscore).to_sym
     options[:params]||={}
     options[:html]||={}
     options[:html][:class]||="black"
@@ -188,9 +192,7 @@ module ManagedHelper
     content_tag("th", content,:style=>options[:width] ? "width:#{options[:width]}px;" : nil).html_safe!
   end
 
-  def small_list_header_cell options={}
-    %(<th class="small-table-header" style="width:#{options[:width] || 70}px;">#{field_title(options[:title], options[:controller])}</th>).html_safe!
-  end
+  # Return formated <code>flash[:notice]</code> for #Lolita.
   def cms_flash_box
     if flash[:notice]
       %(<div class="greenbox">
@@ -204,105 +206,53 @@ module ManagedHelper
       ).html_safe!
     end
   end
-  def list_options element
+
+  # Return links for +element+ (ActiveRecord object) with images for <code>:edit</code> and <code>:destroy</code> actions.
+  # Options are taken from <code>@config[:list][:options]</code> see Managed#config.
+  # ====Example
+  #     list_options(Comment.find(1))
+  def list_options element # :yields: link
     @config[:list][:options].each{|option|
       case option
       when :edit
         yield edit_link(:id=>element.id,:image=>true)
       when :destroy
         yield destroy_link(:id=>element.id, :image=>true)
-      when :info
-        yield infolink(element)
-      else
-
-        #        reflection=option.to_s.gsub("link_to")
-        #        table=Admin::Table.find_by_name("#{namespace}/#{reflection.singularize}")
-        #        human_name=table.human_name if table && table.human_name.to_s.size>1
-        #        link_name=human_name ? human_name.daudzskaitlis : human_name.pluralize
-        #        yield list_link(:title=>"#{link_name.humanize}(#{element.send(reflection).count})",:controller=>"/#{namespace}/#{reflection.singularize}",:action=>:list, "#{only_controller}_id".to_sym=>element.id)
       end
     } if @config[:list][:options]
   end
 
-  def hash_to_hash(source,destination,excluded=[],overwrite=false)
-    if source.respond_to?("each") && destination.is_a?(Hash)
-      source.each{|key,value|
-        unless excluded.include?(key) || (source[key] && !overwrite)
-          destination[key]=value
-        end
-      }
-    end
-    destination
-  end
-  
-  def get_remote_data table,parent,id
-    obj=parent.camelize.constantize
-    if obj.exists?(id)
-      obj=obj.find(id)
-      met=table.pluralize
-      obj.send(met)
-    else
-      false
-    end
-  end
-  
-  def has_relation?(related_id=0,related_table="")
-    @object.send(related_table.pluralize).exists?(related_id)
-  end
-  
+  # Create title for default #Managed views from controller or any other name.
+  # Return title for create, update and list actions.
+  # ====Example
+  #     params #=> {:controller=>"comment", :action=>"update"}
+  #     cms_title(params[:controller]) #=> Edit comment
+  #     cms_title("Users") #=> Edit users
   def cms_title name
-    table=Admin::Table.find_by_name(name)
     name=name.gsub(/\//,"_")
-    human_name= table && table.human_name.to_s.size>0 ? table.human_name : nil
     case params[:action]
     when "create"
-      if human_name
-        I18n.locale == :lv ? "Jaun#{human_name.match(/[sš]$/) ? "s" : "a"} #{human_name.downcase}" : "#{t(:"actions.new")} #{human_name.downcase}"
-      else
-        "New #{name.humanize.downcase}"
-      end
+      "New #{name.humanize.downcase}"
     when "update"
-      if human_name
-        I18n.locale == :lv ? "Labot #{human_name.locit("ko?")}" : "#{t(:"actions.edit")} #{human_name.downcase}"
-      else
-        "Edit #{name.humanize.downcase}"
-      end
+      "Edit #{name.humanize.downcase}"
     when "list"
-      words=human_name.split(" ") if human_name
-      last_word=words.pop if words
-      if human_name
-        I18n.locale == :lv ? "#{words.join(" ")} #{last_word.daudzskaitlis}" : human_name.pluralize
-      else
-        name.humanize.pluralize
-      end
-
+      name.humanize.pluralize
     end
   end
 
+  # Specific #Managed method, for _object_ create/edit form, that return escapted
+  # JS to submit form when submit button clicked.
   def form_submit_action
     result="submitForm(\"#object_form\",\"#{@config[:on_complete].gsub(/'/,"\\\\\"")}\");"
     result
-  end # ;submitForm('#object_form','#{@config[:on_complete]}');
-  #  def on_submit_action
-  #    "setRemoteFormParams(#{tabs_fields(nil,:in_form=>true).to_json})"
-  #  end
-  def on_delete_submit
-    "setDeleteFormParams()"
-  end
-  def on_submit_action_with_ids(options=[])
-    arr={}
-    counter=1
-    options.each{|val|
-      arr[counter.to_sym]={:type=>'textarea',:field=>val}
-      counter+=1
-    }
-    "setRemoteFormParams(#{arr.to_json})"
-  end
-  
-  def feedback
-    request.request_uri.include?("?")?"&redirected=true":"?redirected=true"
   end
 
+  # Call getter method on +element+ from +ary+.
+  # When method return nil then return "--" or raise error, otherwise call next
+  # method from +ary+ and so on until all methods are called, and then return
+  # last method result.
+  # ====Example
+  #     send_method_array(comment, [:id,:text]) #=> return comment text value
   def send_method_array element,ary
     tempobj=element
     ary.each{|meth|

@@ -1,5 +1,6 @@
 class Admin::UserController < Managed
-  allow Admin::Role.admin,:all=>[:edit_self], :public=>[:login,:logout,:forgot_password]
+  include SimpleCaptcha::ControllerHelpers
+  allow Admin::Role.admin,:all=>[:edit_self], :public=>[:login,:logout,:forgot_password,:change_password]
 
   # Login <em>Admin::SystemUser</em> into <b>Lolita's</b> administrative side.
   #
@@ -73,36 +74,34 @@ class Admin::UserController < Managed
 
   # Render <em>Forgot password</em> form and send e-mail with new password.
   def forgot_password
-    flash[:error]=nil
-    redirect_to :action=>"login" if session[:user]
-    @user={}
-    @errors={}
-    if request.post? && params[:user] && (is_human=HumanControl.check(params[:human_control]))
-      @user=Admin::User.find_by_login(params[:user][:login])
-      if @user && !@user.is_e_user?
-        temp_pass=Admin::User.temp_password
-        @user.update_attributes(
-          :password=>temp_pass,
-          :password_confirmation=>temp_pass,
-          :reset_password_expires_at=>Time.now()+(3*60*60*24)
-        )
-        body_data={}
-        body_data[:header]="#{I18n.t(:"system_user.form.title")} #{Lolita.config.system :cms_title}"
-        body_data[:a]={:title=>I18n.t(:"system_user.form.name"),:value=>@user.login}
-        body_data[:b]={:title=>I18n.t(:"system_user.form.password"),:value=>temp_pass}
-        #body_data[:c]={:title=>"",:value=>"Pieteikšanās sistēmā jāveic 3 dienu laikā!"}
-        email_sent(@user.email,"#{I18n.t(:"system_user.form.title")} #{Lolita.config.system :cms_title}",body_data)
-        redirect_to :action=>"login"
+    return redirect_to(:action=>"login") if session[:user]
+    if request.post? && params[:user] && is_human=simple_captcha_valid?
+      @user=Admin::SystemUser.find_by_email(params[:user][:email])
+      if @user
+        @user.reset_password
+        RequestMailer.deliver_forgot_password(@user.email,:user=>@user, :host=>request.host)
+        flash.now[:send_notice]=I18n.t("lolita.admin.user.forgot_password.send_notice")
       else
-        flash[:error]= I18n.t(:"flash.user not found")
-        render :layout=>"admin/public"
+        flash.now[:forgot_password_error]= I18n.t(:"flash.user not found")
       end
     else
       if request.post? && !is_human
-        flash[:error]= I18n.t(:"flash.human controll not correct")
+        flash.now[:forgot_password_error]= I18n.t(:"flash.human controll not correct")
       end
-      render :layout=>"admin/public"
     end
+    render :layout=>"admin/public"
+  end
+
+  # Called when change password link, delivered to email, is clicked.
+  def change_password
+    @user=Admin::SystemUser.change_password_for(params[:id])
+    if @user && request.post? && params[:user]
+      @user.renew_password(params[:user][:password])
+      flash.now[:change_password_notice]=I18n.t("lolita.admin.user.change_password.notice")
+    elsif !@user
+      flash.now[:change_password_error]=I18n.t("lolita.admin.user.change_password.error")
+    end
+    render :layout=>"admin/public"
   end
 
   # Add role to user received with params :role and :user.
@@ -176,8 +175,7 @@ class Admin::UserController < Managed
       :fields=>[
         {:type=>:text,:field=>:login,:html=>{:maxlength=>255}},
         {:type=>:text,:field=>:email,:html=>{:maxlength=>255}},
-        {:type=>:password,:field=>:password,:html=>{:maxlength=>40}},
-        {:type=>:password,:field=>:password_confirmation,:html=>{:maxlength=>40}}
+        {:type=>:password,:field=>:password,:html=>{:maxlength=>40}}
       ]
     }
   end

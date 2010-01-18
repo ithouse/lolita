@@ -15,6 +15,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
     options={:title=>options} if options.is_a?(String)
     options={:title=>'Do you want to continue?',:expected=>"yes"}.merge(options)
     print "#{options[:title]} #{options[:default]?"(#{options[:default]}): ":""}" if options[:title]
+    $stdout.flush
     reply=STDIN.gets().strip
     if options[:expected]
       return true if options[:expected]=="yes" && reply[0,1].downcase=="y"
@@ -94,6 +95,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
       puts "Press ENTER to stick to the defaults specified in brackets."
       puts "(they can be changed later in the system's backend."
       puts
+      $stdout.flush
       login=prompt(:title=>"Login",:expected=>nil,:default=>"admin")
       password=prompt(:title=>"Password",:expected=>nil,:default=>"admin")
       email=prompt(:title=>"E-mail",:expected=>nil,:default=>"admin@example.com")
@@ -102,7 +104,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
         role=Admin::Role.create!(:name=>'administrator', :built_in=>true)
         Admin::SystemUser.create!(
           :login=>login,
-          :password=>password,:password_confirmation=>password,
+          :password=>password,
           :email=>email,:roles=>[role]
         )
         menu=Admin::Menu.create!(
