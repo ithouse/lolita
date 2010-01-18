@@ -22,7 +22,7 @@ ruby script/plugin install git://github.com/ithouse/lolita_engines.git # Before 
 
 # add these lines in config/environment.rb in config block
 
-  config.plugins = [ :engines, :lolita, :all ]
+  config.plugins = [ :lolita_engines, :lolita, :all ]
   config.plugin_paths += ["#{RAILS_ROOT}/vendor/plugins/lolita/plugins"]
   config.i18n.default_locale = :en
   config.i18n.load_path << Dir[File.join(RAILS_ROOT, 'config', 'locales', '**', '*.{rb,yml}')]
