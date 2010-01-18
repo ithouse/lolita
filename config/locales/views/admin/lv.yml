@@ -7,6 +7,20 @@ lv:
           login name: Vārds
           password: Parole
           forgot password: Aizmirsi paroli?
+        forgot_password:
+          title: Aizmirsi paroli?
+          hint: Ievadiet savu e-pastu
+          captcha hint: Ievadiet skaitli no attēla
+          send: Nosūtīt
+          email: E-pasts
+          email title: Lai mainītu paroli spiediet uz zemāk redzamās saites
+          send_notice: Paroles atjaunošanas saite veiksmīgi nosūtīta!
+        change_password:
+          title: Paroles maiņa
+          back: Uz sākumu
+          error: Nepareiz maiņas kods!
+          change: Mainīt
+          notice: Parole veiksmīgi nomainīta!
       menu_item:
         content_menu_editor:
           action menu: Sadaļas izvēlne
