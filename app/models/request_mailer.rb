@@ -31,4 +31,16 @@ class RequestMailer < ActionMailer::Base
     })
     content_type "text/html"
   end
+
+  def forgot_password email,options={}
+    recipients email
+    from Lolita.config.email(:default_from)
+    subject "#{I18n.t(:"system_user.form.title")} #{Lolita.config.system :cms_title}"
+    sent_on Time.now
+    body({
+        :id=>options[:user].reseted_password_hash,
+        :host=>options[:host]
+    })
+    content_type "text/html"
+  end
 end

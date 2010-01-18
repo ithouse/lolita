@@ -10,6 +10,7 @@
 # * <tt>:url</tt> - The URL to redirect on successful login unless :partial is specified.
 # * <tt>:flash_auth_failed</tt> - Message that is set in <tt>flash[:error]</tt> if failed to login.
 # * <tt>:no_flash</tt> - If is set to _true_ than no message is written in <tt>flash[:error]</tt>
+# * <tt>:allowed_classes</tt> - Define Array of User classes that can authenticate through this class or Sysmbols, :all
 # ====Example
 #   login_public_user BlogUser, 'user', 'password', :url=>blogs_start_page_url do |user|
 #    user.is_accepted?
@@ -34,7 +35,7 @@ class Admin::PublicUserController < ApplicationController
   def login_public_user klass,login,password,options={}
     flash[:error]=nil
     if request.post? && params[:user]
-      user = klass.authenticate(params[:user][login],params[:user][password])
+      user = klass.authenticate(params[:user][login],params[:user][password],options[:allowed_classes])
       loged_in=yield user if user
       if user && loged_in
         register_user_in_session user

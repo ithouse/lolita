@@ -6,24 +6,13 @@ class Admin::PublicUser < Admin::User
   attr_accessor :terms_of_service
   attr_protected :registration_code
   before_create :create_registration_code
-  validates_length_of       :password, :within => 6..40, :if => :password_required?
+  
+  validates_length_of   :password, :within => 6..40, :if => :password_required?
   validates_presence_of :terms_of_service, :if=>:registration?
   validates_presence_of :privacy, :if=>:registration?
 
   def total_comments_rating
     Cms::Comment.sum(:total_votes,:conditions=>["user_id=?",self.id])
-  end
-
-  def self.authenticate(login, password)
-    user = self.find_by_login(login)
-    good=user && !user.deleted && user.authenticated?(password)   ? user : nil
-    unless good
-      if Lolita.config.access :allow, :system_in_public
-        Admin::SystemUser.authenticate(login,password)
-      end
-    else
-      good
-    end
   end
 
   def self.register code

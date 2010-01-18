@@ -67,7 +67,7 @@ module ControllerExtensions
           @object=object.find_by_id(my_params[:id])
           return false unless @object
           @translation=@object.clone if Lolita.config.i18n :translation
-          @metadata=MetaData.by_metaable(@object.id,@config[:object_name]) || MetaData.new
+          @metadata=get_crud_metadata_object
           if my_params[:object]
             if Lolita.config.i18n(:translation) && my_params[:translation]
               current_language=params[:translation_locale]

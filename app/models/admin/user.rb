@@ -4,29 +4,48 @@ class Admin::User < Cms::Base
   self.abstract_class = true
 
   attr_protected :role_ids,:crypted_password,:salt
+  attr_protected :type
   attr_accessor :password
   attr_accessor :old_password
   has_and_belongs_to_many :roles, :class_name=>"Admin::Role"
   
   validates_presence_of     :password,                   :if => :password_required?
-  validates_presence_of     :password_confirmation,      :if => :password_required?
-  validates_confirmation_of :password,                   :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
+  validates_presence_of     :email
+  validates_uniqueness_of   :email, :allow_nil => false, :scope=>:type
+  validates_format_of       :email, :with=>RFC822::EmailAddress
+  #validates_presence_of     :password_confirmation,      :if => :password_required?
+  #validates_confirmation_of :password,                   :if => :password_required?
   #validates_uniqueness_of   :email, :allow_nil => true, :scope=>:type
   before_save :encrypt_password
+  before_save :save_type
 
-  def self.authenticate(login, password)
+  # Accepted arguments:
+  # * <tt>:login</tt> - Login name or e-mail for user
+  # * <tt>:password</tt> - Password for user
+  # * <tt>:allowed_classes</tt> - Array of user classes to allow authenticate via this class
+  #                               or Symbol :all if any of user class can authenticate.
+  # ====Example
+  #     Admin::SystemUser.authenticate("login","password") #=> Only system users can authenticate
+  #     Admin::PublicUser.authenticate("login","password",:any) #=> Any type of user can authenticate
+  #     Admin::PublicUser.authenticate("login","password",["Admin::PublicUser","Admin::SpecialUser"])
+  #     #=> As public users can be authenticated PublicUser and SpecialUser but not SystemUser
+  def self.authenticate(login, password, allowed_classes=:none)
     login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
     if $&.to_s.include? "@"
-      self.authenticate_by_email($&, password)
+      self.authenticate_by_email($&, password,allowed_classes)
     else
-      user = self.find_by_login(login) # need to get the salt
+      conditions={:login=>login}
+      conditions[:type]=user_class_types(allowed_classes)
+      user = self.find(:first,:conditions=>conditions) # need to get the salt
       user && user.authenticated?(password)  ? user : false
     end
   end
 
-  def self.authenticate_by_email(email, password)
-    user = self.find_by_email(email)
+  def self.authenticate_by_email(email, password,allowed_classes=:none)
+    conditions={:email=>email}
+    conditions[:type]=user_class_types(allowed_classes)
+    user = self.find(:first,:conditions=>conditions)
     user && user.authenticated?(password)  ? user : false
   end
 
@@ -38,15 +57,15 @@ class Admin::User < Cms::Base
     end
   end
   
-  def validate
-    allow_password_change?
-  end
-
-  def allow_password_change?
-    if !(self.new_record? || self.has_role(Admin::Role.admin) || self.authenticated?(self.old_password))
-      self.errors.add :old_password, "nepareiza vecā parole"
-    end
-  end
+  #  def validate
+  #    allow_password_change?
+  #  end
+  #
+  #  def allow_password_change?
+  #    if !(self.new_record? || self.has_role(Admin::Role.admin) || self.authenticated?(self.old_password))
+  #      self.errors.add :old_password, "nepareiza vecā parole"
+  #    end
+  #  end
 
   def self.access_to_area?(user,area=false)
     true #FIXME
@@ -105,6 +124,37 @@ class Admin::User < Cms::Base
     Digest::SHA1.hexdigest("--#{salt}--#{password}--")
   end
 
+  # Do few steps to creating temp state for user before changing password.
+  def reset_password
+    self.update_attributes!(
+      :password=>Admin::User.temp_password,
+      :reset_password_expires_at=>3.days.from_now
+    )
+    self.update_attributes!(:renew_password_hash=>self.reseted_password_hash)
+  end
+
+  # Generate Hash for user whan asking for new password
+  # This Hash is set to email in link as unique identifier.
+  def reseted_password_hash
+    Digest::SHA1.hexdigest("--#{self.crypted_password}--#{self.email}--#{self.salt}--#{self.reset_password_expires_at}--")
+  end
+
+  # Find from generate Hash #reset_password_hash user if this user asked for new password.
+  def self.change_password_for id
+    self.find(:first,:conditions=>["type=? AND NOT reset_password_expires_at IS NULL AND
+        reset_password_expires_at>=? AND renew_password_hash=?",
+        self.to_s,Time.now,id])
+  end
+
+  # Renew user password with given _pass_
+  def renew_password(pass)
+    self.update_attributes(
+      :password=>pass,
+      :reset_password_expires_at=>nil,
+      :renew_password_hash=>nil
+    )
+  end
+  
   def must_change_password?
     self.reset_password_expires_at
   end
@@ -249,6 +299,15 @@ class Admin::User < Cms::Base
   end
   protected
 
+  def self.user_class_allowed?(allowed_classes=:none)
+    if allowed_classes.is_a?(Array)
+      allowed_classes
+    elsif allowed_classes==:all
+      
+    else
+      self.to_s
+    end
+  end
   #var norādīt kontrolierī ka ir pieejamas speciāli actioni
   # allow actions=>{
   #     :show_graphic=>:all,
@@ -339,6 +398,12 @@ class Admin::User < Cms::Base
   end
 
   def password_required?
-    crypted_password.blank? || !password.blank?
+    !password.blank?
+  end
+
+  private
+
+  def save_type
+    self.type=self.class.to_s
   end
 end
