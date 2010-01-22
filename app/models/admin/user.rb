@@ -1,6 +1,7 @@
 # coding:utf-8
 require 'digest/sha1'
 class Admin::User < Cms::Base
+  set_table_name :admin_users
   self.abstract_class = true
 
   attr_protected :role_ids,:crypted_password,:salt
@@ -83,7 +84,7 @@ class Admin::User < Cms::Base
     options[:permissions]||={}
     set_area_and_user()
     allowed=if action_in?(options,:public)
-      set_area_and_user(:public)
+      set_area_and_user(:public,options[:user]) # TODO why before we doesn't set user when access public area
       true
     elsif !action_in?(options,:all_public) && options[:user] && options[:user].is_a?(Admin::SystemUser)
       set_area_and_user(:system,options[:user])
@@ -304,7 +305,7 @@ class Admin::User < Cms::Base
     if allowed_classes.is_a?(Array)
       allowed_classes
     elsif allowed_classes==:all
-      
+      self.to_s #FIXME
     else
       self.to_s
     end
@@ -324,7 +325,8 @@ class Admin::User < Cms::Base
     found=true
     if !action_accessable && Admin::User.area==:system
       #iespējams piekļūta arī actioniem, ja tie ir pieejami viesiem vai publiski
-      result=can_access_built_in_actions?(action,options) if options.is_a?(Hash)
+
+      result=can_access_built_in_actions?(:action=>action,:permissions=>options) if options.is_a?(Hash)
       found=result
     elsif (action_accessable.is_a?(String) || action_accessable.is_a?(Symbol)) && action_accessable.to_s=~/all|any|read|write|update|delete/
       result=(action_accessable.to_sym==:all ? self.can_all?(controller) : (action_accessable.to_sym==:any ? self.can_anything?(controller) : self.can_access_simple_special_action?(action_accessable,controller)))
@@ -336,10 +338,10 @@ class Admin::User < Cms::Base
     return result,found
   end
 
-  def can_access_built_in_actions?(action,options={})
-    return self.class.action_in?(action,options[:all]) ||
-      self.class.action_in?(action,options[:public]) ||
-      (Lolita.config.access :allow, :system_in_public && self.class.action_in?(action,options[:all_public]))
+  def can_access_built_in_actions?(options={})
+    return self.class.action_in?(options,:all) ||
+      self.class.action_in?(options,:public) ||
+      (Lolita.config.access(:allow, :system_in_public) && self.class.action_in?(options,:all_public))
   end
   
   def can_access_simple_special_action? action_accessable,controller=nil

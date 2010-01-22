@@ -41,7 +41,7 @@ module ControllerExtensions
           @accepted_params={} #glabā tās vērtības kas ir pieņamtas kā saistīto moduļu filtri
 
           filter_and_include_sql(object) do |filter_sql,parent_column,join_sql|
-            options[:conditions]=object.cms_merge_conditions(options[:conditions],filter_sql)
+            options[:conditions]=object.merge_conditions(options[:conditions],filter_sql)
             options[:joins]<<join_sql
             @accepted_params[parent_column]=my_params[parent_column]
           end

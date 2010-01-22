@@ -230,14 +230,25 @@ module ControllerExtensions
       private
 
       def assign_object_attributes(obj=nil,data=nil)
+        date_times={}
         obj=object.new unless obj
         (data || my_params[:object]).each{|k,v|
           if k.match('multi_input') && !obj.respond_to?(:"#{k}=")
             parts=k.match(/(multi_input_(?:deletable_existing|existing|new))_(.+)/)
             self.send(parts[1],obj,parts[2],v) #e.g. multi_input_new(obj,"existing_options",hash)
+          elsif k.to_s.match(/\((\d+i)\)/) # collecting date and datetime values for further usage
+            date_index=$1.dup
+            attr_name=k.to_s.gsub(/\(\d+i\)/,"")
+            date_times[attr_name]||={}
+            date_times[attr_name][date_index]=v
           else
             obj.send(:"#{k}=",v)
           end
+        }
+        # set date and datetime values
+        date_times.each{|attr,values|
+          periods=values.sort.collect{|pair| pair.last}
+          obj.send(:"#{attr}=",Time.local(*periods))
         }
         obj
       end

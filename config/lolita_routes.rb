@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
-  map.connect  'admin',  :controller=>'admin/configuration', :action=>'list'
-  map.connect  'admin',  :controller=>'admin/configuration', :action=>'list', :path_prefix => '/:locale'
+  map.connect  'admin',  :controller=>'admin/user', :action=>'list'
+  map.connect  'admin',  :controller=>'admin/user', :action=>'list', :path_prefix => '/:locale'
   map.connect  'system/login',   :controller=>'admin/user',  :action=>'login'
   map.connect  'system/logout',  :controller=>'admin/user', :action=>'logout'
   map.connect  'system/login',   :controller=>'admin/user',  :action=>'login', :path_prefix => '/:locale'

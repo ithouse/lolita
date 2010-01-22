@@ -194,33 +194,6 @@ class Cms::Base < ActiveRecord::Base
       column ? row.send(column.name) : nil
     end
 
-    # Merge to #ActiveRecord::Base conditions with +merge_name+ logical operator and
-    # every condition is parenthesed. Raises error when one of conditions is Hash but other not.
-    # +real_old_conditions+ and +real_new_conditions+ can be String, Array or Hash, result always is Array.
-    # ====Example
-    #     cms_merge_conditions(["user_id=?",1],["id IN (?)",[2,3,4])
-    #     #=> ["(user_id=?) AND (id IN (?))",1,[2,3,4]]
-    def cms_merge_conditions real_old_conditions=[],real_new_conditions=[], merge_name="AND"
-      old_conditions=(real_old_conditions || []).dup
-      new_conditions=(real_new_conditions || []).dup
-      old_conditions= !old_conditions || old_conditions.to_s.size<1 ? [] : old_conditions
-      new_conditions=!new_conditions || new_conditions.to_s.size<1 ? [] : new_conditions
-      raise "Can't merge Hash with something else than Hash" if (new_conditions.is_a?(Hash) && !old_conditions.is_a?(Hash)) || (!new_conditions.is_a?(Hash) && old_conditions.is_a?(Hash))
-      if old_conditions.is_a?(Hash) && new_conditions.is_a?(Hash)
-        new_conditions=old_conditions.merge(new_conditions)
-      else
-        old_conditions=[old_conditions] if old_conditions.is_a?(String)
-        new_conditions=[new_conditions] if new_conditions.is_a?(String)
-        if old_conditions && !old_conditions.empty? && !new_conditions.empty?
-          old_sql="(#{old_conditions.shift})"
-          new_sql="(#{new_conditions.shift})"
-          new_conditions=old_conditions+new_conditions
-          new_conditions=["#{old_sql} #{merge_name} #{new_sql}"] + new_conditions
-        end
-      end
-      new_conditions.empty? ? old_conditions : new_conditions
-    end
-
     # Find first column name with given +type+.
     def first_column_name type="string"
       column=self.columns.detect{|c| c.type.to_s.include?(type)}

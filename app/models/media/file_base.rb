@@ -99,7 +99,7 @@ class Media::FileBase < Media::Base
   # Return real media objects unless parent object not been create yet.
   def self.find_in_memory(memory_id,conditions=[])
     temp_table=Media::MediaFileTempMemory.table_name
-    memory=Media::MediaFileTempMemory.find(:all,:conditions=>self.cms_merge_conditions(["#{temp_table}.memory_id=? AND #{temp_table}.user_id=? AND #{temp_table}.media=?",memory_id,Admin::User.current_user.id,self.to_s],conditions))
+    memory=Media::MediaFileTempMemory.find(:all,:conditions=>self.merge_conditions(["#{temp_table}.memory_id=? AND #{temp_table}.user_id=? AND #{temp_table}.media=?",memory_id,Admin::User.current_user.id,self.to_s],conditions))
     self.find(:all,:conditions=>["#{self.table_name}.id IN (?)",memory.collect{|m| m.media_file_id}])
   end
 
@@ -112,7 +112,7 @@ class Media::FileBase < Media::Base
   def self.find_existing(class_name,parent_id,conditions=[])
     polymorphic_name=media_get_polymorphic_name
     if polymorphic_name
-      conditions=self.cms_merge_conditions(
+      conditions=self.merge_conditions(
         ["#{polymorphic_name}_type=? AND #{polymorphic_name}_id=?",class_name.camelize,parent_id],
         conditions
       )

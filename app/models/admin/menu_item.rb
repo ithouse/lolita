@@ -16,7 +16,7 @@ class Admin::MenuItem < Cms::Manager
   def self.find_in_branch(branch_name, conditions=nil)
     root = self.find_by_branch_name(branch_name)
     if root
-      self.find(:all, :conditions=>self.cms_merge_conditions(conditions, ['lft > ? and rgt < ?', root.lft, root.rgt]))
+      self.find(:all, :conditions=>self.merge_conditions(conditions, ['lft > ? and rgt < ?', root.lft, root.rgt]))
     else
       []
     end
