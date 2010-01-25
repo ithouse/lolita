@@ -36,18 +36,42 @@ class Admin::User < Cms::Base
     if $&.to_s.include? "@"
       self.authenticate_by_email($&, password,allowed_classes)
     else
-      conditions={:login=>login}
-      conditions[:type]=user_class_types(allowed_classes)
-      user = self.find(:first,:conditions=>conditions) # need to get the salt
+      row = ActiveRecord::Base.connection.execute(ActiveRecord::Base.send("sanitize_sql_array",
+          ["SELECT id,type FROM #{table_name} WHERE login = ? AND type IN (?)",login,user_class_types(allowed_classes)]
+        )).fetch_row
+      if row
+        user = row[1].constantize.find(row[0])
+        user && user.authenticated?(password)  ? user : false
+      else
+        false
+      end
+    end
+  end
+  
+  # auth only by login
+  def self.authenticate_by_login(login, password,allowed_classes=:none)
+    row = ActiveRecord::Base.connection.execute(ActiveRecord::Base.send("sanitize_sql_array",
+        ["SELECT id,type FROM #{table_name} WHERE login = ? AND type IN (?)",login,user_class_types(allowed_classes)]
+      )).fetch_row
+    if row
+      user = row[1].constantize.find(row[0])
       user && user.authenticated?(password)  ? user : false
+    else
+      false
     end
   end
 
+  # auth only by email
   def self.authenticate_by_email(email, password,allowed_classes=:none)
-    conditions={:email=>email}
-    conditions[:type]=user_class_types(allowed_classes)
-    user = self.find(:first,:conditions=>conditions)
-    user && user.authenticated?(password)  ? user : false
+    row = ActiveRecord::Base.connection.execute(ActiveRecord::Base.send("sanitize_sql_array",
+        ["SELECT id,type FROM #{table_name} WHERE email = ? AND type IN (?)",email,user_class_types(allowed_classes)]
+      )).fetch_row
+    if row
+      user = row[1].constantize.find(row[0])
+      user && user.authenticated?(password)  ? user : false
+    else
+      false
+    end
   end
 
   def self.authenticate_by_cookies(token)
@@ -303,9 +327,9 @@ class Admin::User < Cms::Base
 
   def self.user_class_types(allowed_classes=:none)
     if allowed_classes.is_a?(Array)
-      allowed_classes
+      allowed_classes.collect{|c| c.to_s unless c.is_a?(String)}
     elsif allowed_classes==:all
-      self.to_s #FIXME
+      self.find_by_sql("SELECT type FROM #{table_name} GROUP BY type").collect{|u| u["type"]}
     else
       self.to_s
     end

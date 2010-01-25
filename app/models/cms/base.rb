@@ -218,24 +218,6 @@ class Cms::Base < ActiveRecord::Base
       paginator.find_records
       paginator
     end
-
-    # Very simple methods chainging, if class has <code>before_find</code> method
-    # than call it before calling #ActiveRecord::Base count method.
-    # Method can modify +params+ so real count method can use new.
-    def count(*params)
-      params=self.before_find(params) if self.respond_to?("before_find",true)
-      super
-    end
-
-    # Call class <code>before_find</code> method before calling #ActiveRecord::Base find method.
-    # Before find method can modify +params+ to real find can use them.
-    def find(*params)
-      #params=params.is_a?(Array) ? params.first : params
-      if self.respond_to?("before_find",true)
-        params=self.before_find(params)
-      end
-      super
-    end
   end
 end
 

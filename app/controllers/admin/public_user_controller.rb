@@ -11,6 +11,7 @@
 # * <tt>:flash_auth_failed</tt> - Message that is set in <tt>flash[:error]</tt> if failed to login.
 # * <tt>:no_flash</tt> - If is set to _true_ than no message is written in <tt>flash[:error]</tt>
 # * <tt>:allowed_classes</tt> - Define Array of User classes that can authenticate through this class or Sysmbols, :all
+# * <tt>:method</tt> - options are (:login,:email,:any), this will determinate which method of authenticate will be used
 # ====Example
 #   login_public_user BlogUser, 'user', 'password', :url=>blogs_start_page_url do |user|
 #    user.is_accepted?
@@ -33,16 +34,23 @@ class Admin::PublicUserController < ApplicationController
   private
   
   def login_public_user klass,login,password,options={}
-    flash[:error]=nil
     if request.post? && params[:user]
-      user = klass.authenticate(params[:user][login],params[:user][password],options[:allowed_classes])
+      user = if options[:method] == :any || !options[:method]
+         klass.authenticate(params[:user][login],params[:user][password],options[:allowed_classes])
+      elsif options[:method] == :login
+        klass.authenticate_by_login(params[:user][login],params[:user][password],options[:allowed_classes])
+      elsif options[:method] == :email
+        klass.authenticate_by_email(params[:user][login],params[:user][password],options[:allowed_classes])
+      else
+        nil
+      end
       loged_in=yield user if user
       if user && loged_in
         register_user_in_session user
         remember_me user
         redirect_logged_in_user options
       else
-        flash[:error]||=options[:flash_auth_failed] || I18n.t(:"flash.error.auth failed") unless options[:no_flash]
+        flash.now[:error]||=options[:flash_auth_failed] || I18n.t(:"flash.error.auth failed") unless options[:no_flash]
         render_partial options
       end
     else
