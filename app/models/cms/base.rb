@@ -5,6 +5,20 @@ class Cms::Base < ActiveRecord::Base
   
   class << self
 
+    def new_object_from_record(record,type)
+      object=type.constantize.allocate
+      object.instance_variable_set("@attributes", record)
+      object.instance_variable_set("@attributes_cache", Hash.new)
+
+      if object.respond_to_without_attributes?(:after_find)
+        object.send(:callback, :after_find)
+      end
+
+      if object.respond_to_without_attributes?(:after_initialize)
+        object.send(:callback, :after_initialize)
+      end
+      object
+    end
     # Create ActiveRecord::Base#find like conditions Array from given +data+ Hash.
     # Exclude from data <code>:controller</code> and <code>:action</code> values.
     # Values of +data+ Hash can be Array or any single value type variable (e.g. String, Integer).

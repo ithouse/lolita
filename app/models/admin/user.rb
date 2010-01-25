@@ -26,52 +26,36 @@ class Admin::User < Cms::Base
   # * <tt>:password</tt> - Password for user
   # * <tt>:allowed_classes</tt> - Array of user classes to allow authenticate via this class
   #                               or Symbol :all if any of user class can authenticate.
+  # * <tt>:login_method</tt> - Field used to find user :login, :email or :any - to find by email if
+  #                            login name include @ or by login otherwise
   # ====Example
   #     Admin::SystemUser.authenticate("login","password") #=> Only system users can authenticate
   #     Admin::PublicUser.authenticate("login","password",:any) #=> Any type of user can authenticate
   #     Admin::PublicUser.authenticate("login","password",["Admin::PublicUser","Admin::SpecialUser"])
   #     #=> As public users can be authenticated PublicUser and SpecialUser but not SystemUser
-  def self.authenticate(login, password, allowed_classes=:none)
-    login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
-    if $&.to_s.include? "@"
-      self.authenticate_by_email($&, password,allowed_classes)
-    else
-      row = ActiveRecord::Base.connection.execute(ActiveRecord::Base.send("sanitize_sql_array",
-          ["SELECT id,type FROM #{table_name} WHERE login = ? AND type IN (?)",login,user_class_types(allowed_classes)]
-        )).fetch_row
-      if row
-        user = row[1].constantize.find(row[0])
-        user && user.authenticated?(password)  ? user : false
+  def self.authenticate(login, password, allowed_classes=:none,login_method=:any)
+    if login_method==:any
+      login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
+      if $&.to_s.include?("@")
+        self.authenticate_by_email($&,password,allowed_classes)
       else
-        false
+        self.authenticate_by_login(login,password,allowed_classes)
       end
+    elsif login_method==:login
+      self.authenticate_by_login(login,password,allowed_classes)
+    elsif login_method==:email
+      self.authenticate_by_email(login,password,allowed_classes)
     end
   end
   
   # auth only by login
   def self.authenticate_by_login(login, password,allowed_classes=:none)
-    row = ActiveRecord::Base.connection.execute(ActiveRecord::Base.send("sanitize_sql_array",
-        ["SELECT id,type FROM #{table_name} WHERE login = ? AND type IN (?)",login,user_class_types(allowed_classes)]
-      )).fetch_row
-    if row
-      user = row[1].constantize.find(row[0])
-      user && user.authenticated?(password)  ? user : false
-    else
-      false
-    end
+    self.authenticate_unknown_user(login,password,"login",allowed_classes)
   end
 
   # auth only by email
   def self.authenticate_by_email(email, password,allowed_classes=:none)
-    row = ActiveRecord::Base.connection.execute(ActiveRecord::Base.send("sanitize_sql_array",
-        ["SELECT id,type FROM #{table_name} WHERE email = ? AND type IN (?)",email,user_class_types(allowed_classes)]
-      )).fetch_row
-    if row
-      user = row[1].constantize.find(row[0])
-      user && user.authenticated?(password)  ? user : false
-    else
-      false
-    end
+    self.authenticate_unknown_user(email,password,"email",allowed_classes)
   end
 
   def self.authenticate_by_cookies(token)
@@ -166,9 +150,11 @@ class Admin::User < Cms::Base
 
   # Find from generate Hash #reset_password_hash user if this user asked for new password.
   def self.change_password_for id
-    self.find(:first,:conditions=>["type=? AND NOT reset_password_expires_at IS NULL AND
+    self.find_unknown_user(:first,
+      ["type=? AND NOT reset_password_expires_at IS NULL AND
         reset_password_expires_at>=? AND renew_password_hash=?",
-        self.to_s,Time.now,id])
+        self.to_s,Time.now,id]
+    )
   end
 
   # Renew user password with given _pass_
@@ -322,9 +308,33 @@ class Admin::User < Cms::Base
       can_access
     end
   end
+
+
+  def self.authenticate_unknown_user(login,password,method,allowed_classes=:none)
+    conditions=["#{method}=? AND type IN (?)",login,user_class_types(allowed_classes)]
+    user=self.find_unknown_user(:first,conditions)
+    user && user.authenticated?(password)  ? user : false
+  end
+
+  def self.find_unknown_user(find_what=:all,conditions=nil)
+    sql=ActiveRecord::Base.connection
+    conditions=sanitize_sql(conditions).to_s
+    record=sql.send(find_what==:all ? :select_all : :select_one,
+      "SELECT * FROM #{self.table_name} #{conditions.size>0 ? "WHERE #{conditions}" : ""}"
+    )
+    if record
+      if record.is_a?(Array)
+        record.collect{|r| self.new_object_from_record(r, r['type'])}
+      else
+        self.new_object_from_record(record,record['type'])
+      end
+    else
+      false
+    end
+  end
+
   protected
-
-
+  
   def self.user_class_types(allowed_classes=:none)
     if allowed_classes.is_a?(Array)
       allowed_classes.collect{|c| c.to_s unless c.is_a?(String)}

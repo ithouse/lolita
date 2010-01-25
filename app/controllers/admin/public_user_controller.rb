@@ -35,15 +35,7 @@ class Admin::PublicUserController < ApplicationController
   
   def login_public_user klass,login,password,options={}
     if request.post? && params[:user]
-      user = if options[:method] == :any || !options[:method]
-         klass.authenticate(params[:user][login],params[:user][password],options[:allowed_classes])
-      elsif options[:method] == :login
-        klass.authenticate_by_login(params[:user][login],params[:user][password],options[:allowed_classes])
-      elsif options[:method] == :email
-        klass.authenticate_by_email(params[:user][login],params[:user][password],options[:allowed_classes])
-      else
-        nil
-      end
+      user = klass.authenticate(params[:user][login],params[:user][password],options[:allowed_classes],options[:method])
       loged_in=yield user if user
       if user && loged_in
         register_user_in_session user

@@ -41,7 +41,7 @@ class MetaData < Cms::Base
 
   private
   def normalize_url
-    if self.url
+    unless self.url.strip.empty?
       self.url.gsub!(/^\W+|\W+$/,'')
       self.url=self.url.to_url
       self.url.downcase!
@@ -76,8 +76,11 @@ class MetaData < Cms::Base
 
   # if Object has column :slug, then we update it with meta_data.url
   def update_from_slug
-    if self.metaable && self.metaable.has_attribute?(:slug)
-      self.connection.execute("UPDATE #{self.metaable.class.table_name} SET slug = '#{self.url}' WHERE id = #{self.metaable_id}")
+    meta_class=self.metaable_type.constantize rescue nil
+    if meta_class && meta_class.column_names.include?("slug")
+      self.connection.transaction do
+        self.connection.update("UPDATE #{meta_class.table_name} SET slug = '#{self.url}' WHERE #{meta_class.primary_key} = #{self.metaable_id}")
+      end
     end
   end
 end
