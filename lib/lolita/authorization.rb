@@ -220,7 +220,7 @@ module Lolita
         flash[:notice] = t(:"flash.need to login")
         session[:return_to]=request.request_uri unless params[:format]
         if request.xhr?
-          render :text=>"Access denied!"
+          render :text=>"Access denied!", :status => 401
         else
           redirect_to home_url
         end
@@ -318,7 +318,7 @@ module Lolita
           accepts.xml do
             headers["Status"]           = "Unauthorized"
             headers["WWW-Authenticate"] = %(Basic realm="Web Password")
-            render :text => "Could't authenticate you", :status => '401 Unauthorized'
+            render :text => "Could't authenticate you", :status => 401
           end
         end
         false
