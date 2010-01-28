@@ -5,22 +5,27 @@
 
 if [ "$(basename `pwd`)" == "$(basename `pwd` | grep -oE lolita[a-z0-9_]*)" ]; then
   if [ -f ".git.zip" ]; then
-    unzip .git.zip
-    if [ -d ".git" ] && [ -f ".gitignore" ]; then
+    if [ "$(unzip -q .git.zip)" == "" ]; then
       rm .git.zip
+      echo "Unzipping [ok]"
+    else
+      echo "Unzipping [failed]"
     fi
   else
-    if [ -d ".git" ] && [ -f ".gitignore" ]; then
+    if [ -d ".git" ]; then
       if [ -z "$(git diff)" ]; then
-        zip -r .git.zip .git .gitignore
+        zip -qr .git.zip .git .gitignore
         if [ -f ".git.zip" ]; then
           rm -rf .git .gitignore
+          echo "Zipping [ok]"
+        else
+          echo "Zipping [failed]"
         fi
       else
-        echo "Commit changes first"
+        echo "Please commit changes first"
       fi
     else
-      echo "No .git OR .gitignore found"
+      echo "No .git directory found"
     fi
   fi
 else
