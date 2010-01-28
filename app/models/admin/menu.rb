@@ -290,7 +290,7 @@ class Admin::Menu < Cms::Manager
       items.collect{|item|
         if item.menuable_type=="Admin::Action"
           permission=is_accessable_action?(item.menuable.controller,item.menuable.action) if item.menuable && item.menuable.controller
-        else
+        elsif item.menuable_type
           permission=is_accessable_action?(item.menuable_type,:show)
         end
         permission ? item : nil
@@ -303,18 +303,18 @@ class Admin::Menu < Cms::Manager
   end
 
   def is_accessable_action?(controller,action)
-    unless @existing_controllers.include?(controller.camelize)
+    unless @existing_controllers.include?(controller.to_s.camelize)
       contr_object=Admin::Menu.controller_object(controller)
-      @existing_controllers[controller.camelize]=contr_object
+      @existing_controllers[controller.to_s.camelize]=contr_object
     else
-      contr_object=@existing_controllers[controller.camelize]
+      contr_object=@existing_controllers[controller.to_s.camelize]
     end
     Admin::User.authenticate_in_controller({
-      :action=>action.to_sym,
-      :controller=>controller,
-      :user=>Admin::User.current_user,
-      :permissions=>contr_object.permissions
-    })
+        :action=>action.to_sym,
+        :controller=>controller,
+        :user=>Admin::User.current_user,
+        :permissions=>contr_object.permissions
+      })
   end
   
   def create_new_tree(tree)
@@ -385,18 +385,19 @@ class Admin::Menu < Cms::Manager
   # Add new menu items from migrations
   def self.insert menu_name, position, name, controller
     #Admin::Menu.insert("Admin", :last, "Room types", "/catalog/room_type")
-    menu = self.find_by_menu_name(menu_name)
-    case position
-    when :first
-      sibling = menu.menu_items.first.root.children.first
-    when :last
-      sibling = menu.menu_items.first.root.children.last
-    end
-    Admin::MenuItem.create!(
+    if menu = self.find_by_menu_name(menu_name)
+      case position
+      when :first
+        sibling = menu.menu_items.first.root.children.first
+      when :last
+        sibling = menu.menu_items.first.root.children.last
+      end
+      Admin::MenuItem.create!(
         :name=>name,
         :menu_id=>menu.id,
         :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
-    ).move_to_right_of(sibling) if sibling
+      ).move_to_right_of(sibling) if sibling
+    end
   end
 
   # Remove menu items from migrations

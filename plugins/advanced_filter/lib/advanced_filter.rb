@@ -496,7 +496,7 @@ module Lolita
         def filter_conditions old_conditions
           @form[:fields].each{|field_name|
             unless self.numeric_difference?(self.column_by_name(field_name))
-              old_conditions=Cms::Base.cms_merge_conditions(self.create_conditions_from_filter_params(field_name),old_conditions)
+              old_conditions=Cms::Base.merge_conditions(self.create_conditions_from_filter_params(field_name),old_conditions)
             end
           } if @form[:fields]
           old_conditions

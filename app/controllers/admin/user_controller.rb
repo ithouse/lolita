@@ -12,7 +12,7 @@ class Admin::UserController < Managed
   def login
     flash[:error]=nil
     if request.post?
-      if user = Admin::SystemUser.authenticate(params[:login], params[:password])
+      if user = Admin::SystemUser.authenticate(params[:login], params[:password],:none,:login)
         update_token(user)
         register_user_in_session user
         redirect_to(Lolita.config.system(:start_page_url))

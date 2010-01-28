@@ -1,6 +1,7 @@
 # coding:utf-8
 require 'digest/sha1'
 class Admin::User < Cms::Base
+  set_table_name :admin_users
   self.abstract_class = true
 
   attr_protected :role_ids,:crypted_password,:salt
@@ -25,28 +26,36 @@ class Admin::User < Cms::Base
   # * <tt>:password</tt> - Password for user
   # * <tt>:allowed_classes</tt> - Array of user classes to allow authenticate via this class
   #                               or Symbol :all if any of user class can authenticate.
+  # * <tt>:login_method</tt> - Field used to find user :login, :email or :any - to find by email if
+  #                            login name include @ or by login otherwise
   # ====Example
   #     Admin::SystemUser.authenticate("login","password") #=> Only system users can authenticate
   #     Admin::PublicUser.authenticate("login","password",:any) #=> Any type of user can authenticate
   #     Admin::PublicUser.authenticate("login","password",["Admin::PublicUser","Admin::SpecialUser"])
   #     #=> As public users can be authenticated PublicUser and SpecialUser but not SystemUser
-  def self.authenticate(login, password, allowed_classes=:none)
-    login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
-    if $&.to_s.include? "@"
-      self.authenticate_by_email($&, password,allowed_classes)
-    else
-      conditions={:login=>login}
-      conditions[:type]=user_class_types(allowed_classes)
-      user = self.find(:first,:conditions=>conditions) # need to get the salt
-      user && user.authenticated?(password)  ? user : false
+  def self.authenticate(login, password, allowed_classes=:none,login_method=:any)
+    if login_method==:any
+      login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
+      if $&.to_s.include?("@")
+        self.authenticate_by_email($&,password,allowed_classes)
+      else
+        self.authenticate_by_login(login,password,allowed_classes)
+      end
+    elsif login_method==:login
+      self.authenticate_by_login(login,password,allowed_classes)
+    elsif login_method==:email
+      self.authenticate_by_email(login,password,allowed_classes)
     end
   end
+  
+  # auth only by login
+  def self.authenticate_by_login(login, password,allowed_classes=:none)
+    self.authenticate_unknown_user(login,password,"login",allowed_classes)
+  end
 
+  # auth only by email
   def self.authenticate_by_email(email, password,allowed_classes=:none)
-    conditions={:email=>email}
-    conditions[:type]=user_class_types(allowed_classes)
-    user = self.find(:first,:conditions=>conditions)
-    user && user.authenticated?(password)  ? user : false
+    self.authenticate_unknown_user(email,password,"email",allowed_classes)
   end
 
   def self.authenticate_by_cookies(token)
@@ -83,7 +92,7 @@ class Admin::User < Cms::Base
     options[:permissions]||={}
     set_area_and_user()
     allowed=if action_in?(options,:public)
-      set_area_and_user(:public)
+      set_area_and_user(:public,options[:user]) # TODO why before we doesn't set user when access public area
       true
     elsif !action_in?(options,:all_public) && options[:user] && options[:user].is_a?(Admin::SystemUser)
       set_area_and_user(:system,options[:user])
@@ -141,9 +150,11 @@ class Admin::User < Cms::Base
 
   # Find from generate Hash #reset_password_hash user if this user asked for new password.
   def self.change_password_for id
-    self.find(:first,:conditions=>["type=? AND NOT reset_password_expires_at IS NULL AND
+    self.find_unknown_user(:first,
+      ["type=? AND NOT reset_password_expires_at IS NULL AND
         reset_password_expires_at>=? AND renew_password_hash=?",
-        self.to_s,Time.now,id])
+        self.to_s,Time.now,id]
+    )
   end
 
   # Renew user password with given _pass_
@@ -297,13 +308,38 @@ class Admin::User < Cms::Base
       can_access
     end
   end
-  protected
 
-  def self.user_class_allowed?(allowed_classes=:none)
+
+  def self.authenticate_unknown_user(login,password,method,allowed_classes=:none)
+    conditions=["#{method}=? AND type IN (?)",login,user_class_types(allowed_classes)]
+    user=self.find_unknown_user(:first,conditions)
+    user && user.authenticated?(password)  ? user : false
+  end
+
+  def self.find_unknown_user(find_what=:all,conditions=nil)
+    sql=ActiveRecord::Base.connection
+    conditions=sanitize_sql(conditions).to_s
+    record=sql.send(find_what==:all ? :select_all : :select_one,
+      "SELECT * FROM #{self.table_name} #{conditions.size>0 ? "WHERE #{conditions}" : ""}"
+    )
+    if record
+      if record.is_a?(Array)
+        record.collect{|r| self.new_object_from_record(r, r['type'])}
+      else
+        self.new_object_from_record(record,record['type'])
+      end
+    else
+      false
+    end
+  end
+
+  protected
+  
+  def self.user_class_types(allowed_classes=:none)
     if allowed_classes.is_a?(Array)
-      allowed_classes
+      allowed_classes.collect{|c| c.to_s unless c.is_a?(String)}
     elsif allowed_classes==:all
-      
+      self.find_by_sql("SELECT type FROM #{table_name} GROUP BY type").collect{|u| u["type"]}
     else
       self.to_s
     end
@@ -323,7 +359,8 @@ class Admin::User < Cms::Base
     found=true
     if !action_accessable && Admin::User.area==:system
       #iespējams piekļūta arī actioniem, ja tie ir pieejami viesiem vai publiski
-      result=can_access_built_in_actions?(action,options) if options.is_a?(Hash)
+
+      result=can_access_built_in_actions?(:action=>action,:permissions=>options) if options.is_a?(Hash)
       found=result
     elsif (action_accessable.is_a?(String) || action_accessable.is_a?(Symbol)) && action_accessable.to_s=~/all|any|read|write|update|delete/
       result=(action_accessable.to_sym==:all ? self.can_all?(controller) : (action_accessable.to_sym==:any ? self.can_anything?(controller) : self.can_access_simple_special_action?(action_accessable,controller)))
@@ -335,10 +372,10 @@ class Admin::User < Cms::Base
     return result,found
   end
 
-  def can_access_built_in_actions?(action,options={})
-    return self.class.action_in?(action,options[:all]) ||
-      self.class.action_in?(action,options[:public]) ||
-      (Lolita.config.access :allow, :system_in_public && self.class.action_in?(action,options[:all_public]))
+  def can_access_built_in_actions?(options={})
+    return self.class.action_in?(options,:all) ||
+      self.class.action_in?(options,:public) ||
+      (Lolita.config.access(:allow, :system_in_public) && self.class.action_in?(options,:all_public))
   end
   
   def can_access_simple_special_action? action_accessable,controller=nil

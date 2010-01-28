@@ -4,15 +4,7 @@
 module Lolita
   # With managed callbacks you can modify the object and related objects before and after different events.
   # Usage - put this function call in your controller (should be extended form Managed):
-  #
-  #   class BlogController < Managed
-  #     add_managed_callback :before_save, [:update_metadata]
-  #
-  #     def update_metadata
-  #       @my_params[:metadata][:url] = @my_params['object']['title'].to_url if @my_params[:metadata][:url].to_s.empty?
-  #     end
-  #   end
-  # 
+  
   # Handle #Managed events and execute all methods that are specified in _controller_ and its _superclasses_.
   # To register callback in _controller_ that ancestors must include #Managed class.
   # All callbacks are exacuted from #Managed down to current _controller_.

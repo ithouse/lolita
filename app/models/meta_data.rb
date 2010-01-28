@@ -1,8 +1,8 @@
 class MetaData < Cms::Base
   #belongs_to :menu_items
   belongs_to :metaable, :polymorphic => true
-  before_save :normalize_url
-  before_save :singularize_metaable
+  before_save :normalize_url, :singularize_metaable
+  after_save :update_from_slug
   translates :title,:url,:tags,:description
   #TODO test
   def self.find_by_object object
@@ -30,9 +30,9 @@ class MetaData < Cms::Base
 
   def self.url_match query="",conditions=[]
     query=query.to_s
-    start_with=self.find(:all,:conditions=>self.cms_merge_conditions(["url LIKE ?","#{query}%"],conditions), :limit=>50)
+    start_with=self.find(:all,:conditions=>self.merge_conditions(["url LIKE ?","#{query}%"],conditions), :limit=>50)
     include_query=unless start_with.size==50
-      self.find(:all,:conditions=>self.cms_merge_conditions(["url LIKE ?","%#{query}%"],conditions),:limit=>50-start_with.size)
+      self.find(:all,:conditions=>self.merge_conditions(["url LIKE ?","%#{query}%"],conditions),:limit=>50-start_with.size)
     else
       []
     end
@@ -41,7 +41,7 @@ class MetaData < Cms::Base
 
   private
   def normalize_url
-    if self.url
+    unless self.url.strip.empty?
       self.url.gsub!(/^\W+|\W+$/,'')
       self.url=self.url.to_url
       self.url.downcase!
@@ -72,5 +72,15 @@ class MetaData < Cms::Base
 
   def singularize_metaable
     MetaData.destroy_all(["metaable_type=? AND metaable_id=? AND meta_datas.id!=?",self.metaable_type,self.metaable_id,self.id])
+  end
+
+  # if Object has column :slug, then we update it with meta_data.url
+  def update_from_slug
+    meta_class=self.metaable_type.constantize rescue nil
+    if meta_class && meta_class.column_names.include?("slug")
+      self.connection.transaction do
+        self.connection.update("UPDATE #{meta_class.table_name} SET slug = '#{self.url}' WHERE #{meta_class.primary_key} = #{self.metaable_id}")
+      end
+    end
   end
 end
