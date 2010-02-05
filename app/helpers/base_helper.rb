@@ -13,7 +13,6 @@ module BaseHelper
   include Extensions::ReportsHelper
   include Extensions::FilterHelper
   include Extensions::LinkHelper
-  include Extensions::UrlHelper
   include PublicHelper
   include ManagedHelper
   include Media::BaseHelper
