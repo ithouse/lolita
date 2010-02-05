@@ -10,14 +10,9 @@ class Admin::User < Cms::Base
   attr_accessor :old_password
   has_and_belongs_to_many :roles, :class_name=>"Admin::Role"
   
-  validates_presence_of     :password,                   :if => :password_required?
-  validates_length_of       :password, :within => 4..40, :if => :password_required?
-  validates_presence_of     :email
-  validates_uniqueness_of   :email, :allow_nil => false, :scope=>:type
-  validates_format_of       :email, :with=>RFC822::EmailAddress
-  #validates_presence_of     :password_confirmation,      :if => :password_required?
-  #validates_confirmation_of :password,                   :if => :password_required?
-  #validates_uniqueness_of   :email, :allow_nil => true, :scope=>:type
+  validates_presence_of :password,                   :if => :password_required?
+  validates_length_of   :password, :within => 4..40, :if => :password_required?
+
   before_save :encrypt_password
   before_save :save_type
 
@@ -97,9 +92,9 @@ class Admin::User < Cms::Base
     elsif !action_in?(options,:all_public) && options[:user] && options[:user].is_a?(Admin::SystemUser)
       set_area_and_user(:system,options[:user])
       options[:user].is_admin? || action_in?(options,:all) || ((!except?(options)||only?(options)) && (options[:user] && options[:user].has_access?(options)))
-    elsif self.access_to_area?(options[:user])
+    elsif options[:user] && (action_in?(options,:all_public) || options[:user].has_access?(options))
       set_area_and_user(:public_system,options[:user])
-      action_in?(options,:all_public) || (options[:user] && options[:user].has_access?(options))
+      true
     end
     return allowed
   end

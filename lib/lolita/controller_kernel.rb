@@ -2,9 +2,7 @@
 module Lolita
   module ControllerKernel
     def self.included(base) # :nodoc: 
-      base.class_eval{
-        include InstanceMethods
-      }
+      base.send :include, InstanceMethods
     end
 
     module InstanceMethods
@@ -19,7 +17,7 @@ module Lolita
             type.html do
               ["public/404.#{I18n.locale}.html", "public/404.html"].each do |f_path|
                 if File.exists?(File.join(RAILS_ROOT,f_path))
-                  return render :file => f_path, :status => status
+                  return render(:file => f_path, :status => status)
                 end
               end
               render :template => "errors/error_404", :status => status, :layout=>layout
@@ -43,7 +41,7 @@ module Lolita
           type.html do
             ["public/500.#{I18n.locale}.html","public/500.html"].each do |f_path|
               if File.exists?(File.join(RAILS_ROOT,f_path))
-                return render :file => f_path, :status => status
+                return render(:file => f_path, :status => status)
               end
             end
             render options

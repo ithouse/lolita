@@ -5,7 +5,15 @@
 </div>
 <script type="text/javascript">
   //<![CDATA[
-  ITH.Cms.<%=cfg[:media].to_s.camelize%>Dialog=new ITH.FileUploadDialog("<%=cfg[:media]%>_picture_upload_dialog_container")
-  ITH.Cms.<%=cfg[:media].to_s.camelize%>Dialog.createDialog('<%=cfg[:media]%>')
+  loadjscssfile("/lolita/javascripts/cms/video_picture_upload_dialog.js","js")
+  function initialize_audio_upload_dialog_temp_fnc(){
+    try{
+      ITH.Cms.<%=cfg[:media].to_s.camelize%>Dialog=new ITH.FileUploadDialog("<%=cfg[:media]%>_picture_upload_dialog_container")
+      ITH.Cms.<%=cfg[:media].to_s.camelize%>Dialog.createDialog('<%=cfg[:media]%>')
+    }catch(err){
+      setTimeout("initialize_audio_upload_dialog_temp_fnc()",500);
+    }
+  }
+  initialize_audio_upload_dialog_temp_fnc()
   //]]>
 </script>

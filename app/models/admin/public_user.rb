@@ -11,10 +11,6 @@ class Admin::PublicUser < Admin::User
   validates_presence_of :terms_of_service, :if=>:registration?
   validates_presence_of :privacy, :if=>:registration?
 
-  def total_comments_rating
-    Cms::Comment.sum(:total_votes,:conditions=>["user_id=?",self.id])
-  end
-
   def self.register code
     self.find_by_registration_code(code) if code.to_s.size==8
   end

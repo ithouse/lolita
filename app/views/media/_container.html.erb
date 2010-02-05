@@ -1,5 +1,5 @@
 <% cfg=file_cfg(container) %>
-<%= render :partial=>"/media/#{cfg[:media]}/before_container" if File.exist?("#{File.dirname(__FILE__)}/#{cfg[:media]}/_before_container.html.erb")  %>
+<%= render :partial=>"/media/#{cfg[:media]}/before_container",:object=>cfg if File.exist?("#{File.dirname(__FILE__)}/#{cfg[:media]}/_before_container.html.erb")  %>
 <% if container[:parent] && container[:parent_id] %>
   <%- session_key_name = ActionController::Base.session_options[:key] -%>
   <div id="<%=cfg[:media]%>-files" class="<%=cfg[:media]%>-files-container">

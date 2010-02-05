@@ -1,3 +1,4 @@
-<%= javascript_include_tag 'flash_loader.js' %>
-<%= javascript_include_tag 'swfobject.js' %>
-<%= cms_flv_player({:file => audio.name.url,:image=>audio.picture_url(:video)},{:width=>466,:height=>350,:id=>"single_audio_file_row_#{audio.id}_swf"},{:allowfullscreen=>'true'}) %>
+<%#= javascript_include_tag '/lolita/javascripts/flash_loader.js' %>
+<%#= javascript_include_tag '/lolita/javascripts/swfobject.js' %>
+
+<%= cms_flv_player({:file => audio.name.url,:image=>audio.picture_url(:video)},{:width=>466,:height=>350,:id=>"single_audio_file_row_#{audio.id}_swf"},{:allowfullscreen=>'true'}).html_safe! %>
