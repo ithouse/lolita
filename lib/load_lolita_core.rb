@@ -1,6 +1,9 @@
 $lolita_config = Lolita::Config.new
 #Load kernel
 ActionController::Base.send :include, Lolita::ControllerKernel
+#Load meta url generation helper
+ActionController::Base.send :include, Lolita::MetaUrl
+ActionView::Base.send :include, Lolita::MetaUrl
 #Load authorization
 ActionController::Base.send :include, Lolita::Authorization
 ActionView::Base.send :include, Lolita::Authorization

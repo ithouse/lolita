@@ -72,7 +72,7 @@ class Admin::MenuItem < Cms::Manager
 
       hsh[:id]=self.menuable_type=="Admin::Action" ?
         nil  :
-        (self.menuable_id.to_i>0 ? self.menuable_id : nil)
+        (self.menuable_id.to_i>0 ? self.menuable : nil)
     else
       hsh[:controller]="/"
     end
