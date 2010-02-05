@@ -36,7 +36,11 @@ class Admin::PublicUserController < ApplicationController
   def login_public_user klass,login,password,options={}
     if request.post? && params[:user]
       user = klass.authenticate(params[:user][login],params[:user][password],options[:allowed_classes],options[:method])
-      loged_in=yield user if user
+      loged_in=if block_given?
+        yield user if user
+      else
+        true
+      end
       if user && loged_in
         register_user_in_session user
         remember_me user

@@ -419,4 +419,34 @@ module Extensions::SingleFieldHelper
     data=options[:options] || options[:table].to_s.camelize.constantize.find(:all,options[:find_options])
     options[:simple] ? data : cms_simple_options_for_select(data,options[:titles])
   end
+
+  
+  def render_video url
+    # vimeo
+    url = url.gsub(/(http:\/\/(www\.)?vimeo\.com\/(\d+)\/?)/){|m|
+      %^
+      <p>
+      <object width=400 height="225"
+          data="http://www.vimeo.com/moogaloop.swf?clip_id=#{$3}&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=00ADEF&amp;fullscreen=1"
+          type="application/x-shockwave-flash">
+        <param name="allowfullscreen" value="true" />
+        <param name="allowscriptaccess" value="always" />
+        <param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=#{$3}&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=00ADEF&amp;fullscreen=1" />
+      </object>
+      </p>
+      ^
+    }
+    # youtube
+    url = url.gsub(/(http:\/\/)?(www\.)?youtube\.com\/(watch\?v=([^&\s\/]+)|v\/([^&\s\/]+))[^\s\/]+\/?/){|m|
+      code = $4 || $5
+      %^
+      <p>
+      <object type="application/x-shockwave-flash" style="width:400px; height:225px;"
+        data="http://www.youtube.com/v/#{code}">
+        <param name="movie" value="http://www.youtube.com/v/#{code}" />
+      </object>
+      </p>
+      ^
+    }
+  end
 end
