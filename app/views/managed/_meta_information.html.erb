@@ -11,7 +11,7 @@ if @object && @object.respond_to?(:allow_metadata_edit)
   end
 end
 %>
-<% if Lolita.config.translation && (params[:action].to_s=~/update|meta_change_language|save_metadata_translation/) && !@metadata.new_record? %>
+<% if Lolita.config.i18n[:translation] && (params[:action].to_s=~/update|meta_change_language|save_metadata_translation/) && !@metadata.new_record? %>
   <span class='brick'><%= t(:"fields.language",:locale=>@metadata.language_code) %></span>
   <div class="fl">
     <%= all_languages("meta_translation_locale",@metadata) %>
@@ -33,7 +33,7 @@ end
   </div>
 <%}%>
 
-<% if Lolita.config.translation %>
+<% if Lolita.config.i18n[:translation] %>
   <% unless @metadata.new_record? || @metadata.language_code==Globalize::Locale.base_language.code %>
     <br/>
     <input type="button" onclick='save_metadata_translation(["url","title","tags","description"],<%=tab%>,"<%=url_for(:action=>"save_metadata_translation")%>","<%="id=#{@object.id}&tab=#{tab}&meta_translation_locale=#{@metadata.language_code}&authenticity_token=#{CGI::escape(form_authenticity_token)}"%>")' value="<%=t(:"actions.save translation")%>" />
