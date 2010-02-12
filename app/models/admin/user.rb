@@ -54,7 +54,7 @@ class Admin::User < Cms::Base
   end
 
   def self.authenticate_by_cookies(token)
-    result=self.find_by_sql(["SELECT type,id FROM admin_users WHERE remember_token=?",token])
+    result=self.find_by_sql(["SELECT type,id FROM #{self.class.table_name} WHERE remember_token=?",token])
     unless result.empty?
       user_class=result[0]['type'].constantize
       user_class.find_by_id(result[0]['id'])
@@ -233,8 +233,8 @@ class Admin::User < Cms::Base
     roles=[options[:roles]] if options[:roles].is_a?(String)
     if roles && !roles.empty?
       Admin::User.find_by_sql(["
-        SELECT admin_users.id FROM admin_users
-        INNER JOIN roles_users ON roles_users.user_id=admin_users.id
+        SELECT #{self.class.table_name}.id FROM #{self.class.table_name}
+        INNER JOIN roles_users ON roles_users.user_id=#{self.class.table_name}.id
         WHERE roles_users.role_id IN
           (SELECT id FROM admin_roles WHERE name IN (?)) AND roles_users.user_id=?
         LIMIT 1",roles,self.id]).empty? ? false : true
@@ -384,11 +384,11 @@ class Admin::User < Cms::Base
   def all_accesses controller_name="",opt={}
     controller_name=controller_name.to_s.gsub(/^\//,"")
     Admin::User.find_by_sql(["
-      SELECT #{opt[:select] || "1"} FROM admin_users
-      INNER JOIN roles_users ON roles_users.user_id=admin_users.id
+      SELECT #{opt[:select] || "1"} FROM #{self.class.table_name}
+      INNER JOIN roles_users ON roles_users.user_id=#{self.class.table_name}.id
       INNER JOIN accesses_roles ON roles_users.role_id=accesses_roles.role_id
       WHERE accesses_roles.access_id=(SELECT id FROM admin_accesses WHERE name=?)
-      #{opt[:permission] ? "AND accesses_roles.allow_#{opt[:permission]}=1" : "" } AND admin_users.id=? LIMIT 1
+      #{opt[:permission] ? "AND accesses_roles.allow_#{opt[:permission]}=1" : "" } AND #{self.class.table_name}.id=? LIMIT 1
         ",controller_name,self.id])
   end
   
