@@ -11,7 +11,7 @@ module Lolita
     module InstanceMethods
 
       def url_for_with_meta_url(options={})
-        if options[:id].kind_of?(Cms::Manager)
+        if options.is_a?(Hash) && options[:id].is_a?(Cms::Manager) && @object
            if @object.respond_to?(:slug)
              options[:id]=options[:id].slug
            else
