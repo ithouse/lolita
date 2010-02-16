@@ -1,0 +1,8 @@
+en:
+  articles:
+    show:
+      title: Hi, what's up duck
+    list:
+      rss: RSS feed
+    index:
+      foo: "Bar :)"

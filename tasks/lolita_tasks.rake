@@ -155,7 +155,14 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
     t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/../spec/spec.opts\""]
   end
 
-
+  desc "Merge YAML locale files"
+  task :merge_locales => :environment do
+    if prompt("Are you shure to merge locales? (y/n)")
+      merger = Lolita::LocaleMerger.new
+      merger.merge
+      puts "[done]"
+    end
+  end
 
   # Initialize database schema information table
   def init_db_schema
