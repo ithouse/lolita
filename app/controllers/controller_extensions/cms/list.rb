@@ -135,7 +135,7 @@ module ControllerExtensions
       def render_list locals={}
         unless @config[:report]
           partial=params[:advanced_filter].is_a?(Hash) ||  params[:paging].to_b ? locals[:partial] : "/cms/list_template"
-          unless request.post? || request.xml_http_request? || params[:is_ajax].to_b
+          unless request.post? || request.xhr? || params[:is_ajax].to_b
             render :partial=>partial, :layout=>@config[:list][:layout] ? @config[:list][:layout] : "cms/default",:object=>locals #TODO pielikt lai katram namespace savs layout
           else
             render :partial=>partial,:layout=>false,:object=>locals
