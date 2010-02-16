@@ -52,7 +52,12 @@ class Lolita::LocaleMerger
       siblings = {}
       @locales.each do |lang|
         fname = "#{File.dirname(base_file)}/#{lang}.yml"
-        siblings[lang] = fname if @yamls.include?(fname)
+        unless File.exist?(fname)
+          open(fname, 'w+') do |f|
+            f.write({lang.to_s => nil}.ya2yaml)
+          end
+        end
+        siblings[lang] = fname
       end
       # merge
       siblings.each do |lang, current_file|
@@ -63,7 +68,8 @@ class Lolita::LocaleMerger
           unless sibling_file == current_file
             sibling_yaml_root = YAML::parse_file(sibling_file)
             sibling_data = sibling_yaml_root.transform
-            current_data[lang.to_s].yaml_merge!(sibling_data[sibling_lang.to_s], :blank_new_values => true, :overwrite => false)
+            current_data[lang.to_s] = {} unless current_data[lang.to_s].is_a?(Hash)
+            current_data[lang.to_s].yaml_merge!(sibling_data[sibling_lang.to_s] || {}, :blank_new_values => true, :overwrite => false)
           end
         end
 
