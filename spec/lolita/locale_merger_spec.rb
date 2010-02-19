@@ -13,17 +13,24 @@ def fetch_keys h
 end
 
 describe Lolita::LocaleMerger do
+  before :each do
+    @sample_data = File.expand_path(File.dirname(__FILE__) + '/../sample data')
+  end
+  
   it "should merge locales" do
-    original_lv_locale_file = File.expand_path(File.dirname(__FILE__) + '/../sample data/lv.yml')
-    original_en_locale_file = File.expand_path(File.dirname(__FILE__) + '/../sample data/en.yml')
-    FileUtils.copy(original_lv_locale_file, "lv.yml")
-    FileUtils.copy(original_en_locale_file, "en.yml")
-    merger = Lolita::LocaleMerger.new(["./lv.yml","./en.yml"],[:lv,:en])
+    original_lv_locale_file = File.expand_path("#{@sample_data}/lv.yml")
+    original_en_locale_file = File.expand_path("#{@sample_data}/en.yml")
+    test_dir = "#{RAILS_ROOT}/tmp/locale_test"
+    Dir.mkdir(test_dir)
+    FileUtils.copy(original_lv_locale_file, "#{test_dir}/lv.yml")
+    FileUtils.copy(original_en_locale_file, "#{test_dir}/en.yml")
+    merger = Lolita::LocaleMerger.new(test_dir,[:lv,:en])
     merger.merge
-    lv_data = YAML::parse_file("lv.yml").transform["lv"]
-    en_data = YAML::parse_file("en.yml").transform["en"]
-    File.delete("lv.yml")
-    File.delete("en.yml")
+    lv_data = YAML::parse_file("#{test_dir}/lv.yml").transform["lv"]
+    en_data = YAML::parse_file("#{test_dir}/en.yml").transform["en"]
+    File.delete("#{test_dir}/lv.yml")
+    File.delete("#{test_dir}/en.yml")
+    Dir.delete(test_dir)
     lv_keys = fetch_keys lv_data
     en_keys = fetch_keys en_data
 
@@ -37,5 +44,40 @@ describe Lolita::LocaleMerger do
     en_data["articles"]["single"]["songs"].should == ""
     en_data["articles"]["show"]["di vi"].should == ""
     
+  end
+
+  it "should return correct status report" do
+    merger = Lolita::LocaleMerger.new(@sample_data,[:ru,:lt])
+    out = merger.status_report
+    out.strip.gsub("\n","").gsub("\t","").gsub(" ","").should == %^
+    locales
+      [E] ru.articles.show.di vi
+      [E] ru.articles.show.footer
+      [E] ru.articles.single.items
+      [E] ru.articles.single.songs
+    locales
+      [E] lt.articles.index.foo
+    ^.strip.gsub("\n","").gsub("\t","").gsub(" ","")
+  end
+
+  it "should create cached status file" do
+    merger = Lolita::LocaleMerger.new(@sample_data,[:ru,:lt])
+    File.delete(merger.locales_status) if File.exists?(merger.locales_status)
+    merger.status_report_cached.should == merger.status_report
+    before_recreate = Time.now
+    merger.status_report_cached
+    File.stat(merger.locales_status).atime.should < before_recreate
+    File.delete(merger.locales_status)
+    File.delete(merger.locales_zip)
+  end
+
+  it "should create valid zip file" do
+    merger = Lolita::LocaleMerger.new(@sample_data,[:ru,:lt])
+    merger.create_locale_zip
+    Zip::Archive.open(merger.locales_zip) do |ar|
+      ar.num_files.should == 2
+    end
+    File.delete(merger.locales_status)
+    File.delete(merger.locales_zip)
   end
 end

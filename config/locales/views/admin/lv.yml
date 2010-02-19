@@ -34,3 +34,12 @@ lv:
           write: Rakstīt
           change: Mainīt
           destroy: Dzēst
+      locale:
+        index:
+          title: Publiskie tulkojumi
+          download_title: Lejupielādē
+          download_text: "Šeit tev ir iespēja lejupielādēt <code>locales.zip</code> datni,
+            kurā ietilps locales mape ar visiem tulkojamiem failiem un <code>status.txt</code>,
+            kurā norādītas vietas, kuras vēl nav iztulkotas. Pēc iztulkošanas datne jānosūta programmētājam, kurš to atkal pievienos projektam"
+          status_title: Status
+          status_text: Šeit redzami visi faili, kuriem trūkst kādi tulkojumi. Simbols <code>[E]</code> pie atslēgas norāda, ka šī atslēga ir tukša.

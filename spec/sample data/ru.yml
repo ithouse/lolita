@@ -1,0 +1,16 @@
+--- 
+ru:
+  articles: 
+    index: 
+      foo: "Bar :)"
+    list: 
+      rss: "RSS feed"
+    show: 
+      ? "di vi"
+      : ""
+      footer: ""
+      title: "Hi, what's up duck"
+    single: 
+      items: 
+        - ""
+      songs: ""

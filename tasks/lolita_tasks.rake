@@ -135,7 +135,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
             :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
           ).move_to_child_of(first_item)
         }
-        
+        Admin::Menu.insert("Admin", :last, "Translations", "/admin/locale/index").move_to_child_of(first_item)
         [[3435,true],[1819,false],[5556,false]].each{|language|
           Admin::Language.create!(:globalize_languages_id=>language.first,:is_base_locale=>language.last)
         }
@@ -155,12 +155,20 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
     t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/../spec/spec.opts\""]
   end
 
-  desc "Merge YAML locale files"
-  task :merge_locales => :environment do
-    if prompt("Are you shure to merge locales? (y/n)")
+  namespace :locales do
+    desc "Merge YAML locale files"
+    task :merge => :environment do
+      if prompt("Are you shure to merge locales? (y/n)")
+        merger = Lolita::LocaleMerger.new
+        merger.merge
+        puts "[done]"
+      end
+    end
+
+    desc "Show status of YAML locale files"
+    task :status => :environment do
       merger = Lolita::LocaleMerger.new
-      merger.merge
-      puts "[done]"
+      puts merger.status_report
     end
   end
 
