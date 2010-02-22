@@ -3,7 +3,7 @@ require 'zipruby'
 
 class Lolita::LocaleMerger
 
-  attr_reader :locales_zip, :locales_status
+  attr_reader :locales_zip, :locales_status, :yamls
   
   # Merges Rails locale files
   # <b>Don't use this class directly use Rake tasks insted:</b>
@@ -18,7 +18,7 @@ class Lolita::LocaleMerger
   #  
   def initialize yamls_dir = nil, locales = nil
     @yamls_dir= yamls_dir || "#{RAILS_ROOT}/config/locales"
-    @yamls    = Dir.glob("#{@yamls_dir}/**/**/#{I18n.default_locale}.yml")
+    @yamls    = sanitize_yamls Dir.glob("#{@yamls_dir}/**/**/*.yml")
     @locales  = locales || I18n.available_locales
     @log_data = []
     @locales_status = "#{RAILS_ROOT}/tmp/#{RAILS_ENV}_lolita_locale_status"
@@ -154,12 +154,13 @@ class Lolita::LocaleMerger
       write_and_return_status
     end
   end
-  
+
+  # generates ZIP file with locales and status file in /tmp/<RAILS_ENV>_lolita_locale.zip
   def create_locale_zip
     File.delete(@locales_zip) if File.exists?(@locales_zip)
     Zip::Archive.open(@locales_zip, Zip::CREATE) do |ar|
       ar.add_buffer('status.txt', status_report_cached)
-      Dir.glob(@yamls).each do |path|
+      Dir.glob(Dir.glob("#{@yamls_dir}/**/**/*.yml")).each do |path|
         unless path =~ /~$/
           new_path = "locales/" + (path != @yamls_dir ? path.split("#{File.basename(@yamls_dir)}/").last : "")
           if File.directory?(path)
@@ -168,6 +169,31 @@ class Lolita::LocaleMerger
             ar.add_file(new_path, path)
           end
         end
+      end
+    end
+  end
+
+  # clones one locale to another
+  def clone from, to
+    @yamls.each do |yaml|
+      old_file = yaml.gsub(/\/([A-Za-z\-]+)\.yml/,"/#{from}.yml")
+      new_file = yaml.gsub(/\/([A-Za-z\-]+)\.yml/,"/#{to}.yml")
+      if File.exist?(old_file)
+        old_yaml_root = YAML::parse_file(old_file)
+        old_data = old_yaml_root.transform
+        new_data = {to.to_s => yaml_merge(
+            {}, # what
+            old_data[from.to_s], # with who
+            :blank_new_values => false,
+            :overwrite => false,
+            :locale_path => [to.to_s],
+            :level => 0
+          )}
+        open(new_file, 'w+') do |f|
+          f.write new_data.ya2yaml # unicode aware
+        end
+      else
+        log "[warn] File #{old_file} doesn't exists"
       end
     end
   end
@@ -187,9 +213,21 @@ class Lolita::LocaleMerger
     str
   end
 
-
-
   def update_options options, k
     options.merge({:locale_path => options[:locale_path].clone << k, :level => options[:level]+1})
   end
+
+  # return Array with yamls, each dir contains only one yaml
+  def sanitize_yamls yamls
+    _yamls = []
+    used_dirs = []
+    yamls.each do |yaml|
+      unless used_dirs.include?(File.dirname(yaml))
+        used_dirs << File.dirname(yaml)
+        _yamls << yaml
+      end
+    end
+    _yamls
+  end
+
 end

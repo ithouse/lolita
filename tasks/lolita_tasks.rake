@@ -158,6 +158,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
   namespace :locales do
     desc "Merge YAML locale files"
     task :merge => :environment do
+      $stdout.flush
       if prompt("Are you shure to merge locales? (y/n)")
         merger = Lolita::LocaleMerger.new
         merger.merge
@@ -167,9 +168,25 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
 
     desc "Show status of YAML locale files"
     task :status => :environment do
+      $stdout.flush
       merger = Lolita::LocaleMerger.new
       puts merger.status_report
     end
+
+    desc "Clones locale from one to another locale"
+    task :clone => :environment do
+      $stdout.flush
+      from = prompt(:title=>"Clone from: (#{I18n.available_locales.join("/")})",:expected=>nil)
+      to   = prompt(:title=>"Clone to:",:expected=>nil)
+      unless (I18n.available_locales.include?(from.to_sym) && to =~ /^[A-Za-z\-]+$/)
+        puts "[error] Invalid input languages"
+      else
+        merger = Lolita::LocaleMerger.new
+        merger.clone from, to
+        puts "[done]"
+      end
+    end
+  
   end
 
   # Initialize database schema information table

@@ -75,9 +75,19 @@ describe Lolita::LocaleMerger do
     merger = Lolita::LocaleMerger.new(@sample_data,[:ru,:lt])
     merger.create_locale_zip
     Zip::Archive.open(merger.locales_zip) do |ar|
-      ar.num_files.should == 2
+      ar.num_files.should == I18n.available_locales.size + 2
     end
     File.delete(merger.locales_status)
     File.delete(merger.locales_zip)
+  end
+
+  it "should clone one locale to another" do
+    merger = Lolita::LocaleMerger.new(@sample_data,[:ru,:lt])
+    merger.clone :lv, :ee
+    ee_yml = File.join(@sample_data,"ee.yml")
+    File.exist?(ee_yml).should be_true
+    ee_data = YAML::parse_file(ee_yml).transform["ee"]
+    File.delete(ee_yml)
+    ee_data["articles"]["list"]["rss"].should == "RSS barotnes"
   end
 end
