@@ -75,7 +75,7 @@ describe Lolita::LocaleMerger do
     merger = Lolita::LocaleMerger.new(@sample_data,[:ru,:lt])
     merger.create_locale_zip
     Zip::Archive.open(merger.locales_zip) do |ar|
-      ar.num_files.should == I18n.available_locales.size + 2
+      ar.num_files.should == 6
     end
     File.delete(merger.locales_status)
     File.delete(merger.locales_zip)

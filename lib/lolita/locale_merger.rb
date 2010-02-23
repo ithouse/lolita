@@ -160,6 +160,10 @@ class Lolita::LocaleMerger
     File.delete(@locales_zip) if File.exists?(@locales_zip)
     Zip::Archive.open(@locales_zip, Zip::CREATE) do |ar|
       ar.add_buffer('status.txt', status_report_cached)
+      # if you are using translate_routes plugin
+      if File.exists?("#{RAILS_ROOT}/config/i18n-routes.yml")
+        ar.add_file('i18n-routes.yml',"#{RAILS_ROOT}/config/i18n-routes.yml")
+      end
       Dir.glob(Dir.glob("#{@yamls_dir}/**/**/*.yml")).each do |path|
         unless path =~ /~$/
           new_path = "locales/" + (path != @yamls_dir ? path.split("#{File.basename(@yamls_dir)}/").last : "")
@@ -175,20 +179,14 @@ class Lolita::LocaleMerger
 
   # clones one locale to another
   def clone from, to
+    merge
     @yamls.each do |yaml|
       old_file = yaml.gsub(/\/([A-Za-z\-]+)\.yml/,"/#{from}.yml")
       new_file = yaml.gsub(/\/([A-Za-z\-]+)\.yml/,"/#{to}.yml")
       if File.exist?(old_file)
         old_yaml_root = YAML::parse_file(old_file)
         old_data = old_yaml_root.transform
-        new_data = {to.to_s => yaml_merge(
-            {}, # what
-            old_data[from.to_s], # with who
-            :blank_new_values => false,
-            :overwrite => false,
-            :locale_path => [to.to_s],
-            :level => 0
-          )}
+        new_data = {to.to_s => old_data[from.to_s]}
         open(new_file, 'w+') do |f|
           f.write new_data.ya2yaml # unicode aware
         end
