@@ -11,7 +11,7 @@ module Lolita
       # Globalize.current_locale from <em>params[:locale]</em> or set default locale.
       def set_locale 
         session[:locale]=Lolita.config.i18n :language_code || Admin::Language.find_base_language.short_name unless session[:locale]
-        unless system_user?
+        unless (current_user && current_user.is_a?(Admin::SystemUser))
           switch_locale=params[:locale]
           if switch_locale && I18n.available_locales.include?(switch_locale.to_sym)
             session[:locale]=switch_locale
