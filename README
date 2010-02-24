@@ -8,6 +8,9 @@ Requires
   - rails >= 2.3.5
   - rmagick >= 2.11
   - erubis >= 2.6.5
+  - ya2yaml >= 0.26
+  - factory_girl
+  - zipruby >= 0.3.6
 
 Example
 =======

@@ -23,26 +23,8 @@ module Lolita
     module InstanceMethods
       protected
 
-      # Determine whether user is accessing public area or not.
-      def public_user?
-        Admin::User.area==:public
-      end
-
-      # Determine whether user is accessing system area.
-      def system_user?
-        Admin::User.area==:system && Admin::User.current_user
-      end
-
-      # Determine whether user is accessing public system area.
-      def public_system_user?
-        Admin::User.area==:public_system && Admin::User.current_user
-      end
-
-      # Determine whether user is logged in by checking is there existing user
-      # in current session.
-      # Use this to check status of user, because this method uses #current_user
-      # method that load user only once per request, so there wouldn't be any
-      # unnecessarily request to DB.
+      # Returns true or false if the user is logged in.
+      # Preloads @current_user with the user model if they're logged in.
       def logged_in?
         !current_user.nil?
       end
@@ -226,7 +208,7 @@ module Lolita
         end
 
         if !allowed
-          if system_user?
+          if current_user.is?(Admin::SystemUser)
             to_user_login_screen
           else
             to_login_screen
@@ -268,7 +250,7 @@ module Lolita
           (block_given?)? yield: return
         else
           unless self.redirect_forbidden_actions_to
-            if system_user?
+            if current_user.is_a?(Admin::SystemUser)
               to_user_login_screen
             else
               to_login_screen
