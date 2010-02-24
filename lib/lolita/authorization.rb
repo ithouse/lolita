@@ -1,5 +1,11 @@
 # coding:utf-8
 module Lolita
+  # Add methods to check current user state and other ones that allow or restrict
+  # access to different areas for different users.
+  # Those methods are available in controllers and views as well.
+  # There are #InstanceMethods that are common for views and controllers and
+  # #ControllerInstanceMethods and #ControllerClassMethods that are only available
+  # in controllers.
   module Authorization
     def self.included(base)
       base.class_eval{
@@ -13,58 +19,111 @@ module Lolita
       end
     end
 
+    # Common methods for controllers and views all methods are protected.
     module InstanceMethods
       protected
-      
+
+      # Determine whether user is accessing public area or not.
       def public_user?
         Admin::User.area==:public
-        #!current_user.is_a? Admin::SystemUser if logged_in?
       end
 
+      # Determine whether user is accessing system area.
       def system_user?
         Admin::User.area==:system && Admin::User.current_user
       end
 
+      # Determine whether user is accessing public system area.
       def public_system_user?
         Admin::User.area==:public_system && Admin::User.current_user
       end
-      # Returns true or false if the user is logged in.
-      # Preloads @current_user with the user model if they're logged in.
+
+      # Determine whether user is logged in by checking is there existing user
+      # in current session.
+      # Use this to check status of user, because this method uses #current_user
+      # method that load user only once per request, so there wouldn't be any
+      # unnecessarily request to DB.
       def logged_in?
         !current_user.nil?
       end
 
-      #-------------------#
-      # Izmaiņas
-      # - ar current_user pieglabājam gan usera id gan klasi, jo ir iespējami dažādi useri
-      #
-      # FIXME: login_required izmanto Admin::User, vai tā ir ok?
-      #-------------------#
-
-      # Accesses the current user from the session.
+      # Return current user object.
+      # Use this instead of direct use of _session_ user information.
+      # _Session_ stores user class and user ID not user object itself.
       def current_user
         return @current_user if @current_user
         @current_user = (session[:user] && session[:user][:user_class].find_by_id(session[:user][:user_id])) || nil
         @current_user
       end
 
+      # Setter method for +current_user+.
+      # With this method you can set any other user as current user instead of
+      # using _sesssion_ provided one.
       def current_user=(user)
         @current_user=user
       end
     end
 
+    # Controller class method for authorization.
+    # There are two main method for using in controllers #allow and #access_control.
     module ControllerClassMethods
       attr_reader :roles, :permissions
       @@default_actions=[
         [:"actions.list","list"],
         [:"actions.new","new"]
       ]
+      # This method can be used in any controller and it gives before filter
+      # that checks accessability of eacy request method and controller for
+      # user that request for that method.
+
+      # Special case is when only String is passed as first argument, so it will
+      # be used instead of <i>:roles</i> array, as array with only one role.
+      # Method accepts following configuration:
+      # * <tt>:roles</tt> - Array of role names that can access controller.
+      # * <tt>:public</tt> - Array of methods names that can be available for
+      #                      all users and for those who not logged in at all.
+      # * <tt>:public_system</tt> - Array of methods names that can be available
+      #                      for all users but not for those who isn't logged in.
+      # * <tt>:system</tt> - Array of methods names that can be available for all
+      #                      system users and only for system users.
+      # * <tt>:actions</tt> - Hash of methods as keys that can be accesses in
+      #                       different way as usually when values are, not working when
+      #                       <i>:roles</i> is passed:
+      #   * <tt>Symbol</tt> - Type of permission, only users with that kind of
+      #                       permission for controller can access that method.
+      #                       Allowed permissions is:
+      #     * <tt>:read</tt> - Only users who have reading access to controller.
+      #     * <tt>:write</tt> - Users who have writing access to controller.
+      #     * <tt>:update</tt> - Users who have updating access to controller.
+      #     * <tt>:delete</tt> - Users who have deleting access to controller.
+      #     * <tt>:any</tt> - Allow to access to users who have any type of access to controller.
+      #     * <tt>:all</tt> - Users who have all accesses to controller.
+      #   * <tt>String</tt> - Role name, only users with this role can access action.
+      #   * <tt>Array</tt> - Array can contain Symbols of accesses or Strings with role
+      #                      names, so if user match any of those than access to
+      #                      that action will be granted.
+      #   Administrator always can access all actions.
+      # ====Example
+      #     class Administration < ApplicationController
+      #       allow Admin::Role.admin #=> only admin can access any action of this controller
+      #     end
+      #     ...
+      #     allow :roles=>["editor","manager"] #=> only these roles can access action
+      #     allow :public=>["index"], :system=>["destroy"]
+      #       #=> anyone can access <i>index</i> action by only system users can access <i>destroy</i> action.
+      #     allow "editor", :public=>[:post] #=> only editor can access all actions, but
+      #                                          anyone can access <i>post</i> action.
+      #     allow :public=>[:index], :actions=>{
+      #       :update=>:update,
+      #       :create=>:write,
+      #       :change=>[:update,:write,"editor"]
+      #       :destroy=>:all
+      #     } #=> <i>index</i> is available for everyone, <i>update</i> is available only
+      #     for those users who have :update access to this controller _create_ only for
+      #     writing access, but change for those users who have :update, :write access or
+      #     has role "editor", and finnaly _destroy_ action is available for users who have
+      #     all permissions to this controller.
       def allow *args
-        if Lolita.config.system :multi_domain_portal
-          before_filter do |controller|
-            controller.sso
-          end
-        end
         attr_accessor :roles
         attr_accessor :permissions
         attr_accessor :public_actions
@@ -82,7 +141,7 @@ module Lolita
         end
       end
 
-      def menu_actions actions={}
+      def menu_actions actions={} # :nodoc:
         if actions[:public].is_a?(Hash)
           @public_actions=actions[:public].to_a.collect!{|row|[row.last,row.first]}
         else
@@ -95,18 +154,26 @@ module Lolita
         end
       end
 
-      def default_actions
+      def default_actions # :nodoc:
         @@default_actions
       end
 
-      def system_actions
+      def system_actions # :nodoc:
         @system_actions || []
       end
 
-      def public_actions
+      def public_actions # :nodoc:
         @public_actions || []
       end
 
+      # Use this method to forbid or allow access for specific actions.
+      # Following arguments are accepted:
+      # * <tt>:included</tt> - Deprecated don't use.
+      # * <tt>:excluded</tt> - Array of actions names to forbid being seen.
+      # * <tt>:redirect_forbidden_actions_to</tt> - Options for redirecting when
+      #                        access to action is forbiden. See #redirect_to for details.
+      # ====Example
+      #     access_control :exclude=>[:index], :redirect_forbiden_actions_to=>{:action=>"list"}
       def access_control options={}
         attr_accessor :included_actions
         attr_accessor :excluded_actions
@@ -127,15 +194,7 @@ module Lolita
         end
       end
       private
-      #with access_controll you can manage accessability of controller methods
-      #this is simple way to allow or denay
-
-      # Kontrolierī var norādīt vienu lomu vai vairākas un pārējos parametrus
-      # Vienu lomu norādot to var rakstīt kā:
-      #   allow "editor"
-      # norādot vairākas lomas
-      #   allow :roles=>["editor","blogger"]
-      #
+      
       def get_roles_and_options args
         args=args[0].is_a?(Array) ? args[0] : args
         if args[0] && args[0].is_a?(Hash)
@@ -150,45 +209,11 @@ module Lolita
     end
 
     module ControllerInstanceMethods
-      # Nosaka vai lietotājam ir pieeja norādītajam kontolierim
-      #
-      # Example:
-      #          <tt>allow '/cms/news'  -> true or yield, ja current_user ir pieeja news</tt>
-      # def allowed controller
-      #   controller=model_from_controller controller
-      #  if is_admin? || has_permission?(false,controller)
-      #    block_given? ? yield : return
-      #  else
-      #     false
-      #   end
-      #  end
-      # Nodrošina piekļuvi kontrolierim vai metodei vai atseviškai koda daļai.
-      # Var izsaukt kā funkciju vai ar bloku, gadījumā ja piekļuve liegt tad pāradresē
-      # uz pieteikšanās logu.
-      #
-      # Parametri:
-      #   :public=>   Array ar publiski pieejamām metodēm
-      #   :except=> Array ar metodēm, kurām neatļaut piekļuvi izņēmums - "system_admin"
-      #   :only=>     Array ar metodēm, TIKAI kurām ir atļauta piekļuve izņēmums - "system_admin"
-      #   :roles=>     Array ar lomām, kurām ir piekļuve modulim
-      #   :actions=> Hash ar metodēm(atslēgas) un pieejas šai metodei (sk. Admin::User.can_do_special_action_in_controller?)
-      # Example:
-      #   Pieeja kontrolierim
-      #          <tt>allow "system_admin" -> pieeja tikai system_admin visam kontrolierim</tt>
-      #          <tt>allow "system_admin",:public=>[:login] ->
-      #                 pieeja tikai system_admin visam kontrolierim, izņēmums view funkcija
-      #                 pieejama vieiem
-      #          </tt>
-      #          <tt>allow :only=>[:show] -> pieeja visām lomām ar piekļuvi šim kontrolierim funkcijai 'show'</tt>
-      #          <tt>allow do
-      #               put "Atļauts"
-      #              end
-      #            -> "Atļauts" redzams tikai, ja lomai piekļuve kontrolierim un lietotājam ir tāda loma
-      #          </tt>
-      def allow
+      
+      def allow # :nodoc:
         unless params[:action].to_sym==:allow
           flash[:notice]=nil if flash[:notice]==t(:"flash.access.denied") || flash[:notice]==t(:"flash.need to login")
-         # login_from_cookie unless logged_in?
+          # login_from_cookie unless logged_in?
           allowed=Admin::User.authenticate_in_controller({
               :action=>params[:action].to_sym,
               :controller=>params[:controller],
@@ -197,7 +222,7 @@ module Lolita
               :roles=>self.roles
             })
           session[:return_to]=params if Admin::User.area==:public && request.get? && !params[:format]
-          after_allow if allowed && self.respond_to?("after_allow",true)
+          after_allow if allowed && self.respond_to?("after_allow",true) # just for managed
         end
 
         if !allowed
@@ -215,6 +240,7 @@ module Lolita
         end
       end
 
+      # Redirect to <b>home_url</b> target depends on routes configuration.
       def to_login_screen
         return unless self.respond_to?( :redirect_to )
         flash[:notice] = t(:"flash.need to login")
@@ -227,6 +253,7 @@ module Lolita
         return false
       end
 
+      # Render error 500 template and show notice.
       def to_user_login_screen
         return unless self.respond_to?( :redirect_to )
         flash[:notice] = t(:"flash.access denied")
@@ -234,7 +261,7 @@ module Lolita
         render :template=>"errors/error_500", :layout=>false
       end
 
-      def access_control
+      def access_control # :nodoc:
         included=is_action_in?(params[:action],self.included_actions)
         excluded=is_action_in?(params[:action],self.excluded_actions)
         if (included && !excluded) || (!excluded && self.included_actions.empty?)
@@ -247,7 +274,7 @@ module Lolita
               to_login_screen
             end
           else
-            redirect[:is_ajax]=params[:is_ajax]
+            redirect[:is_ajax]=request.xhr?
             redirect_to(self.redirect_forbidden_actions_to)
           end
         end
@@ -255,10 +282,14 @@ module Lolita
 
       protected
 
-      # Store the given user in the session.
+      # Store given user in session and set <b>current_user</b> variable.
       def set_current_user(new_user)
-        session[:user] = (new_user.nil? || new_user.is_a?(Symbol)) ? nil : {:user_id => new_user.id, :user_class => new_user.class}
-        @current_user = new_user
+        if  new_user.kind_of?(ActiveRecord::Base)
+          session[:user] = {:user_id => new_user.id, :user_class => new_user.class}
+          @current_user = new_user
+        else
+          reset_current_user
+        end
       end
 
       def reset_current_user

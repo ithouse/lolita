@@ -437,7 +437,7 @@ module Extensions::SingleFieldHelper
       ^
     }
     # youtube
-    url = url.gsub(/(http:\/\/)?(www\.)?youtube\.com\/(watch\?v=([^&\s\/]+)|v\/([^&\s\/]+))[^\s\/]+\/?/){|m|
+    url = url.gsub(/(http:\/\/)?(www\.)?youtube\.com\/(watch\?v=([^&\s\/]+)|v\/([^&\s\/]+))[^\s\/]*\/?/){|m|
       code = $4 || $5
       %^
       <p>

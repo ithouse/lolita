@@ -76,16 +76,8 @@ function SimpleRequest(r_object,r_config){
     }
 }
 function construct_params(params){
-    if(params && params.constructor===Object){
-        params.is_ajax=true
+    if((params && params.constructor===Object) || !params){
         params=json_to_params(params)
-    }else if(!params){
-        params={
-            is_ajax:true
-        }
-        params=json_to_params(params)
-    }else{
-        params+="&is_ajax=true"
     }
     return params
 }
@@ -223,7 +215,7 @@ function add_very_small_loading(id,container_tag){
     container.style.width="100%"
     container.style.textAlign="right"
     var img=document.createElement("img")
-    img.src="/images/cms/small-ajax-loader.gif"
+    img.src="/lolita/images/cms/small-ajax-loader.gif"
     img.alt=""
     container.appendChild(img)
     el.innerHTML=""
@@ -268,38 +260,6 @@ function after_ajax_request(status){
     try{
         ITH.Cms.wait.hide();
     }catch(err){}
-}
-function changeAccessPremission(id,access_id,role_id,permission){
-    $(id).change(function(e){
-        d="role="+role_id+"&access="+access_id+"&permissions["+permission+"]="+$(this).attr("checked")
-        $.ajax({
-            url:"/admin/access/change_permission",
-            data:d,
-            type:"post"
-        })
-    })
-}
-function addAccessToggle(id,access_id,role,role_id,prefix){
-    $(id).change(function(e){
-        var actions=['read','write','update','delete'];
-        var is_checked=$(this).attr("checked")
-        for(var i=0;i<actions.length;i++){
-            var temp_id="#"+prefix+access_id+"-"+role_id+actions[i]
-            var $obj=$(temp_id);
-            if($obj.length){
-                $obj.attr("checked",is_checked)
-                $obj.attr("disabled",!is_checked)
-            }
-        }
-        $.ajax({
-            url:"/admin/access/"+(is_checked ? "add_role" : "remove_role"),
-            type:"post",
-            data:{
-                access:access_id,
-                role:role
-            }
-        })
-    })
 }
 
 function setDeleteFormParams(){
@@ -486,4 +446,15 @@ function hide_notice(){
         },350,"linear",function(){
         $n.hide();
     })
+}
+function ajax_paginator(url,container,params){
+  $.ajax({
+    url:url,
+    type:"GET",
+    dataType:"html",
+    data:params,
+    success:function(response){
+      $(container).html(response)
+    }
+  })
 }

@@ -1,0 +1,32 @@
+<div class="admin-list-row">
+  <tr>
+    <td>
+      <% if list_type==:roles %>
+        <%= list_link(
+          :title=>role.name,
+          :paging=>false,
+          :controller=>"/admin/role",
+          :id=>role.id,:params=>{:tab=>:accesses},
+          :html=>{:class=>"admin-record"}) %>
+      <% else %>
+        <%= list_link(
+          :title=>table_title(access.name),
+          :paging=>false,
+          :controller=>"/admin/access",
+          :id=>access.id,:html=>{:class=>"admin-record"}
+        )%>
+      <% end %>
+    </td>
+    <td>
+      <input class="admin-new-button"
+             type="checkbox" <%= change_main_relations(role,access) %>
+             onchange="Administration.toggle_permissions(this,<%=access.id%>,<%=role.id%>,'<%=add_role_access_path(:role_id=>role.id,:id=>access.id)%>','<%= remove_role_access_path(:role_id=>role.id,:id=>access.id) %>')"
+      />
+    </td>
+    <% change_action_relations role,access do |element|%>
+      <td>
+        <%= element.html_safe!%>
+      </td>
+    <%end%>
+  </tr>
+</div>

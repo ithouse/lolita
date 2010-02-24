@@ -2,7 +2,7 @@
 module Extensions::ReportsHelper
   def report_menu config, options={}
     content_tag("div",
-      "#{"Saglabāt datus".t}:"+
+      "Save data:"+
       report_links(config,options),
     :class=>"fr")
   end

@@ -111,7 +111,7 @@ ITH.ToggableElement.prototype={
     },
     request:function(){
         if(this.configuration.small_loading)add_very_small_loading(this.load_target)
-        simple_yui_request(this.object,this.request_config)
+        SimpleRequest(this.object,this.request_config)
         return false;
     },
     get_objects:function(e){

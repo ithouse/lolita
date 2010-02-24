@@ -743,9 +743,9 @@ span.splitter{
   text-align: center;
   padding:1px;
   color:black;
-  background:url("../images/cms/topmenu_bg.png") repeat-x;
+  background:url("/lolita/images/cms/topmenu_bg.png") repeat-x;
 }
-.current_page_number{
+.current_page_number, a.current .page_number{
   float:left;
   display:block;
   width:auto;

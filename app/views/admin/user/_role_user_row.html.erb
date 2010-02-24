@@ -1,0 +1,10 @@
+<div class="admin-list-row">
+  <tr><td style="width:100px;">
+      <%= list_link :title=>title,:url=>url,:paging=>false,:html=>{:class=>"admin-record"} %>
+    </td><td>
+      <%= check_box_tag title, title, user.has_role?(role),
+        :onchange=>"Administration.toggle_roles(this,'#{add_user_role_url(:user_id=>user.id,:id=>role.id)}','#{remove_user_role_url(:user_id=>user.id,:id=>role.id)}','#{form_authenticity_token}')"
+    %>
+    </td>
+  </tr>
+</div>

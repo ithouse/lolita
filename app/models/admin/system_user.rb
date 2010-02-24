@@ -1,3 +1,5 @@
+# Default user for #Lolita. This class is subclass of Admin::User and
+# provide class with some validations and default user has photo too.
 class Admin::SystemUser < Admin::User
   set_table_name :admin_users
   validates_presence_of     :login
@@ -9,6 +11,7 @@ class Admin::SystemUser < Admin::User
 
   has_one     :photo, :as=>:pictureable, :dependent=>:destroy,:class_name=>"Media::ImageFile"
 
+  # Deprecated! Determine whether user ir real.
   def is_real_user?
     real_user=Admin::SystemUser.find_by_login(self.login)
     real_user==self

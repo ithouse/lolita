@@ -1,26 +1,21 @@
-<%#
-# SIA Lolita
-# Artūrs Meisters
-%>
-<%#
-# SIA Lolita
-# Artūrs Meisters
-%>
+<script type="text/javascript">
+  loadjscssfile("/lolita/javascripts/cms/administration.js?<%=rand(1000)%>","js")
+</script>
 <table summary="user list">
   <tr>
-    <th class="black"><%=t(:"accesses.title")%></th>
+    <%= list_header_cell :width=>450, :title=>t(".title") %>
   </tr>
   <% for access in @page %>
     <tr>
       <td>
-        <%= toggable_link "access_subtree_#{access.id}",:title=>table_title(access.name),:opened=>access==@active_access,:action=>:all_access_roles,:controller=>"/admin/role",:id=>access.id %>
+        <%= toggable_link "access_subtree_#{access.id}",:title=>table_title(access.name),:opened=>access==@active_access,:url=>current_roles_access_path(:id=>access.id) %>
         <div id="access_subtree_<%=access.id%>">
           <% if @active_access==access %>
-            <%= render :partial=>'/admin/role/all_access_roles',:locals=>{:access=>@active_access}%>
+            <%= render :partial=>'index',:locals=>{:access=>@active_access}%>
           <% end %>
         </div>
       </td>
     </tr>
-    
   <% end %>
 </table>
+<%= cms_pages list%>

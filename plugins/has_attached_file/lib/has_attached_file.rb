@@ -72,7 +72,8 @@ module Lolita
         configure_attached_picture(name,options)
         self.has_one name, options
       end
-      # see has_attached_image_file for param explanation
+
+      # Create has_many relation, for arguments detail see #has_attached_image_file
       def has_attached_image_files name, options={}
         configure_attached_picture(name,options)
         self.has_many name, options

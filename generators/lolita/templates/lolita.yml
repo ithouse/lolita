@@ -4,7 +4,6 @@ development:
     start_page_url: /admin/user/list
     cms_name: Lolita CMS
     cms_title: Lolita CMS
-    multi_domain_portal: false
     domain_depth: 0
     items_per_page: 20
     public_user_model: "Admin::PublicUser"

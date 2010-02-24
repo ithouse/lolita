@@ -6,6 +6,9 @@
 # * update_memorized_files(memory_id,parent) - can be used to update temporary
 #   multimedia object with real parent id linked with memory_id.
 #   See implementation in #Media::FileBase#update_memorized_files
+
+# When new media type is created than that class must extend Media::Base so
+# it can work right like Lolita Media class.
 class Media::Base < Cms::Base
   self.abstract_class = true
 

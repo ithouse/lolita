@@ -1,4 +1,5 @@
-module Extensions::ImageFileExtensions
+#Deprecated!
+module Extensions::ImageFileExtensions # :nodoc:
   def main_image
     find(:first,:conditions=>["main_image=?",true])
   end

@@ -179,7 +179,7 @@ module Extensions::LinkHelper
     config[:paging]=config.has_key?(:paging) ? config[:paging] : true
     config[:title]||=t(:"actions.list")
     config[:action]="list"
-    config[:method]="POST"
+    config[:method]="GET"
     default_link(config).html_safe!
   end
 
@@ -215,7 +215,7 @@ module Extensions::LinkHelper
     options[:loading]=false
     options[:container]||=target_id
     options[:method]="GET"
-    options[:url]=url_for(:controller=>options[:controller] || params[:controller],:action=>options[:action] || params[:action],:id=>options[:id]) unless options[:simple]
+    options[:url]||=url_for(:controller=>options[:controller] || params[:controller],:action=>options[:action] || params[:action],:id=>options[:id]) unless options[:simple]
     options=options.delete_if{|key,value| [:controller,:action,:id].include?(key)}
     status={:small_loading=>true,:state=>options[:opened],:images=>["arrow_blue_s.gif","arrow_blue_e.gif"]}
     (image_tag("/lolita/images/#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:class=>"toggle-arrow",:id=>"#{target_id}_switch")+options[:title].to_s+

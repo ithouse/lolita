@@ -29,7 +29,7 @@
 # Render if +options+ is spefified :partial value.
 # * <tt>:partial</tt> - Render partial spefied as value.
 # * <tt>:locals</tt> - Locals for render
-class Admin::PublicUserController < ApplicationController
+class Admin::PublicUserController < Managed
 
   private
   
@@ -85,11 +85,6 @@ class Admin::PublicUserController < ApplicationController
   def remember_me(user)
     user.remember_me if !user.remember_token? && params[:user][:remember_user].to_i==1
     cookies[:auth_token] = { :value => user.remember_token , :expires => user.remember_token_expires_at }
-  end
-
-  def reset_sso #lai varētu šeit ielik vēl ko ja vajadzēs
-    Admin::Token.destroy_all(["user_id=? OR updated_at<?",current_user.id,1.day.ago]) if Lolita.config.system :multi_domain_portal && !is_local_request?
-    cookies.delete(:sso_token)
   end
   
   def send_registration_email user,header,text
