@@ -4,7 +4,7 @@
 class Media::GoogleMap < Media::Base
   set_table_name :media_google_maps
   belongs_to :mappable, :polymorphic=>true
-  acts_as_mappable if Lolita.config.system :geokit
+  acts_as_mappable if Lolita.config.system(:geokit) && self.respond_to?(:acts_as_mappable)
 
   # After parent is saved that calls this method and create
   # map points and link them with parent object, this is default Lolita media interface.

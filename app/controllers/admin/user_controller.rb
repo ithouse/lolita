@@ -36,7 +36,8 @@ class Admin::UserController < Managed
   # will not be performed. Finaly redirects to #login action.
   def logout
     if logged_in? 
-      self.current_user.forget_me 
+      self.current_user.forget_me
+      session[:return_to]=nil
       reset_session
       flash[:notice] = I18n.t(:"flash.logout success")
     end

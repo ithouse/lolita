@@ -203,12 +203,11 @@ module Lolita
               :permissions=>self.permissions,
               :roles=>self.roles
             })
-          session[:return_to]=params if Admin::User.area==:public && request.get? && !params[:format]
           after_allow if allowed && self.respond_to?("after_allow",true) # just for managed
         end
-
+        store_location if Admin::User.area != :public && request.get?
         if !allowed
-          if current_user.is?(Admin::SystemUser)
+          if current_user.is_a?(Admin::SystemUser)
             to_user_login_screen
           else
             to_login_screen
@@ -226,7 +225,7 @@ module Lolita
       def to_login_screen
         return unless self.respond_to?( :redirect_to )
         flash[:notice] = t(:"flash.need to login")
-        session[:return_to]=request.request_uri unless params[:format]
+        #session[:return_to]=request.request_uri unless params[:format]
         if request.xhr?
           render :text=>"Access denied!", :status => 401
         else
@@ -239,11 +238,12 @@ module Lolita
       def to_user_login_screen
         return unless self.respond_to?( :redirect_to )
         flash[:notice] = t(:"flash.access denied")
-        session[:return_to]=request.request_uri unless params[:format]
+        #session[:return_to]=request.request_uri unless params[:format]
         render :template=>"errors/error_500", :layout=>false
       end
 
       def access_control # :nodoc:
+        store_location
         included=is_action_in?(params[:action],self.included_actions)
         excluded=is_action_in?(params[:action],self.excluded_actions)
         if (included && !excluded) || (!excluded && self.included_actions.empty?)
@@ -276,6 +276,7 @@ module Lolita
 
       def reset_current_user
         session[:user]=nil
+        session[:return_to]=nil
         @current_user=nil
       end
       # Check if the user is authorized.
@@ -347,8 +348,9 @@ module Lolita
       # Redirect to the URI stored by the most recent store_location call or
       # to the passed default.
       def redirect_back_or_default(default)
-        session[:return_to] ? redirect_to(session[:return_to]) : redirect_to(default)
-        session[:return_to] = nil
+       return_to = session[:return_to] || (params[:return_to] && params[:return_to] =~ /^\// ? params[:return_to] : nil)
+       session[:return_to] = nil if session[:return_to]
+       return_to ? redirect_to(return_to) : redirect_to(default)
       end
 
       # When called with before_filter :login_from_cookie will check for an :auth_token

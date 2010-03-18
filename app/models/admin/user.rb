@@ -131,7 +131,7 @@ class Admin::User < Cms::Base
       set_area_and_user(:public,options[:user])
     elsif !action_in?(options,:all_public) && options[:user] && options[:user].is_a?(Admin::SystemUser)
       set_area_and_user(:system,options[:user])
-      options[:user].is_admin? || (action_in?(options,:all) || action_in(options,:system)) || (options[:user].has_access?(options))
+      options[:user].is_admin? || (action_in?(options,:all) || action_in?(options,:system)) || (options[:user].has_access?(options))
     elsif options[:user] && (action_in?(options,:all_public) || options[:user].has_access?(options))
       set_area_and_user(:public_system,options[:user])
     end
@@ -280,7 +280,7 @@ class Admin::User < Cms::Base
   def has_role role_name
     role=Admin::Role.get_role(role_name)
     unless self.has_role?(role)
-      self.roles<<role if (role.name==Admin::Role.admin && self.class.is_a?(Admin::SystemUser)) || role.name!=Admin::Role.admin
+      self.roles<<role if (role.name==Admin::Role.admin && self.class==Admin::SystemUser) || role.name!=Admin::Role.admin
     end
   end
 

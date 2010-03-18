@@ -23,7 +23,7 @@
         <% end %>
       <% end %>
     </div>
-    <% if (list_template[:controller] || params[:controller]).camelize.constantize.has_advanced_filter? %>
+    <% if (list_template[:object] || params[:controller]).camelize.constantize.has_advanced_filter? %>
       <%= raw advanced_filter(:filter=>list_template[:advanced_filter], :list_action=>list_template[:list_action]) %>
       <br class="clear" />
     <% elsif @config[:list][:filter] == :disabled %>
@@ -39,7 +39,7 @@
     <div id="form_list">
     <%= render :partial=>list_template[:partial],
       :object=>{
-      :controller=>list_template[:controller] || params[:controller],
+      :controller=>list_template[:object] || params[:controller],
       :container=>list_template[:container] || 'form_list',
       :action=>list_template[:action] || params[:action],
       :advanced_filter=>list_template[:advanced_filter],

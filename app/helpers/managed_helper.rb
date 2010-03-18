@@ -242,8 +242,8 @@ module ManagedHelper
 
   # Specific #Managed method, for _object_ create/edit form, that return escapted
   # JS to submit form when submit button clicked.
-  def form_submit_action
-    result="submitForm(\"#object_form\",\"#{@config[:on_complete].gsub(/'/,"\\\\\"")}\");"
+  def form_submit_action only_save=false
+    result="submitForm(\"#object_form\",\"#{@config[:on_complete].gsub(/'/,"\\\\\"")}\",#{only_save});"
     result
   end
 

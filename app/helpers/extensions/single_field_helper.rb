@@ -222,15 +222,15 @@ module Extensions::SingleFieldHelper
   #     users that are registered, user is selected by user name and last name.
   #     cms_select_field "post", :field=>"user_id",:include_blank=>true,:table=>"Users", :find_options=>{:registered=>true}, :titles=>[":name"," ",":last_name"]
   def cms_select_field object,options
-    options[:options] = options[:options].call if options[:options].is_a?(Proc)
-    select_options=get_data_for_select_field(options).collect{|row| row[0].is_a?(Symbol) ? [t(row[0]),row[1]] : row}
+    options[:options]=options[:options].call if options[:options].is_a?(Proc)
+    select_options=options[:options].is_a?(String)? options[:options] : get_data_for_select_field(options).collect{|row| row[0].is_a?(Symbol) ? [t(row[0]),row[1]] : row}
     current_value=get_current_value_for_select_field(object,options)
     current_value=current_value.is_a?(Symbol) ? t(current_value) : current_value
     options[:html][:class]="select"
     options[:html][:class]=options[:parent_link] ? "select-parented" : options[:html][:class]
     if options[:unlinked]
       options[:html][:class]=options[:html][:class]+(options[:multiple] ? " multiple" : "")
-      select_options=[["-",0]]+select_options if options[:include_blank]
+      select_options=[["-",0]]+select_options if options[:include_blank] && options[:options].is_a?(Array)
       select_tag("#{object}[#{options[:field]}]#{options[:multiple] ? "[]" : ""}",options_for_select(select_options,current_value),options[:html].merge({:multiple=>options[:multiple]}))+
         ((options[:parent_link] && !options[:multiple])?(cms_link(image_tag("/lolita/images/icons/add.png",:alt=>"+"),'GET',:action=>'create',:controller=>((options[:namespace]?(options[:namespace]+"/"):"")+options[:field].to_s.sub( /_id/, "")), :params=>{:set_back_url=>true},:html=>{:class=>'object-select-add'})):"")+
         (options[:multiple] ? "<br/><sup class='detail'>#{"lai iezīmētu vairākas rindas turiet nospiestu Crtl"}</sup>" : "")

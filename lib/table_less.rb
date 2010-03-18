@@ -1,9 +1,9 @@
+# Usage:
+# class Foo < Tableless
+#   column :bar, :string
+#   validates_presence_of :bar
+# end
 class TableLess < Cms::Content
-  # Usage:
-  # class Foo < Tableless
-  #   column :bar, :string
-  #   validates_presence_of :bar
-  # end
 
   def self.columns
     @columns ||= [];

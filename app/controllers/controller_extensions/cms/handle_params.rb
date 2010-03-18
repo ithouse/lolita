@@ -53,7 +53,7 @@ module ControllerExtensions
           end
           object_class.camelize.constantize if object_class
         else
-          params[:controller].camelize.constantize
+          params[:controller].camelize.constantize rescue nil
         end
         #@config[:object] ? @config[:object].camelize.constantize : params[:controller].camelize.constantize
       end
@@ -68,7 +68,7 @@ module ControllerExtensions
       def additional_params
         id=@object.id if @object
         p={
-          :action=>final_action,
+          :action=>@config[:without_list] || params[:only_save] ? 'edit' : 'list',
           :is_ajax=>my_params[:is_ajax] || request.xml_http_request?,
           :id=>id,
           :refresh_menu=>(@menu_record && @menu_record.is_a?(Hash)),

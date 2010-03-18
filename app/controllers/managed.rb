@@ -42,7 +42,7 @@ class Managed < ApplicationController
 
   # In every #Managed controller *conf* method should be created to set _configuration_.
   # Configuration must be <i>Hash</i>. Allowed configuration values.
-  # * <tt>:parent_name</tt> - Set another <i>class name</i> that is used for records finding. Default is create form params[:controller]
+  # * <tt>:object</tt> - Set another <i>class name</i> that is used for records finding. Default is create form params[:controller]
   # * <tt>:tabs</tt> - Array of tabs configuration, this information is used to create new, edit form. Allowed tab <b>:type</b>:
   #   * Common options for tabs:
   #     * <tt>:in_form</tt> - Is tab generated in main form, not needed for <i>:multimedia</i>.
@@ -196,10 +196,6 @@ class Managed < ApplicationController
       render self_layout
   end
   
-  # Deprecated
-  def final_action
-    @config[:without_list] ? 'update' : 'list'
-  end
   # Redirect after manipulating with _object_. Allowed actions:
   # * <tt>:only_render</tt> - Render only layout
   # * <tt>:layout</tt> - Layout name
@@ -215,7 +211,7 @@ class Managed < ApplicationController
         elsif options[:step_back]
           redirect_step_back
         else
-          redirect_to options[:layout] || additional_params
+          redirect_to additional_params
         end
       end
     end

@@ -5,15 +5,38 @@
 # be defined.
 # * <tt>klass</tt> - User class where user belongs
 # Also +options+ can be speficied.
-# * <tt>:partial</tt> - If specified than always return that partial with appropriate status code.
-# * <tt>:locals</tt> - Is used as locals when rendering :partial.
+#
+# * <tt>:success</tt> - When login success
+#   * <tt>:partial</tt> - If specified return that partial with appropriate status code.
+#   * <tt>:template</tt> - Template
+#   * <tt>:layout</tt> - Layout for template.
+#   * <tt>:locals</tt> - Is used as locals when rendering :partial or :template.
+#   * OR
+#   * <tt>:url</tt> - The URL to redirect on successful login unless :partial is specified.
+#
+# * <tt>:error</tt> - When login failed
+#   * <tt>:partial</tt> - If specified return that partial with appropriate status code.
+#   * <tt>:template</tt> - Template
+#   * <tt>:layout</tt> - Layout for template.
+#   * <tt>:locals</tt> - Is used as locals when rendering :partial or :template.
+#   * OR
+#   * <tt>:url</tt> - The URL to redirect on successful login unless :partial is specified.
+#
+# * OR
+#
+# * <tt>:partial</tt> - If specified return that partial with appropriate status code.
+# * <tt>:template</tt> - Template
+# * <tt>:layout</tt> - Layout for template.
+# * <tt>:locals</tt> - Is used as locals when rendering :partial or :template.
+# * OR
 # * <tt>:url</tt> - The URL to redirect on successful login unless :partial is specified.
+#
 # * <tt>:flash_auth_failed</tt> - Message that is set in <tt>flash[:error]</tt> if failed to login.
 # * <tt>:no_flash</tt> - If is set to _true_ than no message is written in <tt>flash[:error]</tt>
 # * <tt>:allowed_classes</tt> - Define Array of User classes that can authenticate through this class or Sysmbols, :all
 # * <tt>:method</tt> - options are (:login,:email,:any), this will determinate which method of authenticate will be used
 # ====Example
-#   login_public_user BlogUser, 'user', 'password', :url=>blogs_start_page_url do |user|
+#   login_public_user BlogUser, 'user', 'password', :success => {:url=>blogs_start_page_url} do |user|
 #    user.is_accepted?
 #   end
 # ==logout_public_user
@@ -44,13 +67,13 @@ class Admin::PublicUserController < Managed
       if user && loged_in
         register_user_in_session user
         remember_me user
-        redirect_logged_in_user options
+        redirect_login options[:success] || options
       else
         flash.now[:error]||=options[:flash_auth_failed] || I18n.t(:"flash.error.auth failed") unless options[:no_flash]
-        render_partial options
+        redirect_login options[:error] || options
       end
     else
-      redirect_logged_in_user options if logged_in?
+      redirect_login options if logged_in?
     end
   end
 
@@ -63,32 +86,29 @@ class Admin::PublicUserController < Managed
     redirect_to options[:url] || home_url
   end
 
-  def redirect_logged_in_user options = {}
-    unless options[:partial]
-      redirect_to options[:url] || home_url
+  def redirect_login options = {}
+    unless (options[:partial] || options[:text] || options[:json])
+      redirect_back_or_default options[:url] || home_url
     else
-      render_partial options
+      render_login options
     end
   end
 
-  def render_partial options
-    if options[:partial]
-      render_options = {
-        :partial => options[:partial],
-        :status => logged_in? ? 200 : 401
-      }
-      render_options[:locals] = options[:locals] if options[:locals]
-      render render_options
-    end
+  def render_login options
+    render_options = {}
+    render_options[:layout]   = options[:layout] if options[:layout]
+    render_options[:template] = options[:template] if options[:template]
+    render_options[:partial]  = options[:partial] if options[:partial]
+    render_options[:text]     = options[:text] if options[:text]
+    render_options[:json]     = options[:json] if options[:json]
+    render_options[:locals]   = options[:locals] if options[:locals]
+    render_options[:status]   = logged_in? ? 200 : 401
+    render render_options
   end
 
   def remember_me(user)
     user.remember_me if !user.remember_token? && params[:user][:remember_user].to_i==1
     cookies[:auth_token] = { :value => user.remember_token , :expires => user.remember_token_expires_at }
-  end
-  
-  def send_registration_email user,header,text
-    #FIXME
   end
   
   def register_user_in_session user

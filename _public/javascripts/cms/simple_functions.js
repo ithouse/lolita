@@ -184,6 +184,23 @@ Ajax.Request=function(url,c){
         success:c.onSuccess || c.onComplete
     })
 }
+function submit_form(form,container){
+    ITH.Cms.wait.show()
+    $.ajax({
+        url:form.action,
+        type:form.method,
+        data:$(form).serialize(),
+        dataType:"html",
+        success:function(data){
+            $("#"+container).html(data)
+            ITH.Cms.wait.hide()
+        },
+        error:function(){
+            ITH.Cms.warning.show()
+        }
+    })
+    return false
+}
 Form=function(){
     return{
         serialize:function(object){

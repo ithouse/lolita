@@ -66,3 +66,8 @@ production:
 
 test:
   <<: *default_settings
+  email:
+    default_from: "info@example.com"
+    default_to: "info@example.com"
+    bugs_from: "info@example.com"
+    bugs_to: "bugs@example.com"

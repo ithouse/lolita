@@ -22,7 +22,7 @@ module ControllerExtensions
       #     "created_at"
       # * <tt>:sort_direction</tt> - Sort direction ascending (asc) or descending (desc). Default +desc+
       # * <tt>:per_page</tt> - How many records are in page.
-      # * <tt>:object</tt> - Object that is used as model name.
+      # * <tt>:object</tt> - Used as class name to find records.
       # ====Example
       #     "user" #=> User
       # * <tt>:parent_name</tt> - Used for session to keep controller information about page
@@ -154,7 +154,8 @@ module ControllerExtensions
           :partial=>get_partial_form,
           :params=>@accepted_params,
           :container=>@config[:list][:container],
-          :advanced_filter=>get_advanced_filter
+          :advanced_filter=>get_advanced_filter,
+          :object=>@config[:object] || @config[:list][:object]
         }
       end
 
