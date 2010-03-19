@@ -93,6 +93,7 @@ lv:
     select a module: -Izvēlieties sadaļu-
     content_tree: Vieta lapas kartē
     not selected: -nav izvēlēts-
+    language: Valoda
   translate:
     language: Valoda
   user:

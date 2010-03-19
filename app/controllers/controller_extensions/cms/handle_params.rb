@@ -32,7 +32,7 @@ module ControllerExtensions
         set_back_url
         @config[:refresh_menu]=@my_params[:refresh_menu].to_b
         @config[:namespace]=namespace
-        @config[:object_name]=@my_params[:controller]
+        @config[:object_name]=@my_params[:controller] unless @config[:object_name]
         @config[:all_params]=@my_params
         @config[:object_class]=get_object_klass
       end
