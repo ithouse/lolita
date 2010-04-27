@@ -1,4 +1,4 @@
-<% link=edit_link(:title=>record.email || record.login,:id=>user.id) %>
+<% link=edit_link(:title=>record.email || record.login,:id=>record.id) %>
 <%= toggable_link "user_subtree_#{record.id}",:title=>link,:opened=>record==active_user,:url=>current_roles_user_url(record.id) %>
 <div id="user_subtree_<%=record.id%>">
   <% if active_user==record %>

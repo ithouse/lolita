@@ -1,3 +1,4 @@
+# coding: utf-8
 # Default #Lolita image class, that provide functionality for storing, rebuilding,
 # compressing and doing other stuff with images.
 class Media::ImageFile < Media::FileBase
@@ -16,7 +17,7 @@ class Media::ImageFile < Media::FileBase
     "image_file/name/#{time.strftime("%Y_%m")}/#{inst.id}"
 
   },:versions => VERSIONS.dup,
-    :process => Lolita.config.system(:default_image_size) #RB: Šis tikai nomaspunktā
+    :process => Lolita.config.system(:default_image_size)
 
   before_save :assign_position
   before_save :singularize_main
@@ -166,9 +167,9 @@ class Media::ImageFile < Media::FileBase
               main_img.resize_to_fit!(g[0].to_i,g[1].to_i)
             end
             parts=p.name.filename.split(".")
-            extension=parts.pop
+            extension=parts[1].to_s.size>0 ? parts.pop : nil
             basename=parts.join(".")
-            main_img.write("#{p.name.dir}/#{basename}-#{n}.#{extension}")
+            main_img.write("#{p.name.dir}/#{basename}-#{n}#{extension ? "." : ""}#{extension}")
             GC.start
           }
           p.name_after_upload(p.name)
@@ -225,7 +226,7 @@ class Media::ImageFile < Media::FileBase
       if watermark54=self.get_watermark
         p.add_watermark(watermark54,options[:version])
       end
-      GC.start #novācu visu lieko
+      GC.start
     end
     p ? p.version_info(options[:version]) : ""
   end

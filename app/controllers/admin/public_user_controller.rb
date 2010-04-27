@@ -52,6 +52,49 @@
 # Render if +options+ is spefified :partial value.
 # * <tt>:partial</tt> - Render partial spefied as value.
 # * <tt>:locals</tt> - Locals for render
+
+# ==To create custom public user controller and model follow these steps
+#1. solis - Izveidojam kontrolieri ar kaut kādu nosaukumu, piemēram, SimpleUser (turpmāk arī šo izmantosim), pēc tam arī modeli un helperi ar šādu pat nosaukumu
+#2. solis - Sataisam modeli, lai darbotos
+#     a) SimpleUser < Admin::PublicUser
+#     b) set_table_name :admin_users
+#3. solis - Sataisam kontrolieri
+#    a) SimpleUserController < Admin::PublicUserController
+#    b) Sataisam funkcijas, kas nepieciešamas tieši šim kontrolierim (4.solis), un ja vajag pieliekam konfigurāciju (5.solis)
+#4.solis - Funkcijas (action)
+#   a) Lietotāja publiskā izveidošana (registration), liekam iekšā jebko kas vajadzīgs, nav nepieciešama nekāda saistība ar Lolitu
+#   b) Pieteikšanās - ieliekam visu, ko vajag pirms vai pēc pieteikšanās, kaut kādu datu pārbaudi vai tamlīdzīgi, pēc ieliekam render kādu vajag, var arī nekas nebūt ne pirms ne pēc. Svarīgākais liekam Admin::PublicUserController privāto funkciju login_public_user un padodam bloku (Skatīt dokumentāciju sīkākai informācijai)
+#c) Izlogošanās - izmantojam logout_public_user (skatīt dokumentāciju)
+#5. solis - Izmantošana administratīvajā pusē
+#   a) Izveidojam konfigurāciju, privātā config funkcija, skatīt Managed#config
+#   b) Izveidot _list.html.erb skatu, izskatas var būt jebkāds, bet principā, _list var apskatīties jebkurā vietā, kur tāds ir, kaut vai lolitas viewos
+#   c) Noklusējuma HTML _list view
+#<%#
+## SIA Lolita
+## Artūrs Meisters
+#%>
+#<script type="text/javascript">
+#  loadjscssfile("/lolita/javascripts/cms/administration.js?<%=rand(1000)%>","js")
+#</script>
+#<table summary="user list">
+#  <tr>
+#    <%= list_header_cell :width=>450, :sort_column=>"login",:title=>SimpleUser.human_attribute_name("login") %>
+#    <%= list_header_cell :width=>70, :title=>t(:"list.options")%>
+#  </tr>
+#  <% for user in @page %>
+#    <tr>
+#      <td>
+#       <%= render :partial=>"/admin/user/roles_list_link", :locals=>{:record=>user,:active_user=>@active_user} %>
+#      </td>
+#      <td>
+#        <% list_options(user){|option| %>
+#          <%= option %>&nbsp;
+#        <% } %>
+#      </td>
+#    </tr>
+#  <% end %>
+#</table>
+#<%= cms_pages list%>
 class Admin::PublicUserController < Managed
 
   private

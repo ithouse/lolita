@@ -1,3 +1,4 @@
+# coding: utf-8
 # Search for translated templates or fall back to the default one
 module ActionView # :nodoc: all
   class Base

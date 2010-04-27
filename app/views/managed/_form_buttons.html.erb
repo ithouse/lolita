@@ -8,14 +8,18 @@
     <% if @config[:form] && @config[:form][:buttons] %>
       <% if @config[:form][:b_positions].include?(position) %>
         <% if @config[:form][:buttons].include?(:save) %>
-          <input type="button" class="btn" onclick='<%=form_submit_action(true)%>' value="<%=t(:"actions.confirm")%>"  />
+          <button type="button" class="btn" onclick='<%= form_submit_action(true) %>'>
+            <span><%=t(:"actions.save")%></span>
+          </button>
         <% end %>
         <% if @config[:form][:buttons].include?(:close) %>
-          <input type="button" class="btn" onclick='<%=form_submit_action()%>' value="<%=t(:"actions.save")%>"  />
+          <button type="button" class="btn" onclick='<%= form_submit_action%>'>
+            <span><%=t(:"actions.save_and_close")%></span>
+          </button>
         <% end %>
       <% end %>
     <% else %>
-      <input type="button" class="btn" onclick='<%=form_submit_action()%>' value="<%=t(:"actions.save")%>"  />
+      <input type="button" class="btn" onclick='<%= form_submit_action %>' value="<%=t(:"actions.save")%>"  />
     <% end %>
   </div>
 <% end %>

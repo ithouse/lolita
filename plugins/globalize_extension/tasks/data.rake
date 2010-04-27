@@ -1,3 +1,4 @@
+# coding: utf-8
 # Reads a CSV file from the data/ dir.
 require 'csv'
 
@@ -13,18 +14,32 @@ def load_from_csv table_name, data
   cnx           = ActiveRecord::Base.connection
 
   ActiveRecord::Base.silence do
-    reader = CSV::Reader.create data
+    if CSV.respond_to?(:parse)
+      reader = CSV.parse(data.force_encoding("utf-8"))
+      columns = reader.shift
+      column_clause = columns.join(', ')
+      reader.each do |row|
+        next if row.first.nil? # skip blank lines
+        raise "No table name defined" unless table_name
+        raise "No header defined"     unless column_clause
+        values_clause = row.map { |v| cnx.quote(v).gsub('\\n', "\n").gsub('\\r', "\r") }.join(', ')
+        sql = "INSERT INTO #{table_name} (#{column_clause}) VALUES (#{values_clause})"
+        cnx.insert sql
+      end
+    else # OLD ruby 1.8
+      reader = CSV::Reader.create data
 
-    columns = reader.shift.map { |column_name| cnx.quote_column_name(column_name) }
-    column_clause = columns.join(', ')
+      columns = reader.shift.map { |column_name| cnx.quote_column_name(column_name) }
+      column_clause = columns.join(', ')
 
-    reader.each do |row|
-      next if row.first.nil? # skip blank lines
-      raise "No table name defined" unless table_name
-      raise "No header defined"     unless column_clause
-      values_clause = row.map { |v| cnx.quote(v).gsub('\\n', "\n").gsub('\\r', "\r") }.join(', ')
-      sql = "INSERT INTO #{table_name} (#{column_clause}) VALUES (#{values_clause})"
-      cnx.insert sql
+      reader.each do |row|
+        next if row.first.nil? # skip blank lines
+        raise "No table name defined" unless table_name
+        raise "No header defined"     unless column_clause
+        values_clause = row.map { |v| cnx.quote(v).gsub('\\n', "\n").gsub('\\r', "\r") }.join(', ')
+        sql = "INSERT INTO #{table_name} (#{column_clause}) VALUES (#{values_clause})"
+        cnx.insert sql
+      end
     end
   end
 end

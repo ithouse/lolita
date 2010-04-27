@@ -27,11 +27,11 @@ lv:
     list: Saraksts
     new: Jauns
     new record: Jauns ieraksts
-    save: Saglabāt
+    save: Saglabāt    
     save all: Saglabāt
+    save_and_close: Saglabāt un aizvērt
     cancel: Atcelt
     back: Atgriezties
-    confirm: Apstiprināt
     clear: Attīrīt
   menu:
     field:

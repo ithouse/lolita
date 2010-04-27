@@ -203,6 +203,8 @@ module Lolita
               :permissions=>self.permissions,
               :roles=>self.roles
             })
+          logger.error %(Authorization failed in #{params[:controller]}/#{params[:action]}
+          for #{current_user ? current_user.login : "unknown user"} ) unless allowed
           after_allow if allowed && self.respond_to?("after_allow",true) # just for managed
         end
         store_location if Admin::User.area != :public && request.get?

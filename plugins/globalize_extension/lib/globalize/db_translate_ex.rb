@@ -1,3 +1,4 @@
+# coding: utf-8
 # Add custom methods to globalize -> db_translate
 module Globalize # :nodoc:
   module DbTranslate  # :nodoc:

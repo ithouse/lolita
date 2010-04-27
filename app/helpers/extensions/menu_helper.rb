@@ -1,3 +1,4 @@
+# coding: utf-8
 module Extensions::MenuHelper
   def menu_item_link_to (item,current_branch,options={})
     picture=item.pictures.main_or_first if options[:image]

@@ -226,8 +226,9 @@ module Extensions::SingleFieldHelper
     select_options=options[:options].is_a?(String)? options[:options] : get_data_for_select_field(options).collect{|row| row[0].is_a?(Symbol) ? [t(row[0]),row[1]] : row}
     current_value=get_current_value_for_select_field(object,options)
     current_value=current_value.is_a?(Symbol) ? t(current_value) : current_value
-    options[:html][:class]="select"
-    options[:html][:class]=options[:parent_link] ? "select-parented" : options[:html][:class]
+    class_name="select"
+    class_name=options[:parent_link] ? "select-parented" : class_name
+    options[:html][:class]="#{options[:html][:class]} #{class_name}"
     if options[:unlinked]
       options[:html][:class]=options[:html][:class]+(options[:multiple] ? " multiple" : "")
       select_options=[["-",0]]+select_options if options[:include_blank] && options[:options].is_a?(Array)

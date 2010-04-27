@@ -78,7 +78,7 @@ class Admin::UserController < Managed
       @user=Admin::SystemUser.find_by_email(params[:user][:email])
       if @user
         @user.reset_password
-        RequestMailer.deliver_forgot_password(@user.email,:user=>@user, :host=>request.host)
+        RequestMailer.deliver_lolita_forgot_password(@user.email,:user=>@user, :host=>request.host)
         flash.now[:send_notice]=I18n.t("lolita.admin.user.forgot_password.send_notice")
       else
         flash.now[:forgot_password_error]= I18n.t(:"flash.user not found")

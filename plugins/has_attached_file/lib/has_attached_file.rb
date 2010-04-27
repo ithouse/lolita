@@ -1,3 +1,4 @@
+# coding: utf-8
 # SIA Lolita
 # Artūrs Meisters
 # 11.08.2008 11:23

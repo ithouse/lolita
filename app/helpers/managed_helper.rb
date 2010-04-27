@@ -1,4 +1,4 @@
-# coding:utf-8 
+# coding: utf-8
 # Define #Managed helper methods that is used to create CMS forms, filters and other stuff.
 module ManagedHelper
   include Extensions::FieldHelper

@@ -1,3 +1,4 @@
+# coding: utf-8
 # All links in Lolita views should be generated via helper method provided by this module.
 module Extensions::LinkHelper
   include Extensions::SystemHelper

@@ -49,8 +49,15 @@ module ControllerExtensions
           sort_options(object,options) do |columns,direction,joins|
             options[:sort_column]=columns ? columns.join(",") : nil
             options[:sort_direction]=direction
-            #params_keeper[:sort_column]=
-            options[:joins]+=joins if joins && !joins.empty?
+            #params_keeper[:sort_column]
+            if  joins && !joins.empty?
+              if options[:joins].is_a?(String) && !options[:joins].include?(joins.join.gsub("`",""))
+                options[:joins]+=(" "+joins.join(" "))
+              elsif joins.is_a?(Array)
+                options[:joins]+=joins
+              end
+            end
+            
           end if @config[:list] && @config[:list][:sortable]
 
           options[:per_page]=(@config[:list] ? @config[:list][:per_page] : nil) || (object.respond_to?(:per_page) ? object.per_page : nil)
@@ -79,12 +86,12 @@ module ControllerExtensions
         obj=@config[:object] ? @config[:object].camelize.constantize : object
         opt=@config[:list]
         opt=opt.merge({
-          :conditions=>@config[:list] ? @config[:list][:conditions] : [],
-          :joins=>obj.join_symbols_to_string(@config[:list][:joins] || []),
-          :ferret_filter=>ferret_filter(obj),
-          :advanced_filter=>params[:advanced_filter],
-          :simple_filter=>params[:ferret_filter]
-        }).merge(configuration)
+            :conditions=>@config[:list] ? @config[:list][:conditions] : [],
+            :joins=>obj.join_symbols_to_string(@config[:list][:joins] || []),
+            :ferret_filter=>ferret_filter(obj),
+            :advanced_filter=>params[:advanced_filter],
+            :simple_filter=>params[:ferret_filter]
+          }).merge(configuration)
         yield obj,opt
       end
       # When receiving in *params* values that ends with <i>_id</i>, then create <tt>INNER JOIN</tt>

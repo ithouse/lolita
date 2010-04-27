@@ -7,7 +7,6 @@ class Admin::PublicUser < Admin::User
   attr_protected :registration_code
   before_create :create_registration_code
   
-  validates_length_of   :password, :within => 6..40, :if => :password_required?
   validates_presence_of :terms_of_service, :if=>:registration?
   validates_presence_of :privacy, :if=>:registration?
 

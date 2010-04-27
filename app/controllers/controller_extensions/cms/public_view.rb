@@ -24,7 +24,7 @@ module ControllerExtensions
       def index
         handle_function "before_show"
         join,sort_columns=public_sort_column
-        @page=object.paginate(
+        @page=object.lolita_paginate(
           :conditions=>@config[:public][:conditions],
           :sort_directions=>public_sort_direction,
           :joins=>((@config[:public][:joins] || [])+(join||[])).uniq,

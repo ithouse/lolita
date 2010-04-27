@@ -11,7 +11,7 @@ module UploadColumn
     :tmp_dir => 'tmp',
     :store_dir => proc{ |r, f| f.attribute.to_s },
     :root_dir => File.join(RAILS_ROOT, 'public','upload'),
-    :temp_root_path=>File.join(RAILS_ROOT,"tmp"), #Artūrs Meisters added
+    :temp_root_path=>File.join(RAILS_ROOT,"tmp"),
     :get_content_type_from_file_exec => true,
     :fix_file_extensions => false,
     :process => nil,

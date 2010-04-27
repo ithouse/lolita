@@ -1,3 +1,4 @@
+# coding: utf-8
 # Helper module for administrative controllers, that operates with users, roles and
 # accesses.
 module Extensions::AdministrationHelper
@@ -6,7 +7,7 @@ module Extensions::AdministrationHelper
   # Mostly there are no more than 20 roles in system.
   def get_roles_or_users user_obj
     unless user_obj
-      Admin::User.paginate(:per_page=>20,:page=>params[:page],:conditions=>params[:type] ? ["type=?",params[:type]] : nil) 
+      Admin::User.lolita_paginate(:per_page=>20,:page=>params[:page],:conditions=>params[:type] ? ["type=?",params[:type]] : nil)
     else 
       Admin::Role.find(:all,:conditions=>!user_obj.is_a?(Admin::SystemUser) ? ["name!=?",Admin::Role::ADMIN] : nil) 
     end 

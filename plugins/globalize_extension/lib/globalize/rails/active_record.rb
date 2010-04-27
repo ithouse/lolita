@@ -1,3 +1,4 @@
+# coding: utf-8
 #module ActiveRecord # :nodoc:
 #
 #  # Overrode Errors methods to handle numbers correctly for translation, and
