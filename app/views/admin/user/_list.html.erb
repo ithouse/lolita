@@ -1,7 +1,11 @@
 <%#
+# coding: utf-8
 # SIA Lolita
 # Artūrs Meisters
 %>
+<script type="text/javascript">
+  loadjscssfile("/lolita/javascripts/cms/administration.js?<%=rand(1000)%>","js")
+</script>
 <table summary="user list">
   <tr>
     <%= list_header_cell :width=>450, :sort_column=>"login" %>
@@ -10,13 +14,7 @@
   <% for user in @page %>
     <tr>
       <td>
-        <% link=edit_link(:title=>user.email || user.login,:id=>user.id) %>
-        <%= toggable_link "user_subtree_#{user.id}",:title=>link,:opened=>user==@active_user,:action=>:all_roles,:controller=>"/admin/role",:id=>user.id %>
-        <div id="user_subtree_<%=user.id%>">
-          <% if @active_user %>
-            <%= render :partial=>'/admin/role/all_roles', :locals=>{:user=>@active_user}%>
-          <% end %>
-        </div>
+       <%= render :partial=>"roles_list_link", :locals=>{:record=>user,:active_user=>@active_user} %>
       </td>
       <td>
         <% list_options(user){|option| %>

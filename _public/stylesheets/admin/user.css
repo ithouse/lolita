@@ -6,7 +6,7 @@ div.role-tab{
     text-align:center;
     width:310px;
     height:30px;
-    background:transparent url(../images/cms/topmenu_bg.png) repeat-x scroll 0 0
+    background:transparent url(/lolita/images/cms/topmenu_bg.png) repeat-x scroll 0 0
 }
 div.role-tab a{
     font-weight:bold;
@@ -20,13 +20,13 @@ div.role-tab a:hover{
 }
 a.current-role-tab{
     color:white;
-    background:transparent url(../images/cms/topmenu_current.png) repeat-x scroll 0 0;
+    background:transparent url(/lolita/images/cms/topmenu_current.png) repeat-x scroll 0 0;
 }
 a.other-role-tab{
     color:black;
 }
 a.other-role-tab:hover{
-    background:url("../images/cms/topmenu_hvr.png") repeat-x;
+    background:url("/lolita/images/cms/topmenu_hvr.png") repeat-x;
 }
 div.admin-list{
     margin-left:20px;

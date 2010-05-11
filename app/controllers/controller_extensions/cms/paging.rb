@@ -2,7 +2,7 @@
 module ControllerExtensions::Cms::Paging
 
   private
-  # Send params to Cms::Base#paginate.
+  # Send params to Cms::Base#lolita_paginate.
   def paging (parent,options={})
    # parent=options[:object] ? (options[:object].camelize.constantize) : parent
     session_name=current_session_name
@@ -10,7 +10,7 @@ module ControllerExtensions::Cms::Paging
     session[session_name].each{|key,value| 
       options[key]=value unless options.has_key?(key)
     }
-    page=parent.paginate(options)
+    page=parent.lolita_paginate(options)
     
     params[:sort_column]=page.simple_sort_column
     params[:sort_direction]=page.sort_direction

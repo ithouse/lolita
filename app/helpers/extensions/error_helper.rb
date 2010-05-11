@@ -1,3 +1,4 @@
+# coding: utf-8
 # Include useful error handling method for Lolita forms and views and error list
 # generator method for Lolita forms.
 module Extensions::ErrorHelper
@@ -51,7 +52,8 @@ module Extensions::ErrorHelper
       errors="<div class='warnbox'>"+list_start_tags+
         "<div class='top'>"+image_tag("/lolita/images/cms/exclamation.gif",:alt=>"")+" #{object_errors.size>1 ? 'Atrastas' : 'Atrasta'} #{spell_number(object_errors.size,'f')} #{object_errors.size>1 ? t(:"simple words.errors") : t(:"simple words.error")}"+"</div>"+
         content_tag("ul",object_errors.collect { |key,error|
-          name=field_title(key)
+          object = instance_variable_get("@#{object_name}")
+          name=object.class.human_attribute_name(key)
           if error.is_a?(Array) && error.size>1
             error[0]=t(error.first) if error.first.is_a?(Symbol)
             error_msg=error.first%error.last
@@ -65,7 +67,7 @@ module Extensions::ErrorHelper
           msg1=name || ""
           msg2=error_msg || ""
 
-          content_tag("li", "#{msg1} #{msg2}")
+          content_tag("li", "\"#{msg1}\" #{msg2}")
         })+
         list_end_tags+"</div><br class='clear' />"
     end

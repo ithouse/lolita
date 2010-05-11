@@ -1,7 +1,7 @@
 class Admin::UserController < Managed
   include SimpleCaptcha::ControllerHelpers
   allow Admin::Role.admin,:all=>[:edit_self], :public=>[:login,:logout,:forgot_password,:change_password]
-
+  managed_before_list :set_active_user
   # Login <em>Admin::SystemUser</em> into <b>Lolita's</b> administrative side.
   #
   # If request is _POST_ then do authentication, otherwise redirect to start page
@@ -12,8 +12,7 @@ class Admin::UserController < Managed
   def login
     flash[:error]=nil
     if request.post?
-      if user = Admin::SystemUser.authenticate(params[:login], params[:password],:none,:login)
-        update_token(user)
+      if user = Admin::SystemUser.authenticate(params[:login], params[:password],:none)
         register_user_in_session user
         redirect_to(Lolita.config.system(:start_page_url))
       else
@@ -24,7 +23,6 @@ class Admin::UserController < Managed
       end
     else
       if logged_in?
-        update_token()
         #TODO: šeit jāiet uz admin sadaļu ja system/login
         redirect_to(Lolita.config.system(:start_page_url))
       else
@@ -38,7 +36,8 @@ class Admin::UserController < Managed
   # will not be performed. Finaly redirects to #login action.
   def logout
     if logged_in? 
-      self.current_user.forget_me 
+      self.current_user.forget_me
+      session[:return_to]=nil
       reset_session
       flash[:notice] = I18n.t(:"flash.logout success")
     end
@@ -79,7 +78,7 @@ class Admin::UserController < Managed
       @user=Admin::SystemUser.find_by_email(params[:user][:email])
       if @user
         @user.reset_password
-        RequestMailer.deliver_forgot_password(@user.email,:user=>@user, :host=>request.host)
+        RequestMailer.deliver_lolita_forgot_password(@user.email,:user=>@user, :host=>request.host)
         flash.now[:send_notice]=I18n.t("lolita.admin.user.forgot_password.send_notice")
       else
         flash.now[:forgot_password_error]= I18n.t(:"flash.user not found")
@@ -104,60 +103,42 @@ class Admin::UserController < Managed
     render :layout=>"admin/public"
   end
 
-  # Add role to user received with params :role and :user.
-  #
-  # ====Examples
-  #
-  #   /add_role?user=1&role=blogger
-  #   /add_role?user=1&role=2
-  def add_role
-    if params[:role] and params[:user]
-      user=Admin::User.find_by_id(params[:user])
-      user.has_role(params[:role]) if user
+  # Render index partial when AJAX request is received or call <i>list</i> action
+  # otherwise.
+  def current_roles # :nodoc:
+    if request.xhr?
+      render :partial=>'index',
+        :locals=>{:user_obj=>Admin::User.find_unknown_user(:first,{:id=>params[:id]})},
+        :layout=>false
+    else
+      list
     end
-    render :text=>"OK"
   end
 
-  # Remove role from user roles reveived with params :role and :user.
-  # See #add_role
-  def remove_role
-    if params[:role] and params[:user]
-      user=Admin::User.find(params[:user])
-      user.has_no_role(params[:role]) if user
+  # Render users for <i>roles</i> view. Render partial form or redirects to
+  # <i>roles</i> list view. On wrong requests redirects to login screen or return
+  # nothing on Ajax requests.
+  def index
+    if @role = Admin::Role.find_by_id(params[:role_id])
+      if request.xhr?
+        render :partial=>'admin/role/tabs', :locals=>{:role=>@role,:active_tab=>:users,:active_role=>@role}
+      else
+        redirect_to list_role_url(@role.id,:tab=>:users)
+      end
+    else
+      request.xhr? ? render(:nothing=>true) : redirect_to(login_users)
     end
-    render :text=>'OK'
-  end
-  
-  # ====Deprecated
-  # Render all role users
-  def all_users
-    @role = Admin::Role.find(params[:id]) if Admin::Role.exists?(params[:id])
-    render :partial=>'all_users', :locals=>{:role=>@role}
   end
 
   private
 
-  # If in configuration :system->:multi_domain_portal is set to _true_,
-  # then update token information so it can be used in session cloning through #Sso::Controller
-  def update_token(user=nil)
-    if Lolita.config.system(:multi_domain_portal) && !is_local_request?
-      token=Admin::Token.find_by_token(cookies[:sso_token])
-      if token
-        if user
-          token.update_attributes!(:user=>user,:uri=>Lolita.config.system(:start_page_url))
-        else
-          token.update_attributes!(:uri=>Lolita.config.system(:start_page_url))
-        end
-      end
-    end
-  end
   def before_destroy # :nodoc:
     if Admin::SystemUser.find_by_id(params[:id])==session[:user]
       @my_params.delete(:id)
     end
   end
   
-  def before_list # :nodoc:
+  def set_active_user # :nodoc:
     @active_user=Admin::User.find_by_id(params[:id])
   end
 
@@ -169,6 +150,7 @@ class Admin::UserController < Managed
         {:type=>:multimedia,:media=>:image_file,:single=>true}
       ],
       :list=>{
+        :conditions=>["type=?","Admin::SystemUser"],
         :options=>[:edit,:destroy],
         :per_page=>100
       },

@@ -27,11 +27,11 @@ lv:
     list: Saraksts
     new: Jauns
     new record: Jauns ieraksts
-    save: Apstiprināt
+    save: Saglabāt    
     save all: Saglabāt
+    save_and_close: Saglabāt un aizvērt
     cancel: Atcelt
     back: Atgriezties
-    confirm: Apstiprināt
     clear: Attīrīt
   menu:
     field:
@@ -93,6 +93,7 @@ lv:
     select a module: -Izvēlieties sadaļu-
     content_tree: Vieta lapas kartē
     not selected: -nav izvēlēts-
+    language: Valoda
   translate:
     language: Valoda
   user:

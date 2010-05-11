@@ -1,3 +1,4 @@
+# coding: utf-8
 class Admin::MenuController < Managed
   allow :all=>[
     :init_menus,

@@ -222,15 +222,16 @@ module Extensions::SingleFieldHelper
   #     users that are registered, user is selected by user name and last name.
   #     cms_select_field "post", :field=>"user_id",:include_blank=>true,:table=>"Users", :find_options=>{:registered=>true}, :titles=>[":name"," ",":last_name"]
   def cms_select_field object,options
-    options[:options] = options[:options].call if options[:options].is_a?(Proc)
-    select_options=get_data_for_select_field(options).collect{|row| row[0].is_a?(Symbol) ? [t(row[0]),row[1]] : row}
+    options[:options]=options[:options].call if options[:options].is_a?(Proc)
+    select_options=options[:options].is_a?(String)? options[:options] : get_data_for_select_field(options).collect{|row| row[0].is_a?(Symbol) ? [t(row[0]),row[1]] : row}
     current_value=get_current_value_for_select_field(object,options)
     current_value=current_value.is_a?(Symbol) ? t(current_value) : current_value
-    options[:html][:class]="select"
-    options[:html][:class]=options[:parent_link] ? "select-parented" : options[:html][:class]
+    class_name="select"
+    class_name=options[:parent_link] ? "select-parented" : class_name
+    options[:html][:class]="#{options[:html][:class]} #{class_name}"
     if options[:unlinked]
       options[:html][:class]=options[:html][:class]+(options[:multiple] ? " multiple" : "")
-      select_options=[["-",0]]+select_options if options[:include_blank]
+      select_options=[["-",0]]+select_options if options[:include_blank] && options[:options].is_a?(Array)
       select_tag("#{object}[#{options[:field]}]#{options[:multiple] ? "[]" : ""}",options_for_select(select_options,current_value),options[:html].merge({:multiple=>options[:multiple]}))+
         ((options[:parent_link] && !options[:multiple])?(cms_link(image_tag("/lolita/images/icons/add.png",:alt=>"+"),'GET',:action=>'create',:controller=>((options[:namespace]?(options[:namespace]+"/"):"")+options[:field].to_s.sub( /_id/, "")), :params=>{:set_back_url=>true},:html=>{:class=>'object-select-add'})):"")+
         (options[:multiple] ? "<br/><sup class='detail'>#{"lai iezīmētu vairākas rindas turiet nospiestu Crtl"}</sup>" : "")
@@ -418,5 +419,35 @@ module Extensions::SingleFieldHelper
   def get_data_for_select_field options={}
     data=options[:options] || options[:table].to_s.camelize.constantize.find(:all,options[:find_options])
     options[:simple] ? data : cms_simple_options_for_select(data,options[:titles])
+  end
+
+  
+  def render_video url
+    # vimeo
+    url = url.gsub(/(http:\/\/(www\.)?vimeo\.com\/(\d+)\/?)/){|m|
+      %^
+      <p>
+      <object width=400 height="225"
+          data="http://www.vimeo.com/moogaloop.swf?clip_id=#{$3}&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=00ADEF&amp;fullscreen=1"
+          type="application/x-shockwave-flash">
+        <param name="allowfullscreen" value="true" />
+        <param name="allowscriptaccess" value="always" />
+        <param name="movie" value="http://www.vimeo.com/moogaloop.swf?clip_id=#{$3}&amp;server=www.vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=00ADEF&amp;fullscreen=1" />
+      </object>
+      </p>
+      ^
+    }
+    # youtube
+    url = url.gsub(/(http:\/\/)?(www\.)?youtube\.com\/(watch\?v=([^&\s\/]+)|v\/([^&\s\/]+))[^\s\/]*\/?/){|m|
+      code = $4 || $5
+      %^
+      <p>
+      <object type="application/x-shockwave-flash" style="width:400px; height:225px;"
+        data="http://www.youtube.com/v/#{code}">
+        <param name="movie" value="http://www.youtube.com/v/#{code}" />
+      </object>
+      </p>
+      ^
+    }
   end
 end

@@ -14,7 +14,7 @@ module Extensions::PagingHelper
   # * <tt>:ajax</tt> - If set to true, then return options otherwise link, is useful when create specific anchor element.
   # * <tt>:page_name</tt> - Name of the page, default is page number, but can be string mixed with page number or without it.
   # ====Example
-  #     @page=Post.paginate({:per_page=>10,:page=>2,:padding=>2})
+  #     @page=Post.lolita_paginate({:per_page=>10,:page=>2,:padding=>2})
   #     public_page(@page,:container=>"posts_container", :action=>"index") do |page_nuber,url,options|
   #      <%= link_to page_number, url, options %>
   #     end

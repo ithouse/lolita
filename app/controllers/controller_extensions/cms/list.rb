@@ -22,7 +22,7 @@ module ControllerExtensions
       #     "created_at"
       # * <tt>:sort_direction</tt> - Sort direction ascending (asc) or descending (desc). Default +desc+
       # * <tt>:per_page</tt> - How many records are in page.
-      # * <tt>:object</tt> - Object that is used as model name.
+      # * <tt>:object</tt> - Used as class name to find records.
       # ====Example
       #     "user" #=> User
       # * <tt>:parent_name</tt> - Used for session to keep controller information about page
@@ -49,8 +49,15 @@ module ControllerExtensions
           sort_options(object,options) do |columns,direction,joins|
             options[:sort_column]=columns ? columns.join(",") : nil
             options[:sort_direction]=direction
-            #params_keeper[:sort_column]=
-            options[:joins]+=joins if joins && !joins.empty?
+            #params_keeper[:sort_column]
+            if  joins && !joins.empty?
+              if options[:joins].is_a?(String) && !options[:joins].include?(joins.join.gsub("`",""))
+                options[:joins]+=(" "+joins.join(" "))
+              elsif joins.is_a?(Array)
+                options[:joins]+=joins
+              end
+            end
+            
           end if @config[:list] && @config[:list][:sortable]
 
           options[:per_page]=(@config[:list] ? @config[:list][:per_page] : nil) || (object.respond_to?(:per_page) ? object.per_page : nil)
@@ -79,12 +86,12 @@ module ControllerExtensions
         obj=@config[:object] ? @config[:object].camelize.constantize : object
         opt=@config[:list]
         opt=opt.merge({
-          :conditions=>@config[:list] ? @config[:list][:conditions] : [],
-          :joins=>obj.join_symbols_to_string(@config[:list][:joins] || []),
-          :ferret_filter=>ferret_filter(obj),
-          :advanced_filter=>params[:advanced_filter],
-          :simple_filter=>params[:ferret_filter]
-        }).merge(configuration)
+            :conditions=>@config[:list] ? @config[:list][:conditions] : [],
+            :joins=>obj.join_symbols_to_string(@config[:list][:joins] || []),
+            :ferret_filter=>ferret_filter(obj),
+            :advanced_filter=>params[:advanced_filter],
+            :simple_filter=>params[:ferret_filter]
+          }).merge(configuration)
         yield obj,opt
       end
       # When receiving in *params* values that ends with <i>_id</i>, then create <tt>INNER JOIN</tt>
@@ -135,7 +142,7 @@ module ControllerExtensions
       def render_list locals={}
         unless @config[:report]
           partial=params[:advanced_filter].is_a?(Hash) ||  params[:paging].to_b ? locals[:partial] : "/cms/list_template"
-          unless request.post? || request.xml_http_request? || params[:is_ajax].to_b
+          unless request.post? || request.xhr? || params[:is_ajax].to_b
             render :partial=>partial, :layout=>@config[:list][:layout] ? @config[:list][:layout] : "cms/default",:object=>locals #TODO pielikt lai katram namespace savs layout
           else
             render :partial=>partial,:layout=>false,:object=>locals
@@ -154,7 +161,8 @@ module ControllerExtensions
           :partial=>get_partial_form,
           :params=>@accepted_params,
           :container=>@config[:list][:container],
-          :advanced_filter=>get_advanced_filter
+          :advanced_filter=>get_advanced_filter,
+          :object=>@config[:object] || @config[:list][:object]
         }
       end
 

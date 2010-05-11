@@ -32,7 +32,7 @@ class RequestMailer < ActionMailer::Base
     content_type "text/html"
   end
 
-  def forgot_password email,options={}
+  def lolita_forgot_password email,options={}
     recipients email
     from Lolita.config.email(:default_from)
     subject "#{I18n.t(:"system_user.form.title")} #{Lolita.config.system :cms_title}"

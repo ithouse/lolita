@@ -5,7 +5,7 @@ class ErrorLog < ActiveRecord::Base
   
   def is_user_set?
     unless self.user.to_s.size>0
-      self.user="Neautorizēts!"
+      self.user="Unauthorized!"
     end
   end
 end

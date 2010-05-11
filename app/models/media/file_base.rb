@@ -1,4 +1,11 @@
 # Abstract class that include methods for working with #Media classes that handle files.
+#
+# When new *Media* class is created and you can't decide which class need to extend
+# Media::Base or Media::FileBase, then here is few tips for you:
+# * your class uploads files - extend Media::FileBase
+# * your class need to user temporary storage for data before object is created - extend Media::FileBase
+# * your class operate with different kind of media, that don't need tempororay storage - extend Media::Base
+# * your class need temporary storage - extend Media::FileBase.
 class Media::FileBase < Media::Base
   self.abstract_class = true
 

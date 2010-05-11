@@ -229,15 +229,20 @@ module Lolita
     #     "my name is Earl%","my name is Earl"
     #   ]}
     def create_simple_filter_conditions(filter)
+      filter.strip!
       new_cond=@parent.content_columns.inject([[]]){|cond,column|
-        if [:string,:integer,:float].include?(column.type)
-          unless column.type==:string
-            cond[0]<<"`#{@parent.table_name}`.`#{column.name}`=?"
-            cond<<filter
-          else
-            cond[0]<<"`#{@parent.table_name}`.`#{column.name}` LIKE ?"
-            cond<<"#{filter}%"
+        if [:integer,:float,:decimal].include?(column.type) && filter =~ /^[+-]?\d+((\.|\,)\d+)?$/
+          cond[0]<<"`#{@parent.table_name}`.`#{column.name}` = ?"
+          filter.gsub!(",",".")
+          case column.type
+          when :integer
+            cond << filter.to_i
+          when :float || :decimal
+            cond << filter.to_f
           end
+        elsif column.type == :string
+          cond[0]<<"LOWER(`#{@parent.table_name}`.`#{column.name}`) LIKE ?"
+          cond<<"%#{filter.downcase}%"
         else
           cond
         end

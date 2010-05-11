@@ -1,3 +1,9 @@
+#pic_title_dialog_form div label{
+    display:block;
+    float:left;
+    margin-bottom:8px;
+    width:100px;
+}
 .ith-media-dialog-header{
     width:550px;
     height:30px;
@@ -8,8 +14,8 @@
     overflow:scroll;
 }
 .ith-media-attributes{
-  width:530px;
-  display:block;
+    width:530px;
+    display:block;
 }
 .media-image-list{
     width:126px;
@@ -20,10 +26,10 @@
     display:inline;
 }
 .media-selector{
-  cursor:pointer;
+    cursor:pointer;
 }
 .active-media{
-   background-color:yellow;
+    background-color:yellow;
 }
 .ith-media-loading{
     margin-left:45%;
@@ -36,7 +42,7 @@
     cursor:pointer
 }
 .ith-media-image-tool:hover{
-  font-weight:bold;
+    font-weight:bold;
 }
 .ith-media-text-field{
     display:block;

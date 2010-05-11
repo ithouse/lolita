@@ -42,14 +42,7 @@
     <script type="text/javascript">
       addFormCleaner("#object_form",<%= raw all_fields %>)
     </script>
-    <div class="managed-form-submit-container">
-      <% if @config[:do_not_redirect]%>
-        <%= back_link :title=>t(:"actions.cancel"),:class=>"blue", :action=>@config[:redirect_to], :params=>{:page=>params[:page]}%>
-      <% else%>
-        <%= back_link :title=>t(:"actions.cancel"),:class=>"blue",:params=>{:page=>params[:page]}%>
-      <% end %> <%= t(:"simple words.or") %>
-      <input type="button" class="btn" onclick='<%=form_submit_action()%>' value="<%=t(:"actions.confirm")%>"  />
-    </div>
+    <%= render :partial=>"managed/form_buttons", :locals=>{:position=>:top} %>
     <div class="tabsheet">
       <div class="tabswitch">
         <% tab_headers do |header| %>
@@ -63,7 +56,7 @@
         <% tabs {|tab|%>
           <%= tab %>
         <%}%>
-        <% form_for(:object,@object,:url=>"/#{@config[:object_name]}/#{params[:action]}",:html=>{:id=>"object_form"}){ |f|%>
+        <% form_for(:object,@object,:url=>{:action => params[:action]},:html=>{:id=>"object_form"}){ |f|%>
           <input type="hidden" value="<%=@object.id unless @object.new_record?%>" name="id"/>
           <input type="hidden" value="<%=@config[:object_name]%>" id="simple_object_name" name="simple_object_name"/>
           <% tabs(:in_form=>true){|tab|%>
@@ -74,6 +67,7 @@
           <% end %>
           <input type="hidden" value="<%= params[:page] %>" name="page"/>
         <% } %>
+        <%= render :partial=>"managed/form_buttons", :locals=>{:position=>:bottom} %><br/>
       </div><!--[if !IE]>tabarea<![endif]-->
     </div><!--[if !IE]>tabsheet<![endif]-->
   </div><!--[if !IE]>box<![endif]-->

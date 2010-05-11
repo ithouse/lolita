@@ -36,12 +36,14 @@ function clearForm(force){
     }
 }
 
-function submitForm(form_id,on_success){
+function submitForm(form_id,on_success,only_save){
     ITH.Cms.wait.show()
     clearForm(true)
+    var post_data=$(form_id).serialize()
+    if(only_save) post_data+="&only_save=true"
     $.ajax({
         url:$(form_id).attr("action"),
-        data:$(form_id).serialize(),
+        data:post_data,
         type:"post",
         success:function(data){
             eval(on_success)

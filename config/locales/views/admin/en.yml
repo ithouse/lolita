@@ -20,3 +20,11 @@ en:
           write: Write
           change: Change
           destroy: Delete
+      locale:
+        index:
+          title: Public translations
+          download_title: Download
+          download_text: "There you can download <code>locales.zip</code> with all public locale files and <code>status.txt</code> which contains a list of all missing locale keys.
+          After translating you need to send the file back to your developer and he will put them back."
+          status_title: Status
+          status_text: There you can see a list of all missing translations. Symbol <code>[E]</code> shows that this key is empty.

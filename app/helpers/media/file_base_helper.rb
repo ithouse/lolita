@@ -22,6 +22,6 @@ module Media::FileBaseHelper
   end
 
   def file_types_description media
-    I18n.t("lolita.media.#{media}")
+    I18n.t("lolita.media.#{media}.description")
   end
 end

@@ -1,3 +1,4 @@
+# coding: utf-8
 # Provide Lolita's default filter helper methods.
 module Extensions::FilterHelper
 

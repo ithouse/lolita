@@ -414,6 +414,37 @@ img
 {
   background:url(../images/cms/btn_hvr.gif) no-repeat;
 }
+
+button::-moz-focus-inner {
+	border: none; 
+}
+button.btn {
+  position: relative;
+	padding: 0;
+	border: 0;
+  width: auto;
+	cursor: pointer;
+	overflow: visible;
+  padding: 0 2px 0 0;
+	text-align: center;
+  background: transparent url(../images/cms/btn_right.gif) no-repeat right top;
+}
+button.btn span {
+  position: relative;
+	display: block;
+	white-space: nowrap;
+  padding-left: 5px;
+  line-height: 26px;
+	height:26px;
+  background: transparent url(../images/cms/btn_left.gif) no-repeat left top;
+}
+button.btn:hover {
+  background: transparent url(../images/cms/btn_hvr_right.gif) no-repeat right top;
+}
+button.btn:hover span {
+  background: transparent url(../images/cms/btn_hvr_left.gif) no-repeat left top;
+}
+
 input
 {
   vertical-align:middle;
@@ -743,9 +774,9 @@ span.splitter{
   text-align: center;
   padding:1px;
   color:black;
-  background:url("../images/cms/topmenu_bg.png") repeat-x;
+  background:url("/lolita/images/cms/topmenu_bg.png") repeat-x;
 }
-.current_page_number{
+.current_page_number, a.current .page_number{
   float:left;
   display:block;
   width:auto;

@@ -1,15 +1,16 @@
+# coding: utf-8
 module ControllerExtensions::AdvancedFilterExtension
   def save_filter
     object=params[:controller].camelize.constantize
     if filter=object.save_advanced_filter(params[:advanced_filter])
-      flash[:notice]="Filtrs saglabāts"
+      flash[:notice]="Filter saved"
       redirect_to :action=>params[:filter_action], :advanced_filter=>filter.id, :is_ajax=>true
     end
   end
 
   def destroy_advanced_filter
     @module.destroy_advanced_filter(params[:id])
-    flash[:notice]="Filtrs izdzēsts"
+    flash[:notice]="Filter deleted"
     redirect_to :action=>params[:filter_action], :is_ajax=>true
   end
   #reālā filtra ielāde notiek plugin helperī,

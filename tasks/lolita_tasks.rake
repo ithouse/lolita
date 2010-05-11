@@ -135,7 +135,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
             :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
           ).move_to_child_of(first_item)
         }
-        
+        Admin::Menu.insert("Admin", :last, "Translations", "/admin/locale/index").move_to_child_of(first_item)
         [[3435,true],[1819,false],[5556,false]].each{|language|
           Admin::Language.create!(:globalize_languages_id=>language.first,:is_base_locale=>language.last)
         }
@@ -155,7 +155,39 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
     t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/../spec/spec.opts\""]
   end
 
+  namespace :locales do
+    desc "Merge YAML locale files"
+    task :merge => :environment do
+      $stdout.flush
+      if prompt("Are you shure to merge locales? (y/n)")
+        merger = Lolita::LocaleMerger.new
+        merger.merge
+        puts "[done]"
+      end
+    end
 
+    desc "Show status of YAML locale files"
+    task :status => :environment do
+      $stdout.flush
+      merger = Lolita::LocaleMerger.new
+      puts merger.status_report
+    end
+
+    desc "Clones locale from one to another locale"
+    task :clone => :environment do
+      $stdout.flush
+      from = prompt(:title=>"Clone from: (#{I18n.available_locales.join("/")})",:expected=>nil)
+      to   = prompt(:title=>"Clone to:",:expected=>nil)
+      unless (I18n.available_locales.include?(from.to_sym) && to =~ /^[A-Za-z\-]+$/)
+        puts "[error] Invalid input languages"
+      else
+        merger = Lolita::LocaleMerger.new
+        merger.clone from, to
+        puts "[done]"
+      end
+    end
+  
+  end
 
   # Initialize database schema information table
   def init_db_schema

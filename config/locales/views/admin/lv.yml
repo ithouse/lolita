@@ -26,11 +26,25 @@ lv:
           action menu: Sadaļas izvēlne
           url menu: Pilna adrese
           meta menu: Objekta piesaiste no meta url
-      accesses:
-        title: Sadaļa
-        permissions:
+      access:
+        list:
+          title: Sadaļa
+        index:
           all: Visas
           read: Lasīt
           write: Rakstīt
           change: Mainīt
           destroy: Dzēst
+      role:
+        tabs:
+          users: Lietotāji
+          accesses: Pieejas
+      locale:
+        index:
+          title: Publiskie tulkojumi
+          download_title: Lejupielādē
+          download_text: "Šeit tev ir iespēja lejupielādēt <code>locales.zip</code> datni,
+            kurā ietilps locales mape ar visiem tulkojamiem failiem un <code>status.txt</code>,
+            kurā norādītas vietas, kuras vēl nav iztulkotas. Pēc iztulkošanas datne jānosūta programmētājam, kurš to atkal pievienos projektam"
+          status_title: Status
+          status_text: Šeit redzami visi faili, kuriem trūkst kādi tulkojumi. Simbols <code>[E]</code> pie atslēgas norāda, ka šī atslēga ir tukša.

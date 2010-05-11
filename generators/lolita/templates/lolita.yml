@@ -1,10 +1,9 @@
-development:
+common: &default_settings
   system:
     domain: localhost
     start_page_url: /admin/user/list
     cms_name: Lolita CMS
     cms_title: Lolita CMS
-    multi_domain_portal: false
     domain_depth: 0
     items_per_page: 20
     public_user_model: "Admin::PublicUser"
@@ -19,14 +18,14 @@ development:
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
-    bugs_from: "www@example.com"
+    bugs_from: "info@example.com"
     bugs_to: "bugs@example.com"
     smtp_settings:
       tls: true
       address: "smtp.gmail.com"
       port: 587
-      domain: domain.com
-      user_name: "user@domain.com"
+      domain: example.com
+      user_name: "info@example.com"
       password: "password"
       authentication: plain
   access:
@@ -42,93 +41,33 @@ development:
         localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
     analytics:
       id: false
+
+development:
+  <<: *default_settings
+  email:
+    default_from: "info@example.com"
+    default_to: "info@example.com"
+    bugs_from: "info@example.com"
+    bugs_to: "bugs@example.com"
+    smtp_settings:
+      tls: true
+      address: "smtp.gmail.com"
+      port: 587
+      domain: example.com
+      user_name: "info@example.com"
+      password: "password"
+      authentication: plain
+
+staging:
+  <<: *default_settings
 
 production:
-  system:
-    domain: localhost
-    start_page_url: /admin/user/list
-    cms_name: Lolita CMS
-    cms_title: Lolita CMS
-    multi_domain_portal: false
-    domain_depth: 0
-    items_per_page: 20
-    public_user_model: "Admin::PublicUser"
-    public_user_table: admin_users
-    flash_actions:
-      - /picture/new_create
-      - /video_file/new_create
-      - /audio_file/new_create
-      - /file/new_create
-    geokit: false
-    enable_path_rewrite: false
-  email:
-    default_from: "info@example.com"
-    default_to: "info@example.com"
-    bugs_from: "www@example.com"
-    bugs_to: "bugs@example.com"
-    smtp_settings:
-      tls: true
-      address: "smtp.gmail.com"
-      port: 587
-      domain: domain.com
-      user_name: "user@domain.com"
-      password: "password"
-      authentication: plain
-  access:
-    allow:
-      system_in_public: true
-      rewrite: false
-  i18n:
-    translation: true
-    language_code: lv
-  google:
-    maps:
-      api_key:
-        localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
-    analytics:
-      id: false
+  <<: *default_settings
 
 test:
-  system:
-    domain: localhost
-    start_page_url: /admin/user/list
-    cms_name: Lolita CMS
-    cms_title: Lolita CMS
-    multi_domain_portal: false
-    domain_depth: 0
-    items_per_page: 20
-    public_user_model: "Admin::PublicUser"
-    public_user_table: admin_users
-    flash_actions:
-      - /image_file/new_create
-      - /video_file/new_create
-      - /audio_file/new_create
-      - /simple_file/new_create
-    geokit: false
-    enable_path_rewrite: false
+  <<: *default_settings
   email:
     default_from: "info@example.com"
     default_to: "info@example.com"
-    bugs_from: "www@example.com"
+    bugs_from: "info@example.com"
     bugs_to: "bugs@example.com"
-    smtp_settings:
-      tls: true
-      address: "smtp.gmail.com"
-      port: 587
-      domain: domain.com
-      user_name: "user@domain.com"
-      password: "password"
-      authentication: plain 
-  access:
-    allow:
-      system_in_public: true
-      rewrite: false
-  i18n:
-    translation: true
-    language_code: lv
-  google:
-    maps:
-      api_key:
-        localhost: BQIAAAASwd6oKbVv9JwvJOg4-g46xTJQa0g3IQ9GZqIMmInSLzwtGDKaBR7RWU9uL7cvBh2ZzdVc-NwjgQr1Q
-    analytics:
-      id: false

@@ -92,19 +92,23 @@ class Cms::Base < ActiveRecord::Base
     #     join_symbols_to_string([:user])#=>
     #     ["INNER JOIN users.id=comments.user_id"]
     def join_symbols_to_string(joins,join_type="INNER JOIN")
-      joins.collect{|join|
-        if join.is_a?(Symbol)
-          reflection=self.reflect_on_association(join)
-          table_name=reflection.klass.table_name if reflection
-          if table_name
-            "#{join_type} #{table_name} ON #{table_name}.#{reflection.macro==:belongs_to ? "id" : "#{self.to_s.foreign_key}"}=#{self.table_name}.#{reflection.macro==:belongs_to ? "#{reflection.klass.to_s.foreign_key}" : "id"}"
+      if joins.is_a?(Array)
+        joins.collect{|join|
+          if join.is_a?(Symbol)
+            reflection=self.reflect_on_association(join)
+            table_name=reflection.klass.table_name if reflection
+            if table_name
+              "#{join_type} #{table_name} ON #{table_name}.#{reflection.macro==:belongs_to ? "id" : "#{self.to_s.foreign_key}"}=#{self.table_name}.#{reflection.macro==:belongs_to ? "#{reflection.klass.to_s.foreign_key}" : "id"}"
+            end
+          elsif join.is_a?(String)
+            join
+          else
+            nil
           end
-        elsif join.is_a?(String)
-          join
-        else
-          nil
-        end
-      }.compact
+        }.compact
+      else
+        joins
+      end
     end
 
     # Used in #Managed. Create SQL join statements if required and create sort statement.
@@ -171,7 +175,7 @@ class Cms::Base < ActiveRecord::Base
     # ====Example
     #     controller_object("user") #=> UserController
     def controller_object controller=nil
-      "#{controller}_controller".camelize.constantize
+      "#{controller}_controller".camelize.constantize rescue nil
     end
 
     # Return Array of reflections from +possible_parrents+ Array.
@@ -227,7 +231,7 @@ class Cms::Base < ActiveRecord::Base
 
     # Paginate self records by receiving +options+ and passing to #Lolita::Paginator
     # Create new paginators and find records and return paginator.
-    def paginate options={}
+    def lolita_paginate options={}
       paginator=Lolita::Paginator.new(self,options)
       paginator.find_records
       paginator

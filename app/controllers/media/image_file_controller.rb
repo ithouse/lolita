@@ -10,7 +10,8 @@ class Media::ImageFileController < Media::ControllerFileBase
     :load_all_versions,
     :attributes,
     :save_attributes,
-    :recreate
+    :recreate,
+    :refresh
   ]
 
   # Load versions that are available for image file with given :id.

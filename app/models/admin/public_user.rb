@@ -7,13 +7,8 @@ class Admin::PublicUser < Admin::User
   attr_protected :registration_code
   before_create :create_registration_code
   
-  validates_length_of   :password, :within => 6..40, :if => :password_required?
   validates_presence_of :terms_of_service, :if=>:registration?
   validates_presence_of :privacy, :if=>:registration?
-
-  def total_comments_rating
-    Cms::Comment.sum(:total_votes,:conditions=>["user_id=?",self.id])
-  end
 
   def self.register code
     self.find_by_registration_code(code) if code.to_s.size==8

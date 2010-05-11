@@ -9,7 +9,14 @@ en:
           open attributes: Open image preferences
           delete picture: Delete image
           open other versions: Open another image versions
+      simple_file:
+        description: All files
+      video_file:
+        description: Video files
+      audio_file:
+        description: Audio files
       image_file:
+        description: Images
         dialog:
           header: Image dialogue
         thumb_list:

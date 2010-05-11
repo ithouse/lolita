@@ -1,9 +1,8 @@
 # coding:utf-8
 # Methods added to this helper will be available to all templates in the application.
 module BaseHelper
-  include Extensions::PermissionHelper
   include Extensions::NumberSpellerHelper
-
+  include Extensions::AdministrationHelper
   include Extensions::ErrorHelper
   include Extensions::JavaScriptHelper
   include Extensions::SystemHelper
@@ -13,7 +12,6 @@ module BaseHelper
   include Extensions::ReportsHelper
   include Extensions::FilterHelper
   include Extensions::LinkHelper
-  include Extensions::UrlHelper
   include PublicHelper
   include ManagedHelper
   include Media::BaseHelper
@@ -120,6 +118,7 @@ module BaseHelper
   # ====Example
   #<%= cms_flv_player({:file => "video.flv",:image=>"poster.jpg"},{:width=>466,:height=>350,:id=>"test_video"},{:allowfullscreen=>'true'}) %>
   def cms_flv_player flash_vars={},html_options={},flash_options={}
+    flash_vars[:skin]||="/lolita/swf/skin.swf"
     html_options[:id]||= "flash_player_#{rand(10000)}"
     flash_options[:wmode]="transparent"
     flash_options[:allowfullscreen]=true unless flash_options.has_key?(:allowfullscreen)
@@ -127,12 +126,23 @@ module BaseHelper
     vars=flash_vars.collect{|key,value|
       "#{key}=#{value}"
     }.join("&")
+    # vars="{#{vars}}"
+    par=flash_options.merge({:flashvars=>vars}).to_json
     msg = t(:"flash.get flash player")
-    base_options={:player=>"/lolita/public_swf/player.swf",:type=>"player",:width=>html_options[:width] || 480,:height=>html_options[:height] || 350,:version=>html_options[:version] || '9'}
-    %(<div id="#{html_options[:id]}"><div class="no-flash-msg">#{msg}</div><noscript>#{image_tag(flash_vars[:image],:alt=>"")}</noscript></div>).html_safe!+
+    base_options={:player=>"/lolita/swf/player.swf",:type=>"player",:width=>html_options[:width] || 480,:height=>html_options[:height] || 350,:version=>html_options[:version] || '9'}
+    %(<div id="#{html_options[:id]}"><div class="no-flash-msg">#{msg}</div><noscript>#{image_tag(flash_vars[:image],:alt=>"")}</noscript></div>)+
       javascript_tag(
-      "(FlashLoader.create('#{html_options[:id]}',#{base_options.to_json},'#{vars}',#{flash_options.to_json}))".html_safe!
+      %(
+      var fn = function() {
+        var att = { data:"#{base_options[:player]}", width:"#{html_options[:width]}", height:"#{html_options[:height]}" };
+        var par = #{par};
+        var id = "#{html_options[:id]}";
+        var myObject = swfobject.createSWF(att, par, id);
+      };
+      swfobject.addDomLoadEvent(fn);
+      )
     )
+    # FlashLoader.create('#{html_options[:id]}',#{base_options.to_json},'#{vars}',#{flash_options.to_json})
   end
   #Returns array of localized month names from locale yml file
   # Accepted options:

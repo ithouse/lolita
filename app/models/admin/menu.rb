@@ -309,12 +309,12 @@ class Admin::Menu < Cms::Manager
     else
       contr_object=@existing_controllers[controller.to_s.camelize]
     end
-    Admin::User.authenticate_in_controller({
+    contr_object ? Admin::User.authenticate_in_controller({
         :action=>action.to_sym,
         :controller=>controller,
         :user=>Admin::User.current_user,
         :permissions=>contr_object.permissions
-      })
+      }) : false
   end
   
   def create_new_tree(tree)
@@ -403,6 +403,6 @@ class Admin::Menu < Cms::Manager
   # Remove menu items from migrations
   def self.remove menu_name, controller
     menu = self.find_by_menu_name(menu_name)
-    MenuItem.destroy_all(["menuable_type = ? AND menuable_id IN (?) AND menu_id = ?","Admin::Action",Admin::Action.find_all_by_action_and_controller("list",controller).collect{|a| a.id },menu.id])
+    Admin::MenuItem.destroy_all(["menuable_type = ? AND menuable_id IN (?) AND menu_id = ?","Admin::Action",Admin::Action.find_all_by_action_and_controller("list",controller).collect{|a| a.id },menu.id])
   end
 end

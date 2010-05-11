@@ -9,7 +9,14 @@ lv:
           open attributes: Atvērt attēla atribūtus
           delete picture: Dzēst attēlu
           open other versions: Atvērt citas attēla versijas
+      simple_file:
+        description: Visi faili
+      video_file:
+        description: Video faili
+      audio_file:
+        description: Audio faili
       image_file:
+        description: Attēli
         dialog:
           header: Bilžu dialogs
         thumb_list:

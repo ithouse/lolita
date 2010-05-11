@@ -10,7 +10,7 @@ module ControllerExtensions
       # * <tt>:layout</tt> - Layout name to render, default false
       def show
         handle_function "before_show"
-        @object=object.find(get_id,:conditions=>@config[:public][:conditions])
+        @object=object.find(:first,:conditions=>object.merge_conditions(["#{object.table_name}.#{object.primary_key}=?",get_id],@config[:public][:conditions]))
         handle_function "after_show"
         render :action=>@config[:public][:template]||"show", :layout=>@config[:public][:layout]
       end
@@ -24,7 +24,7 @@ module ControllerExtensions
       def index
         handle_function "before_show"
         join,sort_columns=public_sort_column
-        @page=object.paginate(
+        @page=object.lolita_paginate(
           :conditions=>@config[:public][:conditions],
           :sort_directions=>public_sort_direction,
           :joins=>((@config[:public][:joins] || [])+(join||[])).uniq,

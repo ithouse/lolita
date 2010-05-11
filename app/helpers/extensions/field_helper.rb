@@ -67,7 +67,7 @@ module Extensions::FieldHelper
         new_constr=value.gsub(/:\w+/){|field_name|
           "object.send('#{field_name.gsub(":","")}')"
         }
-        result+=eval(new_constr) 
+        result+=eval(new_constr).to_s
       else
         result+=value
       end
