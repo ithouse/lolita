@@ -159,7 +159,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
     desc "Merge YAML locale files"
     task :merge => :environment do
       $stdout.flush
-      if prompt("Are you shure to merge locales? (y/n)")
+      if prompt("Are you shore to merge locales? (y/n)")
         merger = Lolita::LocaleMerger.new
         merger.merge
         puts "[done]"
