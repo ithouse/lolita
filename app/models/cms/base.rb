@@ -2,7 +2,7 @@
 # it related model should be subclass of #Cms::Base.
 class Cms::Base < ActiveRecord::Base
   self.abstract_class = true
-  
+
   class << self
 
     def new_object_from_record(record,type)

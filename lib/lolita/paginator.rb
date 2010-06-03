@@ -248,7 +248,7 @@ module Lolita
         end
       }
       new_cond[0]=new_cond[0].join(" OR ")
-      self.find_options[:conditions]=Cms::Base.merge_conditions(new_cond,self.find_options[:conditions])
+      self.find_options[:conditions]=@parent.merge_conditions(new_cond,self.find_options[:conditions])
       self.simple_filter=filter
     end
 
