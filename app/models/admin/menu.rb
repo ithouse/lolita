@@ -389,14 +389,21 @@ class Admin::Menu < Cms::Manager
       case position
       when :first
         sibling = menu.menu_items.first.root.children.first
+        met=:move_to_left_of
       when :last
         sibling = menu.menu_items.first.root.children.last
+        met=:move_to_right_of
       end
-      Admin::MenuItem.create!(
+      item=Admin::MenuItem.create!(
         :name=>name,
         :menu_id=>menu.id,
         :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
-      ).move_to_right_of(sibling) if sibling
+      )
+      if sibling
+        item.send(met,sibling)
+      else
+        item
+      end
     end
   end
 
