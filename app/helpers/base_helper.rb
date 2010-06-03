@@ -197,7 +197,7 @@ module BaseHelper
       html_options=cms_html_options html
       options << %(<option #{html_options} value="#{html_escape(value.to_s)}"#{selected_attribute}>#{escaped ? html_escape(text.to_s) : text.to_s}</option>)
     end
-    options_for_select.join("").html_safe!
+    options_for_select.join("").html_safe
   end
   
   def meta_description
@@ -303,14 +303,14 @@ module BaseHelper
     end
     title=title.humanize
     title+=" (#{actions[params[:action].to_sym] || params[:action]})"
-    title.html_safe!
+    title.html_safe
   end
   def list_start_tags
     '<div class="m"><div class="b"> <div class="t"> <div class="l"><div class="r">
-     <div class="br"> <div class="bl"> <div class="tr"><div class="tl">'.html_safe!
+     <div class="br"> <div class="bl"> <div class="tr"><div class="tl">'.html_safe
   end
   def list_end_tags
-    "</div></div></div></div></div></div></div></div></div>".html_safe!
+    "</div></div></div></div></div></div></div></div></div>".html_safe
   end
   def javascript_response
     content_tag('div',
@@ -318,7 +318,7 @@ module BaseHelper
         content_tag('div',"",:class=>'r',:id=>"javascript_response_content"),
         :class=>'l'),
       :class=>'greenbox',:id=>"javascript_response",:style=>"display:none;"
-    ).html_safe!
+    ).html_safe
   end
   def flash_response
     if flash[:notice]
@@ -330,7 +330,7 @@ module BaseHelper
     else
       result=error_messages_for_cms flash[:error]
     end
-    (result || "").html_safe!
+    (result || "").html_safe
   end
   
   def user_link
@@ -340,7 +340,7 @@ module BaseHelper
   def checkbox value,id
     chck=(value)?"checked='checked'":""
     id=(id)?("id=#{id}"):""
-    "<input #{id} type='checkbox' '#{chck}' />".html_safe!
+    "<input #{id} type='checkbox' '#{chck}' />".html_safe
   end
 
   def cut_words(text="",len=0)
@@ -423,7 +423,7 @@ module BaseHelper
   def default_content_for(name, &block)
     name = name.kind_of?(Symbol) ? ":#{name}" : name
     out = eval("yield #{name}", block.binding)
-    concat(out || capture(&block)).html_safe!
+    concat(out || capture(&block)).html_safe
   end
 
 end

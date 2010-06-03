@@ -222,7 +222,7 @@ module Extensions::SingleFieldHelper
   #     users that are registered, user is selected by user name and last name.
   #     cms_select_field "post", :field=>"user_id",:include_blank=>true,:table=>"Users", :find_options=>{:registered=>true}, :titles=>[":name"," ",":last_name"]
   def cms_select_field object,options
-    options[:options]=options[:options].call if options[:options].is_a?(Proc)
+    options[:options]=options[:options].call(instance_variable_get("@#{object}")) if options[:options].is_a?(Proc)
     select_options=options[:options].is_a?(String)? options[:options] : get_data_for_select_field(options).collect{|row| row[0].is_a?(Symbol) ? [t(row[0]),row[1]] : row}
     current_value=get_current_value_for_select_field(object,options)
     current_value=current_value.is_a?(Symbol) ? t(current_value) : current_value
@@ -401,7 +401,11 @@ module Extensions::SingleFieldHelper
       nil
     else
       if options[:default_value]
-        options[:default_value]
+        if options[:default_value].is_a?(Proc)
+          options[:default_value].call(instance_variable_get("@#{object}"))
+        else
+          options[:default_value]
+        end
       else
         obj=instance_variable_get("@#{object}")
         obj.send(options[:field].to_s) if obj

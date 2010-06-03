@@ -2,11 +2,15 @@ class Admin::TranslateController < Managed
   allow :role=>"system_admin", :all=>[:init_translations]
 
   def init_translations
-    translated={}
-    Admin::Translate.js_translations.each{|key,value|
-      translated[key]=t(value)
-    }
-    render :json=>translated,:layout=>false
+    if request.xhr?
+      translated={}
+      Admin::Translate.js_translations.each{|key,value|
+        translated[key]=t(value)
+      }
+      render :json=>translated,:layout=>false
+    else
+      render :nothing=>true
+    end
   end
   def change_language_only
     @object_name=controller

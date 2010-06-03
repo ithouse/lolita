@@ -34,7 +34,7 @@ module Lolita
       # _Session_ stores user class and user ID not user object itself.
       def current_user
         return @current_user if @current_user
-        @current_user = (session[:user] && session[:user][:user_class].find_by_id(session[:user][:user_id])) || nil
+        @current_user = (session[:user] && session[:user][:user_class].constantize.find_by_id(session[:user][:user_id])) || nil
         @current_user
       end
 
@@ -207,7 +207,7 @@ module Lolita
           for #{current_user ? current_user.login : "unknown user"} ) unless allowed
           after_allow if allowed && self.respond_to?("after_allow",true) # just for managed
         end
-        store_location if Admin::User.area != :public && request.get?
+        store_location if Admin::User.area != :public && request.get? && !request.xhr?
         if !allowed
           if current_user.is_a?(Admin::SystemUser)
             to_user_login_screen
@@ -269,7 +269,7 @@ module Lolita
       # Store given user in session and set <b>current_user</b> variable.
       def set_current_user(new_user)
         if  new_user.kind_of?(ActiveRecord::Base)
-          session[:user] = {:user_id => new_user.id, :user_class => new_user.class}
+          session[:user] = {:user_id => new_user.id, :user_class => new_user.class.to_s}
           @current_user = new_user
         else
           reset_current_user
