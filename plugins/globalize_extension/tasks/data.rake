@@ -15,7 +15,7 @@ def load_from_csv table_name, data
 
   ActiveRecord::Base.silence do
     if CSV.respond_to?(:parse)
-      reader = CSV.parse(data.force_encoding("utf-8"))
+      reader = CSV.parse(data.force_encoding("utf-8") rescue data)
       columns = reader.shift
       column_clause = columns.join(', ')
       reader.each do |row|
