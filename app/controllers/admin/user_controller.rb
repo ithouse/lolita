@@ -75,7 +75,7 @@ class Admin::UserController < Managed
   def forgot_password
     return redirect_to(:action=>"login") if session[:user]
     if request.post? && params[:user] && is_human=simple_captcha_valid?
-      @user=Admin::SystemUser.find_by_email(params[:user][:email])
+      @user=Admin::SystemUser.find(:first, :conditions => {:email => params[:user][:email], :type => "Admin::SystemUser"})
       if @user
         @user.reset_password
         RequestMailer.deliver_lolita_forgot_password(@user.email,:user=>@user, :host=>request.host)

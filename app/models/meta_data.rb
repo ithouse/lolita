@@ -43,7 +43,7 @@ class MetaData < Cms::Base
   def normalize_url
     unless self.url.strip.empty?
       self.url.gsub!(/^\W+|\W+$/,'')
-      self.url=self.url.to_url
+      self.url=self.url.to_url(:slugify=>true)
       self.url.downcase!
       #make urls unique per metaable_type
       url_not_unique = true

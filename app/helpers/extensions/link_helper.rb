@@ -109,7 +109,7 @@ module Extensions::LinkHelper
     }.delete_if{|key,value| value.nil?}.to_json.gsub(/"/,"&quot;")
     on_click=onclick || %!onclick="SimpleRequest(this,#{request_configuration});return false;"!
     result=%(<a #{cms_html_options(options[:html] || {})} #{on_click} href="#{base_params.is_a?(Hash) ? url_for(base_params.merge(options[:params] || {})) : base_params}" >#{title}</a>)
-    result.html_safe!
+    result.html_safe
   end
 
   # Create back link, that point to action that was called before current action.
@@ -128,8 +128,8 @@ module Extensions::LinkHelper
     config[:action]||="list"
     back_url=session[:start_links].pop if session[:start_links].is_a?(Array)
     config[:type]==:previous && back_url ?
-      cms_link(config[:title],config.merge!(back_url)).html_safe! :
-      default_link(config).html_safe!
+      cms_link(config[:title],config.merge!(back_url)).html_safe :
+      default_link(config).html_safe
   end
   # Create destroy link, for +config+ details see #default_link and #cms_link.
   # Defaults
@@ -141,7 +141,7 @@ module Extensions::LinkHelper
     config[:method]="POST"
     config[:params]=(config[:params]||{}).merge(:_method=>"delete")
     config[:confirm]||=t(:"actions.destroy confirmation")
-    default_link(config).html_safe!
+    default_link(config).html_safe
   end
 
   # Create update link, for +config+ details see #default_link and #cms_link.
@@ -151,7 +151,7 @@ module Extensions::LinkHelper
     config[:title]||=t(:"actions.confirm")
     config[:action]="update"
     config[:method]="POST"
-    default_link(config).html_safe!
+    default_link(config).html_safe
   end
 
   # Create edit link, for +config+ details see #default_link and #cms_link.
@@ -161,7 +161,7 @@ module Extensions::LinkHelper
     config[:title]||=t(:"actions.edit")
     config[:action]="edit"
     config[:method]="GET"
-    default_link(config).html_safe!
+    default_link(config).html_safe
   end
 
   # Create show link. See #default_link and #cms_link
@@ -170,7 +170,7 @@ module Extensions::LinkHelper
   def show_link config={}
     config[:title]||=t(:"actions.show")
     config[:action]="show"
-    default_link(config).html_safe!
+    default_link(config).html_safe
   end
 
   # Create list link. See #default_link and #cms_link
@@ -181,7 +181,7 @@ module Extensions::LinkHelper
     config[:title]||=t(:"actions.list")
     config[:action]="list"
     config[:method]="GET"
-    default_link(config).html_safe!
+    default_link(config).html_safe
   end
 
   # Create new action link. See #default_link and #cms_link.
@@ -190,7 +190,7 @@ module Extensions::LinkHelper
   def new_link config={}
     config[:title]||=t(:"actions.new")
     config[:action]="new"
-    default_link(config).html_safe!
+    default_link(config).html_safe
   end
 
   # Create <i>create</i> action link. See #default_link and #cms_link.
@@ -200,7 +200,7 @@ module Extensions::LinkHelper
     config[:title]||=t(:"actions.confirm")
     config[:action]="create"
     config[:method]="POST"
-    default_link(config).html_safe!
+    default_link(config).html_safe
   end
   # Create toggable link, that is link with east/south arrow that open or close container with +target_id+.
   # Content of container can be loaded via Ajax or rendered before.
@@ -220,7 +220,7 @@ module Extensions::LinkHelper
     options=options.delete_if{|key,value| [:controller,:action,:id].include?(key)}
     status={:small_loading=>true,:state=>options[:opened],:images=>["arrow_blue_s.gif","arrow_blue_e.gif"]}
     (image_tag("/lolita/images/#{options[:opened] ? "cms/arrow_blue_s.gif" : "cms/arrow_blue_e.gif"}",:alt=>"",:class=>"toggle-arrow",:id=>"#{target_id}_switch")+options[:title].to_s+
-      javascript_tag(%^ new ITH.ToggableElement("#{target_id}_switch","#{target_id}",#{status.to_json},#{options.to_json})^)).html_safe!
+      javascript_tag(%^ new ITH.ToggableElement("#{target_id}_switch","#{target_id}",#{status.to_json},#{options.to_json})^)).html_safe
 
     end
   end

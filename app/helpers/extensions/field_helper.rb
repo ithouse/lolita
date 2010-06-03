@@ -187,40 +187,40 @@ module Extensions::FieldHelper
     object=options[:object] ? options[:object] : :object
     case type.to_sym
     when :autocomplete
-      autocomplete_field(object,options[:field],options[:url],options.delete_if{|key, value| key == :url } ).html_safe!
+      autocomplete_field(object,options[:field],options[:url],options.delete_if{|key, value| key == :url } ).html_safe
     when :content_tree
-      cms_content_tree_field(object,options).html_safe!
+      cms_content_tree_field(object,options).html_safe
     when :custom
-      cms_custom_field(object,options).html_safe!
+      cms_custom_field(object,options).html_safe
     when :label
-      cms_label_field(object,options).html_safe!
+      cms_label_field(object,options).html_safe
     when :hidden
-      cms_hidden_field(object,options).html_safe!
+      cms_hidden_field(object,options).html_safe
     when :text
       options[:html][:class]||="txt"
-      cms_text_field(object,options).html_safe!
+      cms_text_field(object,options).html_safe
     when :password
-      password_field(object,options[:field],options[:html]).html_safe!
+      password_field(object,options[:field],options[:html]).html_safe
     when :number
       options.delete(:field)
-      number_field(object, options[:field], options[:html]).html_safe!
+      number_field(object, options[:field], options[:html]).html_safe
     when :date
       date_select object, options[:field], options[:config],options[:html]
     when :datetime
-      datetime_select(object,options[:field],options[:config],options[:html]).html_safe!
+      datetime_select(object,options[:field],options[:config],options[:html]).html_safe
     when :checkbox
       options[:html][:class]||="txt"
-      check_box(object,options[:field],options[:html]).html_safe!
+      check_box(object,options[:field],options[:html]).html_safe
     when :textarea
-      cms_textarea(object,options).html_safe!
+      cms_textarea(object,options).html_safe
     when :select
-      cms_select_field(object,options).html_safe!
+      cms_select_field(object,options).html_safe
     when :checkboxgroup
-      cms_checkboxgroup_field(object,options).html_safe!
+      cms_checkboxgroup_field(object,options).html_safe
     when :multi_select
-      cms_multi_select_field(options).html_safe!
+      cms_multi_select_field(options).html_safe
     when :multi_input
-      cms_multi_input_field(options).html_safe!
+      cms_multi_input_field(options).html_safe
     else
       ""
     end

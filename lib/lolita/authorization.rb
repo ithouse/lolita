@@ -207,7 +207,7 @@ module Lolita
           for #{current_user ? current_user.login : "unknown user"} ) unless allowed
           after_allow if allowed && self.respond_to?("after_allow",true) # just for managed
         end
-        store_location if Admin::User.area != :public && request.get?
+        store_location if Admin::User.area != :public && request.get? && !request.xhr?
         if !allowed
           if current_user.is_a?(Admin::SystemUser)
             to_user_login_screen

@@ -18,7 +18,7 @@ module Lolita
       def saved_filters(current_filter=0)
         options=[["-#{t(:"advanced filter.new filter")}-",0]]+@module.advanced_filter_for_options
         default=current_filter.to_i
-        options_for_select(options,default).html_safe!
+        options_for_select(options,default).html_safe
       end
 
       def filter_columns(current_filter=0)
@@ -43,7 +43,7 @@ module Lolita
 
       def filter_title options={}
         %(<input type="checkbox" value="#{options[:name]}" name="advanced_filter[fields][]" id="cb_#{options[:name]}" #{options[:active] ? 'checked="checked"' : ''}/>
-          <label for="cb_#{options[:name]}">#{options[:title].is_a?(Symbol) ? t(options[:title]) : options[:title]}</label>).html_safe!
+          <label for="cb_#{options[:name]}">#{options[:title].is_a?(Symbol) ? t(options[:title]) : options[:title]}</label>).html_safe
       end
 
       def filter_condition options={}
@@ -53,7 +53,7 @@ module Lolita
           options[:conditions].collect!{|value| value<<{:style=>"font-size:14px;"}}
           %(<select style="vertical-align: top;" name="advanced_filter[conditions][#{options[:name]}]" id="conditions_#{options[:name]}" class="small">
             #{cms_options_for_select options[:conditions],default,false}
-          </select>).html_safe! #izmantoju CMS
+          </select>).html_safe #izmantoju CMS
         when :numeric
           content_tag("input","",
             :type=>"text",
@@ -61,14 +61,14 @@ module Lolita
             :size=>options[:limit],
             :name=>"advanced_filter[conditions][#{options[:name]}]",
             :style=>"float:left;"
-          )+"<span style='float:left'>&#37;</span> ".html_safe!
+          )+"<span style='float:left'>&#37;</span> ".html_safe
         when :datetime
           #%(<input type="hidden" name="advanced_filter[conditions][#{options[:name]}]" id="conditions_#{options[:name]}" value="smaller_or_same"/>)
           default=options[:condition] || (options[:conditions][0].is_a?(Array) ? options[:conditions][0][1] : options[:conditions][0])
           options[:conditions].collect!{|value| value<<{:style=>"font-size:14px;"}}
           %(<select style="vertical-align: top;" name="advanced_filter[conditions][#{options[:name]}]" id="conditions_#{options[:name]}" class="small">
             #{cms_options_for_select options[:conditions],default,false}
-          </select>).html_safe! #izmantoju CMS
+          </select>).html_safe #izmantoju CMS
         end
       end
 
@@ -85,7 +85,7 @@ module Lolita
                 content_tag("span",
                 image_tag("/lolita/images/icons/expand.png",:alt=>"#{t(:"simple words.expand")}",:id=>"values_#{options[:name]}_expand",:onclick=>"AdvancedFilter.toggleSelect(this,'#values_#{options[:name]}')"),
                 :style=>"margin-left:2px;vertical-align:top;"),
-              :id=>"div_values_#{options[:name]}")).html_safe!
+              :id=>"div_values_#{options[:name]}")).html_safe
           else
             content_tag("div",
               content_tag("input","",
@@ -96,7 +96,7 @@ module Lolita
                 :value=>options[:values] ? options[:values].first : "",
                 :class=>"value"
               ),
-              :id=>"div_values_#{options[:name]}").html_safe!
+              :id=>"div_values_#{options[:name]}").html_safe
           end
         when :datetime
           options[:values]=[] unless options[:values]
@@ -111,7 +111,7 @@ module Lolita
               :id=>"values_#{options[:name]}",
               :name=>"advanced_filter[values][#{options[:name]}][]"
             ),
-            :id=>"div_values_#{options[:name]}")).html_safe!
+            :id=>"div_values_#{options[:name]}")).html_safe
         end
       end
     end

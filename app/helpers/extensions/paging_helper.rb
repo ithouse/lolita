@@ -41,13 +41,13 @@ module Extensions::PagingHelper
           else
             options[:html][:class]=class_name
           end
-          yield public_page_link(page_nr,url,options).html_safe!
+          yield public_page_link(page_nr,url,options).html_safe
         end
       else
         if block_given?
-          yield public_page_link(page_number,url,options).html_safe!
+          yield public_page_link(page_number,url,options).html_safe
         else
-          public_page_link(page_number,url,options).html_safe!
+          public_page_link(page_number,url,options).html_safe
         end
       end
     end
@@ -105,7 +105,7 @@ module Extensions::PagingHelper
       }) do |page|
       page_container<<page
     end
-    "#{page_container}</div>".html_safe!
+    "#{page_container}</div>".html_safe
   end
   
   def page_numbers page,options={}

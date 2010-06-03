@@ -71,6 +71,6 @@ module Extensions::ErrorHelper
         })+
         list_end_tags+"</div><br class='clear' />"
     end
-    (errors || "").html_safe!
+    (errors || "").html_safe
   end
 end

@@ -49,17 +49,17 @@ module ManagedHelper
       start_html,end_html=tab_start_end_html(tab,index,tab_opened)
       tab[:partial]="/managed/object_data" if tab[:type]==:content || tab[:type]==:default
       unless special_types.include?(tab[:type])
-        yield %(#{start_html}#{render(:partial=>tab[:partial],:locals=>{:tab=>index})}#{end_html}).html_safe! if options[:in_form]==tab[:in_form]
+        yield %(#{start_html}#{render(:partial=>tab[:partial],:locals=>{:tab=>index})}#{end_html}).html_safe if options[:in_form]==tab[:in_form]
       else
         if tab[:type]==:metadata
-          yield %(#{start_html}#{render(:partial=>"/managed/meta_information",:locals=>{:tab=>index})}#{end_html}).html_safe! if options[:in_form]
+          yield %(#{start_html}#{render(:partial=>"/managed/meta_information",:locals=>{:tab=>index})}#{end_html}).html_safe if options[:in_form]
         elsif tab[:type]==:translate
-          yield %(#{start_html}#{render(:partial=>"/managed/translate",:locals=>{:tab=>index})}#{end_html}).html_safe! if is_translatable?(options)
+          yield %(#{start_html}#{render(:partial=>"/managed/translate",:locals=>{:tab=>index})}#{end_html}).html_safe if is_translatable?(options)
         elsif tab[:type]==:multimedia && media_types.include?(tab[:media])
           if self.respond_to?(:"lolita_#{tab[:media]}_tab")
-            yield "#{start_html}#{self.send(:"lolita_#{tab[:media]}_tab",options,tab)}#{end_html}".html_safe!
+            yield "#{start_html}#{self.send(:"lolita_#{tab[:media]}_tab",options,tab)}#{end_html}".html_safe
           else
-            yield "#{start_html}#{default_lolita_media_tab(options,tab)}#{end_html}".html_safe!
+            yield "#{start_html}#{default_lolita_media_tab(options,tab)}#{end_html}".html_safe
           end
         end
       end
@@ -87,7 +87,7 @@ module ManagedHelper
       end_html+=render(:partial=>after_partial,:locals=>{:tab=>index})
     } if tab[:partials] && tab[:partials][:after]
     end_html+=%(<br class="clear"/><div><!--[if !IE]>for ie to expand height correctly<![endif]--></div></div>)
-    return start_html.html_safe!,end_html.html_safe!
+    return start_html.html_safe,end_html.html_safe
   end
 
   # Used to render specific HTML required for fields.
@@ -109,7 +109,7 @@ module ManagedHelper
                 </form>
               </div>
           </div>
-          ).html_safe!
+          ).html_safe
         end
       } if fields.respond_to?(:each)
     }
@@ -125,7 +125,7 @@ module ManagedHelper
       opened=tab_opened || opened
       tab[:title]=t(tab[:title]) if tab[:title] && tab[:title].is_a?(Symbol)
       if tab[:type]!=:translate || (tab[:type]==:translate && is_translatable?(:in_form=>true))
-        yield tab_header(tab[:title] || (tab[:media] ? t(:"tabs.#{tab[:media]}") : t(:"tabs.#{tab[:type]}")), :index=>index,:current=>tab_opened).html_safe!
+        yield tab_header(tab[:title] || (tab[:media] ? t(:"tabs.#{tab[:media]}") : t(:"tabs.#{tab[:type]}")), :index=>index,:current=>tab_opened).html_safe
       end
     end
   end
@@ -137,7 +137,7 @@ module ManagedHelper
   def tab_header title,options={}
     index=options[:index]||rand
     current=options[:current] ? "current" : ''
-    "<a id='tab#{index}' name='tab_header' class='#{current}' onclick="+'"'+"switch_tabs(this)"+'"'+">#{title}</a>".html_safe!
+    "<a id='tab#{index}' name='tab_header' class='#{current}' onclick="+'"'+"switch_tabs(this)"+'"'+">#{title}</a>".html_safe
   end
 
   # Return title for field when +title+ is Symbol and in include dot(-s) then
@@ -189,7 +189,7 @@ module ManagedHelper
         image_tag("/lolita/images/cms/bullet_blue.png",:alt=>"o")
       end
     )
-    content_tag("th", content,:style=>options[:width] ? "width:#{options[:width]}px;" : nil).html_safe!
+    content_tag("th", content,:style=>options[:width] ? "width:#{options[:width]}px;" : nil).html_safe
   end
 
   # Return formated <code>flash[:notice]</code> for #Lolita.
@@ -203,7 +203,7 @@ module ManagedHelper
         </div>
       </div>
       <br class="clear" />
-      ).html_safe!
+      ).html_safe
     end
   end
 

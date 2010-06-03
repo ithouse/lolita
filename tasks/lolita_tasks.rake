@@ -135,7 +135,9 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
             :menuable=>Admin::Action.create!(:controller=>controller,:action=>"list")
           ).move_to_child_of(first_item)
         }
-        Admin::Menu.insert("Admin", :last, "Translations", "/admin/locale/index").move_to_child_of(first_item)
+        if trans=Admin::Menu.insert("Admin", :last, "Translations", "/admin/locale/index")
+          trans.move_to_child_of(first_item)
+        end
         [[3435,true],[1819,false],[5556,false]].each{|language|
           Admin::Language.create!(:globalize_languages_id=>language.first,:is_base_locale=>language.last)
         }

@@ -36,7 +36,7 @@ module Extensions::JavaScriptHelper
   # Add javascript that allow changed advanced filter, special method for Lolita.
   def change_advanced_filter options={:url=>{:action=>"list"}}
     url=url_for({:escape=>false}.merge(options[:url]))
-    %Q{AdvancedFilter.change(this.value,'#{url}')}.html_safe!
+    %Q{AdvancedFilter.change(this.value,'#{url}')}.html_safe
   end
 
   # Deprecated
@@ -49,12 +49,12 @@ module Extensions::JavaScriptHelper
     options=default.merge(options)
     url=url_for({:escape=>false}.merge(options[:url]))
     options[:url]=url
-    javascript_tag(%(try{new DraggableElement(#{id.to_json},#{options.to_json})}catch(err){})).html_safe!
+    javascript_tag(%(try{new DraggableElement(#{id.to_json},#{options.to_json})}catch(err){})).html_safe
   end
 
   # Deprecated
   def yui_drop_receiving_element id, group=nil
-    javascript_tag( %(try{new DropReceivingElement(#{id.to_json},#{group.to_json})}catch(err){})).html_safe!
+    javascript_tag( %(try{new DropReceivingElement(#{id.to_json},#{group.to_json})}catch(err){})).html_safe
   end
 
   # Deprecated
@@ -71,7 +71,7 @@ module Extensions::JavaScriptHelper
         controller_name:this.value
         }
       })
-    !.html_safe!
+    !.html_safe
   end
 
   # Deprecated
@@ -81,7 +81,7 @@ module Extensions::JavaScriptHelper
     else
       onchange="if (this.value!=parseInt(this.value)){this.value=isNaN(parseInt(this.value))?'':parseInt(this.value)}"
     end
-    ActionView::Helpers::InstanceTag.new(object, method, self).to_input_field_tag("text", options.merge(:onkeyup=>onchange)).html_safe!
+    ActionView::Helpers::InstanceTag.new(object, method, self).to_input_field_tag("text", options.merge(:onkeyup=>onchange)).html_safe
   end
  
   def date_field(object,method,options={})
@@ -93,12 +93,12 @@ module Extensions::JavaScriptHelper
   # Automatic upload script for Lolita media.
   def auto_uploadable(action,form_id,element_id,event="",target="",config={})
     if (action && form_id && element_id)
-      javascript_tag(auto_uploadable_js(action,form_id,element_id,event,target,config)).html_safe!
+      javascript_tag(auto_uploadable_js(action,form_id,element_id,event,target,config)).html_safe
     end
   end
 
   # Only JS for #auto_uploadable
   def auto_uploadable_js(action,form_id,element_id,event="",target="",overwrite=false)
-    %!new AutoUploadForm(#{action.to_json},#{form_id.to_json},#{element_id.to_json},#{event.to_json},#{target.to_json},#{overwrite.to_json});!.html_safe!
+    %!new AutoUploadForm(#{action.to_json},#{form_id.to_json},#{element_id.to_json},#{event.to_json},#{target.to_json},#{overwrite.to_json});!.html_safe
   end
 end
