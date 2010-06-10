@@ -34,7 +34,7 @@ common: &default_settings
       rewrite: false
   i18n:
     translation: true
-    language_code: lv
+    language_code: en
   google:
     maps:
       api_key:

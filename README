@@ -5,7 +5,7 @@ Lolita - sexy CMS
 
 Requires
 ========
-  - rails >= 2.3.5
+  - rails >= 2.3.8
   - rmagick >= 2.11
   - erubis >= 2.6.5
   - ya2yaml >= 0.26

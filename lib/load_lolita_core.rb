@@ -15,5 +15,3 @@ ActionController::Base.send :include, Lolita::Translation
 ActionController::Base.send :include, Lolita::ControllerUtilities
 #Load routes hack
 ActionController::Routing::RouteSet.send :include, Lolita::RouteHack
-ActiveRecord::ConnectionAdapters::SchemaStatements.send :include, Lolita::MigrationHack
-

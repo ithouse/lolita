@@ -13,6 +13,7 @@ class CreateAdminUsers < ActiveRecord::Migration
     end
     add_index :admin_users, :login
     add_index :admin_users, :email
+    add_index :admin_users, :type
  end
 
   def self.down

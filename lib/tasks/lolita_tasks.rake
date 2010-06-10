@@ -1,4 +1,5 @@
 require 'spec/rake/spectask'
+load File.join(RAILS_ROOT,'vendor/plugins/lolita/plugins/globalize_extension/lib/tasks/data.rake')
 
 namespace :lolita do
 =begin rdoc
@@ -12,6 +13,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
          the default value is displayed appending "(default): " to the prompt title
 =end
   def prompt(options={})
+    return options[:default] if RAILS_ENV == 'test' && options[:default]
     options={:title=>options} if options.is_a?(String)
     options={:title=>'Do you want to continue?',:expected=>"yes"}.merge(options)
     print "#{options[:title]} #{options[:default]?"(#{options[:default]}): ":""}" if options[:title]
