@@ -8,7 +8,7 @@ def gsub_file(path, regexp, *args, &block)
 end
 
 describe "Setup" do
-  it "should generate blank rails project" do
+  it "should run 'rake lolita:setup' successfully on blank rails project" do
     root_dir = File.expand_path "#{File.dirname(__FILE__)}/../../"
     test_dir = File.join(root_dir,".tmp")
     FileUtils.rm_rf(test_dir) if File.exists?(test_dir)
