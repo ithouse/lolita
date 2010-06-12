@@ -33,8 +33,8 @@ module Lolita
       def render_500(status=500, layout=nil)
         options = {:template => "errors/error_500", :status => status, :layout => layout ? layout : "errors"}
         begin
-          options[:layout] = false if request.path == home_path
-        rescue # if home_path doesn't exist
+          options[:layout] = false if request.path == root_path
+        rescue # if root_path doesn't exist
         end
         respond_to do |type|
           type.all  { render :nothing => true, :status => status }
