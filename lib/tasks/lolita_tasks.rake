@@ -89,6 +89,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
   task :setup => [:environment, :migrate, :generate] do
 
     #INFO: workaround, before environment is loaded this task is invisible - rails 2.3.8 bug
+    load File.join(RAILS_ROOT,'vendor/plugins/lolita/plugins/globalize_extension/lib/tasks/data.rake')
     Rake::Task["globalize:setup"].invoke
 
     # Insert must have data into DB
