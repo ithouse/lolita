@@ -12,6 +12,7 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
          the default value is displayed appending "(default): " to the prompt title
 =end
   def prompt(options={})
+    return options[:default] if RAILS_ENV == 'test' && options[:default]
     options={:title=>options} if options.is_a?(String)
     options={:title=>'Do you want to continue?',:expected=>"yes"}.merge(options)
     print "#{options[:title]} #{options[:default]?"(#{options[:default]}): ":""}" if options[:title]
@@ -85,7 +86,11 @@ default:: the fallback string if ENTER was pressed. expected must be set to nil/
   end
 
   desc "Setup Lolita"
-  task :setup => [:environment,:"globalize:setup", :migrate, :generate] do
+  task :setup => [:environment, :migrate, :generate] do
+
+    #INFO: workaround, before environment is loaded this task is invisible - rails 2.3.8 bug
+    load File.join(RAILS_ROOT,'vendor/plugins/lolita/plugins/globalize_extension/lib/tasks/data.rake')
+    Rake::Task["globalize:setup"].invoke
 
     # Insert must have data into DB
     unless Admin::Role.find_by_name("administrator")

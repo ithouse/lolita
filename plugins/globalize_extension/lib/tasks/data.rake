@@ -3,7 +3,7 @@
 require 'csv'
 
 def csv_file filename
-  path = File.join File.dirname( __FILE__ ), '../data', "#{filename}.csv"
+  path = File.join File.dirname( __FILE__ ), '../../data', "#{filename}.csv"
   File.open( path ).read
 end
 
@@ -14,8 +14,8 @@ def load_from_csv table_name, data
   cnx           = ActiveRecord::Base.connection
 
   ActiveRecord::Base.silence do
-    if CSV.respond_to?(:parse)
-      reader = CSV.parse(data.force_encoding("utf-8"))
+    if RUBY_VERSION > '1.9'
+      reader = CSV.parse(data.respond_to?(:force_encoding) ? data.force_encoding("utf-8") : data)
       columns = reader.shift
       column_clause = columns.join(', ')
       reader.each do |row|
@@ -126,9 +126,11 @@ namespace :globalize do
       ActiveRecord::Base.connection.execute "SELECT nextval('globalize_translations_id_seq')"
       ActiveRecord::Base.connection.execute "SELECT nextval('globalize_languages_id_seq')"
     end
+    puts "Loading globalize countries..."
     load_from_csv 'globalize_countries',    csv_file( :country_data )
+    puts "Loading globalize languages..."
     load_from_csv 'globalize_languages',    csv_file( :language_data )
-    load_from_csv 'globalize_translations', csv_file( :translation_data )
+    #load_from_csv 'globalize_translations', csv_file( :translation_data )
   end
 
   desc 'Purge locale data'

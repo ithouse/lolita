@@ -9,10 +9,10 @@ class Admin::Menu < Cms::Manager
   after_create :create_root_item
     
   named_scope :app_menu, lambda{|namespace|
-    {:conditions=>["module_name=? AND menu_type=?",namespace,"app"]}
+    {:conditions=>["module_name=? AND menu_type=?",namespace.to_s.downcase,"app"]}
   }
   named_scope :web_menu,lambda{|namespace|
-    {:conditions=>["module_name=? AND menu_type=?",namespace,"web"]}
+    {:conditions=>["module_name=? AND menu_type=?",namespace.to_s.downcase,"web"]}
   }
   #  named_scope :public_menus,lambda{|namespace|
   #    {:conditions=>["module_name=? AND menu_type=?",namespace,"public_web"]}
@@ -374,11 +374,11 @@ class Admin::Menu < Cms::Manager
   def self.init_web_menu namespace
     menu=self.web_menu(namespace).first
     menu=self.create!(
-      :menu_name=>"Lapas karte",
+      :menu_name=>"#{namespace}_content",
       :menu_type=>"web",
-      :module_name=>namespace,
+      :module_name=>namespace.to_s.downcase,
       :module_type=>"web"
-    ) if !menu && namespace=="cms"
+    ) 
     return menu ? menu.initialization_data : nil
   end
   

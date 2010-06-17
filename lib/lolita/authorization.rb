@@ -231,7 +231,7 @@ module Lolita
         if request.xhr?
           render :text=>"Access denied!", :status => 401
         else
-          redirect_to home_url
+          redirect_to "/system/login"
         end
         return false
       end

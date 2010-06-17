@@ -1,8 +1,6 @@
 <div class="fr small mtb">
   <%= raw user_link%> |
-  <%= link_to "Ieteikumi", :controller=>"/advice",:action=>"send_advice" %> |
-  <%= link_to "Kļūdas pieteikums", :controller=>"/error_log",:action=>"form" %> |
-  <%= link_to 'Iziet', :controller => '/admin/user', :action=> 'logout' %>
+  <%= link_to t('.logout'), :controller => '/admin/user', :action=> 'logout' %>
 </div>
 <br class="clear" />
 <div class="topmenu">
