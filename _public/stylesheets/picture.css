@@ -70,8 +70,6 @@ div.picture-photos-container{
 .scrollable-picture-container{
     width:650px;
     margin-bottom:5px;
-    height:430px;
-    overflow:auto;
 }
 .image-comments-count{
     font-size:8px;

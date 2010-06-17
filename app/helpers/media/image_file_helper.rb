@@ -44,8 +44,9 @@ module Media::ImageFileHelper
       images='<span title="'+t(".all sizes")+'" class="picture-all-sizes-tool picture-tool-common"></span>'
     end
     content_tag("span",
-      content_tag("span",edit_image,:class=>"ith-media-image-tool",:onclick=>"ITH.ImageFile.show_attributes_dialog(#{json})")+"<br/>"+
-      (images ? content_tag("span",images,:class=>"ith-media-image-tool",:onclick=>"ITH.ImageFileVersions.load(#{json})") : ""),
+      content_tag("span",edit_image,:class=>"ith-media-image-tool",:onclick=>"ITH.ImageFile.show_attributes_dialog(#{json})") +
+        content_tag(:br) +
+        (images ? content_tag("span",images,:class=>"ith-media-image-tool",:onclick=>"ITH.ImageFileVersions.load(#{json})") : ""),
       :class=>"ith-media-image-tools")
   end
 

@@ -34,7 +34,7 @@ module Lolita
       # _Session_ stores user class and user ID not user object itself.
       def current_user
         return @current_user if @current_user
-        @current_user = (session[:user] && session[:user][:user_class].constantize.find_by_id(session[:user][:user_id])) || nil
+        @current_user = (session[:user] && ( session[:user][:user_class].is_a?(String) ? session[:user][:user_class].constantize : session[:user][:user_class]).find_by_id(session[:user][:user_id])) || nil
         @current_user
       end
 

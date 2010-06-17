@@ -25,7 +25,7 @@
     </td>
     <% change_action_relations role,access do |element|%>
       <td>
-        <%= element.html_safe!%>
+        <%= raw element %>
       </td>
     <%end%>
   </tr>

@@ -2,7 +2,7 @@
 <% form_tag "", :multipart => true, :id => "#{show_form[:media]}_delete_thumb_form" do %>
   <% height=cfg[:configuration][:height] || 390%>
   <%= render :partial=>"/media/#{cfg[:media]}/controls", :object=>cfg if File.exist?("#{File.dirname(__FILE__)}/#{cfg[:media]}/_controls.html.erb") %>
-  <div style="width:100%;display:block;height:<%= height %>px;overflow:scroll;margin-bottom:5px;" id="<%= cfg[:media] %>_list_container">
+  <div style="width:100%;display:block;clear: both;height:<%= height %>px;overflow:auto;margin-bottom:5px;" id="<%= cfg[:media] %>_list_container">
     <%= render :partial=>"/media/#{cfg[:media]}/thumb_list", :object=>cfg %>
   </div>
   <%= raw (picture_cfg_form_fields show_form,:excluded=>[:pictures])%>

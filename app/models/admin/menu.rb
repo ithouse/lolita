@@ -365,7 +365,7 @@ class Admin::Menu < Cms::Manager
     menu=self.create!(
       :menu_name=>"#{namespace}_actions",
       :menu_type=>"app",
-      :module_name=>namespace,
+      :module_name=>namespace.to_s.downcase,
       :module_type=>"app"
     ) unless menu
     return menu.initialization_data
