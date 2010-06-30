@@ -212,7 +212,7 @@ class Admin::User < Cms::Base
   # User data is updated with _pass_ and disabled possibility to change password
   # again with unique hash from #reseted_password_hash.
   def renew_password(pass)
-    self.update_attributes!(
+    self.update_attributes(
       :password=>pass,
       :reset_password_expires_at=>nil,
       :renew_password_hash=>nil

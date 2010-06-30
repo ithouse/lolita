@@ -94,8 +94,7 @@ class Admin::UserController < Managed
   # Called when change password link, delivered to email, is clicked.
   def change_password
     @user=Admin::SystemUser.change_password_for(params[:id])
-    if @user && request.post? && params[:user]
-      @user.renew_password(params[:user][:password])
+    if @user && request.post? && params[:user] && @user.renew_password(params[:user][:password])
       flash.now[:change_password_notice]=I18n.t("lolita.admin.user.change_password.notice")
     elsif !@user
       flash.now[:change_password_error]=I18n.t("lolita.admin.user.change_password.error")
@@ -145,6 +144,7 @@ class Admin::UserController < Managed
   def config
     {
       :object=>"Admin::SystemUser",
+      :method=>:put,
       :tabs=>[
         {:type=>:content,:in_form=>true,:opened=>true,:fields=>:default},
         {:type=>:multimedia,:media=>:image_file,:single=>true}

@@ -7,7 +7,7 @@ class Admin::Menu < Cms::Manager
   validates_uniqueness_of :menu_name
   
   after_create :create_root_item
-    
+
   named_scope :app_menu, lambda{|namespace|
     {:conditions=>["module_name=? AND menu_type=?",namespace.to_s.downcase,"app"]}
   }
@@ -378,7 +378,7 @@ class Admin::Menu < Cms::Manager
       :menu_type=>"web",
       :module_name=>namespace.to_s.downcase,
       :module_type=>"web"
-    ) 
+    ) if !menu && namespace=="cms"
     return menu ? menu.initialization_data : nil
   end
   

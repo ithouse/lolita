@@ -38,7 +38,7 @@
                title="<%=option[0]%>"
                value="<%=option[1]%>" />
                <% if hsh[:videos] %>
-                 <%= raw render_video option[0] %>
+                 <%= raw render_video(option[0]) %>
                <% end %>
       </li>
     <%} if hsh[:existing] %>

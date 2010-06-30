@@ -59,7 +59,7 @@ module ControllerExtensions
 
       # Update existing _object_. For details see _code_ and/or #ControllerExtensions
       def update
-        return false unless request.post?
+        return false if !(request.post? || request.put?)
         begin
           params[:action]='update'
           manage_nested_params

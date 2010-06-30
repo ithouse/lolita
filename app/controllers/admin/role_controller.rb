@@ -54,6 +54,7 @@ class Admin::RoleController < Managed
   
   def config
     {
+      :method=>:put,
       :tabs=>[{:type=>:content,:in_form=>true,:opened=>true,:fields=>:default}],
       :list=>{
         :options=>[:edit,:destroy],

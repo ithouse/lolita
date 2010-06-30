@@ -67,7 +67,18 @@ module Lolita
       # By default _request_ information are added to email body, separately
       # error <i>message</i> and <i>title</i> can be specified.
       def send_bug msg=nil, title=nil
+        #pwp=params_without_password
         RequestMailer.deliver_bug(:msg => msg, :title => title, :request => request, :params => params, :session => session)
+      end
+
+      def params_without_password(hsh=nil)
+        (hsh || params).each{|k,v|
+          if k.to_sym==:password
+            v.gsub!(/.*/,"******")
+          elsif v.is_a?(Hash)
+            params_without_password(v)
+          end
+        }
       end
 
       def rescue_action_in_public(exception)
