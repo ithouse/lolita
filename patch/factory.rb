@@ -1,4 +1,4 @@
-require 'factory_girl' if RAILS_ENV="test" && !defined?(Factory)
+require 'factory_girl' if RAILS_ENV=="test" && !defined?(Factory)
 module Lolita #:nodoc:
   module FactoryPatch
     # With this patch you can use models with namespaces, like Admin::User
