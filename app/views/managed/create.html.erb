@@ -56,7 +56,7 @@
         <% tabs {|tab|%>
           <%= tab %>
         <%}%>
-        <% form_for(:object,@object,:url=>{:action => params[:action]},:html=>{:id=>"object_form"}){ |f|%>
+        <% form_for(:object,@object,:url=>{:action => params[:action]},:html=>{:id=>"object_form",:method=>params[:action]=="update" ? (@config[:method] || "post") : "post"}){ |f|%>
           <input type="hidden" value="<%=@object.id unless @object.new_record?%>" name="id"/>
           <input type="hidden" value="<%=@config[:object_name]%>" id="simple_object_name" name="simple_object_name"/>
           <% tabs(:in_form=>true){|tab|%>
