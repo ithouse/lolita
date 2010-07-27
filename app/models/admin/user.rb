@@ -456,7 +456,7 @@ class Admin::User < Cms::Base
   #                    Useful, for example, when need to authenticate public users, that have different classes.
   def self.user_class_types(allowed_classes=:none)
     if allowed_classes.is_a?(Array)
-      allowed_classes.collect{|c| c.to_s unless c.is_a?(String)}
+      allowed_classes.collect{|c| c.to_s}
     elsif allowed_classes==:all
       self.find_by_sql("SELECT type FROM #{table_name} GROUP BY type").collect{|u| u["type"]}
     else

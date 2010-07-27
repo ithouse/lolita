@@ -31,6 +31,7 @@
 # * OR
 # * <tt>:url</tt> - The URL to redirect on successful login unless :partial is specified.
 #
+# * <tt>:include_unauthorized</tt> - Yield user to given block even if it not found.
 # * <tt>:flash_auth_failed</tt> - Message that is set in <tt>flash[:error]</tt> if failed to login.
 # * <tt>:no_flash</tt> - If is set to _true_ than no message is written in <tt>flash[:error]</tt>
 # * <tt>:allowed_classes</tt> - Define Array of User classes that can authenticate through this class or Sysmbols, :all
@@ -101,9 +102,9 @@ class Admin::PublicUserController < Managed
   
   def login_public_user klass,login,password,options={}
     if request.post? && params[:user]
-      user = klass.authenticate(params[:user][login],params[:user][password],options[:allowed_classes],options[:method])
+      user = klass.authenticate(params[:user][login],params[:user][password],options[:allowed_classes],options[:method] || :any)
       loged_in=if block_given?
-        yield user if user
+        yield user if options[:include_unauthorized] || user
       else
         true
       end
