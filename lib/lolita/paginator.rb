@@ -237,7 +237,7 @@ module Lolita
           case column.type
           when :integer
             cond << filter.to_i
-          when :float || :decimal
+          when :float, :decimal
             cond << filter.to_f
           end
         elsif column.type == :string
