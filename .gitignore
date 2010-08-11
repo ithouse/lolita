@@ -7,3 +7,4 @@ doc/
 rdoc/
 spec/debug.log
 .git.zip
+.idea/

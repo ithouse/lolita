@@ -33,6 +33,7 @@ module ControllerExtensions
         @config[:refresh_menu]=@my_params[:refresh_menu].to_b
         @config[:namespace]=namespace
         @config[:object_name]=@my_params[:controller] unless @config[:object_name]
+        @config[:object]=@my_params[:controller] unless @config[:object]
         @config[:all_params]=@my_params
         @config[:object_class]=get_object_klass
       end
@@ -44,16 +45,20 @@ module ControllerExtensions
       # * <tt>:object</tt> is a <tt>String</tt>
       #
       def get_object_klass
-        if @config[:object]
-          if @config[:object].is_a?(Hash)
-            object_class=@config[:object][params[:action].to_sym]
-            object_class=@config[:object][:default] unless object_class
+        begin
+          if @config[:object]
+            if @config[:object].is_a?(Hash)
+              object_class=@config[:object][params[:action].to_sym]
+              object_class=@config[:object][:default] unless object_class
+            else
+              object_class=@config[:object]
+            end
+            object_class.camelize.constantize if object_class
           else
-            object_class=@config[:object]
+            params[:controller].camelize.constantize
           end
-          object_class.camelize.constantize if object_class
-        else
-          params[:controller].camelize.constantize rescue nil
+        rescue
+          nil
         end
         #@config[:object] ? @config[:object].camelize.constantize : params[:controller].camelize.constantize
       end
