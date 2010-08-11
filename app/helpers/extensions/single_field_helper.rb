@@ -201,8 +201,8 @@ module Extensions::SingleFieldHelper
     remote_elements=remote_class.find(:all,options[:find_options]) if remote_class
     result=""
     remote_elements.each{|element|
-      r=check_box_tag("#{object}[#{options[:field]}_ids][]", element.id,elements.include?(element),{:id=>"#{options[:field]}_#{element.id}"})
-      r+=%(<label for="#{options[:field]}_#{element.id}" >#{field_to_string_simple(options[:titles],element)}</label>)
+      r=check_box_tag("#{object}[#{options[:field].to_s.singularize}_ids][]", element.id,elements.include?(element),{:id=>"#{options[:field]}_#{element.id}"})
+      r+=%(<label for="#{options[:field]}_#{element.id}" >#{field_to_string_simple(options[:titles],element)}</label>).html_safe
       result += "<div class=\"checkbox\">#{r}</div>"
     }
     result

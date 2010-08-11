@@ -182,7 +182,6 @@ class Admin::User < Cms::Base
   # Also creates +renew_password_hash+ for identifying password.
   def reset_password
     self.update_attributes!(
-      :password=>Admin::User.temp_password(20),
       :reset_password_expires_at=>3.days.from_now
     )
     self.update_attributes!(:renew_password_hash=>self.reseted_password_hash)
@@ -211,12 +210,14 @@ class Admin::User < Cms::Base
   # Create new password and is meant to call when user change password.
   # User data is updated with _pass_ and disabled possibility to change password
   # again with unique hash from #reseted_password_hash.
-  def renew_password(pass)
-    self.update_attributes(
+  def renew_password(pass,confirmation=nil)
+    attr={
       :password=>pass,
       :reset_password_expires_at=>nil,
       :renew_password_hash=>nil
-    )
+    }
+    attr.merge!(:password_confirmation=>confirmation) if confirmation
+    self.update_attributes(attr)
   end
 
   # Determine whether or not password must be changed, depending on password
