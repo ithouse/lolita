@@ -230,14 +230,14 @@ module Lolita
     #   ]}
     def create_simple_filter_conditions(filter)
       filter.strip!
-      new_cond=@parent.content_columns.inject([[]]){|cond,column|
+      new_cond=@parent.content_columns.inject([[]]){|cond,cook,lumn|
         if [:integer,:float,:decimal].include?(column.type) && filter =~ /^[+-]?\d+((\.|\,)\d+)?$/
           cond[0]<<"`#{@parent.table_name}`.`#{column.name}` = ?"
           filter.gsub!(",",".")
           case column.type
           when :integer
             cond << filter.to_i
-          when :float || :decimal
+          when :float, :decimal
             cond << filter.to_f
           end
         elsif column.type == :string

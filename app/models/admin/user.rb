@@ -48,6 +48,7 @@ class Admin::User < Cms::Base
   validates_presence_of :password,                   :if => :password_required?
   validates_length_of   :password, :within => 4..40, :if => :password_required?
 
+  before_save :downcase_email
   before_save :encrypt_password
   before_save :save_type
 
@@ -64,6 +65,7 @@ class Admin::User < Cms::Base
   #     Admin::PublicUser.authenticate("login","password",["Admin::PublicUser","Admin::SpecialUser"])
   #     #=> As public users can be authenticated PublicUser and SpecialUser but not SystemUser
   def self.authenticate(login, password, allowed_classes=:none,login_method=:any)
+    login=login.to_s.downcase if login
     if login_method==:any
       login.to_s =~ /(^2\d{7}$)|(^[a-z0-9_\.\-]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}$)/i
       if $&.to_s.include?("@")
@@ -589,6 +591,10 @@ class Admin::User < Cms::Base
 
   private
 
+  def downcase_email
+    self.email=self.email.to_s.downcase if self.email
+  end
+    
   def save_type
     self.type=self.class.to_s
   end

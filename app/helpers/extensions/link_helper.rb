@@ -46,6 +46,10 @@ module Extensions::LinkHelper
           title="#{image_tag("/lolita/images/icons/trash.gif")}&nbsp;"
         when :edit
           title="#{image_tag("/lolita/images/icons/edit.png")}&nbsp;"
+        when :moveup
+          title="#{image_tag("/lolita/images/icons/up.gif")}&nbsp;"
+        when :movedown
+          title="#{image_tag("/lolita/images/icons/down.gif")}&nbsp;"    
         end
       end
     else
@@ -141,6 +145,22 @@ module Extensions::LinkHelper
     config[:method]="POST"
     config[:params]=(config[:params]||{}).merge(:_method=>"delete")
     config[:confirm]||=t(:"actions.destroy confirmation")
+    default_link(config).html_safe
+  end
+
+  def moveup_link config={}
+    config[:title]||=t(:"actions.moveup")
+    config[:action]="moveup"
+    config[:method]="POST"
+    config[:params]=(config[:params]||{}).merge(:_method=>"moveup")
+    default_link(config).html_safe
+  end
+
+  def movedown_link config={}
+    config[:title]||=t(:"actions.movedown")
+    config[:action]="movedown"
+    config[:method]="POST"
+    config[:params]=(config[:params]||{}).merge(:_method=>"movedown")
     default_link(config).html_safe
   end
 

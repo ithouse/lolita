@@ -885,3 +885,7 @@ select.parent_filter_select{
 #horoscope-list #horoscope-text p {
     font-size:12px;
 }
+
+tr.daynews td{
+	background-color:#FFFFBE !important;
+} 

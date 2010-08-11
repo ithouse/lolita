@@ -12,7 +12,7 @@ module Media::BaseHelper
   def default_media_tab_options tab
     {
       :media=>tab[:media],
-      :parent=>@config[:object].camelize.constantize.base_class.to_s.underscore, #to make polymorphic class correct
+      :parent=>@config[:object_name].camelize.constantize.base_class.to_s.underscore, #to make polymorphic class correct
       :tempid=>(params[:action]!="update"),
       :parent_id=>(params[:action]!="update")? @new_object_id : @object.id
     }

@@ -218,6 +218,10 @@ module ManagedHelper
         yield edit_link(:id=>element.id,:image=>true)
       when :destroy
         yield destroy_link(:id=>element.id, :image=>true)
+      when :moveup
+        yield moveup_link(:id=>element.id, :image=>true)  
+      when :movedown
+        yield movedown_link(:id=>element.id, :image=>true)          
       end
     } if @config[:list][:options]
   end

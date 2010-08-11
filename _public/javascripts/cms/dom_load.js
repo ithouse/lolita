@@ -67,6 +67,7 @@ function init_menus(retray){
                 eval(data)
                 if(ITH.MenuTree.active.app)ITH.MenuTree.active.app.render()
                 if(ITH.MenuTree.active.web) ITH.MenuTree.active.web.render()
+                $('.left-menu-item:eq(5) img').trigger('click');
             },
             error:function(data){
                 if(rtry<3) init_menus(rtry+1)
