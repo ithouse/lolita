@@ -17,5 +17,5 @@
 </dl>
 <h3><%= raw @title %></h3>
 <pre>
-  <%= raw @msg %>
+  <%= raw @msg.gsub(/<(.*)>/, '&lt;\1&gt;') %>
 </pre>
