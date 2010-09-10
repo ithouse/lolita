@@ -93,6 +93,7 @@ en:
     select a module: -Select a section-
     content_tree: Place at site map
     not selected: -not selected-
+    language: Language
   translate:
     language: Language
   user:
