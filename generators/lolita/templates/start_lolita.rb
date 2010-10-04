@@ -5,7 +5,7 @@ ActionMailer::Base.default_url_options[:host] = Lolita.config.system :domain
 # email settings
 if Lolita.config.email :smtp_settings
   ActionMailer::Base.default_content_type = "text/html"
-  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.delivery_method = (Lolita.config.email :delivery_method) || :smtp
   ActionMailer::Base.default_charset = "utf-8"
   ActionMailer::Base.smtp_settings = Lolita.config.email :smtp_settings
 end
