@@ -7,7 +7,6 @@ module Lolita
   module Configuration
 
     def self.included(base)
-      puts "including lolita in #{base}"
       base.class_eval do
         extend ClassMethods
         def lolita # tikai getteris
@@ -27,7 +26,7 @@ module Lolita
       attr_reader :dbi
     
       def initialize(*args,&block)
-        puts "INIT LOLITA"
+        puts "Lolita initialized for #{args[0]}"
         @dbi=Lolita::DBI::Base.new(args[0])
         block_given? ? self.instance_eval(&block) : self.generate
       end

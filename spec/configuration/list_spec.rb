@@ -74,10 +74,5 @@ describe Lolita::Configuration::List do
     list.columns.first.name.should == "col1"
   end
 
-  def create_recs
-    f=TestClass1.create(:field_one=>"one")
-    s=TestClass1.create(:field_one=>"two")
-    @recs=[f,s]
-  end
 end
 

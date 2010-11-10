@@ -15,21 +15,21 @@
 #puts Person.lolita_config.list.columns.inspect
 
 
-class A
-  include Enumerable
-  def initialize
-    @arr=[1,2]
-  end
-  def each
-    @arr.each{|el| yield el}
-  end
-
-  def method_missing(m,*args,&block)
-    @arr.__send__(m,*args,&block)
-  end
-end
-
-a=A.new()
-puts a.size
+#class A
+#  include Enumerable
+#  def initialize
+#    @arr=[1,2]
+#  end
+#  def each
+#    @arr.each{|el| yield el}
+#  end
+#
+#  def method_missing(m,*args,&block)
+#    @arr.__send__(m,*args,&block)
+#  end
+#end
+#
+#a=A.new()
+#puts a.size
 
 

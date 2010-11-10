@@ -8,8 +8,11 @@ module Lolita
       include Enumerable
       
       attr_accessor :list
-      def initialize(list)
+      attr_reader :dbi
+      
+      def initialize(list,dbi=nil)
         @list=list
+        @dbi=dbi || list.dbi
         @columns=[]
       end
 
@@ -31,8 +34,7 @@ module Lolita
 
       def generate!
         @columns.clear
-        generator=DBI::ColumnGenerator.new(@list.dbi)
-        generator.fields.each_with_index{|field,index|
+        @dbi.fields.each_with_index{|field,index|
           @columns[index]=Lolita::Configuration::Column.new(field)
         }
       end

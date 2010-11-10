@@ -98,7 +98,6 @@ module Lolita
         if args && args[0]
           if args[0].is_a?(Hash)
             args[0].each{|m,value|
-              puts "method #{m}="
               self.send("#{m}=".to_sym,value)
             }
           else

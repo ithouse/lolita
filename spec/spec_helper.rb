@@ -3,7 +3,7 @@ Dir[File.expand_path(File.join(File.dirname(__FILE__),'..','lib','**','*.rb'))].
 require 'mongoid'
 
 Mongoid.configure do |config|
-  name = "lolita2_test_development"
+  name = "lolita3_test"
   host = "localhost"
   config.master = Mongo::Connection.new.db(name)
   config.slaves = [
@@ -27,4 +27,10 @@ class TestClass2
   lolita do
     
   end
+end
+
+def create_recs
+  f=TestClass1.create(:field_one=>"one")
+  s=TestClass1.create(:field_one=>"two")
+  @recs=[f,s]
 end
