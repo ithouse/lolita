@@ -5,6 +5,7 @@ _public/_gsdata_/*
 *~
 doc/
 rdoc/
+unused_classes/
 spec/debug.log
 .git.zip
 .idea/

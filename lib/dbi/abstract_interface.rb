@@ -1,13 +1,13 @@
 
 module Lolita
   module DBI
-    class AbstractInterface
+    module AbstractInterface
 
       attr_reader :dbi
-      def initialize(dbi)
+      def connect_adapter(dbi)
         @dbi=dbi
         self.class.class_eval do
-          include "Adapter::#{dbi.source.to_s.camelize}"
+          include "Adapter::#{dbi.source.to_s.camelize}".constantize
         end
       end
     end

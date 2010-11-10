@@ -23,14 +23,14 @@ describe Lolita::Configuration::List do
 
   it "should generate columns if none is given" do
     list=Lolita::Configuration::List.new(@dbi)
-    list.columns.should have(2).items
+    list.columns.size.should == 2
     list=Lolita::Configuration::List.new(@dbi){}
-    list.columns.should have(2).items
+    list.columns.size.should == 2
   end
 
   it "should not generate columns if one or more is given" do
     list=Lolita::Configuration::List.new(@dbi,:columns=>[{:name=>"C1"}])
-    list.columns.should have(1).items
+    list.columns.size.should == 1
     list=Lolita::Configuration::List.new(@dbi) do
       column :name=>"Col1"
       column :name=>"col3"
@@ -39,14 +39,14 @@ describe Lolita::Configuration::List do
         title "Column two"
       end
     end
-    list.columns.should have(3).items
+    list.columns.size.should==3
   end
 
   it "should get records for list page" do
     create_recs()
     list=Lolita::Configuration::List.new(@dbi,:per_page=>1)
-    list.paginate(1,:per_page=>2).should have(2).items
-    list.paginate(2).should have(1).item
+    list.paginate(1,:per_page=>2).size.should == 2
+    list.paginate(1).size.should == 1
   end
 
   it "should sort by one or more columns" do

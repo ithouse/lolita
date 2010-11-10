@@ -27,9 +27,7 @@ module Lolita
     
     def method_missing(method_name,*args,&block)
       unless @class_instance
-        puts @lazy_class.to_s
         arity=@lazy_class.instance_method(:initialize).arity
-        puts "-#{arity}"
         if arity==-1 # when expectign *args
           @class_instance=@lazy_class.new(*@args,&@eval_block)
         elsif arity.abs>0 # when expecting specific number of arguments without any *args

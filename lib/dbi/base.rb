@@ -2,7 +2,7 @@ require 'dbi/abstract_interface'
 require 'dbi/column_generator'
 require 'dbi/record_set'
 
-Dir[File.expand_path(File.join(File.dirname(__FILE__),'..','connector','**','*.rb'))].each {|f| require f}
+Dir[File.expand_path(File.join(File.dirname(__FILE__),'..','adapter','**','*.rb'))].each {|f| require f}
 
 module Lolita
   module DBI

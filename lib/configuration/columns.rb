@@ -3,56 +3,65 @@ require 'configuration/column'
 
 module Lolita
   module Configuration
-    class Columns < Array
+    class Columns 
 
+      include Enumerable
+      
       attr_accessor :list
       def initialize(list)
         @list=list
-        super(0)
+        @columns=[]
       end
 
-      def each
-        self.each{|column|
-          unless column.is_a?(::Column)
-            column=set_real_column(column)
-          end
-          yield column
-        }
-      end
-
-      def [](index)
-        unless super(index).is_a?(::Column)
-          self[index]=set_real_column(index)
+      def method_missing(method,*args,&block)
+        if @columns.detect{|column| !column.is_a?(Lolita::Configuration::Column)}
+          initialize_all_columns
         end
-        super(index)
+        @columns.__send__(method,*args,&block)
       end
-
-      def first
-        self[0]
-      end
-
-      def last
-        self[self.size-1]
+      
+      def each
+        @columns.each_with_index{|column,index|
+          unless column.is_a?(Lolita::Configuration::Column)
+            @columns[index]=set_real_column(column)
+          end
+          yield @columns[index]
+        }
       end
 
       def generate!
-        self.clear
+        @columns.clear
         generator=DBI::ColumnGenerator.new(@list.dbi)
         generator.fields.each_with_index{|field,index|
-          self[index]=Lolita::Configuration::Column.new(field)
+          @columns[index]=Lolita::Configuration::Column.new(field)
         }
       end
 
-      private
-
-      def set_real_column(column)
-        if column.is_a?(Proc)
-          Lolita::Configuration::Column.new(column)
+      def add attributes={},&block
+        if block_given?
+          @columns<<set_real_column(&block)
         else
-          Lolita::Configuration::Column.new(&column)
+          @columns<<set_real_column(attributes)
         end
       end
-      # TODO pielikt klāt lai ielādē reālu kolonnu ja prasa [] vai first, last
+      private
+
+      def initialize_all_columns
+        @columns.collect!{|column| set_real_column(column) unless column.is_a?(Lolita::Configuration::Column)}
+      end
+
+      def set_real_column(column=nil,&block)
+        if column.is_a?(Proc)
+          Lolita::Configuration::Column.new(&column)
+        elsif block_given?
+          Lolita::Configuration::Column.new(&block)
+        elsif column
+          Lolita::Configuration::Column.new(column)
+        else
+          raise ArgumentError.new("Must give Proc or Hash or block.")
+        end
+      end
+
     end
   end
 end

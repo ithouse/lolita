@@ -8,6 +8,7 @@ module Adapter
     end
 
     def paginate
+      puts "paginate--"
       self.dbi.klass.paginate(@options)
     end
 

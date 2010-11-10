@@ -17,10 +17,12 @@ module Lolita
         @columns=Lolita::Configuration::Columns.new(self)
         @sort_columns=[]
         @set_attributes=[]
-        block_given? ? self.instance_eval(&block) : self.set_attributes(*args)
+        block_given? ? self.instance_eval(&block) : set_attributes(*args)
         self.generate()
       end
 
+      # Set columns. Allowed classes are Lolita::Configuration::Columns or
+      # Array.
       def columns=(value)
         set_attribute(:columns)
         if value.is_a?(Lolita::Configuration::Columns)
@@ -31,7 +33,8 @@ module Lolita
           raise ArgumentError.new("Columns must bet Array or Lolita::Configuration::Columns.")
         end
       end
-      
+
+      # Get list columns (also block setter)
       def columns(value=nil)
         if value
           self.columns=value
@@ -42,6 +45,7 @@ module Lolita
         @columns
       end
 
+      # Records per page (also block setter)
       def per_page(value=nil)
         @per_page=value if value
         @per_page
@@ -60,18 +64,36 @@ module Lolita
       def sort_columns
         @sort_columns
       end
-      
+
+      # Paginate
+      # Options:
+      # * <tt>:per_page</tt> - Records per page, if not given use list default per page.
+      # * <tt>:page</tt> - Page to get
+      # * <tt>page</tt> - Page to get
+      # ====Example
+      #     list.paginate(1)
+      #     list.paginate
+      #     lsit.paginate(:per_page=>2,:page=>1)
       def paginate *args
-        options=args.extract_options!
-        options[:page]||=args.first || 1
+        options=args ? args.extract_options! : {}
+        options[:page]||=((args && args.first) || 1)
         options[:per_page]||=@per_page
-        Lolita::LazyLoader.lazy_load(self,:@record_set,Lolita::DBI::RecordSet,@dbi,options)
+        @page=Lolita::DBI::RecordSet.new(@dbi,options)
       end
-      
+
+      # Return last page created by paginate.
+      def page
+        @page
+      end
+
+      # Generate uninitialized attributes
       def generate()
         @columns.generate! unless is_set?(:columns)
       end
 
+      private
+
+      # Used to set attributes if block not given.
       def set_attributes(*args)
         if args && args[0]
           if args[0].is_a?(Hash)
@@ -84,8 +106,7 @@ module Lolita
           end
         end
       end
-      private
-
+      
       # Mark attribute as set.
       def set_attribute(var)
         @set_attributes<<var unless is_set?(var)
@@ -95,7 +116,8 @@ module Lolita
       def is_set?(var)
         @set_attributes.include?(var)
       end
-      
+
+      # Block setter for columns
       def column(*args,&block)
         set_attribute(:columns)
         if block_given?

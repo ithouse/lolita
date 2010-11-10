@@ -6,6 +6,7 @@ module Lolita
       
       def initialize(*args,&block)
         block_given? ? self.instance_eval(&block) : self.generate(*args)
+        raise ArgumentError.new("Column must have name.") unless self.name
       end
 
       def name(value=nil)
