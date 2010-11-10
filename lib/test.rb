@@ -14,7 +14,16 @@
 #puts Person.ancestors.inspect
 #puts Person.lolita_config.list.columns.inspect
 
-class K
+require 'mongoid'
+class A
+  include Mongoid::Document
+end
+
+module M
+
+end
+class K < A
+  include M
   include Enumerable
   def initialize(a,b)
     @arr=[a,b]
@@ -24,8 +33,8 @@ class K
     @arr.each{|el| yield el}
   end
 end
-
+puts K.ancestors
 k=K.new(*[1,2])
-puts k.size
+
 
 

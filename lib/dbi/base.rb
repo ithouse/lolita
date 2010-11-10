@@ -10,11 +10,11 @@ module Lolita
 
       attr_reader :collection,:source, :klass
       def initialize(class_object)
-        if class_object.respond_to?(:collection)
-          @source=:mongo
+        if defined?(Mongoid) && defined?(Mongoid::Document) && class_object.ancestors.include?(Mongoid::Document)
+          @source=:mongoid
           @collection=class_object.collection
-        elsif class_object.respond_to?(:table_name)
-          @source=:mysql
+        elsif defined?(ActiveRecord) && defined?(ActiveRecord::Base) && class_object.ancestors.include?(ActiveRecord::Base)
+          @source=:active_record
           @collection=class_object.table_name
         else
           raise ArgumentError.new("DBI::Base can work only with classes that include Mongoid::Document or extend ActiveRecord::Base instead of #{class_object.class}")

@@ -7,11 +7,7 @@ module Lolita
       def initialize(dbi)
         @dbi=dbi
         self.class.class_eval do
-          if dbi.source==:mongo
-            include Connector::Mongoid
-          elsif dbi.source==:mysql
-            include Connector::ActiveRecord
-          end
+          include "Adapter::#{dbi.source.to_s.camelize}"
         end
       end
     end

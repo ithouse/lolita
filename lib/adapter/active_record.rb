@@ -1,4 +1,4 @@
-module Connector
+module Adapter
   module ActiveRecord
 
     def fields

@@ -38,7 +38,7 @@ module Lolita
           @class_instance=@lazy_class.new(&@eval_block)
         end
       end
-      @class_instance.send(method_name,*args,&block)
+      @class_instance.__send__(method_name,*args,&block)
     end
     
     instance_methods.each { |method|
