@@ -18,7 +18,7 @@ module Lolita
         @sort_columns=[]
         @set_attributes=[]
         block_given? ? self.instance_eval(&block) : set_attributes(*args)
-        self.generate()
+        self.generate!()
       end
 
       # Set columns. Allowed classes are Lolita::Configuration::Columns or
@@ -39,9 +39,7 @@ module Lolita
         if value
           self.columns=value
         end
-        unless is_set?(:columns)
-          @columns.generate!
-        end
+        self.generate!
         @columns
       end
 
@@ -87,7 +85,7 @@ module Lolita
       end
 
       # Generate uninitialized attributes
-      def generate()
+      def generate!()
         @columns.generate! unless is_set?(:columns)
       end
 

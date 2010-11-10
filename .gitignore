@@ -9,3 +9,4 @@ unused_classes/
 spec/debug.log
 .git.zip
 .idea/
+.gem

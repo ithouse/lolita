@@ -1,5 +1,3 @@
-# Every adapter need to include this module to be sure that every method
-# needed for Lolita is defined in adapter.
 module Lolita
   module Adapter
     module AbstractAdapter

@@ -1,4 +1,6 @@
+
 $:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
+require 'rubygems'
 require 'mongoid'
 require "configuration/base"
 #require 'bson_ext'
