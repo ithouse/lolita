@@ -1,3 +1,0 @@
-module Admin::AccessHelper
-  
-end

@@ -1,3 +1,0 @@
-module Media::MediaDialogHelper
- 
-end

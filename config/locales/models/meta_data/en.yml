@@ -1,8 +1,0 @@
-en:
-  activerecord:
-    attributes:
-      meta_data:
-        url: Address(URL)
-        name: Nome
-        keywords: Keywords
-        description: Description

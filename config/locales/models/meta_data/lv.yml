@@ -1,8 +1,0 @@
-lv:
-  activerecord:
-    attributes:
-      meta_data:
-        url: Adrese(URL)
-        name: Nosaukums
-        keywords: Atslēgvārdi
-        description: Apraksts

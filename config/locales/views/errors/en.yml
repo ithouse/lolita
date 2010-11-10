@@ -1,9 +1,0 @@
-en:
-  lolita:
-    errors:
-      error_404:
-        title: Error 404
-        body: Your wanted address was not found <a href="/">Back to start page.</a>
-      error_500:
-        title: Error 500
-        body: Sorry, but there is an error, we have already been informed and will try it as soon as possible to prevent it. Try again later.
