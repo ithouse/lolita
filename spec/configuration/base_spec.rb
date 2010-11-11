@@ -25,8 +25,19 @@ describe Lolita::Configuration::Base do
     TestClass1.lolita.list.class.to_s.should == "Lolita::Configuration::List"
   end
 
+  it "should return form object" do
+    define_config
+    TestClass1.lolita.form.class.should == Lolita::Configuration::Form
+  end
+
+  it "should return form tabs" do
+    define_config
+    TestClass1.lolita.tabs.class.should == Lolita::Configuration::Tabs
+    TestClass1.lolita.form.tabs.should == TestClass1.lolita.tabs
+  end
+
   def define_config &block
-    Lolita::Configuration::Base.new(TestClass1,&block)
+    TestClass1.lolita=Lolita::Configuration::Base.new(TestClass1,&block)
   end
 end
 

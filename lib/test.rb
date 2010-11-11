@@ -32,4 +32,53 @@
 #a=A.new()
 #puts a.size
 
+#lolita do
+#  tab.extend(:default) do
+#    field :name=>:virtual_attribute # paplašina taba laukus ar šo
+#  end
+#end
+## check for default relations
+#class Post
+#  mount_uploader :image
+#
+#end
+## Post automātiski tiek ielādēts tabs attēlu augšupielādei
+#lolita do
+#  tab :content=>:default #to know that first tab is content tab, when other tabs are given
+#  tab do
+#    builder RedTab
+#    name "Saturs"
+#    field do
+#      name "title"
+#      title "Nosaukums"
+#      type TextField
+#    end
+#    field :name=>"title"
+#  end
+#  tab("Specia fields") do
+#    field_set do
+#      field :name=>"body"
+#    end
+#  end
+#  tab("Files") do
+#    content :files
+#    builder FileUpload
+#    preview false
+#    file_list do
+#      builder AdvancedFileList
+#    end
+#  end
+#  tab("Images") do
+#    content :images
+#    builder ImageUpload
+#    file_list false # no file list
+#    # or default file list
+#  end
+#  tabs.exclude :metadata,:content # to exclude default tabs
+#  tabs_exclude :content # or this syntax
+#end
 
+class K
+
+end
+puts self.class

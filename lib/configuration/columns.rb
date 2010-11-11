@@ -1,11 +1,13 @@
 require 'dbi/base'
 require 'configuration/column'
+require 'observed_array'
 
 module Lolita
   module Configuration
     class Columns 
 
       include Enumerable
+      include ObservedArray
       
       attr_accessor :list
       attr_reader :dbi
@@ -17,18 +19,16 @@ module Lolita
       end
 
       def method_missing(method,*args,&block)
-        if @columns.detect{|column| !column.is_a?(Lolita::Configuration::Column)}
-          initialize_all_columns
-        end
         @columns.__send__(method,*args,&block)
       end
       
       def each
         @columns.each_with_index{|column,index|
-          unless column.is_a?(Lolita::Configuration::Column)
-            @columns[index]=set_real_column(column)
+          if column.is_a?(Lolita::Configuration::Column)
+            yield column
+          else
+            raise "Any column must be Lolita::Configuratin::Column object instead of #{column.class}."
           end
-          yield @columns[index]
         }
       end
 
@@ -41,19 +41,22 @@ module Lolita
 
       def add attributes={},&block
         if block_given?
-          @columns<<set_real_column(&block)
+          @columns<<build_element(&block)
         else
-          @columns<<set_real_column(attributes)
+          @columns<<build_element(attributes)
         end
       end
+
       private
 
-      def initialize_all_columns
-        @columns.collect!{|column| set_real_column(column) unless column.is_a?(Lolita::Configuration::Column)}
+      def collection_variable
+        @columns
       end
-
-      def set_real_column(column=nil,&block)
-        if column.is_a?(Proc)
+      
+      def build_element(column=nil,&block)
+        if column.is_a?(Lolita::Configuration::Column)
+          column
+        elsif column.is_a?(Proc)
           Lolita::Configuration::Column.new(&column)
         elsif block_given?
           Lolita::Configuration::Column.new(&block)
