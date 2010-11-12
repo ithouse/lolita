@@ -10,3 +10,4 @@ spec/debug.log
 .git.zip
 .idea/
 .gem
+lib/test.rb
