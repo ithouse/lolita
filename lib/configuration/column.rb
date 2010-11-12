@@ -5,7 +5,8 @@ module Lolita
       attr_writer :name, :title, :type, :options
       
       def initialize(*args,&block)
-        block_given? ? self.instance_eval(&block) : self.generate!(*args)
+        self.set_attributes(*args)
+        self.instance_eval(&block) if block_given?
         raise ArgumentError.new("Column must have name.") unless self.name
       end
 
@@ -24,14 +25,16 @@ module Lolita
         @type
       end
 
-      def generate!(*args)
+      def set_attributes(*args)
         if !args.empty?
           if args[0].is_a?(Hash)
             args[0].each{|m,value|
               self.send("#{m}=".to_sym,value)
             }
+          elsif args[0].is_a?(Symbol) || args[0].is_a?(String)
+            self.name=args[0].to_s
           else
-            raise ArgumentError.new("Lolita::Configuration::Column arguments must be Hash instead of #{args[0].class}")
+            raise ArgumentError.new("Lolita::Configuration::Column arguments must be Hash or Symbol or String instead of #{args[0].class}")
           end
         end
       end

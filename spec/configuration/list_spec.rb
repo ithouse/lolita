@@ -23,9 +23,9 @@ describe Lolita::Configuration::List do
 
   it "should generate columns if none is given" do
     list=Lolita::Configuration::List.new(@dbi)
-    list.columns.size.should == 2
+    list.columns.size.should == 1
     list=Lolita::Configuration::List.new(@dbi){}
-    list.columns.size.should == 2
+    list.columns.size.should == 1
   end
 
   it "should not generate columns if one or more is given" do
@@ -47,6 +47,13 @@ describe Lolita::Configuration::List do
     list=Lolita::Configuration::List.new(@dbi,:per_page=>1)
     list.paginate(1,:per_page=>2).size.should == 2
     list.paginate(1).size.should == 1
+  end
+
+  it "should define columns when Symbols are given as args" do
+    list=Lolita::Configuration::List.new do
+      columns :col1,:col2,:col3
+    end
+    list.columns.size.should == 3
   end
 
   it "should sort by one or more columns" do

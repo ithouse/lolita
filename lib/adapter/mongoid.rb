@@ -5,7 +5,7 @@ module Lolita
       include Lolita::Adapter::AbstractAdapter
       
       def fields
-        [primary_field]+self.dbi.klass.fields.collect{|name,field|
+        self.dbi.klass.fields.collect{|name,field|
           field_to_hash(name,field)
         }
       end

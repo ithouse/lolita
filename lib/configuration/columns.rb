@@ -45,6 +45,7 @@ module Lolita
         else
           @columns<<build_element(attributes)
         end
+        self
       end
 
       private
@@ -60,10 +61,10 @@ module Lolita
           Lolita::Configuration::Column.new(&column)
         elsif block_given?
           Lolita::Configuration::Column.new(&block)
-        elsif column
+        elsif [Symbol,String,Hash].include?(column.class)
           Lolita::Configuration::Column.new(column)
         else
-          raise ArgumentError.new("Must give Proc or Hash or block.")
+          raise ArgumentError.new("Column can not be defined with #{column.class}.")
         end
       end
 

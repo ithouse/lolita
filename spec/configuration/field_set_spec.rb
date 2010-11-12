@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Lolita::Configuration::FieldSet do
   before(:each) do
-    @field_set = FieldSet.new
+    @tab = Lolita::Configuration::Tab
   end
 
   it "should desc" do

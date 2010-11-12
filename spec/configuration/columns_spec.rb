@@ -30,6 +30,15 @@ describe Lolita::Configuration::Columns do
     columns.first.class.should == Lolita::Configuration::Column
   end
 
+  it "should make Lolita::Configuration::Column from Symbol as name" do
+    columns=Lolita::Configuration::Columns.new(@list)
+    columns<<:col1
+    columns.first.class.should == Lolita::Configuration::Column
+    columns.add(:col2).add(:col3)
+    columns.last.class.should == Lolita::Configuration::Column
+    columns.size.should == 3
+  end
+
   it "should make ::Column object with given block" do
     columns=Lolita::Configuration::Columns.new(@list)
     columns<<(Proc.new{

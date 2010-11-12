@@ -17,7 +17,8 @@ module Lolita
         @columns=Lolita::Configuration::Columns.new(self)
         @sort_columns=[]
         @set_attributes=[]
-        block_given? ? self.instance_eval(&block) : set_attributes(*args)
+        set_attributes(*args)
+        self.instance_eval(&block) if block_given?
         self.generate!()
       end
 
@@ -35,9 +36,9 @@ module Lolita
       end
 
       # Get list columns (also block setter)
-      def columns(value=nil)
-        if value
-          self.columns=value
+      def columns(*args)
+        if args && !args.empty?
+          self.columns=args
         end
         self.generate!
         @columns

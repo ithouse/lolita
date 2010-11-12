@@ -14,6 +14,7 @@
 #     end
 module Lolita
   module ObservedArray
+    
     def push(value)
       value=build_element(value)
       collection_variable.push(value)

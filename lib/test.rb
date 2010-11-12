@@ -79,6 +79,21 @@
 #end
 
 class K
+  def m1
 
+  end
+
+  def initialize
+    
+  end
+  def m2
+
+  end
+
+  private
+
+  def p
+    
+  end
 end
-puts self.class
+puts K.instance_methods(false)

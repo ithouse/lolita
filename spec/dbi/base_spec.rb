@@ -8,7 +8,7 @@ describe Lolita::DBI::Base do
   it "should detect adapter" do
     dbi=Lolita::DBI::Base.new(TestClass1)
     dbi.klass.should == TestClass1
-    dbi.adapter.should == :mongoid
+    Lolita::DBI::Base.adapters.should include(dbi.adapter)
   end
 
   it "should connect adapter" do

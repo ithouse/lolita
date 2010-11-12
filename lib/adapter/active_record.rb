@@ -6,6 +6,8 @@ module Lolita
       def fields
         self.dbi.klass.columns.collect{|column|
           field_to_hash(column)
+        }.reject{|column|
+          column[:options][:primary]
         }
       end
 
@@ -15,7 +17,7 @@ module Lolita
         options[:offset]=(options[:page]-1)*options[:per_page]
         options.delete(:per_page)
         options.delete(:page)
-        self.dbi.klass.find(:all,opt)
+        self.dbi.klass.find(:all,options)
       end
 
       private

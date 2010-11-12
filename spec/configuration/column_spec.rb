@@ -27,6 +27,13 @@ describe Lolita::Configuration::Column do
     column.title.should == "Col one"
   end
 
+  it "should create new column when String or Symbol is given" do
+    column=Lolita::Configuration::Column.new(:col1)
+    column.name.should == "col1"
+    column=Lolita::Configuration::Column.new("col2")
+    column.name.should == "col2"
+  end
+  
   it "should raise error when no name is provided for column" do
     lambda{
       Lolita::Configuration::Column.new do
