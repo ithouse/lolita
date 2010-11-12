@@ -1,4 +1,3 @@
-
 module Lolita
   module Adapter
     module Mongoid
@@ -12,6 +11,30 @@ module Lolita
 
       def paginate(options={})
         self.dbi.klass.paginate(options)
+      end
+
+      def db
+        self.dbi.klass.db
+      end
+
+      def db_name
+        self.dbi.klass.db.name
+      end
+      
+      def collection
+        self.dbi.klass.collection
+      end
+
+      def collection_name
+        collection.name
+      end
+
+      def collections
+        db.collections
+      end
+      
+      def collection_names
+        db.collection_names
       end
 
       private

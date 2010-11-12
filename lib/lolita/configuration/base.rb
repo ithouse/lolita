@@ -1,37 +1,9 @@
-require "lazy_loader"
-require "rails_additions"
-require "configuration/list"
-require 'dbi/base'
-
 # Every class that include Lolita::Configuration this module assign
 # #lolita and #lolita= methods. First one is for normal Lolita configuration
 # definition, and the other one made to assing Lolita to class as a Lolita::Configuration::Base
 # object. You may want to do that to change configuration or for testing purpose.
 module Lolita
   module Configuration
-
-    def self.included(base)
-      base.class_eval do
-        extend ClassMethods
-        def lolita # tikai getteris
-          self.class.lolita
-        end
-      end
-    end
-
-    module ClassMethods 
-      def lolita(&block)
-        Lolita::LazyLoader.lazy_load(self,:@lolita,Lolita::Configuration::Base,self,&block)
-      end
-      def lolita=(value)
-        if value.is_a?(Lolita::Configuration::Base)
-          @lolita=value
-        else
-          raise ArgumentError.new("Only Lolita::Configuration::Base is acceptable.")
-        end
-      end
-    end
-
     # Lolita could be defined inside of any class that is supported by Lolita::Adapter, for now that is
     # * ActiveRecord::Base
     # * Mongoid::Document

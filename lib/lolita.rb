@@ -1,28 +1,54 @@
 
-$:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
-require 'rubygems'
-require 'mongoid'
-require "configuration/base"
-#require 'bson_ext'
-#puts Mongo::Connection.class_variable_get(:@@current_request_id)
-#Mongoid.configure do |config|
-#  name = "lolita2_test_development"
-#  host = "localhost"
-#  config.master = Mongo::Connection.new.db(name)
-#  config.slaves = [
-#    Mongo::Connection.new(host, 27017, :slave_ok => true).db(name)
-#  ]
-#  #config.use_object_ids = true
-#  config.persist_in_safe_mode = false
-#end
-#puts Mongo::Connection.class_variable_get(:@@current_request_id)
-if defined?(ActiveRecord::Base)
-  ActiveRecord::Base.class_eval do
-    include Lolita::Configuration
+LOLITA_ROOT=File.dirname(__FILE__)
+$:<<LOLITA_ROOT unless $:.include?(LOLITA_ROOT)
+
+require 'lolita/rails_additions'
+
+module Lolita
+  autoload(:LazyLoader,'lolita/lazy_loader')
+  autoload(:VERSION,'lolita/version')
+  autoload(:ObservedArray,'lolita/observed_array')
+  module Adapter
+    Dir.new(File.join(LOLITA_ROOT,'lolita','adapter')).each{|file|
+      base_name=File.basename(file,".rb")
+      autoload(:"#{base_name.camelize}","lolita/adapter/#{base_name}") if file.match(/\.rb$/)
+    }
   end
-else
-#  .class_eval do
-#    include Lolita::Configuration
-#  end
-#TODO varbūt šeit var pielikt pie kādas klases 
+
+  module DBI
+    Dir.new(File.join(LOLITA_ROOT,'lolita','dbi')).each{|file|
+      base_name=File.basename(file,".rb")
+      autoload(:"#{base_name.camelize}","lolita/dbi/#{base_name}") if file.match(/\.rb$/)
+    }
+  end
+  
+  module Configuration
+    Dir.new(File.join(LOLITA_ROOT,'lolita','configuration')).each{|file|
+      base_name=File.basename(file,".rb")
+      autoload(:"#{base_name.camelize}","lolita/configuration/#{base_name}") if file.match(/\.rb$/)
+    }
+
+    def self.included(base)
+      base.class_eval do
+        extend ClassMethods
+        def lolita # tikai getteris
+          self.class.lolita
+        end
+      end
+    end
+
+    module ClassMethods
+      def lolita(&block)
+        Lolita::LazyLoader.lazy_load(self,:@lolita,Lolita::Configuration::Base,self,&block)
+      end
+      def lolita=(value)
+        if value.is_a?(Lolita::Configuration::Base)
+          @lolita=value
+        else
+          raise ArgumentError.new("Only Lolita::Configuration::Base is acceptable.")
+        end
+      end
+    end
+
+  end
 end

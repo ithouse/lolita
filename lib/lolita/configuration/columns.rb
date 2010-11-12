@@ -1,7 +1,3 @@
-require 'dbi/base'
-require 'configuration/column'
-require 'observed_array'
-
 module Lolita
   module Configuration
     class Columns 

@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rspec'
-Dir[File.expand_path(File.join(File.dirname(__FILE__),'..','lib','**','*.rb'))].each {|f| require f}
+require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','lolita.rb'))
+#Dir[)].each {|f| require f}
 
 ADAPTER='ar'
 require 'adapter_helper'

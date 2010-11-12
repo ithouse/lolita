@@ -1,99 +1,57 @@
-#require "#{File.join(File.dirname(__FILE__),'lolita.rb')}"
-#puts "Starting"
-#class Person
-#  include Mongoid::Document
-#  field :first_name
-#  field :middle_initial
-#  field :last_name
-#  field :birth_date, :type=>DateTime
-#  field :live, :type=>Boolean
-#  field :description
-#  lolita_config
-#end
-#
-#puts Person.ancestors.inspect
-#puts Person.lolita_config.list.columns.inspect
-
-
-#class A
-#  include Enumerable
-#  def initialize
-#    @arr=[1,2]
-#  end
-#  def each
-#    @arr.each{|el| yield el}
-#  end
-#
-#  def method_missing(m,*args,&block)
-#    @arr.__send__(m,*args,&block)
-#  end
-#end
-#
-#a=A.new()
-#puts a.size
-
-#lolita do
-#  tab.extend(:default) do
-#    field :name=>:virtual_attribute # paplašina taba laukus ar šo
-#  end
-#end
-## check for default relations
-#class Post
-#  mount_uploader :image
-#
-#end
-## Post automātiski tiek ielādēts tabs attēlu augšupielādei
-#lolita do
-#  tab :content=>:default #to know that first tab is content tab, when other tabs are given
-#  tab do
-#    builder RedTab
-#    name "Saturs"
-#    field do
-#      name "title"
-#      title "Nosaukums"
-#      type TextField
-#    end
-#    field :name=>"title"
-#  end
-#  tab("Specia fields") do
-#    field_set do
-#      field :name=>"body"
-#    end
-#  end
-#  tab("Files") do
-#    content :files
-#    builder FileUpload
-#    preview false
-#    file_list do
-#      builder AdvancedFileList
-#    end
-#  end
-#  tab("Images") do
-#    content :images
-#    builder ImageUpload
-#    file_list false # no file list
-#    # or default file list
-#  end
-#  tabs.exclude :metadata,:content # to exclude default tabs
-#  tabs_exclude :content # or this syntax
-#end
-
-class K
-  def m1
-
-  end
-
-  def initialize
-    
-  end
-  def m2
-
-  end
-
-  private
-
-  def p
-    
-  end
+require 'mongoid'
+Mongoid.configure do |config|
+  name = "lolita3_test"
+  host = "localhost"
+  config.master = Mongo::Connection.new.db(name)
+  config.slaves = [
+    Mongo::Connection.new(host, 27017, :slave_ok => true).db(name)
+  ]
+  #config.use_object_ids = true
+  config.persist_in_safe_mode = false
 end
-puts K.instance_methods(false)
+Mongoid.master.collections.select do |collection|
+  collection.name !~ /system/
+end.each(&:drop) 
+
+class Person
+  include Mongoid::Document
+  field :name
+  references_one :policy
+  references_many :prescriptions
+  references_many :preferences, :stored_as => :array, :inverse_of => :people
+end
+
+class Policy
+  
+  include Mongoid::Document
+  field :name
+  referenced_in :person
+end
+
+class Prescription
+  
+  include Mongoid::Document
+  field :name
+  referenced_in :person
+end
+
+class Preference
+  include Mongoid::Document
+  field :name
+  references_many :people, :stored_as => :array, :inverse_of => :preferences
+end
+person = Person.create(:name=>"vards")
+policy = Policy.create(:name=>"policy_name")
+prescription = Prescription.create(:name=>"prescription_name")
+preference=Preference.create(:name=>"preference_name")
+
+person.policy = policy
+person.prescriptions = [prescription]
+person.preferences=[preference]
+
+puts Person.collection.db.name
+puts Person.collection.inspect
+#puts Mongoid::master.collections.inspect
+puts Person.fields.inspect
+puts person.preferences.inspect
+

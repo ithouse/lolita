@@ -1,8 +1,3 @@
-require "configuration/column"
-require "configuration/columns"
-require 'rails_additions'
-require 'dbi/base'
-
 module Lolita
   module Configuration
     class List
