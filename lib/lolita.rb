@@ -2,7 +2,9 @@
 LOLITA_ROOT=File.dirname(__FILE__)
 $:<<LOLITA_ROOT unless $:.include?(LOLITA_ROOT)
 
+require 'abstract'
 require 'lolita/rails_additions'
+require 'lolita/errors'
 
 module Lolita
   autoload(:LazyLoader,'lolita/lazy_loader')

@@ -1,19 +1,9 @@
 module Lolita
   module Adapter
     module AbstractAdapter
-      def fields
-        raise_err
-      end
 
-      def paginate(options={})
-        raise_err
-      end
-
-      private
-
-      def raise_err
-        raise "You must implement this method!"
-      end
+      abstract_method '',:fields,:db, :db_name,:collection,:collection_name,:collections,:collection_names
+      abstract_method 'opt={}',:paginate
     end
   end
 end

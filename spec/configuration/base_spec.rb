@@ -36,6 +36,7 @@ describe Lolita::Configuration::Base do
     end
     TestClass1.lolita.tabs.size.should == 1
   end
+  
   def define_config &block
     TestClass1.lolita=Lolita::Configuration::Base.new(TestClass1,&block)
   end

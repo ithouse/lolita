@@ -4,25 +4,25 @@ module Lolita
       include Lolita::Adapter::AbstractAdapter
       
       def fields
-        self.dbi.klass.fields.collect{|name,field|
+        self.klass.fields.collect{|name,field|
           field_to_hash(name,field)
         }
       end
 
       def paginate(options={})
-        self.dbi.klass.paginate(options)
+        self.klass.paginate(options)
       end
 
       def db
-        self.dbi.klass.db
+        self.klass.db
       end
 
       def db_name
-        self.dbi.klass.db.name
+        self.klass.db.name
       end
       
       def collection
-        self.dbi.klass.collection
+        self.klass.collection
       end
 
       def collection_name
@@ -38,15 +38,6 @@ module Lolita
       end
 
       private
-
-      def primary_field
-        {
-          :name=>"id",
-          :type=>BSON::ObjectId,
-          :title=>"ID",
-          :options=>{:primary=>true}
-        }
-      end
 
       def field_to_hash(name,field)
         {

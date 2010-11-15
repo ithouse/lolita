@@ -32,15 +32,12 @@ module Lolita
       #     end
       #     Person.lolita=Lolita::Configuration::Base.new(Person)
       #     Person.lolita.klass #=> Person
-      def initialize(parent_class=nil,&block)
-        if parent_class
-          @klass=parent_class
-          @dbi=Lolita::DBI::Base.new(parent_class)
-        else
-          raise ArgumentError.new("Parent class must be Class object instead of #{parent_class.class}")
-        end
+      def initialize(orm_class,&block)
+        @klass=orm_class
+        @dbi=Lolita::DBI::Base.new(orm_class)
         block_given? ? self.instance_eval(&block) : self.generate!
       end
+
 
       # Create list variable for ::Base class and create lazy object of Lolita::LazyLoader.
       # See Lolita::Configuration::List for more information.
@@ -58,13 +55,12 @@ module Lolita
       # Tabs should not be defined in lolita block to create onew or more Lolita::Configuration::Tab
       # See Lolita::Configuration::Tab for details of defination.
       def tab *args, &block
-        tab=Lolita::Configuration::Tab(self.dbi,*args,&block)
+        tab=Lolita::Configuration::Tab.new(self.dbi,*args,&block)
         self.tabs<<tab
       end
       # Call all supported instance metods to set needed variables and initialize object with them.
       def generate!
         self.class.instance_methods(false).each{|m|
-          puts "method #{m}"
           self.send(m.to_sym) unless ["generate!","dbi","klass"].include?(m.to_s)
         }
       end

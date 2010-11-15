@@ -3,7 +3,7 @@ module Lolita
     module ActiveRecord
       include Lolita::Adapter::AbstractAdapter
       def fields
-        self.dbi.klass.columns.collect{|column|
+        self.klass.columns.collect{|column|
           field_to_hash(column)
         }.reject{|column|
           column[:options][:primary]
@@ -16,11 +16,11 @@ module Lolita
         options[:offset]=(options[:page]-1)*options[:per_page]
         options.delete(:per_page)
         options.delete(:page)
-        self.dbi.klass.find(:all,options)
+        self.klass.find(:all,options)
       end
 
       def db
-        self.dbi.klass.connection
+        self.klass.connection
       end
 
       def db_name
@@ -28,15 +28,15 @@ module Lolita
       end
 
       def collection
-        self.dbi.klass #FIXME not realy same as in mongoid
+        self.klass #FIXME not realy same as in mongoid
       end
 
       def collection_name
-        self.dbi.klass.table_name
+        self.klass.table_name
       end
 
       def collections
-        self.dbi.klass #FIXME not  realy same as in mongoid
+        self.klass #FIXME not  realy same as in mongoid
       end
 
       def collection_names
