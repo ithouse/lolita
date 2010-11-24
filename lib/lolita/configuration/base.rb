@@ -14,7 +14,12 @@ module Lolita
     class Base
 
       attr_reader :dbi,:klass
-
+      @@generators=[:tabs,:list]
+      class << self
+        def add_generator(method)
+          @@generators<<method.to_sym
+        end
+      end
       # When configuration is defined in class than you don't need to worry about
       # creating new object, because Lolita itself create it for that class.
       # New object is created like when you define it in class, but <i>parent_class</i>
@@ -48,20 +53,20 @@ module Lolita
       # Create collection of Lolita::Configuration::Tab, loading lazy.
       # See Lolita::Configuration::Tabs for details.
       def tabs &block
-        Lolita::LazyLoader.lazy_load(self,:@tabs, Lolita::Configuration::Tabs,@dbi,&block)
+        Lolita::LazyLoader.lazy_load(self, :@tabs,Lolita::Configuration::Tabs,@dbi,&block)
       end
 
       # Shortcut for Lolita::Configuration::Tabs <<.
       # Tabs should not be defined in lolita block to create onew or more Lolita::Configuration::Tab
       # See Lolita::Configuration::Tab for details of defination.
       def tab *args, &block
-        tab=Lolita::Configuration::Tab.new(self.dbi,*args,&block)
-        self.tabs<<tab
+        self.tabs<<Lolita::Configuration::Tab.new(@dbi,*args,&block)
       end
+      
       # Call all supported instance metods to set needed variables and initialize object with them.
       def generate!
-        self.class.instance_methods(false).each{|m|
-          self.send(m.to_sym) unless ["generate!","dbi","klass"].include?(m.to_s)
+        @@generators.each{|generator|
+          self.send(generator)
         }
       end
       

@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Lolita::Configuration::Tabs do
   before(:each) do
-    @dbi=Lolita::DBI::Base.new(TestClass1)
+    @dbi=Lolita::DBI::Base.new(Post)
   end
 
   it "should create tabs when Array is given" do
@@ -17,14 +17,14 @@ describe Lolita::Configuration::Tabs do
 
   it "should create tabs when specifid in block" do
     tabs=Lolita::Configuration::Tabs.new(@dbi) do
-      tab 
+      tab(:content)
     end
     tabs.size.should == 1
   end
 
   it "should create tabs when specified as arguments" do
-    tabs=Lolita::Configuration::Tabs.new(@dbi,[:image,Tab.new(:content)])
-    tabs.size.should == 2
+    tabs=Lolita::Configuration::Tabs.new(@dbi,:tabs=>[Lolita::Configuration::Tab.new(@dbi,:content)])
+    tabs.size.should == 1
   end
 
   it "should create default tabs" do
@@ -35,8 +35,8 @@ describe Lolita::Configuration::Tabs do
   end
 
   it "should exclude all default tabs" do
-    tabs=Lolita::Configuation::Tabs.new(@dbi) do
-      exclude
+    tabs=Lolita::Configuration::Tabs.new(@dbi) do
+      exclude :all
     end
     tabs.size.should == 0
     tabs.excluded.size.should > 0
@@ -45,12 +45,12 @@ describe Lolita::Configuration::Tabs do
   it "should exclude specific tabs" do
     tabs=Lolita::Configuration::Tabs.new(@dbi)
     tabs.exclude :images
-    tabs.ecluded.size.should == 1
+    tabs.excluded.size.should == 1
   end
 
   it "should add tabs" do
     tabs=Lolita::Configuration::Tabs.new(@dbi,:exclude=>:all)
-    tabs.add(:images)
+    tabs<<:images
     tabs<<:content
     tabs.size.should == 2
   end
@@ -61,19 +61,21 @@ describe Lolita::Configuration::Tabs do
         tab :content
         tab :content
       end
-    }.should raise_error ArgumentError, "Two tabs of same type (content) are detected."
+    }.should raise_error Lolita::SameTabTypeError
   end
 
   it "should create real tabs when not tab is provided" do
     tabs=Lolita::Configuration::Tabs.new(@dbi,:default=>:content)
-    tabs.add(:images)
+    tabs<<:images
     tabs<<:translation
     tabs[tabs.size-2].class.should == Lolita::Configuration::Tab
     tabs[tabs.size-1].class.should == Lolita::Configuration::Tab
   end
 
   it "should return all tab names" do
-    tabs=Lolita::Configuration::Tabs.new(@dbi)
+    tabs=Lolita::Configuration::Tabs.new(@dbi) do
+      tab :content
+    end
     tabs.names.size.should > 0
   end
 

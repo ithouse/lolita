@@ -1,12 +1,51 @@
 module Lolita
   module Adapter
-    module Mongoid
+    class Mongoid
       include Lolita::Adapter::AbstractAdapter
-      
+
+      attr_reader :dbi, :klass
+      def initialize(dbi)
+        @dbi=dbi
+        @klass=dbi.klass
+      end
+
+      def associations
+        klass.associations
+      end
+
+      def associations_class_names
+        names=[]
+        associations.each{|name,association|
+          names<<association.class_name
+        }
+        names
+      end
+
+      def reflect_on_association(name)
+        klass.reflect_on_association(name)
+      end
+
+      def association_macro(association)
+        macro=association.association.macro
+        case macro
+        when :references_many
+          :many
+        when :referenced_in
+          :one
+        when :embeds_one
+          :one
+        when :embeds_many
+          :many
+        when :references_one
+          :one
+        end
+      end
+
       def fields
-        self.klass.fields.collect{|name,field|
+        @fields||=self.klass.fields.collect{|name,field|
           field_to_hash(name,field)
         }
+        @fields
       end
 
       def paginate(options={})
@@ -44,9 +83,9 @@ module Lolita
           :name=>name,
           :type=>field.type,
           :title=>name.to_s.humanize,
-          :options=>{
+          :options=>field.options.merge({
             :primary=>name.to_s=="_id"
-          }
+          })
         }
       end
     end

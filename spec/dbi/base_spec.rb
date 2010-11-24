@@ -15,13 +15,13 @@ describe Lolita::DBI::Base do
   end
 
   it "should detect adapter" do
-    dbi=Lolita::DBI::Base.new(TestClass1)
-    dbi.klass.should == TestClass1
-    Lolita::DBI::Base.adapters.should include(dbi.adapter)
+    dbi=Lolita::DBI::Base.new(Post)
+    dbi.klass.should == Post
+    Lolita::DBI::Base.adapters.should include(dbi.adapter_name)
   end
 
   it "should connect adapter" do
-    dbi=Lolita::DBI::Base.new(TestClass1)
+    dbi=Lolita::DBI::Base.new(Post)
     lambda{
       dbi.fields
     }.should_not raise_error

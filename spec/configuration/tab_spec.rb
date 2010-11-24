@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Lolita::Configuration::Tab do
   before(:each) do
-    @dbi=Lolita::DBI::Base.new(TestClass1)
+    @dbi=Lolita::DBI::Base.new(Post)
   end
 
   it "should create tab" do
@@ -12,7 +12,7 @@ describe Lolita::Configuration::Tab do
   it "should raise error when no fields are given for default type tab" do
     lambda{
       Lolita::Configuration::Tab.new(@dbi)
-    }.should raise_error ArgumentError, "Fields must be specified for default tab."
+    }.should raise_error Lolita::NoFieldsGivenError
   end
 
   it "should create tab when attributes are given" do
@@ -28,7 +28,7 @@ describe Lolita::Configuration::Tab do
   end
 
   it "should allow add fieldset to tab" do
-    tab=Lolita::Configuration::Tabs.new(@dbi) do
+    tab=Lolita::Configuration::Tab.new(@dbi) do
       field_set("Person information") do
         field :name=>"field one"
       end
@@ -49,7 +49,7 @@ describe Lolita::Configuration::Tab do
       end
       field :name=>"six"
     end
-    tab.fields.collect{|f| f.name}.should == ["one","two","three","four","five","six"]
+    tab.fields.collect{|f| f.name}.should == [:"one",:"two",:"three",:"four",:"five",:"six"]
   end
 
   it "should get fields from fieldset" do
@@ -73,13 +73,34 @@ describe Lolita::Configuration::Tab do
   it "should add nested fields" do
     tab=Lolita::Configuration::Tab.new(@dbi) do
       default_fields
-      nested_fields(TestClass2) do
+      nested_fields_for("Comment") do
         default_fields
       end
     end
-    dbi2=Lolita::DBI::Base.new(TestClass2)
+    dbi2=Lolita::DBI::Base.new(Comment)
+    
     tab.fields.size.should == @dbi.fields.size+dbi2.fields.size
   end
+
+  it "should detect that field is nested" do
+    tab=Lolita::Configuration::Tab.new(@dbi) do
+      default_fields
+      nested_fields_for("Comment") do
+        default_fields
+      end
+    end
+    tab.fields.last.nested?.should be_true
+  end
   
+  it "should return nested fields for specified class" do
+    tab=Lolita::Configuration::Tab.new(@dbi) do
+      default_fields
+      nested_fields_for("Comment") do
+        default_fields
+      end
+    end
+    tab.nested_fields_of("Comment").size.should > 0
+  end
+
 end
 

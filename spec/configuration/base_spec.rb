@@ -6,39 +6,39 @@ describe Lolita::Configuration::Base do
 #    end
 
   it "should define configuration without block" do
-    TestClass1.lolita.should_not be_nil
+    Post.lolita.should_not be_nil
   end
 
   it "should define configuration with block" do
-    TestClass2.lolita.should_not be_nil
+    Profile.lolita.should_not be_nil
   end
 
   it "should not initialize instance methods for configuration without calling them" do
-    TestClass2.lolita.list.to_s.should match(/Lolita::LazyLoader/)
-    TestClass1.lolita.list.to_s.should match(/Lolita::LazyLoader/)
+    Profile.lolita.list.to_s.should match(/Lolita::LazyLoader/)
+    Post.lolita.list.to_s.should match(/Lolita::LazyLoader/)
   end
 
   it "should return real object when calling it" do
     define_config do
       list
     end
-    TestClass1.lolita.list.class.to_s.should == "Lolita::Configuration::List"
+    Post.lolita.list.class.to_s.should == "Lolita::Configuration::List"
   end
 
   it "should return tabs" do
     define_config
-    TestClass1.lolita.tabs.class.should == Lolita::Configuration::Tabs
+    Post.lolita.tabs.class.should == Lolita::Configuration::Tabs
   end
 
   it "should allow add tabs" do
     define_config do
-      tab
+      tab(:content)
     end
-    TestClass1.lolita.tabs.size.should == 1
+    Post.lolita.tabs.size.should == 1
   end
   
   def define_config &block
-    TestClass1.lolita=Lolita::Configuration::Base.new(TestClass1,&block)
+    Post.lolita=Lolita::Configuration::Base.new(Post,&block)
   end
 end
 

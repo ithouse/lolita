@@ -13,10 +13,6 @@ module Lolita
         @dbi=dbi || list.dbi
         @columns=[]
       end
-
-      def method_missing(method,*args,&block)
-        @columns.__send__(method,*args,&block)
-      end
       
       def each
         @columns.each_with_index{|column,index|

@@ -1,13 +1,52 @@
 module Lolita
   module Adapter
-    module ActiveRecord
+    class ActiveRecord
       include Lolita::Adapter::AbstractAdapter
+      
+      attr_reader :dbi, :klass
+      def initialize(dbi)
+        @dbi=dbi
+        @klass=dbi.klass
+      end
+
+      def associations
+        klass.reflections
+      end
+
+      # Same as in mongoid
+      def associations_klass_names
+        names=[]
+        associations.each{|name,association|
+          names << association.class_name
+        }
+        names
+      end
+
+      def reflect_on_association(name)
+        klass.reflect_on_association(name)
+      end
+
+      def association_macro(association)
+        type=association.macro
+        case type
+        when :has_many
+          :many
+        when :has_one
+          :one
+        when :belongs_to
+          :one
+        when :has_and_belongs_to_many
+          :many
+        end
+      end
+      
       def fields
-        self.klass.columns.collect{|column|
+        @fields||=self.klass.columns.collect{|column|
           field_to_hash(column)
         }.reject{|column|
           column[:options][:primary]
         }
+        @fields
       end
 
       def paginate(opt={})

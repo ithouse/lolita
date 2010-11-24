@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Lolita::Configuration::Columns do
 
   before(:each) do
-    @dbi=Lolita::DBI::Base.new(TestClass1)
+    @dbi=Lolita::DBI::Base.new(Post)
     @list=Lolita::Configuration::List.new(@dbi)
   end
 
@@ -20,7 +20,7 @@ describe Lolita::Configuration::Columns do
   it "should generate columns from dbi class" do
     columns=Lolita::Configuration::Columns.new(@list)
     columns.generate!
-    columns.last.name.should == "field_one"
+    columns.last.name.size.should > 0
   end
 
   it "should make Lolita::Configuration::Column for each element " do

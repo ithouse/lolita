@@ -11,40 +11,78 @@ if ADAPTER=='mongoid'
     config.persist_in_safe_mode = false
   end
 
-  class TestClass1
+  class Comment
+    include Mongoid::Document
+    field :body
+    referenced_in :post
+    referenced_in :profile
+  end
+  class Post
     include Mongoid::Document
     include Lolita::Configuration
-    field :field_one
+    field :title
+    field :body
+    references_many :comments,:class_name=>"Comment"
+    referenced_in :profile
     lolita
   end
 
-  class TestClass2
+  class Profile
     include Mongoid::Document
     include Lolita::Configuration
-    field :field_one
+    field :name
+    field :age
+    field :genere
+    references_many :posts
+    references_many :comments
+    references_many :preferences, :stored_as=>:array, :inverse_of=>:profiles
+    embeds_one :address
     lolita do
 
     end
+  end
+
+  class Address
+    include Mongoid::Document
+    field :street
+    field :city
+    field :state
+    field :post_code
+    embedded_in :person, :inverse_of => :address
+  end
+  
+  class Preference
+    include Mongoid::Document
+    include Lolita::Configuration
+    field :name
+    references_many :profiles, :stored_as=>:array, :inverse_of=>:preferences
   end
 else
   require 'active_record'
   ActiveRecord::Base.establish_connection({ :database => ":memory:", :adapter => 'sqlite3', :timeout => 500 })
   ActiveRecord::Schema.define do
-    create_table :test_class1, :force => true do |t|
+    create_table :posts, :force => true do |t|
       t.string :field_one
     end
     create_table :test_class2, :force => true do |t|
       t.string :field_one
     end
+    create_table :pages,:force=>true do |t|
+      t.string :name
+    end
   end
-  class TestClass1 < ActiveRecord::Base
-    set_table_name :test_class1
+  
+  class Comment < ActiveRecord::Base
+    belongs_to :test_class1, :class_name=>"Post"
+  end
+  class Post < ActiveRecord::Base
+    has_many :pages
     include Lolita::Configuration
     lolita 
   end
 
-  class TestClass2 < ActiveRecord::Base
-    set_table_name :test_class2
+
+  class Profile < ActiveRecord::Base
     include Lolita::Configuration
     lolita do
       

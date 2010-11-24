@@ -62,8 +62,8 @@ module Lolita
       # Paginate
       # Options:
       # * <tt>:per_page</tt> - Records per page, if not given use list default per page.
-      # * <tt>:page</tt> - Page to get
-      # * <tt>page</tt> - Page to get
+      # * <tt>:page</tt> - Comment to get
+      # * <tt>page</tt> - Comment to get
       # ====Example
       #     list.paginate(1)
       #     list.paginate

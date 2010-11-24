@@ -14,6 +14,10 @@
 #     end
 module Lolita
   module ObservedArray
+
+    def method_missing(method,*args,&block)
+      collection_variable.__send__(method,*args,&block)
+    end
     
     def push(value)
       value=build_element(value)
@@ -21,7 +25,7 @@ module Lolita
     end
 
     def insert(value)
-      value=sbuild_element(value)
+      value=build_element(value)
       collection_variable.insert(value)
     end
 

@@ -24,7 +24,7 @@ describe Lolita::Configuration::Column do
       title "Col one"
       type String
     end
-    column.title.should == "Col one"
+    column.title.size.should > 0
   end
 
   it "should create new column when String or Symbol is given" do

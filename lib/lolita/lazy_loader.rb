@@ -2,7 +2,7 @@ module Lolita
   class LazyLoader
 
     #attr_reader :lazy_class,:eval_block,:class_instance
-    
+
     def self.lazy_load(instance_name,var_name,lazy_class,*args,&block)
       temp_var=instance_name.instance_variable_get(var_name)
       unless temp_var
@@ -14,7 +14,7 @@ module Lolita
         temp_var
       end
     end
-    
+
     def initialize(lazy_class,*args,&block)
       @args=args
       @lazy_class=lazy_class
@@ -22,9 +22,9 @@ module Lolita
     end
 
     def class_instance
-      @class_instance
+      @class_instance || self
     end
-    
+
     def method_missing(method_name,*args,&block)
       unless @class_instance
         arity=@lazy_class.instance_method(:initialize).arity
@@ -38,7 +38,7 @@ module Lolita
       end
       @class_instance.__send__(method_name,*args,&block)
     end
-    
+
     instance_methods.each { |method|
       next if ["hash","respond_to?","__id__","__send__","to_s","object_id","method_missing","class_instance","initialize"].include?(method.to_s)
       eval("undef :#{method}")
