@@ -1,6 +1,6 @@
 module Lolita
   module Configuration
-    class Columns 
+    class Columns
 
       include Enumerable
       include ObservedArray

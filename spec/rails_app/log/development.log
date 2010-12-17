@@ -1,0 +1,115 @@
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/mapping_spec.rb:15)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/mapping_spec.rb:15)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: :as is deprecated, please use :path instead. (called from lolita_for at c:/a_work/ruby_docs/lolita3/lib/lolita/rails/routes.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: :as is deprecated, please use :path instead. (called from lolita_for at c:/a_work/ruby_docs/lolita3/lib/lolita/rails/routes.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: :as is deprecated, please use :path instead. (called from lolita_for at c:/a_work/ruby_docs/lolita3/lib/lolita/rails/routes.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: :as is deprecated, please use :path instead. (called from lolita_for at c:/a_work/ruby_docs/lolita3/lib/lolita/rails/routes.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: :as is deprecated, please use :path instead. (called from lolita_for at c:/a_work/ruby_docs/lolita3/lib/lolita/rails/routes.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: :as is deprecated, please use :path instead. (called from lolita_for at c:/a_work/ruby_docs/lolita3/lib/lolita/rails/routes.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+  Processing by Lolita::RestController#new as HTML
+Completed   in 1ms
+  Processing by Lolita::RestController#new as HTML
+Completed   in 447ms
+  Processing by Lolita::RestController#new as HTML
+Completed   in 438ms
+  Processing by Lolita::RestController#new as HTML
+Rendered c:/a_work/ruby_docs/lolita3/app/views/lolita/rest/form.html.erb (0.0ms)
+Completed 200 OK in 269ms (Views: 32.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 36ms (Views: 35.0ms)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:6)
+DEPRECATION WARNING: ActionController::Routing::Routes is deprecated. Instead, use Rails.application.routes. (called from block (2 levels) in <top (required)> at c:/a_work/ruby_docs/lolita3/spec/routing/routes_spec.rb:9)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 32ms (Views: 31.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 32ms (Views: 31.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 37ms (Views: 36.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 33ms (Views: 32.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 32ms (Views: 31.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 33ms (Views: 32.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed   in 1ms
+  Processing by Lolita::RestController#new as HTML
+Completed   in 189ms
+  Processing by Lolita::RestController#new as HTML
+Completed   in 157ms
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 95ms (Views: 94.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 89ms (Views: 88.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 85ms (Views: 85.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 86ms (Views: 85.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 30ms (Views: 29.0ms)
+  Processing by Lolita::RestController#new as HTML
+Completed 200 OK in 96ms (Views: 96.0ms)

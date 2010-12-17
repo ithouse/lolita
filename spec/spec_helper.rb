@@ -1,14 +1,20 @@
 require 'rubygems'
-require 'rspec'
-require 'ruby-debug' 
-require File.expand_path(File.join(File.dirname(__FILE__),'..','lib','lolita.rb'))
-#Dir[)].each {|f| require f}
+require 'ruby-debug'
+LOLITA_ORM=:mongoid
+require "rails_app/config/environment"
+require 'rspec/rails'
+require "orm/#{LOLITA_ORM}"
 
-ADAPTER='mongoid'
-require 'adapter_helper'
+Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+RSpec.configure do |config|
+  # config.mock_with :mocha
+  # config.mock_with :flexmock
+  # config.mock_with :rr
+  config.mock_with :rspec
 
-def create_recs
-  f=Post.create(:field_one=>"one")
-  s=Post.create(:field_one=>"two")
-  @recs=[f,s]
+  if LOLITA_ORM==:active_record
+    #config.fixture_path = "#{::Rails.root}/spec/fixtures"
+    config.use_transactional_fixtures = true
+  end
 end
+

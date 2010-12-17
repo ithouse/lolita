@@ -1,7 +1,7 @@
 module Lolita
   module Configuration
-    class Column
-
+    class Column 
+      
       attr_writer :name, :title, :type, :options
       
       def initialize(*args,&block)

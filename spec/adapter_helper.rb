@@ -10,53 +10,6 @@ if ADAPTER=='mongoid'
     #config.use_object_ids = true
     config.persist_in_safe_mode = false
   end
-
-  class Comment
-    include Mongoid::Document
-    field :body
-    referenced_in :post
-    referenced_in :profile
-  end
-  class Post
-    include Mongoid::Document
-    include Lolita::Configuration
-    field :title
-    field :body
-    references_many :comments,:class_name=>"Comment"
-    referenced_in :profile
-    lolita
-  end
-
-  class Profile
-    include Mongoid::Document
-    include Lolita::Configuration
-    field :name
-    field :age
-    field :genere
-    references_many :posts
-    references_many :comments
-    references_many :preferences, :stored_as=>:array, :inverse_of=>:profiles
-    embeds_one :address
-    lolita do
-
-    end
-  end
-
-  class Address
-    include Mongoid::Document
-    field :street
-    field :city
-    field :state
-    field :post_code
-    embedded_in :person, :inverse_of => :address
-  end
-  
-  class Preference
-    include Mongoid::Document
-    include Lolita::Configuration
-    field :name
-    references_many :profiles, :stored_as=>:array, :inverse_of=>:preferences
-  end
 else
   require 'active_record'
   ActiveRecord::Base.establish_connection({ :database => ":memory:", :adapter => 'sqlite3', :timeout => 500 })

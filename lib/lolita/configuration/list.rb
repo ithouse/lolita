@@ -1,7 +1,8 @@
 module Lolita
   module Configuration
     class List
-
+      include Lolita::Builder
+       
       attr_reader :dbi,:initialized_attributes
       attr_writer :per_page
       

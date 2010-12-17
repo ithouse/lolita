@@ -1,0 +1,5 @@
+<tr>
+  <% @opts[:columns].each do |column| %>
+    <%= render_cell :list,:body_cell, :value=>@record.send(column.name.to_sym) %>
+  <% end %>
+</tr>
