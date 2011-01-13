@@ -1,5 +1,6 @@
 
 LOLITA_ROOT=File.dirname(__FILE__)
+LOLITA_APP_ROOT=File.join(File.expand_path("#{__FILE__}/../.."),"app")
 $:<<LOLITA_ROOT unless $:.include?(LOLITA_ROOT)
 
 require 'abstract'
@@ -8,12 +9,18 @@ require 'active_support/dependencies'
 #require 'lolita/rails_additions'
 require 'lolita/errors'
 
+#Dir.new("#{LOLITA_APP_ROOT}/cells/lolita").each do |f|
+#  if f.to_s.match(/_cell\.rb$/)
+#    require("#{LOLITA_APP_ROOT}/cells/lolita/#{f}")
+#  end
+#end
+
 module Lolita
   autoload(:LazyLoader,'lolita/lazy_loader')
   autoload(:VERSION,'lolita/version')
   autoload(:ObservedArray,'lolita/observed_array')
   autoload(:Builder,'lolita/builder')
-  
+  autoload(:Cells,'lolita/cells')
   module Adapter
     autoload :AbstractAdapter, 'lolita/adapter/abstract_adapter'
     autoload :ActiveRecord, 'lolita/adapter/active_record'

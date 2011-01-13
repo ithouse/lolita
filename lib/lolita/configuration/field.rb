@@ -48,7 +48,11 @@ module Lolita
       def name=(value)
         @name=value.to_sym
       end
-      
+
+      def type_name
+        self.type.to_s.downcase
+      end
+
       def nested_in=(dbi)
         # FIXME need to check if that association is belongs_to or many to many
         unless self.dbi.associations_class_names.include?(dbi.klass.to_s)

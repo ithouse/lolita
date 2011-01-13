@@ -3,6 +3,7 @@ module Lolita
     class Tabs
       include Enumerable
       include Lolita::ObservedArray
+      include Lolita::Builder
 
       attr_reader :dbi,:excluded
       def initialize dbi,*args,&block
@@ -14,6 +15,10 @@ module Lolita
       end
 
       def each
+        if @tabs.empty?
+          create_content_tab
+        end
+        
         @tabs.each{|tab|
           yield tab
         }
@@ -74,6 +79,10 @@ module Lolita
       end
       private
 
+      def create_content_tab
+        tab(:content)
+      end
+      
       def validate_type(tab)
         if tab && tab.type!=:default
           if @tabs.detect{|c_tab| c_tab.type==tab.type}

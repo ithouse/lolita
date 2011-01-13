@@ -1,0 +1,5 @@
+<tbody>
+  <% @opts[:page].each do |record| %>
+    <%= render_cell :"lolita/list", :row, :columns=>@opts[:columns],:record=>record %>
+  <% end %>
+</tbody>

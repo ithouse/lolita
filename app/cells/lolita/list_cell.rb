@@ -1,6 +1,7 @@
-class ListCell < Cell::Rails
+class Lolita::ListCell < Lolita::Cells
   def display
-    @list    = @opts[:list]
+    @list = @opts[:list]
+    @page=@opts[:page]
     render
   end
 

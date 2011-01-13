@@ -14,12 +14,12 @@ module Lolita
       builder_options=self.builder_options || {}
       options=(options || {}).merge(builder_options)
       builder_values=self.builder
-      render_cell builder_values[:name],builder_values[:state],options
+      return builder_values[:name],builder_values[:state],options
     end
 
     # Default options for class. This method should be overwritten.
     def builder_options
-      {builder_name=>self}
+      {builder_name.to_sym=>self}
     end
 
     # Set or get builder for class.
@@ -42,7 +42,7 @@ module Lolita
 
     # Return default builder information.
     def default_builder
-      {:name=>builder_name,:state=>default_build_state}
+      {:name=>"lolita/#{builder_name}",:state=>default_build_state}
     end
     
     private
@@ -61,8 +61,9 @@ module Lolita
       :display
     end
     
-    def bulder_name
+    def builder_name
       self.class.to_s.split("::").last.downcase.to_sym
     end
+    
   end
 end

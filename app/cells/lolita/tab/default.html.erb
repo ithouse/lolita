@@ -1,0 +1,14 @@
+<%  #
+# PĀRNEST ĀRĀ, LAI IR ATSEVIŠĶA VIETA, KUR DAŽĀDA TIPA TABI GLABĀJAS
+# piemēram, /tab_types/
+#
+%>
+<div class="tab_content">
+  <%@tab.fields_with_field_set do |fields_or_field,field_set| %>
+    <% if field_set %>
+      <%= render_cell :"lolita/field_set", :display, :fields=>fields_or_field,:field_set=>field_set %>
+    <% else %>
+      <%= render_cell :"lolita/field", :display,:field=>fields_or_field %>
+    <% end %>
+  <% end %>
+</div>

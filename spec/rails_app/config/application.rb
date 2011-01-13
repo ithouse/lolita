@@ -5,8 +5,8 @@ require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
 Bundler.require(:default, LOLITA_ORM,Rails.env) if defined?(Bundler)
-require 'lolita'
 require 'cells'
+require 'lolita'
 
 module RailsApp
   class Application < Rails::Application
@@ -15,8 +15,6 @@ module RailsApp
     config.active_support.deprecation=:log
     #config.autoload_paths.reject!{ |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers views).include?($1) }
     config.autoload_paths += [ "#{config.root}/app/#{LOLITA_ORM}" ]
-    puts config.root
-    puts config.autoload_paths.inspect
    
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters << :password

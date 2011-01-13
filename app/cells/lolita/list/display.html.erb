@@ -1,0 +1,5 @@
+<table>
+  <%=render_cell :"lolita/list", :header, :columns=>@list.columns %>
+  <%=render_cell :"lolita/list", :body, :page=>@page,:columns=>@list.columns %>
+  <%=render_cell :"lolita/list", :paginator,:page=>@page %>
+</table>

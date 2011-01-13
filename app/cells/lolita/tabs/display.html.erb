@@ -1,0 +1,5 @@
+<div id="tabs">
+  <% @opts[:tabs].each do |tab|  %>
+    <%= render_cell :"lolita/tab", :display, :tab=>tab  %>
+  <% end %>
+</div>

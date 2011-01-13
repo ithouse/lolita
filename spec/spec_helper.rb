@@ -1,9 +1,9 @@
 require 'rubygems'
 require 'ruby-debug'
 LOLITA_ORM=:mongoid
+require "orm/#{LOLITA_ORM}"
 require "rails_app/config/environment"
 require 'rspec/rails'
-require "orm/#{LOLITA_ORM}"
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 RSpec.configure do |config|
