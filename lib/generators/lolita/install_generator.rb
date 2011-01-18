@@ -5,6 +5,7 @@ module Lolita
       
       source_root File.expand_path("../../templates", __FILE__)
       desc "Create lolita initializer. Copy assets and create migrations. Load seed data."
+      hook_for :orm
       
       def copy_initializer
         template "lolita.rb", "config/initializers/lolita.rb" unless file_exists?("config/initializers/lolita.rb")
