@@ -81,7 +81,7 @@ module Lolita
       def field_to_hash(name,field)
         {
           :name=>name,
-          :type=>field.type,
+          :type=>field.type.to_s,
           :title=>name.to_s.humanize,
           :options=>field.options.merge({
             :primary=>name.to_s=="_id"

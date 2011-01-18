@@ -1,5 +1,9 @@
 module ActionDispatch::Routing
 
+  class RouteSet
+   
+  end
+  
   class Mapper
 
     def lolita_for *resources

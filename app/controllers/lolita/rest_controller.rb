@@ -1,11 +1,13 @@
 class Lolita::RestController < ApplicationController
+  include Lolita::Controllers::UserHelpers
   include Lolita::Controllers::InternalHelpers
-
-  layout "lolita/layouts/default"
+  
+  before_filter :authenticate_lolita_user!
+  layout "lolita/layouts/application"
   
   def new
     build_resource
-    render :text=>build_response_for(:tabs)
+    show_form
   end
 
   def create
@@ -15,7 +17,7 @@ class Lolita::RestController < ApplicationController
 
   def edit
     get_resource
-    render :text=>build_response_for(:tabs)
+    show_form
   end
   
   def update
@@ -47,10 +49,16 @@ class Lolita::RestController < ApplicationController
 
   private
 
+  def show_form
+    @response_text=build_response_for(:tabs)
+    render :action=>"form"
+  end
+  
   def save_and_redirect
     if self.resource.save
-      if self.resource.errors.empty?
-        render :text=>build_response_for(:tabs)
+      unless self.resource.errors.empty?
+        @response_text=build_response_for(:tabs)
+        render :action=>"form"
       else
         redirect_to :action=>:index
       end

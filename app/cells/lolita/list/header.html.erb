@@ -1,7 +1,7 @@
 <thead>
   <tr>
     <% @opts[:columns].each do |column| %>
-      <% render_cell :"lolita/list", :header_cell, :value=>column.name %>
+      <%= render_cell :"lolita/list", :header_cell, :column=>column %>
     <% end %>
   </tr>
 </thead>

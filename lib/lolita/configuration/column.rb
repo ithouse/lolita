@@ -1,8 +1,11 @@
 module Lolita
   module Configuration
     class Column 
-      
-      attr_writer :name, :title, :type, :options
+
+      MAX_TEXT_SIZE=20
+      DEFAULT_DATE_FORMAT="%Y-%m-%d"
+      DEFAULT_TIME_FORMAT="%H:%M:%S"
+      attr_writer :name, :title, :type, :options,:format
       
       def initialize(*args,&block)
         self.set_attributes(*args)
@@ -25,6 +28,47 @@ module Lolita
         @type
       end
 
+      def format(value=nil)
+        self.format=value if value
+        @format
+      end
+
+      def with_format(value)
+        if @format
+          @format.call(value)
+        else
+          format_from_type(value)
+        end
+      end
+
+      def format_from_type(value)
+        if value
+          case value.class.to_s
+          when "String"
+            value
+          when "Integer"
+            value
+          when "Text"
+            new_value=value.gsub(/<\/?[^>]*>/, "").strip
+            if new_value.size>MAX_TEXT_SIZE
+              "#{new_value.slice(0..MAX_TEXT_SIZE)}..."
+            else
+              new_value
+            end
+          when "Datetime"
+            value.strftime("#{DEFAULT_DATE_FORMAT} #{DEFAULT_TIME_FORMAT}")
+          when "Date"
+            value.strftime(DEFAULT_DATE_FORMAT)
+          when "Time"
+            value.strftime(DEFAULT_TIME_FORMAT)
+          else
+            value.to_s
+          end
+        else
+          ""
+        end
+      end
+      
       def set_attributes(*args)
         if !args.empty?
           if args[0].is_a?(Hash)

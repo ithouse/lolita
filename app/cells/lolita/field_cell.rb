@@ -1,16 +1,33 @@
 class Lolita::FieldCell < Lolita::Cells
+  before_filter :set_field
+  
   def display
-    @field=@opts[:field]
     render
   end
 
   def label
-    @field=@opts[:field]
     render
   end
 
   def string
-    @field=@opts[:field]
     render
+  end
+
+  def integer
+    render :view=>"string"
+  end
+
+  def datetime
+    render :view=>"string"
+  end
+  
+  def text
+    render
+  end
+
+  private
+
+  def set_field
+    @field=@opts[:field]
   end
 end

@@ -5,6 +5,5 @@ require 'lolita/rails/routes'
 module Lolita
   class Engine < ::Rails::Engine
     config.lolita=Lolita
-    puts config.root
   end
 end

@@ -18,6 +18,7 @@ class Lolita::ListCell < Lolita::Cells
   end
 
   def row
+    @class_name=@opts[:index]%2==0 ? "even" : "odd"
     @record=@opts[:record]
     render
   end
@@ -27,6 +28,7 @@ class Lolita::ListCell < Lolita::Cells
   end
 
   def paginator
+    @columns=@opts[:columns]
     render
   end
 end

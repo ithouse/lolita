@@ -87,7 +87,7 @@ module Lolita
       def field_to_hash(column)
         {
           :name=>column.name,
-          :type=>column.type.to_s.camelize.constantize,
+          :type=>column.type.to_s.camelize,
           :title=>column.name.to_s.humanize,
           :options=>{
             :primary=>column.primary

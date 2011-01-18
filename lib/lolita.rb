@@ -1,3 +1,4 @@
+main_time=Time.now
 
 LOLITA_ROOT=File.dirname(__FILE__)
 LOLITA_APP_ROOT=File.join(File.expand_path("#{__FILE__}/../.."),"app")
@@ -67,6 +68,8 @@ module Lolita
 
   module Controllers
     autoload :InternalHelpers, 'lolita/controllers/internal_helpers'
+    autoload :UserHelpers, 'lolita/controllers/user_helpers'
+    autoload  :UrlHelpers, 'lolita/controllers/url_helpers'
   end
 
   MODULES=[]
@@ -86,6 +89,15 @@ module Lolita
 
   mattr_accessor :default_module
   @@default_module=:rest
+
+  mattr_accessor :user_classes
+  @@user_classes=[]
+
+  def self.add_user_class(user_class)
+    if user_class.is_a?(Class)
+      Lolita.user_classes<<user_class.to_s.underscore.gsub('/',"_").to_sym
+    end
+  end
   
   def self.add_mapping(resource,options={})
     mapping = Lolita::Mapping.new(resource, options)
@@ -118,11 +130,11 @@ module Lolita
   end
 
 end
-
+engine_time=Time.now
 if defined?(Rails)
   require 'lolita/mapping'
   require 'lolita/rails'
   require 'lolita/modules'
 end
-
-
+puts "Lolita engine started in #{Time.at(Time.now-engine_time).strftime("%M:%S.%3N")}"
+puts "Lolita started in #{Time.at(Time.now-main_time).strftime("%M:%S.%3N")}"

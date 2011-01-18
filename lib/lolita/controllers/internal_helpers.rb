@@ -1,11 +1,13 @@
 module Lolita
   module Controllers
     module InternalHelpers
-      
+      include Lolita::Controllers::UrlHelpers
+
       extend ActiveSupport::Concern
       included do
         if self.is_a?(ActionController::Base)
           helper LolitaHelper
+           
           helpers = %w(resource resource_name
                      resource_class lolita_mapping)
           hide_action *helpers
@@ -23,7 +25,7 @@ module Lolita
       def resource_name
         lolita_mapping.name
       end
-
+      
       def resource_class
         lolita_mapping.to
       end
@@ -67,6 +69,7 @@ module Lolita
         conf_object=resource_class.lolita.send(conf_part.to_sym)
         render_cell *conf_object.build(options)
       end
+      
     end
   end
 end
