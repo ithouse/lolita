@@ -94,9 +94,6 @@ module Lolita
   mattr_accessor :user_classes
   @@user_classes=[]
 
-  mattr_accessor :orm
-  @@orm=nil
-
   def self.add_user_class(user_class)
     if user_class.is_a?(Class)
       Lolita.user_classes<<user_class.to_s.underscore.gsub('/',"_").to_sym
