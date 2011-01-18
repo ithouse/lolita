@@ -25,6 +25,13 @@ class Lolita::FieldCell < Lolita::Cells
     render
   end
 
+  def disabled
+    render
+  end
+
+  def array
+    render :view=>"string"
+  end
   private
 
   def set_field

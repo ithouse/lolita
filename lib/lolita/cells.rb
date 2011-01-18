@@ -14,9 +14,8 @@ module Lolita
     end
 
     def render(options={})  #TODO pielikt konfigurācijā lai var salādēt cell pathus, un šeit tad viņus sakārtot
-      puts self.view_paths.inspect
       new_path=File.join(RAILS_ROOT,"app","cells")
-      if File.exist?(new_path) && !self.view_paths.include?(new_path)
+      if !self.view_paths.include?(new_path) && File.exist?(new_path)
         self.view_paths.unshift(new_path)
       end
       lolita_paths=[LOLITA_APP_ROOT,"cells"]

@@ -95,14 +95,17 @@ module Lolita
       private
 
       def set_association
-        @association=@dbi.reflect_on_association(self.name)
+        assoc_name=@name.to_s.gsub(/_id$/,"")
+        @association=@dbi.reflect_on_association(assoc_name) || @dbi.reflect_on_association(assoc_name.pluralize)
       end
       
-      def default_type
-        if @association
-          Array
+      def validate_type
+        self.type||=if @association
+          "Array"
+        elsif [:created_at,:updated_at,:type].include?(@name)
+          "Disabled"
         else
-          String
+          "String"
         end
       end
 
@@ -116,7 +119,7 @@ module Lolita
         self.title||=self.name.to_s.capitalize
         self.options||={}
         set_association
-        self.type||=default_type
+        validate_type
         set_association_type
       end
 
