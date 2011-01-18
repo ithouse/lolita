@@ -3,7 +3,7 @@
 # piemēram, /tab_types/
 #
 %>
-<div class="tab_content">
+<div class="tab-content">
   <%@tab.fields_with_field_set do |fields_or_field,field_set| %>
     <% if field_set %>
       <%= render_cell :"lolita/field_set", :display, :fields=>fields_or_field,:field_set=>field_set %>

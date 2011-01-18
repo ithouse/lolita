@@ -1,3 +1,1 @@
-<div class="field_label" id="field_<%=@field.__id__%>_label">
-  <%= @field.title %>
-</div>
+<%= label resource_name,@field.name, :id=>"field_#{@field.__id__}_label" %>

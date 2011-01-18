@@ -2,7 +2,6 @@ module Lolita
   module Configuration
     # Tab is used as a container for different type of resource content.
     # It can contain fields, images, audio, video files, maps and other stuff.
-    # Each tab has its own type and unique index.
     # Tab contain following parts, that also are configurable through block or
     # arguments passed to tab.
     # * <tt>nested_fields_for</tt> Create fields for different DB table/collection than given.
@@ -14,11 +13,9 @@ module Lolita
 
       # For different types there are different builders(cells)
       @@available_types=[:content]
-      # Any tab has unique index, index may not be consecutive
-      @@last_index=0
-      
+   
       attr_accessor :dbi,:type,:name,:title,:current_fieldset,:current_dbi
-      attr_reader :field_sets,:nested_form,:index
+      attr_reader :field_sets,:nested_form
 
       # To create new tab the following parametrs need to be provided.
       # * <tt>dbi</tt> Lolita::DBI::Base object, that represents database.
@@ -27,7 +24,6 @@ module Lolita
       def initialize dbi,*args,&block
         @fields=[]
         @field_sets=[]
-        @index=next_index
         self.dbi=dbi
         self.current_dbi=dbi
         self.set_attributes(*args)
@@ -151,18 +147,20 @@ module Lolita
         end
       end
 
+      def set_default_attributes
+        @name="tab_#{self.__id__}" unless @name
+        @title=@name.humanize unless @title
+      end
+      
       def get_class(str_or_sym_or_class)
         str_or_sym_or_class.is_a?(Class) ? str_or_sym_or_class : str_or_sym_or_class.to_s.camelize.constantize
       end
       
       def validate
+        set_default_attributes
         if type==:default && fields.empty?
           raise Lolita::NoFieldsGivenError, "At least one field must be specified for default tab."
         end
-      end
-
-      def next_index
-        @@last_index+=1
       end
       
       class << self

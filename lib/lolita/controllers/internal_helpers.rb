@@ -2,7 +2,8 @@ module Lolita
   module Controllers
     module InternalHelpers
       include Lolita::Controllers::UrlHelpers
-
+      include Lolita::Controllers::FieldHelpers
+      
       extend ActiveSupport::Concern
       included do
         if self.is_a?(ActionController::Base)

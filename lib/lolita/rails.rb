@@ -5,5 +5,7 @@ require 'lolita/rails/routes'
 module Lolita
   class Engine < ::Rails::Engine
     config.lolita=Lolita
+    #config.asset_path = "/lolita/%s"
+    config.serve_static_assets = true
   end
 end

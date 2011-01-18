@@ -1,0 +1,6 @@
+en:
+  lolita:
+    tabs:
+      save_all: Save all
+    list:
+      add_new: Add new {{name}}

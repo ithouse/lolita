@@ -1,3 +1,4 @@
-<div class="tab" id="tab_<%=@tab.index%>">
+<div class="tab" id="tab_<%=@tab.__id__%>">
+  <div class="tab-title"><%= @tab.title %></div>
   <%= render_cell :"lolita/tab", @tab.type, :tab=>@tab %>
 </div>

@@ -69,7 +69,8 @@ module Lolita
   module Controllers
     autoload :InternalHelpers, 'lolita/controllers/internal_helpers'
     autoload :UserHelpers, 'lolita/controllers/user_helpers'
-    autoload  :UrlHelpers, 'lolita/controllers/url_helpers'
+    autoload :UrlHelpers, 'lolita/controllers/url_helpers'
+    autoload :FieldHelpers, 'lolita/controllers/field_helpers'
   end
 
   MODULES=[]
