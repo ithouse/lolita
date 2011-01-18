@@ -8,9 +8,10 @@ elsif defined?(Mongoid)
 end
 
 module Lolita
-  class Engine < ::Rails::Engine
+  class Engine < Rails::Engine
     config.lolita=Lolita
-    paths["app/models"]="app/models/#{Lolita.orm}"
+    puts config.app_generators.orm
+    #paths["app/models"]="app/models/#{Lolita.orm}"
     #config.asset_path = "/lolita/%s"
     config.serve_static_assets = true
   end
