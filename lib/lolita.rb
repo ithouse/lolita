@@ -1,8 +1,9 @@
 main_time=Time.now
 
-LOLITA_ROOT=File.dirname(__FILE__)
+LOLITA_ROOT=File.expand_path("#{__FILE__}/../..")
+LOLITA_LOAD_PATH=File.dirname(__FILE__)
 LOLITA_APP_ROOT=File.join(File.expand_path("#{__FILE__}/../.."),"app")
-$:<<LOLITA_ROOT unless $:.include?(LOLITA_ROOT)
+$:<<LOLITA_LODA_PATH unless $:.include?(LOLITA_LOAD_PATH)
 
 require 'abstract'
 require 'active_support/core_ext/numeric/time'

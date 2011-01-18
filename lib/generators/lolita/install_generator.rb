@@ -17,7 +17,7 @@ module Lolita
       end
 
       def copy_migrations
-        copy_dir(File.join("db","migrate"))
+        copy_dir(File.join("db","migrate")) if orm==:active_record
         #rake("lolita:install:migrations")
       end
 
