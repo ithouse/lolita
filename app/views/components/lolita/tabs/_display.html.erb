@@ -1,9 +1,9 @@
 <div id="tabs-header">
   Create/Edit resource
 </div>
-<div id="tabs">
+<div id="tabs-<%= resource_name %>" class="tabs" data-tabs-url="<%=lolita_resource_path(:id=>resource.id)%>">
   <% tabs.each do |tab|  %>
     <%= render_component :"lolita/tab", :display, :tab=>tab  %>
   <% end %>
-  <button><%=I18n.t("lolita.tabs.save_all")%></button>
+  <button class="save-all"><%=I18n.t("lolita.tabs.save_all")%></button>
 </div>

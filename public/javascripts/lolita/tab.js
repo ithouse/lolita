@@ -1,0 +1,36 @@
+$(function(){
+    // Send ajax request with all forms data for given tabs block.
+    function save_tab(tabs){
+        var data=""
+        tabs.find("form").each(function(){
+            data=data+$(this).serialize()
+        })
+        alert(data)
+        $.ajax({
+            url:tabs.attr("data-tabs-url"),
+            dataType:"html",
+            type:"PUT",
+            data:data,
+            success:function(data){
+                $("#right-side").html(data)
+            }
+        })
+    }
+    // Submit all forms through Ajax when Save All button clicked.
+    $("button.save-all").live('click',function(){
+        var tab=$(this).parents("div[data-tabs-url]")
+        save_tab(tab)
+    })
+    // All tabs are closable when clicked on tab title.
+    $(".tab .tab-title").live('click',function(){
+        var tab_title=$(this)
+        var closed=tab_title.data("closed") || (tab_title.attr("data-closed")=="false" ? false : true)
+        if(closed){
+            tab_title.parents(".tab").find(".tab-content").show("fast")
+        }else{
+            tab_title.parents(".tab").find(".tab-content").hide("fast")
+        }
+        tab_title.data("closed",!closed)
+    })
+})
+

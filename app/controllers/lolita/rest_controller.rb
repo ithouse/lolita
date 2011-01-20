@@ -31,7 +31,7 @@ class Lolita::RestController < ApplicationController
   def destroy
     get_resource
     if self.resource && self.resource.destroy
-      show_list
+      to_list
     end
   end
 
@@ -65,6 +65,8 @@ class Lolita::RestController < ApplicationController
   end
   
   def to_list
-    redirect_to :action=>:index
+    page=resource_class.lolita.list.paginate(params[:page])
+    builder=build_response_for(:list,:page=>page)
+    render_component *builder
   end
 end

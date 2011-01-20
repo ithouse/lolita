@@ -39,7 +39,11 @@ module Lolita
           :many
         end
       end
-      
+
+      def association_class_name(association)
+        association.class_name
+      end
+
       def fields
         @fields||=self.klass.columns.collect{|column|
           field_to_hash(column)
@@ -88,7 +92,7 @@ module Lolita
       def field_to_hash(column)
         {
           :name=>column.name,
-          :type=>column.type.to_s.camelize,
+          :type=>column.type.to_s,
           :title=>column.name.to_s.humanize,
           :options=>{
             :primary=>column.primary

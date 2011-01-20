@@ -149,7 +149,7 @@ module Lolita
 
       def set_default_attributes
         @name="tab_#{self.__id__}" unless @name
-        @title=@name.humanize unless @title
+        @title=@type.to_s.humanize unless @title
       end
       
       def get_class(str_or_sym_or_class)

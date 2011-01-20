@@ -1,17 +1,4 @@
-/* 
-    Document   : lolita
-    Created on : 2011.17.1, 13:07:51
-    Author     : KUNGS
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
-/* 
-   TODO customize this sample style
-   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
-*/
-
-root { 
+root {
     display: block;
 }
 body{
@@ -29,6 +16,10 @@ a{
     padding-left:10px;
     float:left;
     width: 200px;
+}
+#right-side{
+    left: 200px;
+    position: absolute;
 }
 #navigation{
     list-style: none outside none;
@@ -48,11 +39,8 @@ a{
 #navigation>li:hover{
     background-color: #FFFFFF;
 }
-#right-side{
-    float:left;
-}
 /* Table for lolita*/
-#list-header h2{
+.list-header h2{
     float:left;
     margin-right:10px;
 }
@@ -72,43 +60,55 @@ table.list td,th{
     border-right:2px solid black;
 }
 table.list th{
-    width: 120px;
+    width: 100px;
 }
 table.list td{
     padding-left:5px;
 }
+td.checkbox-cell, th.checkbox-header{
+    width: 30px !important;
+}
 /* Table for lolita END */
 /* Tabs for lolita */
-#tabs{
+.tabs{
     width:800px;
 }
-#tabs .tab{
+.tabs .tab{
     width:100%;
     border:2px solid black;
     margin-bottom: 20px;
 }
-#tabs .tab-title{
+.tabs .tab-title{
     height: 25px;
     border-bottom: 2px solid black;
     padding-top: 6px;
     padding-left: 10px;
+    color: #aaa;
 }
 
-#tabs .tab-content{
+.tabs .tab-content{
     padding: 20px 10px 20px 20px;
 }
 
 /* Tabs for lolita END */
 /* Fields for Lolita */
-#tabs .tab .field{
+.tab .field{
     margin-bottom: 10px;
 }
-#tabs .tab .field input,textarea{
+.tab .field input,textarea,select,.disabled-field{
     border: 1px solid gray;
     padding: 2px;
     width: 750px;
+    display:block;
 }
-#tabs .tab .field textarea{
+.tab .field .disabled-field{
+    font-size: 10pt;
+    color: gray;
+}
+.tab .field select{
+    width:300px;
+}
+.tab .field textarea{
     height: 200px;
 }
 

@@ -1,7 +1,10 @@
 main_time=Time.now
 
+# Lolita directory path
 LOLITA_ROOT=File.expand_path("#{__FILE__}/../..")
+# Lolita load file path
 LOLITA_LOAD_PATH=File.dirname(__FILE__)
+# Lolita application path
 LOLITA_APP_ROOT=File.join(File.expand_path("#{__FILE__}/../.."),"app")
 $:<<LOLITA_LOAD_PATH unless $:.include?(LOLITA_LOAD_PATH)
 
@@ -9,6 +12,10 @@ require 'abstract'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
 require 'lolita/errors'
+# Require all ruby extensions
+Dir["#{LOLITA_LOAD_PATH}/lolita/ruby_ext/**/*.*"].each do |path|
+  require path
+end
 
 module Lolita
   autoload(:LazyLoader,'lolita/lazy_loader')
@@ -35,6 +42,13 @@ module Lolita
     autoload :List, 'lolita/configuration/list'
     autoload :Tab, 'lolita/configuration/tab'
     autoload :Tabs, 'lolita/configuration/tabs'
+
+    module FieldExtensions
+      Dir["#{LOLITA_LOAD_PATH}/lolita/configuration/field_extensions/**/*.*"].each do |path|
+        base_name=File.basename(path,".rb")
+        autoload base_name.capitalize.to_sym, "lolita/configuration/field_extensions/#{base_name}"
+      end
+    end
     
     def self.included(base)
       base.class_eval do
@@ -99,10 +113,10 @@ module Lolita
     #self.default_scope ||= mapping.name
     mapping
   end
-#
-# add_module :rest -> engine with rest controller
-# add_style :black -> engine with views
-#
+  #
+  # add_module :rest -> engine with rest controller
+  # add_style :black -> engine with views
+  #
   def self.add_module name, options={}
     options.assert_valid_keys(:controller,:route,:model)
     MODULES<<name.to_sym

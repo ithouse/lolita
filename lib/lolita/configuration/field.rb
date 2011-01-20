@@ -1,9 +1,8 @@
 module Lolita
   module Configuration
     class Field
-      
-      attr_accessor :field_set,:nested_for,:type,:options,:record
-      attr_writer :name,:title
+
+      lolita_accessor :name,:title,:field_set,:nested_for,:options, :html_options,:record
       attr_reader :dbi,:nested_in,:association_type
       
       def initialize dbi, *args, &block
@@ -14,9 +13,15 @@ module Lolita
         validate
       end
 
-      def title(value=nil)
-        @title=value if value
-        @title
+      def type(value=nil)
+        @type=value if value
+        add_extension unless @extension_added
+        @type
+      end
+
+      def type=(value)
+        @type=value
+        add_extension unless @extension_added
       end
       
       def value value=nil, &block
@@ -38,11 +43,6 @@ module Lolita
         else
           @value=value
         end
-      end
-
-      def name value=nil
-        self.name=value if value
-        @name
       end
 
       def name=(value)
@@ -84,34 +84,43 @@ module Lolita
         end
       end
 
-      def record_value
+      # TODO is this useable
+      def record_value #TODO test
         if self.record
           self.record.send(self.name.to_sym)
         else
           nil
         end
       end
-      
+
       private
 
-      def set_association
+      def add_extension #TODO test
+        @extension_added=true
+        set_association
+        refactor_type
+        set_association_type
+        self.extend("Lolita::Configuration::FieldExtensions::#{@type.camelize}".constantize) rescue nil
+      end
+
+      
+      def set_association #TODO test
         assoc_name=@name.to_s.gsub(/_id$/,"")
         @association=@dbi.reflect_on_association(assoc_name.to_sym) ||
-                     @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
+          @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
       end
       
-      def validate_type
-        self.type=if @association
-          "Array"
+      def refactor_type #TODO test
+        @type=if @association
+          "collection"
         elsif [:created_at,:updated_at,:type].include?(@name)
-          "Disabled"
+          "disabled"
         else
-          self.type
+          @type
         end
       end
 
-      def set_association_type
-        puts @association.inspect
+      def set_association_type #TODO test
         if @association
           @association_type=@dbi.association_macro(@association)
         end
@@ -120,9 +129,6 @@ module Lolita
       def set_default_values
         self.title||=self.name.to_s.capitalize
         self.options||={}
-        set_association
-        validate_type
-        set_association_type
       end
 
       def validate

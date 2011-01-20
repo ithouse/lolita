@@ -3,4 +3,5 @@ en:
     tabs:
       save_all: Save all
     list:
-      add_new: Add new {{name}}
+      add_new: Add new %{name}
+      confirm: Are you sure you want to delete record?
