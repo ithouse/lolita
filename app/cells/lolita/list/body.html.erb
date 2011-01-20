@@ -1,5 +1,0 @@
-<tbody>
-  <% @opts[:page].each_with_index do |record,index| %>
-    <%= render_cell :"lolita/list", :row, :columns=>@opts[:columns],:record=>record,:index=>index %>
-  <% end %>
-</tbody>

@@ -1,9 +1,0 @@
-<div id="tabs-header">
-  Create/Edit resource
-</div>
-<div id="tabs">
-  <% @opts[:tabs].each do |tab|  %>
-    <%= render_cell :"lolita/tab", :display, :tab=>tab  %>
-  <% end %>
-  <button><%=I18n.t("lolita.tabs.save_all")%></button>
-</div>

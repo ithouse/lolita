@@ -33,7 +33,7 @@ module Lolita
         @format
       end
 
-      def with_format(value)
+      def with_format(value) #TODO test
         if @format
           @format.call(value)
         else
@@ -41,25 +41,25 @@ module Lolita
         end
       end
 
-      def format_from_type(value)
+      def format_from_type(value) #TODO test
         if value
-          case value.class.to_s
-          when "String"
+          case self.type.to_s.downcase
+          when "string"
             value
-          when "Integer"
+          when "integer"
             value
-          when "Text"
-            new_value=value.gsub(/<\/?[^>]*>/, "").strip
+          when "text"
+            new_value=value.to_s.gsub(/<\/?[^>]*>/, "").strip
             if new_value.size>MAX_TEXT_SIZE
               "#{new_value.slice(0..MAX_TEXT_SIZE)}..."
             else
               new_value
             end
-          when "Datetime"
+          when "datetime"
             value.strftime("#{DEFAULT_DATE_FORMAT} #{DEFAULT_TIME_FORMAT}")
-          when "Date"
+          when "date"
             value.strftime(DEFAULT_DATE_FORMAT)
-          when "Time"
+          when "time"
             value.strftime(DEFAULT_TIME_FORMAT)
           else
             value.to_s

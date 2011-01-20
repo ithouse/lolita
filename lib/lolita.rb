@@ -8,21 +8,14 @@ $:<<LOLITA_LOAD_PATH unless $:.include?(LOLITA_LOAD_PATH)
 require 'abstract'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
-#require 'lolita/rails_additions'
 require 'lolita/errors'
-
-#Dir.new("#{LOLITA_APP_ROOT}/cells/lolita").each do |f|
-#  if f.to_s.match(/_cell\.rb$/)
-#    require("#{LOLITA_APP_ROOT}/cells/lolita/#{f}")
-#  end
-#end
 
 module Lolita
   autoload(:LazyLoader,'lolita/lazy_loader')
   autoload(:VERSION,'lolita/version')
   autoload(:ObservedArray,'lolita/observed_array')
   autoload(:Builder,'lolita/builder')
-  autoload(:Cells,'lolita/cells')
+  #autoload(:Cells,'lolita/cells')
   module Adapter
     autoload :AbstractAdapter, 'lolita/adapter/abstract_adapter'
     autoload :ActiveRecord, 'lolita/adapter/active_record'
@@ -31,7 +24,6 @@ module Lolita
 
   module DBI
     autoload :Base, 'lolita/dbi/base'
-    autoload :RecordSet, 'lolita/dbi/record_set'
   end
   
   module Configuration
@@ -71,7 +63,7 @@ module Lolita
     autoload :InternalHelpers, 'lolita/controllers/internal_helpers'
     autoload :UserHelpers, 'lolita/controllers/user_helpers'
     autoload :UrlHelpers, 'lolita/controllers/url_helpers'
-    autoload :FieldHelpers, 'lolita/controllers/field_helpers'
+    autoload :ComponentHelpers, 'lolita/controllers/component_helpers'
   end
 
   MODULES=[]
@@ -107,7 +99,10 @@ module Lolita
     #self.default_scope ||= mapping.name
     mapping
   end
-
+#
+# add_module :rest -> engine with rest controller
+# add_style :black -> engine with views
+#
   def self.add_module name, options={}
     options.assert_valid_keys(:controller,:route,:model)
     MODULES<<name.to_sym

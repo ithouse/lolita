@@ -72,8 +72,8 @@ module Lolita
       def paginate *args
         options=args ? args.extract_options! : {}
         options[:page]||=((args && args.first) || 1)
-        options[:per_page]||=@per_page
-        @page=Lolita::DBI::RecordSet.new(@dbi,options)
+        options[:per_page]||=@per_page || 10
+        @page=@dbi.paginate(options)#Lolita::DBI::RecordSet.new(@dbi,options)
       end
 
       # Return last page created by paginate.

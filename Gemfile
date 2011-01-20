@@ -2,7 +2,8 @@ source "http://rubygems.org"
 
 gem "rails", ">=3.0.0"
 gem "abstract"
-gem "cells"
+gem "will_paginate", "~3.0"
+#gem "cells"
 
 group :mongoid do
   gem "mongo"

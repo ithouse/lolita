@@ -50,12 +50,13 @@ module Lolita
       end
 
       def paginate(opt={})
-        options=opt.dup
-        options[:limit]=options[:per_page]
-        options[:offset]=(options[:page]-1)*options[:per_page]
-        options.delete(:per_page)
-        options.delete(:page)
-        self.klass.find(:all,options)
+        self.klass.paginate(opt)
+#        options=opt.dup
+#        options[:limit]=options[:per_page]
+#        options[:offset]=(options[:page]-1)*options[:per_page]
+#        options.delete(:per_page)
+#        options.delete(:page)
+#        self.klass.find(:all,options)
       end
 
       def db

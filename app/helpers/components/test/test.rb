@@ -1,6 +1,4 @@
-<%#
 # To change this template, choose Tools | Templates
 # and open the template in the editor.
-%>
 
-<%= render_component *@component_builder  %>
+puts "Hello World"

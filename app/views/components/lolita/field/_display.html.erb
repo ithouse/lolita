@@ -1,0 +1,4 @@
+<div class="field" id="field_<%=field.__id__%>">
+  <%= render_component :"lolita/field", :label, :field=>field %>
+  <%= render_component :"lolita/field", field.type_name.to_sym,:field=>field %>
+</div>

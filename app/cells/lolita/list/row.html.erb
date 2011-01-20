@@ -1,5 +1,0 @@
-<tr class="<%=@class_name%>">
-  <% @opts[:columns].each do |column| %>
-    <%= render_cell :"lolita/list",:body_cell, :value=>column.with_format(@record.send(column.name.to_sym)) %>
-  <% end %>
-</tr>
