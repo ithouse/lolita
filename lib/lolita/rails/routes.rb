@@ -1,11 +1,16 @@
 module ActionDispatch::Routing
-
-  class RouteSet
-   
-  end
   
   class Mapper
 
+    # Every module, that is used with lolita and has routes, need to have
+    # <code>resource method</code>, for example, lolita_rest, that should be added
+    # to ActionDispatch::Routing::Mapper class, as a *protected* method.
+    # Module can automaticliy add resource route or live it to user.
+    # ====Example
+    #     Lolita.add_module :admins
+    #     # in route.rb
+    #     lolita_for :admins
+    #     # if admins have route added, than new route will point to these module controller
     def lolita_for *resources
       options = resources.extract_options!
 
@@ -25,12 +30,23 @@ module ActionDispatch::Routing
       resources.map!(&:to_sym)
       resources.each{|resource|
         mapping=Lolita.add_mapping(resource,options)
-        raise "#{mapping.to} not include Lolita::Configuration" unless mapping.to.respond_to?(:lolita)
-        raise "lolita is not initialized in #{mapping.to}" if mapping.to.instance_variable_get(:@lolita).nil?
+        target_class=mapping.to
+        
         lolita_scope mapping.name do
           yield if block_given?
+
           with_lolita_exclusive_scope mapping.fullpath,mapping.path do
-            route=Lolita::ROUTES[mapping.name] || Lolita::ROUTES[Lolita.default_module]
+            # if not defined lolita default configuration in model, than can't use :rest
+            if !target_class.respond_to?(:lolita) && !Lolita::ROUTES[mapping.name]
+               raise NotFound, "Lolita not found in #{target_class}. Include Lolita::Configuration"
+            elsif target_class.respond_to?(:lolita) && target_class.instance_variable_get(:@lolita).nil?
+               raise NotInitialized, "Call lolita method in #{target_class}."
+            else
+              route=Lolita::ROUTES[mapping.name] || Lolita::ROUTES[Lolita.default_module]
+            end
+            unless route
+              raise Lolita::ModuleNotFound, "Module #{mapping.name.to_s.capitalize} not found! Add Lolita.use(:#{mapping.name}) to initializers/lolita.rb"
+            end
             send(:"lolita_#{route}",mapping,mapping.controllers)
           end
         end
@@ -48,11 +64,6 @@ module ActionDispatch::Routing
       constraints(constraint) do
         yield
       end
-    end
-    
-    def lolita_rest mapping, controllers
-      resources mapping.plural,:only=>[:index,:new,:create,:edit,:update,:destroy],
-        :controller=>controllers[:rest],:module=>mapping.module
     end
     
     def with_lolita_exclusive_scope new_path,new_as

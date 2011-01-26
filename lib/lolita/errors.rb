@@ -5,4 +5,6 @@ module Lolita
   class ReferenceError < ArgumentError; end
   class FieldNameError < NoMethodError; end
   class FieldTypeError < ArgumentError; end
+  class ModuleNotFound < ArgumentError; end
+  class NotFound < ArgumentError; end
 end

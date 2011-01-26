@@ -1,8 +1,9 @@
+require 'generators/lolita/file_helper'
 
 module Lolita
   module Generators
     class InstallGenerator < Rails::Generators::Base
-      
+      include Lolita::Generators::FileHelper
       source_root File.expand_path("../../templates", __FILE__)
       desc "Create lolita initializer. Copy assets and create migrations. Load seed data."
       hook_for :orm
@@ -24,22 +25,7 @@ module Lolita
       def load_seed
         eval(File.new(File.join(LOLITA_ROOT,"db","seed.rb")).read)
       end
-
-      private
-
-      def copy_dir(source)
-        root_dir=File.join(LOLITA_ROOT,source)
-        Dir[File.join(root_dir, "**/*")].each do |file|
-          relative = file.gsub(/^#{root_dir}\//, '')
-          if File.file?(file)
-            copy_file file, File.join(Rails.root, source, relative)
-          end
-        end
-      end
-      
-      def file_exists? path
-        File.exists?(File.join(destination_root, path))
-      end
+     
     end
   end
 end

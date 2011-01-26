@@ -1,7 +1,14 @@
-Lolita.add_module :rest,:route=>true #/lolita/rest
+Lolita.add_module :rest, :route=>true, :path=>File.expand_path(File.join(__FILE__,'..','modules'))
+Lolita.default_module=:rest
+
+
 #Lolita.add_module :pictures
 # Lolita.use(:blogs)
 # Lolita.use(:threads)
+# Lolita.use :lolita-devise-admins
+# require 'lolita-devise-users'
+# /lolita/admins
+# /lolita/admin/1/edit
 #Lolita.add_module :statistic, :route=>true
 # lolita/questions/statistic => lolita/statistic/index
 # lolita_modules :statistic

@@ -9,6 +9,7 @@ LOLITA_APP_ROOT=File.join(File.expand_path("#{__FILE__}/../.."),"app")
 $:<<LOLITA_LOAD_PATH unless $:.include?(LOLITA_LOAD_PATH)
 
 require 'abstract'
+require 'observer'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/dependencies'
 require 'lolita/errors'
@@ -91,12 +92,27 @@ module Lolita
   def self.root
     LOLITA_ROOT
   end
+
+  #  @@before_load=[]
+  #  def self.before_load &block
+  #    @@before_load<< block if block_given?
+  #    puts @@before_load.inspect
+  #  end
+  #
+  #  @@after_load=[]
+  #  def self.after_load *args
+  #    @@after_load << block if block_given?
+  #  end
   
   mattr_accessor :mappings
   @@mappings={}
 
   mattr_accessor :default_module
-  @@default_module=:rest
+  @@default_module=nil
+
+  def self.use(module_name)
+    
+  end
 
   mattr_accessor :user_classes
   @@user_classes=[]
@@ -113,12 +129,9 @@ module Lolita
     #self.default_scope ||= mapping.name
     mapping
   end
-  #
-  # add_module :rest -> engine with rest controller
-  # add_style :black -> engine with views
-  #
+
   def self.add_module name, options={}
-    options.assert_valid_keys(:controller,:route,:model)
+    options.assert_valid_keys(:controller,:route,:model,:path)
     MODULES<<name.to_sym
     config={
       :route=>ROUTES,
@@ -134,18 +147,23 @@ module Lolita
       end
     }
 
-    if options[:model]
-      model_path = (options[:model] == true ? "lolita/models/#{name}" : options[:model])
-      Lolita::Models.send(:autoload, name.to_s.camelize.to_sym, model_path)
+    if options[:path]
+      require File.join(options[:path],name.to_s)
     end
+    #    if options[:model]
+    #      model_path = (options[:model] == true ? "lolita/models/#{name}" : options[:model])
+    #      Lolita::Models.send(:autoload, name.to_s.camelize.to_sym, model_path)
+    #    end
   end
 
 end
 engine_time=Time.now
+
 if defined?(Rails)
   require 'lolita/mapping'
   require 'lolita/rails'
   require 'lolita/modules'
 end
+
 puts "Lolita engine started in #{Time.at(Time.now-engine_time).strftime("%M:%S.%3N")}"
 puts "Lolita started in #{Time.at(Time.now-main_time).strftime("%M:%S.%3N")}"

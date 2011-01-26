@@ -13,7 +13,7 @@ end
 module Lolita
   class Engine < Rails::Engine
     config.lolita=Lolita
-   
+   puts config.paths["app"]
     #config.asset_path = "/lolita/%s"
     # config.serve_static_assets = true
   end
