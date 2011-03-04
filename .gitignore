@@ -11,3 +11,5 @@ spec/debug.log
 .idea/
 .gem
 lib/test.rb
+coverage/
+spec/rails_app/log/

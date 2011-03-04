@@ -33,6 +33,14 @@ module Lolita
         @format
       end
 
+      #
+      #  column do
+      #    name "UID"
+      #    format do(values)
+      #      values.first+values.last
+      #    end
+      #  end
+      # <%= column.with_format([@post.id,@post.user_id])%>
       def with_format(value) #TODO test
         if @format
           @format.call(value)

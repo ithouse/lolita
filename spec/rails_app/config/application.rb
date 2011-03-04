@@ -5,7 +5,7 @@ require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
 Bundler.require(:default, LOLITA_ORM,Rails.env) if defined?(Bundler)
-require 'cells'
+#require 'cells'
 require 'lolita'
 
 module RailsApp
