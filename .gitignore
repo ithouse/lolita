@@ -13,3 +13,5 @@ spec/debug.log
 lib/test.rb
 coverage/
 spec/rails_app/log/
+.project
+Gemfile.lock

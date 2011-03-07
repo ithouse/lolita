@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Lolita::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["ITHouse","Artūrs Meisters"]
-  s.email       = ["arturs@ithouse.lv"]
+  s.email       = ["support@ithouse.lv"]
   s.homepage    = "http://rubygems.org/gems/lolita"
   s.summary     = %q{CMS for developers}
   s.description = %q{Configurable scaffold tool and CMS for developers}
