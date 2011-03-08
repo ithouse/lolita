@@ -16,7 +16,6 @@ module Lolita
       # Return instance variable named as resource
       # For 'posts' instance variable will be @posts
       def resource
-        debugger
         instance_variable_get(:"@#{resource_name}")
       end
       

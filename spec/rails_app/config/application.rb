@@ -7,6 +7,7 @@ require "rails/test_unit/railtie"
 Bundler.require(:default, LOLITA_ORM,Rails.env) if defined?(Bundler)
 #require 'cells'
 require 'lolita'
+require 'will_paginate'
 
 module RailsApp
   class Application < Rails::Application

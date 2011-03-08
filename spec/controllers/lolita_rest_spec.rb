@@ -19,7 +19,7 @@ describe Lolita::RestController do
 
   it "should render tabs for new resource" do
     get :new
-    response.body.should =~/input/
+    response.body.should =~/select|input/
   end
 end
 

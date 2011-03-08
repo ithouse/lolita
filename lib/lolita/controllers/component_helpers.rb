@@ -1,5 +1,7 @@
 module Lolita
   module Controllers
+  	# Helper that add #render_component method. That is shortstand for render :partial for lolita
+  	# partial files. Also it provide view hooks for Lolita.
     module ComponentHelpers
       # Render partial template.
       # Accept:

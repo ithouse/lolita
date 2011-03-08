@@ -21,18 +21,17 @@
 #end
 
 require 'rubygems'
-
-#require File.expand_path(File.dirname(__FILE__) + '/../Gemfile')
 #require 'ruby-debug'
 LOLITA_ORM=:mongoid
 require "orm/#{LOLITA_ORM}"
-#require 'simplecov'
-#SimpleCov.start
+
 require "rails_app/config/environment"
 
 require 'rspec/rails'
+require 'ffaker'
+require 'factory_girl'
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 RSpec.configure do |config|
 # config.mock_with :mocha
 # config.mock_with :flexmock

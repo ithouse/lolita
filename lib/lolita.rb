@@ -160,6 +160,7 @@ end
 engine_time=Time.now
 
 if defined?(Rails)
+  puts "Starting lolita Rails Engine"
   require 'lolita/mapping'
   require 'lolita/rails'
   require 'lolita/modules'

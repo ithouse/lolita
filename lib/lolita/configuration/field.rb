@@ -54,7 +54,6 @@ module Lolita
       end
 
       def nested_in=(dbi)
-        # FIXME need to check if that association is belongs_to or many to many
         unless self.dbi.associations_class_names.include?(dbi.klass.to_s)
           raise Lolita::ReferenceError, "There is no association between #{self.dbi.klass} and #{dbi.klass}"
         end
@@ -128,6 +127,7 @@ module Lolita
 
       def set_default_values
         self.title||=self.name.to_s.capitalize
+        self.type||="string"
         self.options||={}
       end
 

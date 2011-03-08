@@ -10,7 +10,7 @@ module Lolita
       end
 
       def associations
-        klass.associations
+        klass.relations
       end
 
       def associations_class_names
@@ -26,7 +26,7 @@ module Lolita
       end
 
       def association_macro(association)
-        macro=association.association.macro
+        macro=association.macro
         case macro
         when :references_many
           :many
@@ -41,6 +41,9 @@ module Lolita
         end
       end
 
+	  def association_class_name(association)
+	  	association.class_name
+	  end
       def fields
         @fields||=self.klass.fields.collect{|name,field|
           field_to_hash(name,field)

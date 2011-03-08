@@ -40,11 +40,14 @@ module Lolita
 
         def default_text_method(klass)
           assoc_dbi=Lolita::DBI::Base.new(klass)
-          field=assoc_dbi.fields.detect{|f| f[:type]=="string"}
+          field=assoc_dbi.fields.detect{|f| f[:type].downcase=="string"}
           if field
             field[:name]
           else
-            raise Lolita::FieldTypeError, "Can't find any content field in #{assoc_dbi.klass}. Use text_method to set one."
+            raise Lolita::FieldTypeError, %^
+            	Can't find any content field in #{assoc_dbi.klass}. 
+            	Use text_method in #{klass} to set one.
+           ^
           end
         end
         # MODULE end
