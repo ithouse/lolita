@@ -9,7 +9,7 @@ $(function(){
         $.ajax({
             url:tabs.attr("data-tabs-url"),
             dataType:"html",
-            type:"PUT",
+            type:tabs.attr("data-method"),
             data:data,
             success:function(data){
                 $("#right-side").html(data)

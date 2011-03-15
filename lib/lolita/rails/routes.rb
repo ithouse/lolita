@@ -54,7 +54,7 @@ module ActionDispatch::Routing
     end
 
     protected
-
+    
     def lolita_scope scope
       constraint = lambda do |request|
         request.env["lolita.mapping"] = Lolita.mappings[scope]

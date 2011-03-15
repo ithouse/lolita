@@ -53,6 +53,10 @@ module Lolita
         @fields
       end
 
+      def find_by_id(id)
+        self.klass.where(:id=>id).first
+      end
+      
       def paginate(opt={})
         self.klass.paginate(opt)
 #        options=opt.dup

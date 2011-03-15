@@ -54,7 +54,7 @@ module Lolita
       end
 
       def get_resource(id=nil)
-        self.resource=resource_class.find_by_id(id || params[:id])
+        self.resource=resource_class.lolita.dbi.find_by_id(id||params[:id])
       end
 
       def build_resource(attributes=nil)

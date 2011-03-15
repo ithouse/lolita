@@ -117,12 +117,7 @@ module Lolita
   mattr_accessor :user_classes
   @@user_classes=[]
 
-  def self.add_user_class(user_class)
-    if user_class.is_a?(Class)
-      Lolita.user_classes<<user_class.to_s.underscore.gsub('/',"_").to_sym
-    end
-  end
-  
+
   def self.add_mapping(resource,options={})
     mapping = Lolita::Mapping.new(resource, options)
     self.mappings[mapping.name] = mapping
@@ -155,12 +150,17 @@ module Lolita
     #      Lolita::Models.send(:autoload, name.to_s.camelize.to_sym, model_path)
     #    end
   end
+  
+  if defined?(Rails)
+    
+    mattr_accessor :authentication
+    @@authentication=nil
 
+  end
 end
 engine_time=Time.now
 
 if defined?(Rails)
-  puts "Starting lolita Rails Engine"
   require 'lolita/mapping'
   require 'lolita/rails'
   require 'lolita/modules'

@@ -41,14 +41,19 @@ module Lolita
         end
       end
 
-	  def association_class_name(association)
-	  	association.class_name
-	  end
+      def association_class_name(association)
+        association.class_name
+      end
+
       def fields
         @fields||=self.klass.fields.collect{|name,field|
           field_to_hash(name,field)
         }
         @fields
+      end
+
+      def find_by_id(id)
+        self.klass.where(:_id=>id).first
       end
 
       def paginate(options={})
@@ -62,7 +67,7 @@ module Lolita
       def db_name
         self.klass.db.name
       end
-      
+
       def collection
         self.klass.collection
       end
@@ -74,7 +79,7 @@ module Lolita
       def collections
         db.collections
       end
-      
+
       def collection_names
         db.collection_names
       end

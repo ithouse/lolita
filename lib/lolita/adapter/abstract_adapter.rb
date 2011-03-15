@@ -7,6 +7,7 @@ module Lolita
       abstract_method 'opt={}',:paginate
       abstract_method 'name',:reflect_on_association
       abstract_method 'association',:association_macro,:association_class_name
+      abstract_method 'id',:find_by_id
     end
   end
 end

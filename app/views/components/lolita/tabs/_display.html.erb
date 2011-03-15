@@ -1,7 +1,8 @@
 <div id="tabs-header">
   Create/Edit resource
 </div>
-<div id="tabs-<%= resource_name %>" class="tabs" data-tabs-url="<%=lolita_resource_path(:id=>resource.id)%>">
+<% #mode container div with all data-* method to helper and change to block method %>
+<div id="tabs-<%= resource_name %>" class="tabs" data-method="<%=resource.new_record? ? "POST" : "PUT" %>" data-tabs-url="<%=resource.new_record? ? lolita_resources_path : lolita_resource_path(:id=>resource.id)%>">
   <% tabs.each do |tab|  %>
     <%= render_component :"lolita/tab", :display, :tab=>tab  %>
   <% end %>

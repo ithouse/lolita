@@ -11,6 +11,7 @@ ActiveSupport.on_load(:action_view) {
 Dir["#{LOLITA_APP_ROOT}/helpers/components/**/*.*"].each do |f|
 	puts f
 end
+
 module Lolita
 	class Engine < Rails::Engine
 		config.lolita=Lolita
