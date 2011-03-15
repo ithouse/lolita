@@ -65,9 +65,8 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
 .boxtitle {position: relative;} 
 .boxtitle h1 {padding: 35px 25px 15px; line-height: 1;} /* h1 contains bgcolor, color and text position because arrow needs different bg and it follows after */
 .boxtitle .arrow {
-  margin: 0 auto;
-  width: 0;
-  height: 0;
+  position: absolute;
+  left: 50%;
   border-color: #2f2f2f transparent transparent;
   border-style: solid;
   border-width: 10px 10px 0;
@@ -87,7 +86,7 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
 /* --------------------------------------------- */
 
 /* list view styles */
-.tools {overflow: hidden; line-height: 50px; height: 50px; padding-left: 25px;}
+.tools {overflow: hidden; line-height: 50px; height: 50px; padding-left: 25px; padding-top: 10px;}
 .tools .actions {float: left;}
 .tools .filters {float: right;}
 .tools > div > * {margin-right: 10px;}
@@ -103,16 +102,20 @@ a.create {
 }
 .create img {position: absolute; right: -20px;}
 
-table.list {min-width: 100%;}
-table.list td {line-height: 35px; padding: 0 20px;}
+table.list {width: 100%;}
+table.list td,
+table.list th {line-height: 35px; padding: 0 20px; white-space: nowrap;}
+table.list td input {vertical-align: middle;}
 table.list thead {background: #d5d5d5;}
-table.list thead td a {color: #a5a5a5;}
-table.list thead td.active a {color: #6c6c6c;} /* Style for active header */
+table.list thead th {text-align: left;}
+table.list thead th a {color: #a5a5a5;}
+table.list thead th.active a {color: #6c6c6c;} /* Style for active header */
 table.list tbody tr {border-bottom: 1px solid #e3e3e3;}
 table.list tbody tr:last-child {border-bottom: none;} /* CSS3 selector for now, may be enough */
 table.list tbody tr:hover { /* Style was for in-place editing, using now on hover for demonstration purposes */
   background: #ebf9fc;
   -moz-box-shadow: inset 0px 1px 1px #ddd;
+  -webkit-box-shadow: inset 0px 1px 1px #ddd;
 } 
 
 /* --------------------------------------------- */
