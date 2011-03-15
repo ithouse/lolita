@@ -1,20 +1,54 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+  <!--<![endif]-->
   <head>
-    <title>#LolitaProjectTitle</title>
-    <%= stylesheet_link_tag "lolita/main" %>
-    <%= javascript_include_tag "jquery","lolita/tab", "rails" %>
-    <%= csrf_meta_tag %>
+    <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Lolita</title><meta name="description" content=""><meta name="author" content="">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <%= stylesheet_link_tag "lolita/default","lolita/style" %>
+    <script src="js/modernizr-1.7.min.js">
+    </script>
+    <%= raw  csrf_meta_tag %>
   </head>
   <body>
-    <div id="top">
-      <h1>Lolita Admin</h1>
+
+    <div id="container">
+      <header>
+        <h1>Lolita</h1>
+        <nav>
+          <a href="" class="username">Username</a>
+          <a href="" class="button grey">Log out</a>
+          <button class="grey">
+            Log out
+          </button>
+          <input type="button" class="button grey" value="Log out">
+        </nav>
+      </header>
+      <div id="main" role="main">
+        <%= render_component :"lolita/navigation",:display %>
+        <div id="content" class="">
+          <%= yield %>
+        </div>
+      </div>
+      <footer>
+      </footer>
     </div>
-    <div id="left-side">
-      <%= render_component :"lolita/navigation",:display %>
-    </div>
-    <div id="right-side">
-      <%= yield %>
-    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js">
+    </script>
+    <script>
+      window.jQuery || document.write('<script src="jquery-1.5.1.min.js">\x3C/script>')
+    </script>
+    <script>
+      $( function() {
+      })
+    </script>
+    <%= javascript_include_tag "rails","lolita/tab" %>
   </body>
 </html>

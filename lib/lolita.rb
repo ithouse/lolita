@@ -41,6 +41,7 @@ module Lolita
     autoload :Field, 'lolita/configuration/field'
     autoload :FieldSet, 'lolita/configuration/field_set'
     autoload :List, 'lolita/configuration/list'
+    autoload :Page, 'lolita/configuration/page'
     autoload :Tab, 'lolita/configuration/tab'
     autoload :Tabs, 'lolita/configuration/tabs'
 

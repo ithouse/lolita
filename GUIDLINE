@@ -3,3 +3,13 @@
 When creating GEM, that include new module in one or more of lolita modules, use
 Lolita.send(:include,YourModule) instead of reopening module.
 
+# How to install
+  
+gem install lolita
+
+cd your_project
+
+rails g lolita:install
+
+change your project initializers/lolita.rb
+

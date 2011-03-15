@@ -58,6 +58,7 @@ module Lolita
       end
       
       def paginate(opt={})
+        #FIXME depend on will_paginate
         self.klass.paginate(opt)
 #        options=opt.dup
 #        options[:limit]=options[:per_page]

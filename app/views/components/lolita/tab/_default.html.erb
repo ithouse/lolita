@@ -3,7 +3,7 @@
 # piemēram, /tab_types/
 #
 %>
-<form action="#" id="tab-form-<%=tab.__id__%>">
+<%= form_tag "#", :id=>"tab-form-#{tab.__id__}" do |form| %>
   <div class="tab-content">
     <% tab.fields_with_field_set do |fields_or_field,field_set| %>
       <% if field_set %>
@@ -13,4 +13,4 @@
       <% end %>
     <% end %>
   </div>
-</form>
+<% end %>
