@@ -1,4 +1,7 @@
-<div class="tab" id="tab_<%=tab.__id__%>">
-  <div class="tab-title" data-closed="false"><%= tab.title %></div>
+<div class="tab box" id="tab_<%=tab.__id__%>">
+  <div class="tab-title boxtitle black" data-closed="false">
+    <h1><%= tab.title %></h1>
+    <div class="arrow"></div> <%# FIXME more DRY solution is needed for .arrow within .boxtitle, maybe box helper %>
+  </div>
   <%= render_component :"lolita/tab", tab.type, :tab=>tab %>
 </div>

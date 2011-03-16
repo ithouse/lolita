@@ -31,6 +31,28 @@ header nav .username {margin-right: 15px;}
 /* vertical middle container */
 #main {position: relative; padding-left: 150px;} /* setting the left portion width for navigation */
 
+#main .box form {padding: 30px 47px 30px 25px;}
+#main .box form label {color: #d7d7d7; font-size: 13px;}
+#main .box form .field {margin: 10px 0;}
+#main .box form .field:first-child input {
+  font-size: 24px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+#main .box form .field-value { margin-top: 5px;}
+#main .box form .field-value input {
+  border: 1px solid #cdcdcd;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px 10px;
+  width: 100%;
+  color: #494949;
+}
+#main .box form .field-value input:focus {background: #ebf9fc;}
+
 /* navigation styles on left */
 #main nav {position: absolute; left: 0; min-width: 150px; margin-top: 5px;} /* width just for now */ 
 #main nav ul {margin-bottom: 50px;}
