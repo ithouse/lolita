@@ -18,7 +18,8 @@ $(function(){
     }
     // Submit all forms through Ajax when Save All button clicked.
     $("button.save-all").live('click',function(){
-        var tab=$(this).parents("div[data-tabs-url]")
+        //var tab=$(this).parents("div[data-tabs-url]")
+        var tab = $("#content").children("div[data-tabs-url]")
         save_tab(tab)
     })
     // All tabs are closable when clicked on tab title.
