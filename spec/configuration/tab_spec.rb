@@ -10,14 +10,14 @@ describe Lolita::Configuration::Tab do
   end
 
   it "should allow to set title" do
-    tab=Lolita::Configuration::Tab.new(@dbi) do
+    tab=Lolita::Configuration::Tab.new(@dbi,:content) do
       title "My tab"
     end
     tab.title.should == "My tab"
   end
   
   it "should have default title that is humanized type" do
-    tab=Lolita::Configuration::Tab.new(@dbi)
+    tab=Lolita::Configuration::Tab.new(@dbi,:content)
     tab.title.should=="Content"
   end
   

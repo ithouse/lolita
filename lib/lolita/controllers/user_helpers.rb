@@ -9,11 +9,12 @@ module Lolita
       extend ActiveSupport::Concern
 
       private
-    
+    # FIXME what to do when block or method return false, and do not redirect
+    # need some redirect, but how to detect it?
       def authenticate_lolita_user!
         if auth=Lolita.authentication
           if auth.is_a?(Proc)
-            auth.call
+            self.instance_eval(&auth)
           else
             send(auth)
           end
