@@ -1,9 +1,11 @@
 <div class="box">
   <%= render_component :"lolita/list", :title %>
   <%= render_component :"lolita/list", :new_resource%>
-  <table class="list">
-    <%= render_component :"lolita/list", :header, :columns=>list.columns %>
-    <%= render_component :"lolita/list", :body, :page=>page,:columns=>list.columns %>
-  </table>
+  <div class="list">
+    <table>
+      <%= render_component :"lolita/list", :header, :columns=>list.columns %>
+      <%= render_component :"lolita/list", :body, :page=>page,:columns=>list.columns %>
+    </table>
+  </div>
   <%= render_component :"lolita/list", :paginator,:page=>page, :columns=>list.columns %>
 </div>

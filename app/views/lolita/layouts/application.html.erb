@@ -13,9 +13,8 @@
     <link rel="shortcut icon" href="/favicon.ico">
 
     <%= stylesheet_link_tag "lolita/default","lolita/style" %>
-    <script src="js/modernizr-1.7.min.js">
-    </script>
-    <%= raw  csrf_meta_tag %>
+    <%= javascript_include_tag "modernizr-1.7.min" %>
+    <%= raw csrf_meta_tag %>
   </head>
   <body>
 
