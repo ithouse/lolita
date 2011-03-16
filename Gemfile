@@ -5,16 +5,13 @@ gem "rails", "~>3.0"
 gem "will_paginate", "~> 3.0.pre2"
 gem "abstract"
 
-
-#gem "cells"
-
 group :mongoid do
   gem "mongo"
   gem "mongoid", "~> 2.0.0.rc.7"
   gem "bson_ext"
 end
 
-gem 'cover_me', '>= 1.0.0.rc6', :group => :test
+#gem 'cover_me', '>= 1.0.0.rc6', :group => :test
 group :test,:development do
   gem "rspec", ">=2.2.0"
   gem "rspec-rails"

@@ -8,9 +8,9 @@ LOLITA_LOAD_PATH=File.dirname(__FILE__)
 LOLITA_APP_ROOT=File.join(File.expand_path("#{__FILE__}/../.."),"app")
 $:<<LOLITA_LOAD_PATH unless $:.include?(LOLITA_LOAD_PATH)
 
-require 'abstract'
-require 'observer'
+require 'abstract' #FIXME remove from gem
 require 'active_support/core_ext/numeric/time'
+require 'active_support/callbacks'
 require 'active_support/dependencies'
 require 'lolita/errors'
 # Require all ruby extensions
@@ -153,12 +153,13 @@ module Lolita
   end
   
   if defined?(Rails)
-    
+ 
     mattr_accessor :authentication
     @@authentication=nil
-
   end
 end
+
+require 'lolita/callbacks'
 engine_time=Time.now
 
 if defined?(Rails)
