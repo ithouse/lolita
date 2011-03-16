@@ -28,6 +28,13 @@ module Lolita
     autoload :Base, 'lolita/dbi/base'
   end
   
+  module Hooks
+    require 'lolita/hooks/hooks'
+    include Lolita::Hooks::Hooks
+    autoload :Base, 'lolita/hooks/base'
+    autoload :Component, 'lolita/hooks/component'
+  end
+
   module Configuration
     autoload :Base, 'lolita/configuration/base'
     autoload :Column, 'lolita/configuration/column'
@@ -106,7 +113,6 @@ module Lolita
   
 end
 
-require 'lolita/callbacks'
 engine_time=Time.now
 
 if defined?(Rails)
