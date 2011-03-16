@@ -5,34 +5,15 @@ module Lolita
       MAX_TEXT_SIZE=20
       DEFAULT_DATE_FORMAT="%Y-%m-%d"
       DEFAULT_TIME_FORMAT="%H:%M:%S"
-      attr_writer :name, :title, :type, :options,:format
+      lolita_accessor :name,:title,:type,:options,:format
       
       def initialize(*args,&block)
         self.set_attributes(*args)
         self.instance_eval(&block) if block_given?
-        raise ArgumentError.new("Column must have name.") unless self.name
+        validate
+        set_default_values
       end
-
-      def name(value=nil)
-        self.name=value if value
-        @name
-      end
-
-      def title(value=nil)
-        self.title=value if value
-        @title
-      end
-
-      def type(value=nil)
-        self.type=value if value
-        @type
-      end
-
-      def format(value=nil)
-        self.format=value if value
-        @format
-      end
-
+      
       #
       #  column do
       #    name "UID"
@@ -91,6 +72,15 @@ module Lolita
         end
       end
       
+      private
+      
+      def set_default_values
+        @title||=@name.to_s.humanize
+      end
+      
+      def validate
+        raise ArgumentError.new("Column must have name.") unless self.name
+      end
     end
   end
 end

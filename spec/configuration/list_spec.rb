@@ -56,26 +56,7 @@ describe Lolita::Configuration::List do
     list.columns.size.should == 3
   end
 
-  it "should sort by one or more columns" do
-    list=Lolita::Configuration::List.new do
-      column :name=>"col1"
-      column :name=>"col2"
-      column :name=>"col3"
-      desc :col3
-    end
-    list.asc(:col1).desc(:col2).sort_columns.last.should == [:col2,:desc]
-    list.sort_columns[0].should==[:col3,:desc]
-  end
-
-  describe "pagination" do
-   
-   it "should accept Hash params" do
-     list=Lolita::Configuration::List.new(@dbi)
-     list.paginate({:sort_columns=>[:title,[:body,:asc]]})  
-     
-   end
-   
-  end
+  
   it "should move columns to right or left" do
     pending
 #    list = Lolita::Configuration::List.new do

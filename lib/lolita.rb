@@ -94,6 +94,9 @@ module Lolita
     LOLITA_ROOT
   end
 
+  def self.app_root
+    LOLITA_APP_ROOT
+  end
   #  @@before_load=[]
   #  def self.before_load &block
   #    @@before_load<< block if block_given?

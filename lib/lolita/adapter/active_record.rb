@@ -59,13 +59,11 @@ module Lolita
       
       def paginate(opt={})
         #FIXME depend on will_paginate
+        if order=opt.delete(:sort)
+          order.map{|c| c.join(" ")}.join(", ")
+          opt[:order_by]=order
+        end
         self.klass.paginate(opt)
-#        options=opt.dup
-#        options[:limit]=options[:per_page]
-#        options[:offset]=(options[:page]-1)*options[:per_page]
-#        options.delete(:per_page)
-#        options.delete(:page)
-#        self.klass.find(:all,options)
       end
 
       def db

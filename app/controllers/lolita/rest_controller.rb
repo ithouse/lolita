@@ -1,4 +1,3 @@
-puts "--load-rest"
 class Lolita::RestController < ApplicationController
   include Lolita::Controllers::UserHelpers
   include Lolita::Controllers::InternalHelpers
