@@ -9,6 +9,18 @@ describe Lolita::Configuration::Tab do
     Lolita::Configuration::Tab.new(@dbi,:content)
   end
 
+  it "should allow to set title" do
+    tab=Lolita::Configuration::Tab.new(@dbi) do
+      title "My tab"
+    end
+    tab.title.should == "My tab"
+  end
+  
+  it "should have default title that is humanized type" do
+    tab=Lolita::Configuration::Tab.new(@dbi)
+    tab.title.should=="Content"
+  end
+  
   it "should raise error when no fields are given for default type tab" do
     lambda{
       Lolita::Configuration::Tab.new(@dbi)

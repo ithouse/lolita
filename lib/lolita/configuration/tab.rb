@@ -9,12 +9,20 @@ module Lolita
     # * <tt>field</tt> Create field in tab, fields also can be included in #nested_fields_for and
     #   #field_set
     # * <tt>default_fields</tt>
+    # To create new tab you should pass Lolita::DBI object and tab type, default is :content
+    # ====Example
+    #     Lolita::Configuration::Tab.new(Lolita::DBI.new(Post),:images)
+    # To define tab in ORM model, through lolita configuration do the following
+    # ====Example
+    #     lolita do
+    #       tab
     class Tab
 
       # For different types there are different builders(cells)
       @@available_types=[:content]
    
-      attr_accessor :dbi,:type,:name,:title,:current_fieldset,:current_dbi
+      lolita_accessor :title,:name
+      attr_accessor :dbi,:type,:current_fieldset,:current_dbi
       attr_reader :field_sets,:nested_form
 
       # To create new tab the following parametrs need to be provided.

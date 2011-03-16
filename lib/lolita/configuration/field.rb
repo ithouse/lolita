@@ -1,5 +1,28 @@
 module Lolita
   module Configuration
+    # Lolita::Configuration::Field is class that allow to configure fields.
+    # To change behaviour of field you can use these attributes
+    # * <tt>name</tt> - field name, used to set or get value from related ORM object
+    # * <tt>type</tt> - can change the way field is shown and how data is formated
+    # * <tt>field_set</tt> - define field set that field belongs to. See Lolita::Configuration::FieldSet
+    # * <tt>nested_in</tt> - define field for different Lolita::DBI instance, than given. This is used
+    #   to create nested fields in one form for related models. Like user and profile, where in user
+    #   form there are fields from profile that can be manipulated when user is changed or created.
+    # * <tt>optinos</tt> - specific options for different type of fields, see Lolita::Configuration::FieldExtensions for details
+    # * <tt>html_options</tt> - used to change field HTML output,like class or style etc.
+    # 
+    # To define field in ORM class through lolita configuration block
+    # ====Example
+    #     lolita do
+    #       tab do
+    #         field :email
+    #         field :user_id, :type=>"string"
+    #         field :body do
+    #            title "Full text" 
+    #            html_options :class=>"full_text"
+    #         end
+    #       end
+    #     end
     class Field
 
       lolita_accessor :name,:title,:field_set,:nested_for,:options, :html_options,:record
