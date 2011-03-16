@@ -31,7 +31,7 @@ header nav .username {margin-right: 15px;}
 /* vertical middle container */
 #main {position: relative; padding-left: 150px;} /* setting the left portion width for navigation */
 
-#main .box form {padding: 30px 47px 30px 25px;}
+#main .box form {background: #FFF; padding: 30px 25px;}
 #main .box form label {color: #d7d7d7; font-size: 13px;}
 #main .box form .field {margin: 10px 0;}
 #main .box form .field:first-child input {
@@ -47,11 +47,20 @@ header nav .username {margin-right: 15px;}
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   padding: 3px 10px;
   width: 100%;
   color: #494949;
 }
 #main .box form .field-value input:focus {background: #ebf9fc;}
+#main .box form .field-value textarea {
+  width: 100%; 
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; /* IE7 does not support it, IE8 does */
+}
 
 /* navigation styles on left */
 #main nav {position: absolute; left: 0; min-width: 150px; margin-top: 5px;} /* width just for now */ 
@@ -148,6 +157,32 @@ a.create {
 
 /* --------------------------------------------- */
 
+/* TinyMCE advanced theme's skin "Cirkuit" overrides */
 
+#content .cirkuitSkin table.mceLayout {
+  border: 0;
+}
+#content .cirkuitSkin td.mceToolbar {
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #ebebeb;
+  background: #ededed; /* for IE, Opera */
+  background: -moz-linear-gradient(top, #ededed, #e2e2e2);
+  background: -webkit-linear-gradient(top, #ededed, #e2e2e2);
+  padding: 10px;
+}
+#content .cirkuitSkin .mceIframeContainer {
+  border: 1px solid #ebebeb;
+  border-top: 0;
+}
+#content .cirkuitSkin .mceIframeContainer iframe {
+  padding: 10px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; /* IE7 does not support it, IE8 does */
+}
+
+/* --------------------------------------------- */
 
 
