@@ -12,6 +12,7 @@ group :mongoid do
 end
 
 #gem 'cover_me', '>= 1.0.0.rc6', :group => :test
+ gem "jeweler", "~> 1.5.2", :group=>:development
 group :test,:development do
   gem "rspec", ">=2.2.0"
   gem "rspec-rails"
