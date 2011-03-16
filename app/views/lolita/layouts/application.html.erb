@@ -32,7 +32,7 @@
       </header>
       <div id="main" role="main">
         <%= render_component :"lolita/navigation",:display %>
-        <div id="content" class="">
+        <div id="content" class="<%= content_for :content_class %>">
           <%= yield %>
         </div>
       </div>
