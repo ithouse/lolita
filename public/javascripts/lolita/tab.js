@@ -12,7 +12,8 @@ $(function(){
             type:tabs.attr("data-method"),
             data:data,
             success:function(data){
-                $("#right-side").html(data)
+                $("#content").html(data);
+                load_tinymce();
             }
         })
     }
