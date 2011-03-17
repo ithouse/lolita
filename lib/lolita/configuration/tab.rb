@@ -30,8 +30,8 @@ module Lolita
           unless type==:default
             begin
               "Lolita::Configuration::#{type.to_s.camelize}Tab".constantize.new(dbi,*args,&block)
-            #rescue NameError
-             # raise Lolita::TabNotFoundError, "Lolita::Configuration::#{type.to_s.camelize}Tab not found. Add it in /lolita/configuration/tab/#{type}.rb"
+            rescue NameError
+              raise Lolita::TabNotFoundError, "Lolita::Configuration::#{type.to_s.camelize}Tab not found. Add it in /lolita/configuration/tab/#{type}.rb"
             end
           else
             temp
