@@ -60,11 +60,9 @@ class Lolita::RestController < ApplicationController
   
   def save_and_redirect
     if self.resource.save
-      unless self.resource.errors.empty?
-        show_form
-      else
-        show_form #to_list
-      end
+      show_form
+    else
+      show_form #to_list
     end
   end
   
