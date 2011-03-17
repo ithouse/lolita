@@ -32,7 +32,7 @@ header nav .username {margin-right: 15px;}
 #main {position: relative; padding-left: 150px;} /* setting the left portion width for navigation */
 
 #main .box form {background: #FFF; padding: 30px 25px;}
-#main .box form label {color: #d7d7d7; font-size: 13px;}
+#main .box form label {color: #c3c3c3; font-size: 13px;}
 #main .box form .field {margin: 10px 0;}
 #main .box form .field:first-child input {
   font-size: 24px;
@@ -62,9 +62,31 @@ header nav .username {margin-right: 15px;}
   box-sizing: border-box;  /* IE7 does not support it, IE8 does */
 }
 
+/* error fields and notifications */
+.field_with_errors input,
+.field_with_errors textarea {background: #ffe6e7;}
+
+#flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; 
+  padding: 25px 0; 
+  background: rgba(256,256,256,0.9);
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* ---------------------------------- */
+
+/* save box */
 #main .box .save {padding: 20px 10px;}
 #main .box .last-save {color: #808080; margin-bottom: 5px;}
 #main .box .save button {width: 100%; padding: 10px 0; font-size: 24px; background: #ab8def; color: #ffd;}
+/* ---------------------------------- */
+
 
 /* navigation styles on left */
 #main nav {position: absolute; left: 0; min-width: 150px; margin-top: 5px;} /* width just for now */ 

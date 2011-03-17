@@ -1,21 +1,7 @@
 <% content_for :content_class do "with-secondary" end %>
 
-<%#= flash %>
-
-<div class="secondary"> <%#= right sidebar %>
-  <div class="box">
-    <div class="boxtitle black">
-      <h1><%= t "lolita.tabs.save" %></h1>
-      <div class="arrow"></div>
-    </div>
-    <div class="save black">
-      <div class="last-save">
-        <%= resource.updated_at.strftime("#{t("lolita.tabs.last_save")}: %m/%d/%Y %H:%M ") if resource.updated_at %>
-      </div>
-      <button class="save-all"><%=I18n.t("lolita.tabs.save")%></button>
-    </div>
-  </div>
-</div>
+<%= render_component :"lolita/shared", :flash, :flash => flash %> <%# FIXME does it really need passed flash as local var? %>
+<%= render_component :"lolita/shared", :right_sidebar %>
 
 <% #mode container div with all data-* method to helper and change to block method %>
 <div id="tabs-<%= resource_name %>" class="tabs" data-method="<%=resource.new_record? ? "POST" : "PUT" %>" data-tabs-url="<%=resource.new_record? ? lolita_resources_path : lolita_resource_path(:id=>resource.id)%>">
@@ -23,4 +9,3 @@
     <%= render_component :"lolita/tab", :display, :tab=>tab  %>
   <% end %>
 </div>
-

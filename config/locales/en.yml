@@ -1,6 +1,8 @@
 en:
   lolita:
     shared:
+      save_notice: Successfully saved.
+      save_alert: Save did not succeed.
       log_out: Log out
     tabs:
       last_save: Last saved

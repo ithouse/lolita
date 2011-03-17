@@ -3,6 +3,7 @@ class Lolita::RestController < ApplicationController
   include Lolita::Controllers::InternalHelpers
   
   before_filter :authenticate_lolita_user!
+  after_filter :discard_xhr_flash
   layout "lolita/layouts/application"
   
   def new
@@ -60,8 +61,10 @@ class Lolita::RestController < ApplicationController
   
   def save_and_redirect
     if self.resource.save
+      flash[:notice] = I18n.t "lolita.shared.save_notice"
       show_form
     else
+      flash[:alert] = I18n.t "lolita.shared.save_alert"
       show_form #to_list
     end
   end
@@ -69,6 +72,11 @@ class Lolita::RestController < ApplicationController
   def to_list
     page=resource_class.lolita.list.paginate(params[:page])
     builder=build_response_for(:list,:page=>page)
-    render_component *builder
+    render :index
+    #render_component *builder
+  end
+  
+  def discard_xhr_flash
+    flash.discard if request.xhr?
   end
 end
