@@ -5,7 +5,7 @@ $(function(){
         tabs.find("form").each(function(){
             data=data+$(this).serialize()
         })
-        alert(data)
+        //alert(data)
         $.ajax({
             url:tabs.attr("data-tabs-url"),
             dataType:"html",

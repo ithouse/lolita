@@ -59,7 +59,7 @@ class Lolita::RestController < ApplicationController
       unless self.resource.errors.empty?
         show_form
       else
-        to_list
+        show_form #to_list
       end
     end
   end
