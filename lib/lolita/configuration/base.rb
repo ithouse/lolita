@@ -60,7 +60,7 @@ module Lolita
       # Tabs should not be defined in lolita block to create onew or more Lolita::Configuration::Tab
       # See Lolita::Configuration::Tab for details of defination.
       def tab *args, &block
-        self.tabs<<Lolita::Configuration::Tab.new(@dbi,*args,&block)
+        self.tabs<<Lolita::Configuration::Tab.add(@dbi,*args,&block)
       end
       
       # Call all supported instance metods to set needed variables and initialize object with them.

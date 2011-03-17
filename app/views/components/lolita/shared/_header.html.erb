@@ -1,7 +1,9 @@
 <header>
   <h1>Lolita</h1>
-  <nav>
-    <a href="<%=send(:"edit_#{current_user.class.to_s.downcase}_password_path")%>" class="username"><%=current_user.email%></a>
-    <a href="<%=send(:"destroy_#{current_user.class.to_s.downcase}_session_path")%>" class="button grey"><%=I18n.t("lolita.shared.log_out")%></a>
-  </nav>
+  <% if lolita_current_user %>
+	  <nav>
+	    <a href="<%=send(:"edit_#{lolita_current_user.class.to_s.downcase}_password_path")%>" class="username"><%=lolita_current_user.email%></a>
+	    <a href="<%=send(:"destroy_#{lolita_current_user.class.to_s.downcase}_session_path")%>" class="button grey"><%=I18n.t("lolita.shared.log_out")%></a>
+	  </nav>
+  <% end %>
 </header>

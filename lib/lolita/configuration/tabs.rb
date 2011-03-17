@@ -35,7 +35,7 @@ module Lolita
       end
 
       def tab *args,&block
-        self<<Lolita::Configuration::Tab.new(@dbi,*args,&block)
+        self<<Lolita::Configuration::Tab.add(@dbi,*args,&block)
       end
 
       def exclude=(values)

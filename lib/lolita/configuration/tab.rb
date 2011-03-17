@@ -15,9 +15,29 @@ module Lolita
     # To define tab in ORM model, through lolita configuration do the following
     # ====Example
     #     lolita do
-    #       tab
+    #       tab(:files)
+    #     end
     class Tab
 
+      class << self
+      
+        def add(dbi,*args,&block)
+          type=args.first if args
+          unless type
+            temp_tab=self.new(dbi,*args,&block).type 
+            type=temp_tab.type
+          end
+          unless type==:default
+            begin
+              "Lolita::Configuration::#{type.to_s.camelize}Tab".constantize.new(dbi,*args,&block)
+            #rescue NameError
+             # raise Lolita::TabNotFoundError, "Lolita::Configuration::#{type.to_s.camelize}Tab not found. Add it in /lolita/configuration/tab/#{type}.rb"
+            end
+          else
+            temp
+          end
+        end
+      end
       # For different types there are different builders(cells)
       @@available_types=[:content]
    
@@ -39,6 +59,7 @@ module Lolita
         validate
       end
 
+    
       # Field setter method, accpet <i>*args</i> and <i>&block</i> to be passed.
       # For details how to pass args and block see Lolita::Configuration::Field.
       # Return field itself.
@@ -150,9 +171,7 @@ module Lolita
       private
 
       def set_default_fields
-        if @type==:content && @fields.empty?
-          default_fields
-        end
+        default_fields if @type!=:default && @fields.empty?
       end
 
       def set_default_attributes

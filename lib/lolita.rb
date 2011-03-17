@@ -4,6 +4,7 @@ $:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
 
 require 'abstract' #FIXME remove from gem
 require 'active_support/core_ext/numeric/time'
+require 'active_support/concern'
 require 'active_support/callbacks'
 require 'active_support/dependencies'
 require 'lolita/errors'
@@ -46,12 +47,18 @@ module Lolita
     autoload :Tab, 'lolita/configuration/tab'
     autoload :Tabs, 'lolita/configuration/tabs'
 
+     Dir["#{File.dirname(__FILE__)}/lolita/configuration/tab/**/*.*"].each do |path|
+        base_name=File.basename(path,".rb")
+        autoload :"#{base_name.capitalize}Tab", "lolita/configuration/tab/#{base_name}"
+     end
+
     module FieldExtensions
       Dir["#{File.dirname(__FILE__)}/lolita/configuration/field_extensions/**/*.*"].each do |path|
         base_name=File.basename(path,".rb")
         autoload base_name.capitalize.to_sym, "lolita/configuration/field_extensions/#{base_name}"
       end
     end
+
     
     def self.included(base)
       base.class_eval do
@@ -81,6 +88,7 @@ module Lolita
     autoload :UserHelpers, 'lolita/controllers/user_helpers'
     autoload :UrlHelpers, 'lolita/controllers/url_helpers'
     autoload :ComponentHelpers, 'lolita/controllers/component_helpers'
+    autoload :ViewUserHelpers, 'lolita/controllers/view_user_helpers'
   end
 
   @@scopes={}
