@@ -5,7 +5,7 @@ module Lolita
       private
 
       def copy_dir(source,options={})
-        root_dir=File.join(options[:root] || LOLITA_ROOT,source)
+        root_dir=File.join(options[:root] || Lolita.root,source)
         Dir[File.join(root_dir, "**/*")].each do |file|
           relative = file.gsub(/^#{root_dir}\//, '')
           if File.file?(file)

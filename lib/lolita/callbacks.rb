@@ -1,3 +1,0 @@
-module Lolita
-  
-end

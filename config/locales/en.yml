@@ -1,5 +1,7 @@
 en:
   lolita:
+    shared:
+      log_out: Log out
     tabs:
       last_save: Last saved
       save: Save

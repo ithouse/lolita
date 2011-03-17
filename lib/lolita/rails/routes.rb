@@ -37,12 +37,12 @@ module ActionDispatch::Routing
 
           with_lolita_exclusive_scope mapping.fullpath,mapping.path do
             # if not defined lolita default configuration in model, than can't use :rest
-            if !target_class.respond_to?(:lolita) && !Lolita::ROUTES[mapping.name]
+            if !target_class.respond_to?(:lolita) && !Lolita::routes[mapping.name]
                raise Lolita::NotFound, "Lolita not found in #{target_class}. Include Lolita::Configuration"
             elsif target_class.respond_to?(:lolita) && target_class.instance_variable_get(:@lolita).nil?
                raise Lolita::NotInitialized, "Call lolita method in #{target_class}."
             else
-              route=Lolita::ROUTES[mapping.name] || Lolita::ROUTES[Lolita.default_module]
+              route=Lolita::routes[mapping.name] || Lolita::routes[Lolita.default_module]
             end
             unless route
               raise Lolita::ModuleNotFound, "Module #{mapping.name.to_s.capitalize} not found! Add Lolita.use(:#{mapping.name}) to initializers/lolita.rb"
