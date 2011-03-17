@@ -1,6 +1,6 @@
 <% content_for :content_class do "with-secondary" end %>
 
-<%#= flash %>
+  <%= render_component :"lolita/shared", :flash, :flash => flash %> <%# FIXME does it really need passed flash as local var? %>
 
 <div class="secondary"> <%#= right sidebar %>
   <div class="box">
@@ -10,7 +10,7 @@
     </div>
     <div class="save black">
       <div class="last-save">
-        <%= resource.updated_at.strftime("#{t("lolita.tabs.last_save")}: %m/%d/%Y %H:%M ") if resource.updated_at %>
+        <%= resource.updated_at.strftime("#{t("lolita.tabs.last_save")}: %m/%d/%Y %H:%M ") if resource.respond_to?(:updated_at) && resource.updated_at %>
       </div>
       <button class="save-all"><%=I18n.t("lolita.tabs.save")%></button>
     </div>
@@ -23,4 +23,3 @@
     <%= render_component :"lolita/tab", :display, :tab=>tab  %>
   <% end %>
 </div>
-
