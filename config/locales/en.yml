@@ -3,6 +3,8 @@ en:
     shared:
       log_out: Log out
     tabs:
+      last_save: Last saved
+      save: Save
       save_all: Save all
     list:
       add_new: Add new %{name}

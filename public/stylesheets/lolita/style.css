@@ -59,8 +59,12 @@ header nav .username {margin-right: 15px;}
   width: 100%; 
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  box-sizing: border-box; /* IE7 does not support it, IE8 does */
+  box-sizing: border-box;  /* IE7 does not support it, IE8 does */
 }
+
+#main .box .save {padding: 20px 10px;}
+#main .box .last-save {color: #808080; margin-bottom: 5px;}
+#main .box .save button {width: 100%; padding: 10px 0; font-size: 24px; background: #ab8def; color: #ffd;}
 
 /* navigation styles on left */
 #main nav {position: absolute; left: 0; min-width: 150px; margin-top: 5px;} /* width just for now */ 
@@ -80,8 +84,8 @@ header nav .username {margin-right: 15px;}
 
 /* main content part */
 #content {overflow: visible; position: relative;} /* overflow for clearing containing floats */
-#content .secondary {position: absolute; right: 0; width: 28%;}
-#content.with-secondary {padding-right: 30%;}
+#content .secondary {position: absolute; right: 0; width: 23%;}
+#content.with-secondary {padding-right: 25%;}
 /* --------------------------------------------- */
 
 footer {height: 50px;} /* for not leaving empty space in bottom */

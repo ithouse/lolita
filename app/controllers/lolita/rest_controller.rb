@@ -51,16 +51,18 @@ class Lolita::RestController < ApplicationController
 
   def show_form
     build_response_for(:tabs)
-    render :form
+    if request.xhr?
+      render :form, :layout => false
+    else
+      render :form
+    end
   end
   
   def save_and_redirect
     if self.resource.save
-      unless self.resource.errors.empty?
-        show_form
-      else
-        to_list
-      end
+      show_form
+    else
+      show_form #to_list
     end
   end
   

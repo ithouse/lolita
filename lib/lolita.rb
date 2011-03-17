@@ -130,4 +130,5 @@ if defined?(Rails)
 end
 
 puts "Lolita engine started in #{Time.at(Time.now-engine_time).strftime("%M:%S.%3N")}"
+
 puts "Lolita started in #{Time.at(Time.now-main_time).strftime("%M:%S.%3N")}"
