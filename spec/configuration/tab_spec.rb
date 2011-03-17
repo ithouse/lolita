@@ -1,8 +1,33 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+# temp class for extending tabs
+class MyTab < Lolita::Configuration::Tab
+  def initialize(dbi,*args,&block)
+    @type=:mytab
+    super
+  end
+end
+
+
 describe Lolita::Configuration::Tab do
+
   before(:each) do
     @dbi=Lolita::DBI::Base.new(Post)
+  end
+
+  describe "create extended tabs" do
+
+    context "tab class is child class of ::Tab class " do
+      it "should create new" do
+        MyTab.new(@dbi).type.should == :mytab
+      end
+
+      it "should create new with block" do
+        MyTab.new(@dbi) do 
+          title "My New tab"
+        end.title.should == "My New tab"
+      end
+    end
   end
 
   it "should create tab" do

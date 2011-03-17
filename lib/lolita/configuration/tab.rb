@@ -160,7 +160,7 @@ module Lolita
       def set_attributes *args
         if args
           options=args.extract_options!
-          self.type=args.first || :default
+          self.type=args.first if args.first.is_a?(Symbol)
           options.each{|method,options|
             self.send(:"#{method}=",options)
           }
@@ -175,6 +175,7 @@ module Lolita
       end
 
       def set_default_attributes
+        @type=:default unless @type
         @name="tab_#{self.__id__}" unless @name
         @title=@type.to_s.humanize unless @title
       end

@@ -4,7 +4,7 @@ describe Lolita do
 
   it "should yield itself" do
     Lolita.setup do |config|
-      config.should == Lolita::BaseConfiguration
+      config.class.should == Lolita::BaseConfiguration
     end
   end
 end
