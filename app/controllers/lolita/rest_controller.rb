@@ -72,7 +72,8 @@ class Lolita::RestController < ApplicationController
   def to_list
     page=resource_class.lolita.list.paginate(params[:page])
     builder=build_response_for(:list,:page=>page)
-    render_component *builder
+    render :index
+    #render_component *builder
   end
   
   def discard_xhr_flash

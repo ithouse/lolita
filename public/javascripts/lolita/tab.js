@@ -2,22 +2,22 @@ $(function(){
   // Send ajax request with all forms data for given tabs block.
   function save_tab(tabs){
     var data=""
-      tabs.find("form").each(function(){
-        data=data+$(this).serialize()
-      })
-      //alert(data)
-      $.ajax({
-        url:tabs.attr("data-tabs-url"),
-        dataType:"html",
-        type:tabs.attr("data-method"),
-        data:data,
-          success:function(data){
-            $("#content").html(data);
-            load_tinymce();
-          }
-        })
+    tabs.find("form").each(function(){
+      data=data+$(this).serialize()
+    })
+    //alert(data)
+    $.ajax({
+      url:tabs.attr("data-tabs-url"),
+      dataType:"html",
+      type:tabs.attr("data-method"),
+      data:data,
+      success:function(data){
+        $("#content").html(data);
+        load_tinymce();
       }
-      // Submit all forms through Ajax when Save All button clicked.
+    })
+  }
+  // Submit all forms through Ajax when Save All button clicked.
   $("button.save-all").live('click',function(){
     //var tab=$(this).parents("div[data-tabs-url]")
     var tab = $("#content").children("div[data-tabs-url]")
