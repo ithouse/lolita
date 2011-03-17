@@ -5,14 +5,15 @@ $(function(){
         tabs.find("form").each(function(){
             data=data+$(this).serialize()
         })
-        alert(data)
+        //alert(data)
         $.ajax({
             url:tabs.attr("data-tabs-url"),
             dataType:"html",
             type:tabs.attr("data-method"),
             data:data,
             success:function(data){
-                $("#right-side").html(data)
+                $("#content").html(data);
+                load_tinymce();
             }
         })
     }
