@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Arturs Meisters"]
-  s.date = %q{2011-03-16}
+  s.date = %q{2011-03-17}
   s.description = %q{Great Rails CMS that allow you to start working with models right when you add this to your project.}
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -56,6 +56,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/list/_tool_cell.html.erb",
     "app/views/components/lolita/list/_tool_header.html.erb",
     "app/views/components/lolita/navigation/_display.html.erb",
+    "app/views/components/lolita/shared/_header.html.erb",
     "app/views/components/lolita/tab/_content.html.erb",
     "app/views/components/lolita/tab/_default.html.erb",
     "app/views/components/lolita/tab/_display.html.erb",
@@ -66,15 +67,16 @@ Gem::Specification.new do |s|
     "author",
     "config/locales/en.yml",
     "db/seed.rb",
-    "lib/generators/lolita/file_helper.rb",
+    "lib/generators/helpers/file_helper.rb",
+    "lib/generators/lolita/copy_assets_generator.rb",
     "lib/generators/lolita/install_generator.rb",
     "lib/generators/templates/lolita.rb",
     "lib/lolita.rb",
     "lib/lolita/adapter/abstract_adapter.rb",
     "lib/lolita/adapter/active_record.rb",
     "lib/lolita/adapter/mongoid.rb",
+    "lib/lolita/base_configuration.rb",
     "lib/lolita/builder.rb",
-    "lib/lolita/callbacks.rb",
     "lib/lolita/configuration/base.rb",
     "lib/lolita/configuration/column.rb",
     "lib/lolita/configuration/columns.rb",
@@ -91,6 +93,9 @@ Gem::Specification.new do |s|
     "lib/lolita/controllers/user_helpers.rb",
     "lib/lolita/dbi/base.rb",
     "lib/lolita/errors.rb",
+    "lib/lolita/hooks/base.rb",
+    "lib/lolita/hooks/component.rb",
+    "lib/lolita/hooks/hooks.rb",
     "lib/lolita/lazy_loader.rb",
     "lib/lolita/mapping.rb",
     "lib/lolita/modules.rb",
@@ -101,6 +106,7 @@ Gem::Specification.new do |s|
     "lib/lolita/ruby_ext/accessors.rb",
     "lib/lolita/version.rb",
     "log/development.log",
+    "lolita.gemspec",
     "public/javascripts/jquery-1.5.1.min.js",
     "public/javascripts/lolita/main.js",
     "public/javascripts/lolita/tab.js",
