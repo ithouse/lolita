@@ -21,4 +21,7 @@ group :test,:development do
  # gem "rspec-cells"
   #gem "sqlite3-ruby"
   gem "ruby-debug19"
+  gem "cucumber-rails"
+  gem "capybara"
+  gem "database_cleaner"
 end
