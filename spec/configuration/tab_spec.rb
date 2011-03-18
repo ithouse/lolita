@@ -1,9 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 # temp class for extending tabs
-class MyTab < Lolita::Configuration::Tab
+class Lolita::Configuration::MyTab < Lolita::Configuration::Tab
   def initialize(dbi,*args,&block)
-    @type=:mytab
+    @type=:my
     super
   end
 end
@@ -19,14 +19,31 @@ describe Lolita::Configuration::Tab do
 
     context "tab class is child class of ::Tab class " do
       it "should create new" do
-        MyTab.new(@dbi).type.should == :mytab
+        Lolita::Configuration::MyTab.new(@dbi).type.should == :my
       end
 
       it "should create new with block" do
-        MyTab.new(@dbi) do 
+        Lolita::Configuration::MyTab.new(@dbi) do 
           title "My New tab"
         end.title.should == "My New tab"
       end
+    end
+  end
+
+
+  describe "add tab" do
+    it "should recognize type of tab added and create it as a related class object" do
+      Lolita::Configuration::Tab.add(@dbi){ field(:email)}.class.to_s.should=="Lolita::Configuration::Tab"
+      Lolita::Configuration::Tab.add(@dbi,:my).class.to_s.should == "Lolita::Configuration::MyTab"
+      Lolita::Configuration::Tab.add(@dbi) {
+        type :my
+      }.class.to_s.should == "Lolita::Configuration::MyTab"
+    end
+
+    it "should raise error when tab is not recognized" do
+      lambda{
+        Lolita::Configuration::Tab.add(@dbi,:yourtab)
+      }.should raise_error(Lolita::TabNotFoundError)
     end
   end
 
