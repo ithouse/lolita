@@ -5,13 +5,14 @@ module ActionDispatch::Routing
     # Every module, that is used with lolita and has routes, need to have
     # <code>resource method</code>, for example, lolita_rest, that should be added
     # to ActionDispatch::Routing::Mapper class, as a *protected* method.
-    # Module can automaticliy add resource route or live it to user.
+    # Module can automaticliy add resource route or allow user to do it.
     # ====Example
-    #     Lolita.add_module :admins
+    #     Lolita.add_module Lolita::Gallery,:route=>:gallery
     #     # in route.rb
-    #     lolita_for :admins
-    #     # if admins have route added, than new route will point to these module controller
+    #     lolita_for :galleries
+    #     # lolita_for try to call :lolita_gallery in Mapper class
     def lolita_for *resources
+      #TODO refactor
       options = resources.extract_options!
 
       if as = options.delete(:as)
@@ -42,12 +43,15 @@ module ActionDispatch::Routing
             elsif target_class.respond_to?(:lolita) && target_class.instance_variable_get(:@lolita).nil?
                raise Lolita::NotInitialized, "Call lolita method in #{target_class}."
             else
-              route=Lolita::routes[mapping.name] || Lolita::routes[Lolita.default_module]
+              route=Lolita.routes[mapping.name] || Lolita.default_route
             end
             unless route
               raise Lolita::ModuleNotFound, "Module #{mapping.name.to_s.capitalize} not found! Add Lolita.use(:#{mapping.name}) to initializers/lolita.rb"
             end
             send(:"lolita_#{route}",mapping,mapping.controllers)
+            Lolita.conditional_routes(target_class).each do |route_name|
+              send(:"lolita_#{route_name}",mapping,mapping.controllers)
+            end
           end
         end
       }

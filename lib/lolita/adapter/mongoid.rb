@@ -56,6 +56,10 @@ module Lolita
         self.klass.where(:_id=>id).first
       end
 
+      def find *args
+        self.klass.find(*args)
+      end
+
       def paginate(options={})
         self.klass.paginate(options)
       end

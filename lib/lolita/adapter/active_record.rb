@@ -57,6 +57,10 @@ module Lolita
         self.klass.where(:id=>id).first
       end
       
+      def find(*args)
+        self.klass.find(*args)
+      end
+
       def paginate(opt={})
         #FIXME depend on will_paginate
         if order=opt.delete(:sort)
