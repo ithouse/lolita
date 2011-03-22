@@ -5,5 +5,6 @@ class Post
   field :body, :type => String
   references_many :comments,:class_name=>"Comment"
   referenced_in :profile
+  validates_presence_of :title
   lolita
 end
