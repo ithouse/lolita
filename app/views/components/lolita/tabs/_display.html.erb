@@ -1,7 +1,7 @@
-<% content_for :content_class do "with-secondary" end %>
-
 <%= render_component :"lolita/shared", :flash, :flash => flash %> <%# FIXME does it really need passed flash as local var? %>
 <%= render_component :"lolita/shared", :right_sidebar %>
+
+<%#= resource.errors.full_messages if resource.errors.any? %>
 
 <% #mode container div with all data-* method to helper and change to block method %>
 <div id="tabs-<%= resource_name %>" class="tabs" data-method="<%=resource.new_record? ? "POST" : "PUT" %>" data-tabs-url="<%=resource.new_record? ? lolita_resources_path : lolita_resource_path(:id=>resource.id)%>">

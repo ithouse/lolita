@@ -84,7 +84,13 @@ header nav .username {margin-right: 15px;}
 /* save box */
 #main .box .save {padding: 20px 10px;}
 #main .box .last-save {color: #808080; margin-bottom: 5px;}
-#main .box .save button {width: 100%; padding: 10px 0; font-size: 24px; background: #ab8def; color: #ffd;}
+#main .box .save button {
+	width: 100%; 
+	padding: 10px 0; 
+	font-size: 24px; 
+	background: #ab8def; 
+	color: #ffd;
+}
 /* ---------------------------------- */
 
 

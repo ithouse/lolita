@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-# Thing how to seperate gems for Rails Enginge from those that are only for lolita
+# Thing how to seperate gems for Rails Engine from those that are only for lolita
 gem "rails", "~>3.0"
 gem "will_paginate", "~> 3.0.pre2"
 gem "abstract"

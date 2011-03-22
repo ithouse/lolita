@@ -22,7 +22,7 @@
       <%= render_component :"lolita/shared", :header %>
       <div id="main" role="main">
         <%= render_component :"lolita/navigation",:display %>
-        <div id="content" class="<%= content_for :content_class %>">
+        <div id="content" class="<%= content_classes %>">
           <%= yield %>
         </div>
       </div>
