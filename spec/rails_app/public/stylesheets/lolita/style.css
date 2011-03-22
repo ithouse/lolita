@@ -1,0 +1,214 @@
+body {background: #f3f3f3; font-size: 13px;}
+
+a, a:visited, a:active {color: #7ac1ed; text-decoration: none;}
+
+/* identically looking button styles for links and both types of html buttons */
+button, a.button, input[type="button"] {
+  padding: 4px 10px; 
+  border: none; 
+  font-size: 13px;
+  text-decoration: none;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; 
+}
+a.button {padding: 4px 11px; color: #8f8f8f;}
+input[type="button"] {vertical-align: top; padding: 3px 9px;}
+h1 {font-size: 28px; font-weight: normal; letter-spacing: -1px; line-height: 85px;}
+
+#container {width: 90%; margin: 0 auto;}
+
+/* header styles */
+header {position: relative; height: 85px;}
+header h1 {padding-left: 15px;}
+header nav {position: absolute; top: 10px; right: 0;}
+header nav .username {margin-right: 15px;}
+/* ----------------------------------------------*/
+
+/* vertical middle container */
+#main {position: relative; padding-left: 150px;} /* setting the left portion width for navigation */
+
+#main .box form {background: #FFF; padding: 30px 25px;}
+#main .box form label {color: #c3c3c3; font-size: 13px;}
+#main .box form .field {margin: 10px 0;}
+#main .box form .field:first-child input {
+  font-size: 24px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+#main .box form .field-value { margin-top: 5px;}
+#main .box form .field-value input {
+  border: 1px solid #cdcdcd;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 3px 10px;
+  width: 100%;
+  color: #494949;
+}
+#main .box form .field-value input:focus {background: #ebf9fc;}
+#main .box form .field-value textarea {
+  width: 100%; 
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;  /* IE7 does not support it, IE8 does */
+}
+
+/* error fields and notifications */
+.field_with_errors input,
+.field_with_errors textarea {background: #ffe6e7;}
+
+#flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; 
+  padding: 25px 0; 
+  background: rgba(256,256,256,0.9);
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* ---------------------------------- */
+
+/* save box */
+#main .box .save {padding: 20px 10px;}
+#main .box .last-save {color: #808080; margin-bottom: 5px;}
+#main .box .save button {width: 100%; padding: 10px 0; font-size: 24px; background: #ab8def; color: #ffd;}
+/* ---------------------------------- */
+
+
+/* navigation styles on left */
+#main nav {position: absolute; left: 0; min-width: 150px; margin-top: 5px;} /* width just for now */ 
+#main nav ul {margin-bottom: 50px;}
+#main nav ul li a {display: block; padding: 10px 15px; color: #737373;}
+#main nav ul li.active a {
+  background: #d9d9d9; 
+  background: -moz-linear-gradient(left, #e1e1e1, #d5d5d5);
+  background: -webkit-linear-gradient(left, #e1e1e1, #d5d5d5);
+  border: 2px solid #d5d5d5; 
+  border-right: none;
+  -moz-border-radius: 5px 0 0 5px;
+  -webkit-border-radius: 5px 0 0 5px;
+  border-radius: 5px 0 0 5px;
+}
+/* --------------------------------------------- */
+
+/* main content part */
+#content {overflow: visible; position: relative;} /* overflow for clearing containing floats */
+#content .secondary {position: absolute; right: 0; width: 23%;}
+#content.with-secondary {padding-right: 25%;}
+/* --------------------------------------------- */
+
+footer {height: 50px;} /* for not leaving empty space in bottom */
+
+/* boxes that, possibly, will be draggable/droppable */
+#main .box { /* list-container for small/big bordered box that takes all available parent width */ 
+  border: 5px solid #d5d5d5;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+} 
+
+.boxtitle {position: relative;} 
+.boxtitle h1 {padding: 35px 25px 15px; line-height: 1;} /* h1 contains bgcolor, color and text position because arrow needs different bg and it follows after */
+.boxtitle .arrow {
+  position: absolute;
+  left: 50%;
+  border-color: #2f2f2f transparent transparent;
+  border-style: solid;
+  border-width: 10px 10px 0;
+}
+
+/* different colors*/
+.black {
+  background: #2f2f2f;
+  background: -moz-linear-gradient(top, #686868, #2f2f2f);
+  background: -webkit-linear-gradient(top, #686868, #2f2f2f);
+}
+.black, a.black {color: #f1f1f1;}
+.grey {
+  background: #ededed; /* for IE, Opera */
+  background: -moz-linear-gradient(top, #ededed, #e2e2e2);
+  background: -webkit-linear-gradient(top, #ededed, #e2e2e2);
+}
+.grey, a.grey {color: #8f8f8f;}
+/* --------------------------------------------- */
+
+/* list view styles */
+.tools {overflow: hidden; line-height: 50px; height: 50px; padding-left: 25px; padding-top: 10px;}
+.tools .actions {float: left;}
+.tools .filters {float: right;}
+.tools > div > * {margin-right: 10px;}
+
+a.create {
+  display: block;
+  background: #9d81f8;
+  background: -moz-linear-gradient(top, #ae91eb, #9d81f8);
+  background: -webkit-linear-gradient(top, #ae91eb, #9d81f8);
+  padding-right: 30px;
+  line-height: 35px; 
+  text-align: right;
+  color: #efefef;
+}
+.create img {position: absolute; right: -20px;}
+
+.list {overflow-x: auto;} /* additional html element that encloses table for horizontal overflow scrollbar if too wide */
+.list table {width: 100%;}
+.list table td,
+.list table th {line-height: 35px; padding: 0 20px; white-space: nowrap;}
+.list table td input {vertical-align: middle;}
+.list table thead {background: #d5d5d5;}
+.list table thead th {text-align: left;}
+.list table thead th a {color: #a5a5a5;}
+.list table thead th.active a {color: #6c6c6c;} /* Style for active header */
+.list table tbody tr {border-bottom: 1px solid #e3e3e3;}
+.list table tbody tr:last-child {border-bottom: none;} /* CSS3 selector for now, may be enough */
+.list table tbody tr:hover { /* Style was for in-place editing, using now on hover for demonstration purposes */
+  background: #ebf9fc;
+  -moz-box-shadow: inset 0px 1px 1px #ddd;
+  -webkit-box-shadow: inset 0px 1px 1px #ddd;
+  box-shadow: inset 0px 1px 1px #ddd;
+} 
+
+/* --------------------------------------------- */
+
+/* TinyMCE advanced theme's skin "Cirkuit" overrides */
+
+#content .cirkuitSkin table.mceLayout {
+  border: 0;
+}
+#content .cirkuitSkin td.mceToolbar {
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  border: 1px solid #ebebeb;
+  background: #ededed; /* for IE, Opera */
+  background: -moz-linear-gradient(top, #ededed, #e2e2e2);
+  background: -webkit-linear-gradient(top, #ededed, #e2e2e2);
+  padding: 10px;
+}
+#content .cirkuitSkin .mceIframeContainer {
+  border: 1px solid #ebebeb;
+  border-top: 0;
+}
+#content .cirkuitSkin .mceIframeContainer iframe {
+  padding: 10px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; /* IE7 does not support it, IE8 does */
+}
+
+/* --------------------------------------------- */
+
+
