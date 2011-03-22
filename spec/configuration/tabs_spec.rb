@@ -79,5 +79,17 @@ describe Lolita::Configuration::Tabs do
     tabs.names.size.should > 0
   end
 
+  context "tab finding" do
+    it "should find by type" do
+      tabs=Lolita::Configuration::Tabs.new(@dbi) do
+        tab :default do
+          field :name
+        end
+        tab :content
+      end
+      tabs.by_type(:content).should_not be_nil
+    end
+
+  end
 end
 

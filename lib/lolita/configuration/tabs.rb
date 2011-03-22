@@ -1,5 +1,9 @@
 module Lolita
   module Configuration
+    # Lolita::Configuration::Tabs is container class that holds all
+    # tabs for each lolita instance. 
+    # Also it has some useful methods.
+
     class Tabs
       include Enumerable
       include Lolita::ObservedArray
@@ -36,6 +40,10 @@ module Lolita
 
       def tab *args,&block
         self<<Lolita::Configuration::Tab.add(@dbi,*args,&block)
+      end
+
+      def by_type(type)
+        @tabs.detect{|tab| tab.type==type.to_sym}
       end
 
       def exclude=(values)
@@ -77,6 +85,7 @@ module Lolita
           }
         end
       end
+
       private
 
       def create_content_tab

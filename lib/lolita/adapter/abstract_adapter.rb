@@ -8,6 +8,7 @@ module Lolita
       abstract_method 'name',:reflect_on_association
       abstract_method 'association',:association_macro,:association_class_name
       abstract_method 'id',:find_by_id
+      abstract_method '*args', :find
     end
   end
 end

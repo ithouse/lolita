@@ -83,6 +83,10 @@ module Lolita
     end
   end
 
+  module Test
+    autoload :Matchers, 'lolita/test/matchers'
+  end
+  
   module Controllers
     autoload :InternalHelpers, 'lolita/controllers/internal_helpers'
     autoload :UserHelpers, 'lolita/controllers/user_helpers'
@@ -124,9 +128,7 @@ end
 engine_time=Time.now
 
 if defined?(Rails)
-  require 'lolita/mapping'
-  require 'lolita/rails'
-  require 'lolita/modules'
+  require 'lolita/rails/all'
 end
 
 puts "Lolita engine started in #{Time.at(Time.now-engine_time).strftime("%M:%S.%3N")}"

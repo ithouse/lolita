@@ -23,8 +23,8 @@ module Lolita
       
         def add(dbi,*args,&block)
           type=args.first if args
-          unless type
-            temp_tab=self.new(dbi,*args,&block).type 
+          if !type || type==:default
+            temp_tab=self.new(dbi,*args,&block)
             type=temp_tab.type
           end
           unless type==:default
@@ -34,15 +34,15 @@ module Lolita
               raise Lolita::TabNotFoundError, "Lolita::Configuration::#{type.to_s.camelize}Tab not found. Add it in /lolita/configuration/tab/#{type}.rb"
             end
           else
-            temp
+            temp_tab
           end
         end
       end
       # For different types there are different builders(cells)
       @@available_types=[:content]
    
-      lolita_accessor :title,:name
-      attr_accessor :dbi,:type,:current_fieldset,:current_dbi
+      lolita_accessor :title,:name,:type
+      attr_accessor :dbi,:current_fieldset,:current_dbi
       attr_reader :field_sets,:nested_form
 
       # To create new tab the following parametrs need to be provided.
