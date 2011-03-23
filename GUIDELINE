@@ -13,3 +13,8 @@ rails g lolita:install
 
 change your project initializers/lolita.rb
 
+# For cucumber testing 
+gem install akephalos
+bundle exec cucumber features
+
+

@@ -13,6 +13,7 @@ spec/debug.log
 lib/test.rb
 coverage/
 spec/rails_app/log/
+spec/rails_app/tmp/
 .project
 Gemfile.lock
 .redcar
