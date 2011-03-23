@@ -15,24 +15,26 @@ module ActionDispatch::Routing
       #TODO refactor
       options = resources.extract_options!
 
-      if as = options.delete(:as)
-        ActiveSupport::Deprecation.warn ":as is deprecated, please use :path instead."
-        options[:path] ||= as
-      end
+      # if as = options.delete(:as)
+      #   ActiveSupport::Deprecation.warn ":as is deprecated, please use :path instead."
+      #   options[:path] ||= as
+      # end
 
-      if scope = options.delete(:scope)
-        ActiveSupport::Deprecation.warn ":scope is deprecated, please use :singular instead."
-        options[:singular] ||= scope
-      end
+      # if scope = options.delete(:scope)
+      #   ActiveSupport::Deprecation.warn ":scope is deprecated, please use :singular instead."
+      #   options[:singular] ||= scope
+      # end
 
       options[:as]          ||= @scope[:as]     if @scope[:as].present?
       options[:module]      ||= @scope[:module] if @scope[:module].present?
       options[:path_prefix] ||= @scope[:path]   if @scope[:path].present?
       resources.map!(&:to_sym)
+      all_resource_classes=[]
       resources.each{|resource|
         mapping=Lolita.add_mapping(resource,options)
         target_class=mapping.to
-        
+        all_resource_classes<<target_class
+
         lolita_scope mapping.name do
           yield if block_given?
 
@@ -46,15 +48,20 @@ module ActionDispatch::Routing
               route=Lolita.routes[mapping.name] || Lolita.default_route
             end
             unless route
-              raise Lolita::ModuleNotFound, "Module #{mapping.name.to_s.capitalize} not found! Add Lolita.use(:#{mapping.name}) to initializers/lolita.rb"
+              raise Lolita::ModuleNotFound, "Module #{mapping.name.to_s.capitalize} not found!"
             end
-            send(:"lolita_#{route}",mapping,mapping.controllers)
+            send(:"lolita_#{route}_route",mapping,mapping.controllers)
+            
             Lolita.conditional_routes(target_class).each do |route_name|
-              send(:"lolita_#{route_name}",mapping,mapping.controllers)
+              send(:"lolita_#{route_name}_route",mapping,mapping.controllers)
             end
           end
+
         end
       }
+      Lolita.common_routes(all_resource_classes).each do |route_name|
+        send(:"lolita_#{route_name}_route")
+      end
     end
 
     protected

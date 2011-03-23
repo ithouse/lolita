@@ -16,16 +16,30 @@ module Lolita
       @controllers={}
     end
 
+    # Call (with #call) to route klass
+    # And return all names of routes that are needed for resource.
     def conditional_routes(klass=nil)
       @routes.map{|name,route|
-        if route.is_a?(Proc)
-          route.call(klass)
-        else
-          nil
+        if route.first
+          if route.last.respond_to?(:call)
+            route.last.call(klass)
+          else
+            nil
+          end
         end
       }.compact
     end
 
+    # Find all routes that is needed for defined classes
+    # And return only one for each different route.
+    def common_routes(klasses)
+      @routes.map{|name,route|
+        unless route.first
+          klasses.map{|klass| route.last.is_a?(Proc) ? route.last.call(klass) : nil}
+        end
+      }.flatten.compact.uniq
+    end
+      
     # Include module in Lolita, don't know why i need this
     def use(module_name)
       Lolita.send(:include,module_name)
@@ -40,6 +54,7 @@ module Lolita
     # Add new module to Lolita
     # Accpted options
     # * <tt>controller</tt> - not in use
+    # * <tt>nested</tt> - is route stands itsefl or is used in combination with resource
     # * <tt>route</tt> - Symbol of route name or lambad, that return route name based on resource.
     # Route name is used to call method lolita_[route_name] in Mapper class, and that should draw route.
     # * <tt>:name</tt> - name of module, underscored symbol. Used to draw default route, by default always
@@ -51,25 +66,37 @@ module Lolita
     #     lolita_for :posts #=> create url whatever is defined in lolita_post method, and goes to :controller=>"lolita/posts"
     #     Lolita.add_module Lolita::FileUpload, :route=>lambda{|resource| resource.lolita.tabs.by_type(:file) ? :file_upload : nil}
     #     lolita_for :users #=> creat default rest urls and also call method lolita_file_upload if user lolita define :file tab.
+    # To add route for public interface that goes to added module, than use 
+    #    Lolita.add_module Post, :name=>:posts
+    # And then when in routes.rb will be defined lolita_for(:posts) it will call method <i>lolita_posts_route</i>
+    # and that method should define resource. 
+    # ====Example
+    #     # require this in your gem or lib
+    #     module ActionDispatch::Routing
+    #        class Mapper
+    #          protected
+    #          def lolita_posts_route mapping, controllers
+    #            resources mapping.plural,:only=>[:index,:new,:create],
+    #              :controller=>controllers[:posts],:module=>mapping.module
+    #          end
+    #        end
+    #      end
+    # You open Mapper class and add your method that call #resources or #match or other method that define route
+    # For common route for all lolita resources your method should look like this
+    # ====Example
+    #     def lolita_files_route 
+    #        mapping=Lolita.add_mapping(:files,:class_name=>"Lolita::Multimedia::File",:module=>"file_upload")
+    #        scope :module=>mapping.module do
+    #            resources mapping.name
+    #        end
+    #     end
     def add_module module_container, options={}
-      options.assert_valid_keys(:controller,:route,:model,:path,:name)
+      options.assert_valid_keys(:controller,:route,:model,:path,:name,:nested)
       name=options[:name]||module_container.to_s.to_sym
       self.modules<<module_container
-      config={
-        :route=>self.routes,
-        :controller=>self.controllers
-      }
-      config.each{|key,value|
-        next unless options[key]
-        new_value=options[key]
-        if value.is_a?(Hash)
-          value[name]=new_value
-        elsif value.is_a?(Proc)
-          value[name]=new_value
-        elsif value.respond_to?(:include?) && !value.include?(new_value)
-          value << new_value
-        end
-      }
+
+      self.routes[name]=[options.has_key?(:nested) ? options[:nested] : true,options[:route]]
+      self.controllers[name]=options[:controller] if options.has_key?(:controller)
 
       if options[:path]
         require File.join(options[:path],name.to_s)

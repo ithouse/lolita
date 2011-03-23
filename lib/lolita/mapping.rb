@@ -1,4 +1,18 @@
 module Lolita
+  # Create mapping for routes.
+  # Each mapping has name, like :posts, :files etc.
+  # Also it accepts options: 
+  # * <tt>:singular</tt> - singular form for route, by default it call #singularize on _name_.
+  # * <tt>:class_name</tt> - class that is related with route, by default it uses :singular, and classify it. It should be like "Post".
+  # * <tt>:path_prefix</tt> - path starts with path prefix, like /path_prefix/lolita/posts.
+  # * <tt>:path</tt> - path and path url methods starts with this path.
+  # =====Example
+  #     lolita_for :posts, :path=>"admin"
+  #     # add paths like this to routes
+  #     # admin_posts GET /admin/posts {:controller=>"lolita/rest", :action=>:index}
+  #     # edit_admin_posts GET /admin/post/1/edit {:controller=>"lolita/rest",:action=>:edit}
+  # * <tt>:module</tt> - change module for path, it changes :controller that is used for lolita, like, 
+  # :module=>"admin", change controller to "admin/posts". If this is used without :path then no named routes will be generated
   class Mapping
     attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:controllers,:as
     alias :name :singular
@@ -17,14 +31,13 @@ module Lolita
         h[k]="#{mod}#{k}" 
       }
     end
-    #
-    # lolita/posts/new => lolita/crud/new :class=>Post
-    # posts/new => posts/new
-    #
+  
+    # Return class that is related with mapping.
     def to
       @ref.get
     end
     
+    # full path of current mapping
     def fullpath
       "#{@path_prefix}/#{@path}".squeeze("/")
     end

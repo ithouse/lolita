@@ -117,6 +117,8 @@ module Lolita
 
       private
 
+# Pārtaisīt field kā tabus uz klasēm
+# Pielik callback uz on_load, kurš var piemēram asociācijai ielādēt to utt un nomain'īt tipu
       def add_extension #TODO test
         @extension_added=true
         set_association
@@ -127,7 +129,7 @@ module Lolita
 
       
       def set_association #TODO test
-        assoc_name=@name.to_s.gsub(/_id$/,"")
+        assoc_name=@name.to_s.gsub(/_id$/,"") 
         @association=@dbi.reflect_on_association(assoc_name.to_sym) ||
           @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
       end

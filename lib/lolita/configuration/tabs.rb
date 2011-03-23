@@ -29,12 +29,12 @@ module Lolita
       end
 
       def tabs=(values)
-        if values.is_a?(Array)
+        if values.respond_to?(:each)
           values.each{|tab|
             self<<tab
           }
         else
-          raise ArgumentError, "Tabs must be specified as Array."
+          raise ArgumentError, "#{values.class} did not responded to :each."
         end
       end
 
@@ -61,7 +61,7 @@ module Lolita
           default_tab_types
         end
         tab_types.each{|type|
-          self<<Lolita::Configuration::Tab.new(@dbi,type.to_sym)
+          self<<Lolita::Configuration::Tab.add(@dbi,type.to_sym)
         }
       end
 

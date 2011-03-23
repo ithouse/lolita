@@ -14,6 +14,11 @@ module Lolita
 
         lolita_accessor :conditions,:text_method,:value_method,:find_options
 
+        def options_for_select &block
+          @options_for_select=block if block_given?
+          @options_for_select
+        end
+
         # Collect values for collection type field.
         # Uses <code>text_method</code> for content. By default it search for
         # first _String_ type field in DB. Uses <code>value_method</code> for value,
@@ -21,7 +26,7 @@ module Lolita
         # <code>find_options</code> for advanced search. When <code>find_options</code>
         # is used, than <code>conditions</code> is ignored.
         def association_values() #TODO test
-          if @association
+          @association_values||=if @association
             klass=@dbi.association_class_name(@association).camelize.constantize
             current_text_method=@text_method || default_text_method(klass)
             current_value_method=@value_method || :id
@@ -32,8 +37,9 @@ module Lolita
               [r.send(current_text_method),r.send(current_value_method)]
             }
           else
-            []
+            options_for_select || []
           end
+          @association_values
         end
 
         private
