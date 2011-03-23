@@ -1,1 +1,1 @@
-<%= select resource_name, field.name, field.association_values.respond_to?(:call) ? field.association_values.call : field.association_values %>
+<%= select resource_name, field.name, field.association_values.respond_to?(:call) ? field.association_values.call(self) : field.association_values %>
