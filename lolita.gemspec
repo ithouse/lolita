@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.0.4"
+  s.version = "3.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Arturs Meisters"]
-  s.date = %q{2011-03-17}
+  s.date = %q{2011-03-23}
   s.description = %q{Great Rails CMS that allow you to start working with models right when you add this to your project.}
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -56,7 +56,9 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/list/_tool_cell.html.erb",
     "app/views/components/lolita/list/_tool_header.html.erb",
     "app/views/components/lolita/navigation/_display.html.erb",
+    "app/views/components/lolita/shared/_flash.html.erb",
     "app/views/components/lolita/shared/_header.html.erb",
+    "app/views/components/lolita/shared/_right_sidebar.html.erb",
     "app/views/components/lolita/tab/_content.html.erb",
     "app/views/components/lolita/tab/_default.html.erb",
     "app/views/components/lolita/tab/_display.html.erb",
@@ -104,8 +106,10 @@ Gem::Specification.new do |s|
     "lib/lolita/modules/rest.rb",
     "lib/lolita/observed_array.rb",
     "lib/lolita/rails.rb",
+    "lib/lolita/rails/all.rb",
     "lib/lolita/rails/routes.rb",
     "lib/lolita/ruby_ext/accessors.rb",
+    "lib/lolita/test/matchers.rb",
     "lib/lolita/version.rb",
     "log/development.log",
     "lolita.gemspec",
