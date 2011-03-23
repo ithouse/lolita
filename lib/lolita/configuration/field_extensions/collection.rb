@@ -26,7 +26,9 @@ module Lolita
         # <code>find_options</code> for advanced search. When <code>find_options</code>
         # is used, than <code>conditions</code> is ignored.
         def association_values() #TODO test
-          @association_values||=if @association
+          @association_values||=if options_for_select
+            options_for_select
+          elsif @association
             klass=@dbi.association_class_name(@association).camelize.constantize
             current_text_method=@text_method || default_text_method(klass)
             current_value_method=@value_method || :id
@@ -37,7 +39,7 @@ module Lolita
               [r.send(current_text_method),r.send(current_value_method)]
             }
           else
-            options_for_select || []
+            []
           end
           @association_values
         end
