@@ -13,11 +13,14 @@ module Lolita
       end
 
       def copy_assets
-        generate("lolita:copy_assets")
+        generate("lolita:assets")
       end
 
-      def load_seed
-        eval(File.new(File.join(LOLITA_ROOT,"db","seed.rb")).read)
+      def install_modules
+        Lolita.modules.each do |module_name|
+          
+          invoke "#{module_name.to_s.underscore.gsub("/","_")}:install" 
+        end
       end
      
     end

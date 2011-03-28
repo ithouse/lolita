@@ -9,7 +9,6 @@ module Lolita
           @actual=actual
           collect_routes
           set_method_and_url
-          debugger
           result=@routes.detect{|route| 
             method_match(route) && @url.to_s.match(route[:path_info])
           }

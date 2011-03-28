@@ -28,6 +28,10 @@ module Lolita
         }
       end
 
+      def clear
+        @tabs=[]
+      end
+      
       def tabs=(values)
         if values.respond_to?(:each)
           values.each{|tab|

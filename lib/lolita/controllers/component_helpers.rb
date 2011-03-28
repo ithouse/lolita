@@ -29,9 +29,10 @@ module Lolita
         @opts=args.extract_options!
         name=args[0]
         state=args[1]
+        format=@opts.delete(:format)
         raise "Can't render component without name!" unless name
         will_use_component name 
-        return render(:partial=>"/components/#{name}#{state ? "/#{state}" : nil}",:locals=>@opts)
+        render(:partial=>"/components/#{name}#{state ? "/#{state}" : nil}",:locals=>@opts)
       end
       
       # Require component helper file and extend current instance with component helper module.

@@ -22,6 +22,7 @@ module Lolita
       class << self
       
         def add(dbi,*args,&block)
+          #FIXME only error for contant not found
           type=args.first if args
           if !type || type==:default
             temp_tab=self.new(dbi,*args,&block)

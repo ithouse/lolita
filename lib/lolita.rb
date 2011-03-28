@@ -95,6 +95,7 @@ module Lolita
     autoload :ViewUserHelpers, 'lolita/controllers/view_user_helpers'
   end
 
+
   @@scopes={}
 
   def self.scope name=nil
@@ -121,6 +122,10 @@ module Lolita
   
   def self.method_missing method_name, *args, &block
     scope.send(method_name,*args,&block)
+  end
+
+  module Generators
+    autoload :FileHelper, File.join(Lolita.root,"lib","generators","helpers","file_helper")
   end
   
 end

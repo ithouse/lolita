@@ -1,6 +1,6 @@
 <nav>
   <ul>
-    <% Lolita.mappings.each do |name,mapping| %>
+    <% Lolita.resources.each do |name,mapping| %>
     <li <%=mapping.to==resource_class ? "class='active'" : ""%> >
       <%= link_to mapping.name.to_s.humanize, lolita_resources_path(mapping) %>
     </li>
