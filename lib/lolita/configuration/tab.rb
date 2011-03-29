@@ -56,11 +56,8 @@ module Lolita
         field
       end
 
-      # Return all fields in tab. If fields not defined then set default fields.
+      # Return all fields in tab.
       def fields
-        if @fields.empty?
-          set_default_fields
-        end
         @fields
       end
 
@@ -152,10 +149,6 @@ module Lolita
       end
 
       private
-
-      def set_default_fields
-        default_fields if @fields.empty? 
-      end
 
       def set_default_attributes
         @type=@@default_tab_type unless @type

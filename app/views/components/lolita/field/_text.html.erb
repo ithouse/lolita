@@ -16,10 +16,12 @@
         theme_advanced_resizing: true
       });
     }
-    $(function(){
-      load_tinymce(); 
-    })
   </script>
 <% end %>
 
 <%= text_area resource_name, field.name %>
+<script type="text/javascript">
+   $(function(){
+      load_tinymce(); 
+    })
+</script>

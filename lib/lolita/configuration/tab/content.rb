@@ -10,6 +10,11 @@ module Lolita
 
   	  private 
 
+
+      def set_default_fields
+        default_fields if @fields.empty? 
+      end
+      
   	end
   end
 end

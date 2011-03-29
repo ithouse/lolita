@@ -14,7 +14,14 @@
 
     <%= stylesheet_link_tag "lolita/default","lolita/style" %>
     <%= yield :style %>
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js">
+    </script>
+    <script>
+      window.jQuery || document.write('<script src="/javascripts/jquery-1.5.1.min.js">\x3C/script>')
+    </script>
     <%= javascript_include_tag "modernizr-1.7.min" %>
+    <%= javascript_include_tag "rails","lolita/tab","lolita/main" %>
+    <%= yield :script %>
     <%= raw csrf_meta_tag %>
   </head>
   <body>
@@ -30,12 +37,5 @@
       <footer>
       </footer>
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js">
-    </script>
-    <script>
-      window.jQuery || document.write('<script src="/javascripts/jquery-1.5.1.min.js">\x3C/script>')
-    </script>
-    <%= javascript_include_tag "rails","lolita/tab","lolita/main" %>
-    <%= content_for :script %>
   </body>
 </html>

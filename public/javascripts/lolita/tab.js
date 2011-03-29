@@ -13,7 +13,6 @@ $(function(){
       data:data,
       success:function(data){
         $("#content").html(data);
-        load_tinymce();
       }
     })
   }
