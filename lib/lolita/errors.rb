@@ -9,4 +9,5 @@ module Lolita
   class NotFound < ArgumentError; end
   class TabNotFoundError < NameError; end
   class FieldNotFoundError < NameError; end
+  class AssociationError < ArgumentError; end
 end
