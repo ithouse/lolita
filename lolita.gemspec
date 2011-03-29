@@ -9,12 +9,12 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Arturs Meisters"]
-  s.date = %q{2011-03-29}
+  s.date = %q{2011-03-30}
   s.description = %q{Great Rails CMS that allow you to start working with models right when you add this to your project.}
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.md"
+    "README.rdoc"
   ]
   s.files = [
     ".document",
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
     "Gemfile",
     "IDEA",
     "LICENSE.txt",
-    "README.md",
+    "README.rdoc",
     "Rakefile",
     "VERSION",
     "app/controllers/lolita/rest_controller.rb",
