@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.0.6"
+  s.version = "3.0.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Arturs Meisters"]
@@ -64,6 +64,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/tab/_content.html.erb",
     "app/views/components/lolita/tab/_default.html.erb",
     "app/views/components/lolita/tab/_display.html.erb",
+    "app/views/components/lolita/tab/_fields.html.erb",
     "app/views/components/lolita/tabs/_display.html.erb",
     "app/views/lolita/layouts/application.html.erb",
     "app/views/lolita/layouts/application.html.erb_spec.rb",
