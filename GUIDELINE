@@ -1,3 +1,7 @@
+=Lolita developer guidline
+
+This file is meant for developers only.
+
 # Creating GEM for Lolita
 
 When creating GEM, that include new module in one or more of lolita modules, use
