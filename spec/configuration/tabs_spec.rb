@@ -1,5 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+module Lolita
+  module Configuration
+    class ImagesTab < Lolita::Configuration::Tab
+    end
+  end
+end
+
 describe Lolita::Configuration::Tabs do
   before(:each) do
     @dbi=Lolita::DBI::Base.new(Post)

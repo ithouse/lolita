@@ -18,28 +18,10 @@ module Lolita
     #       tab(:files)
     #     end
     class Tab
+      extend Lolita::Configuration::Factory
 
-      class << self
-      
-        def add(dbi,*args,&block)
-          #FIXME only error for contant not found
-          type=args.first if args
-          if !type || type==:default
-            temp_tab=self.new(dbi,*args,&block)
-            type=temp_tab.type
-          end
-          unless type==:default
-            begin
-              "Lolita::Configuration::#{type.to_s.camelize}Tab".constantize.new(dbi,*args,&block)
-            rescue NameError
-              raise Lolita::TabNotFoundError, "Lolita::Configuration::#{type.to_s.camelize}Tab not found. Add it in /lolita/configuration/tab/#{type}.rb"
-            end
-          else
-            temp_tab
-          end
-        end
-      end
       # For different types there are different builders(cells)
+      @@default_tab_type=:default
       @@available_types=[:content]
    
       lolita_accessor :title,:name,:type
@@ -65,7 +47,7 @@ module Lolita
       # For details how to pass args and block see Lolita::Configuration::Field.
       # Return field itself.
       def field *args, &block
-        field=Lolita::Configuration::Field.new(self.current_dbi,*args,&block)
+        field=Lolita::Configuration::Field.add(self.current_dbi,*args,&block)
         field.field_set=current_fieldset
         if self.current_dbi!=self.dbi
           field.nested_in=self.dbi
@@ -172,11 +154,11 @@ module Lolita
       private
 
       def set_default_fields
-        default_fields if @type!=:default && @fields.empty?
+        default_fields if @fields.empty? 
       end
 
       def set_default_attributes
-        @type=:default unless @type
+        @type=@@default_tab_type unless @type
         @name="tab_#{self.__id__}" unless @name
         @title=@type.to_s.humanize unless @title
       end
@@ -187,9 +169,6 @@ module Lolita
       
       def validate
         set_default_attributes
-        if type==:default && fields.empty?
-          raise Lolita::NoFieldsGivenError, "At least one field must be specified for default tab."
-        end
       end
       
       class << self

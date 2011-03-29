@@ -37,6 +37,7 @@ module Lolita
   end
 
   module Configuration
+    autoload :Factory, 'lolita/configuration/factory'
     autoload :Base, 'lolita/configuration/base'
     autoload :Column, 'lolita/configuration/column'
     autoload :Columns, 'lolita/configuration/columns'
@@ -47,15 +48,10 @@ module Lolita
     autoload :Tab, 'lolita/configuration/tab'
     autoload :Tabs, 'lolita/configuration/tabs'
 
-     Dir["#{File.dirname(__FILE__)}/lolita/configuration/tab/**/*.*"].each do |path|
+    ["tab","field"].each do |type|
+      Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
         base_name=File.basename(path,".rb")
-        autoload :"#{base_name.capitalize}Tab", "lolita/configuration/tab/#{base_name}"
-     end
-
-    module FieldExtensions
-      Dir["#{File.dirname(__FILE__)}/lolita/configuration/field_extensions/**/*.*"].each do |path|
-        base_name=File.basename(path,".rb")
-        autoload base_name.capitalize.to_sym, "lolita/configuration/field_extensions/#{base_name}"
+        autoload :"#{base_name.capitalize}#{type.humanize}", "lolita/configuration/#{type}/#{base_name}"
       end
     end
 
