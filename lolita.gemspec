@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.0.5"
+  s.version = "3.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse", "Arturs Meisters"]
-  s.date = %q{2011-03-23}
+  s.date = %q{2011-03-29}
   s.description = %q{Great Rails CMS that allow you to start working with models right when you add this to your project.}
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".project",
+    ".rspec",
     "GUIDELINE",
     "Gemfile",
     "IDEA",
@@ -29,6 +30,7 @@ Gem::Specification.new do |s|
     "app/controllers/lolita/rest_controller.rb",
     "app/helpers/components/lolita/list_component.rb",
     "app/helpers/lolita_helper.rb",
+    "app/views/components/lolita/field/_boolean.html.erb",
     "app/views/components/lolita/field/_collection.html.erb",
     "app/views/components/lolita/field/_date.html.erb",
     "app/views/components/lolita/field/_datetime.html.erb",
@@ -76,7 +78,7 @@ Gem::Specification.new do |s|
     "features/support/env.rb",
     "features/support/paths.rb",
     "lib/generators/helpers/file_helper.rb",
-    "lib/generators/lolita/copy_assets_generator.rb",
+    "lib/generators/lolita/assets_generator.rb",
     "lib/generators/lolita/install_generator.rb",
     "lib/generators/templates/lolita.rb",
     "lib/lolita.rb",
@@ -88,13 +90,22 @@ Gem::Specification.new do |s|
     "lib/lolita/configuration/base.rb",
     "lib/lolita/configuration/column.rb",
     "lib/lolita/configuration/columns.rb",
+    "lib/lolita/configuration/factory.rb",
     "lib/lolita/configuration/field.rb",
-    "lib/lolita/configuration/field_extensions/collection.rb",
+    "lib/lolita/configuration/field/boolean.rb",
+    "lib/lolita/configuration/field/collection.rb",
+    "lib/lolita/configuration/field/datetime.rb",
+    "lib/lolita/configuration/field/disabled.rb",
+    "lib/lolita/configuration/field/integer.rb",
+    "lib/lolita/configuration/field/password.rb",
+    "lib/lolita/configuration/field/string.rb",
+    "lib/lolita/configuration/field/text.rb",
     "lib/lolita/configuration/field_set.rb",
     "lib/lolita/configuration/list.rb",
     "lib/lolita/configuration/page.rb",
     "lib/lolita/configuration/tab.rb",
     "lib/lolita/configuration/tab/content.rb",
+    "lib/lolita/configuration/tab/default.rb",
     "lib/lolita/configuration/tabs.rb",
     "lib/lolita/controllers/component_helpers.rb",
     "lib/lolita/controllers/internal_helpers.rb",
@@ -116,7 +127,6 @@ Gem::Specification.new do |s|
     "lib/lolita/rails/routes.rb",
     "lib/lolita/ruby_ext/accessors.rb",
     "lib/lolita/test/matchers.rb",
-    "lib/lolita/version.rb",
     "log/development.log",
     "lolita.gemspec",
     "public/images/lolita/plus.png",
