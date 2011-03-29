@@ -1,17 +1,23 @@
 module Lolita
   module Configuration
     class CollectionField < Lolita::Configuration::Field
-       lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type
+       lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type,:include_blank
       
 
         def initialize *args,&block
           @type="collection"
+          @association_type=:one
+          @include_blank=true
           super
           set_association_type
         end
 
-        def options_for_select &block
-          @options_for_select=block if block_given?
+        def options_for_select=(value=nil)
+          @options_for_select=value
+        end
+
+        def options_for_select value=nil, &block
+          @options_for_select=value || block if value || block_given?
           @options_for_select
         end
 
