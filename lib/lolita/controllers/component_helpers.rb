@@ -32,9 +32,23 @@ module Lolita
         format=@opts.delete(:format)
         raise "Can't render component without name!" unless name
         will_use_component name 
-        render(:partial=>"/components/#{name}#{state ? "/#{state}" : nil}",:locals=>@opts)
+        if format
+          with_format(format) do
+            render(:partial=>"/components/#{name}#{state ? "/#{state}" : nil}",:locals=>@opts)
+          end
+        else
+          render(:partial=>"/components/#{name}#{state ? "/#{state}" : nil}",:locals=>@opts)
+        end
       end
       
+      def with_format(format, &block)
+        old_formats = formats
+        self.formats = [format]
+        result=block.call
+        self.formats = old_formats
+        result
+      end
+
       # Require component helper file and extend current instance with component helper module.
       # ====Example
       #     will_use_component :"lolita/list"
