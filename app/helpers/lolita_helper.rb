@@ -4,7 +4,7 @@ module LolitaHelper
 	# This is helpful because different positionings within it exist depending on action
   def content_classes
     classes = []
-    if params[:action] == "edit"
+    if params[:action] == "edit" || params[:action] == "new"
     	classes << "with-secondary"
     end
     classes.join(" ")

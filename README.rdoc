@@ -43,4 +43,3 @@ to all controllers.
 If you decide to use some newer version, you most likely should copy new assets to your project. 
 This can be done with
   rails g lolita:assets
-
