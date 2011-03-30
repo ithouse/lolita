@@ -71,6 +71,7 @@ module Lolita
       def get_page()
         @page=@dbi.paginate((@page_options||{}).merge(@last_options))
       end
+      
       # Return last paginated page
       # ====Example
       #     list.paginate(2)
