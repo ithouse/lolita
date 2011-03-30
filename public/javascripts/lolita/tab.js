@@ -3,7 +3,7 @@ $(function(){
   function save_tab(tabs){
     var data=""
     tabs.find("form").each(function(){
-      data=data+$(this).serialize()
+      data=data+"&"+$(this).serialize()
     })
     //alert(data)
     $.ajax({
@@ -13,7 +13,6 @@ $(function(){
       data:data,
       success:function(data){
         $("#content").html(data);
-        load_tinymce();
       }
     })
   }

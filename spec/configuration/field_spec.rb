@@ -81,7 +81,7 @@ describe Lolita::Configuration::Field do
   end
 
   it "should set field type when not specified" do
-    field=Lolita::Configuration::Field.new(@dbi,:title)
+    field=Lolita::Configuration::Field.add(@dbi,:title)
     field.type.should == "string"
   end
 
@@ -91,13 +91,13 @@ describe Lolita::Configuration::Field do
   end
 
   it "should allow set field that is referenced in (belongs_to) any class" do
-    field=Lolita::Configuration::Field.new(@dbi2,:post)
+    field=Lolita::Configuration::Field.add(@dbi2,:post)
     field.type.should == "collection"
     field.association_type.should == :one
   end
 
   it "should allow set field that references to (has_many or has_one) any class" do
-    field=Lolita::Configuration::Field.new(@dbi,:comments)
+    field=Lolita::Configuration::Field.add(@dbi,:comments)
     field.type.should == "collection"
     field.association_type.should == :many
   end

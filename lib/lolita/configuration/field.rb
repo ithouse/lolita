@@ -24,27 +24,24 @@ module Lolita
     #       end
     #     end
     class Field
+      extend Lolita::Configuration::Factory
 
-      lolita_accessor :name,:title,:field_set,:nested_for,:options, :html_options,:record
-      attr_reader :dbi,:nested_in,:association_type
+      @@default_type="string"
+      lolita_accessor :name,:title,:type,:field_set,:nested_for,:options, :html_options,:record,:association
+      attr_reader :dbi,:nested_in
       
       def initialize dbi, *args, &block
         @dbi=dbi
-        self.set_attributes(*args)
-        self.instance_eval(&block) if block_given?
-        set_default_values
-        validate
-      end
-
-      def type(value=nil)
-        @type=value if value
-        add_extension unless @extension_added
-        @type
-      end
-
-      def type=(value)
-        @type=value
-        add_extension unless @extension_added
+        begin
+          self.set_attributes(*args)
+          self.instance_eval(&block) if block_given?
+          set_default_values
+          validate
+        rescue Exception=>e
+          unless self.class.temp_object?
+            raise e
+          end
+        end
       end
       
       def value value=nil, &block
@@ -100,6 +97,7 @@ module Lolita
         if args
           attributes=args.extract_options!
           self.name=args.first if args.first
+          self.type=args[1] if args[1]
           attributes.each{|attr,value|
             self.send(:"#{attr}=",value)
           }
@@ -116,44 +114,30 @@ module Lolita
       end
 
       private
-
-# Pārtaisīt field kā tabus uz klasēm
-# Pielik callback uz on_load, kurš var piemēram asociācijai ielādēt to utt un nomain'īt tipu
-      def add_extension #TODO test
-        @extension_added=true
-        set_association
-        refactor_type
-        set_association_type
-        self.extend("Lolita::Configuration::FieldExtensions::#{@type.camelize}".constantize) rescue nil
-      end
-
-      
-      def set_association #TODO test
-        assoc_name=@name.to_s.gsub(/_id$/,"") 
-        @association=@dbi.reflect_on_association(assoc_name.to_sym) ||
-          @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
-      end
-      
-      def refactor_type #TODO test
-        @type=if @association
-          "collection"
-        elsif [:created_at,:updated_at,:type].include?(@name)
-          "disabled"
-        else
-          @type
-        end
-      end
-
-      def set_association_type #TODO test
-        if @association
-          @association_type=@dbi.association_macro(@association)
-        end
-      end
+     
 
       def set_default_values
+        set_association
+        set_type
         self.title||=self.name.to_s.capitalize
-        self.type||="string"
         self.options||={}
+      end
+
+      def set_type
+        @type=@type.to_s.downcase if @type
+        if @association
+          @type="collection"
+        elsif @type.nil? || @type.to_s=="object"
+          @type=@@default_type
+        end
+      end
+
+      # Need here because this don't know how to recognize association.
+      # TODO maybe need move to adapter, and it is converted there
+      def set_association #TODO test
+        assoc_name=@name.to_s.gsub(/_id$/,"") 
+        @association||=@dbi.reflect_on_association(assoc_name.to_sym) ||
+          @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
       end
 
       def validate

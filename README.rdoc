@@ -1,0 +1,44 @@
+=Lolita
+
+Content management system that works with rails.
+
+==Installation
+
+First install Lolita gem
+  sudo gem install lolita
+
+Then go to your rails project and 
+ rails g lolita:install
+
+That will create initializer and copy all assets.
+==Usage
+ 
+To make your model use Lolita do like this
+  class Post < ActiveRecord::Base
+    include Lolita::Configuration
+    lolita
+  end
+Then in routes.rb file make resources accessable for lolita with  
+  lolita_for :posts
+This will make routes like
+  /lolita/posts
+  /lolita/posts/1/edit
+  /lolita/posts/new
+===Add authorization to Lolita
+
+Easiest way to add authentication is with Devise. First install Devise as gem, than add to it your project.
+Make Devise model, lets say, User. After that add these lines in <i>/config/initializers/lolita.rb</i>
+  config.user_classes << User
+  config.authentication = :authenticate_user!
+This will make before each Lolita requests call before filter, that than will call <em>authenticate_user!</em>
+that is Devise method for authenticating user. Without it Lolita will be acessable for everyone.
+You can also add any other authentication method like
+  config.authentication = :authenticate_admin
+And than put this method for common use in <em>ApplicationController</em> or in some other place that is accessable
+to all controllers.
+===Using newer version of Lolita
+
+If you decide to use some newer version, you most likely should copy new assets to your project. 
+This can be done with
+  rails g lolita:assets
+

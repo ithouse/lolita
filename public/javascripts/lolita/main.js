@@ -1,6 +1,7 @@
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
+$(function(){
+  $.ajaxSetup({
+    headers:{
+      "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
+    }
+  })
+})

@@ -3,12 +3,13 @@ module Lolita
   # Like Lolita.modules and Lolita.routes and so on.
   class BaseConfiguration
   
-    attr_reader :scope, :modules, :routes, :controllers
+    attr_reader :scope, :modules, :routes, :controllers,:resources
     attr_accessor :mappings,:default_route,:user_classes,:authentication
 
     def initialize(scope)
       @scope=scope
       @mappings={}
+      @resources={}
       @default_module=nil
       @user_classes=[]
       @modules=[]

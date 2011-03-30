@@ -2,7 +2,7 @@
   <%= javascript_include_tag "tinymce/jquery.tinymce" %>
   <script>
     function load_tinymce(){
-      $("textarea").tinymce({
+      $("textarea[data-simple!=true]").tinymce({
         script_url: "/javascripts/tinymce/tiny_mce.js",
         theme: "advanced",
         skin: "cirkuit",
@@ -16,10 +16,12 @@
         theme_advanced_resizing: true
       });
     }
-    $(function(){
-      load_tinymce(); 
-    })
   </script>
 <% end %>
 
-<%= text_area resource_name, field.name %>
+<%= text_area resource_name, field.name, :rows=>(field.rows || 20), :"data-simple"=>field.simple %>
+<script type="text/javascript">
+   $(function(){
+      load_tinymce(); 
+    })
+</script>

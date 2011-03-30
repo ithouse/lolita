@@ -32,6 +32,8 @@ module ActionDispatch::Routing
       all_resource_classes=[]
       resources.each{|resource|
         mapping=Lolita.add_mapping(resource,options)
+        Lolita.resources[mapping.name]=mapping
+        
         target_class=mapping.to
         all_resource_classes<<target_class
 

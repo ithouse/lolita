@@ -1,21 +1,23 @@
 module Lolita
   module Configuration
-    # Field Extensions is used to extend Field instances. FieldExtensions allow
-    # different field types have same property with different functionality. For
-    # example, <code>:find_options</code>, it is possible to avoid <code>order</code>
-    # and <code>group</code> usage when it is not neccessary and allow when you
-    # need it.
-    # It depends on field
-    # _type_. Each different field type, can have one extension module. Instance
-    # will be automaticly extended when type is assigned, therefor type should
-    # be called before any type-specific method is called.
-    module FieldExtensions
-      module Collection
+    class CollectionField < Lolita::Configuration::Field
+       lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type,:include_blank
+      
 
-        lolita_accessor :conditions,:text_method,:value_method,:find_options
+        def initialize *args,&block
+          @type="collection"
+          @association_type=:one
+          @include_blank=true
+          super
+          set_association_type
+        end
 
-        def options_for_select &block
-          @options_for_select=block if block_given?
+        def options_for_select=(value=nil)
+          @options_for_select=value
+        end
+
+        def options_for_select value=nil, &block
+          @options_for_select=value || block if value || block_given?
           @options_for_select
         end
 
@@ -46,6 +48,12 @@ module Lolita
 
         private
 
+        def set_association_type #TODO test
+          if @association
+            @association_type||=@dbi.association_macro(@association)
+          end
+        end
+
         def default_text_method(klass)
           assoc_dbi=Lolita::DBI::Base.new(klass)
           field=assoc_dbi.fields.detect{|f| f[:type].downcase=="string"}
@@ -53,13 +61,11 @@ module Lolita
             field[:name]
           else
             raise Lolita::FieldTypeError, %^
-            	Can't find any content field in #{assoc_dbi.klass}. 
-            	Use text_method in #{klass} to set one.
+              Can't find any content field in #{assoc_dbi.klass}. 
+              Use text_method in #{klass} to set one.
            ^
           end
         end
-        # MODULE end
-      end
     end
   end
 end
