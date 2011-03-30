@@ -13,6 +13,11 @@ Then go to your rails project and
  rails g lolita:install
 
 That will create initializer and copy all assets.
+Also it will call <em>install</em> on all added modules to lolita. 
+So if you in Gemfile have following
+  gem "lolita"
+  gem "lolita-file-upload"
+It will also call <i>lolita_file_upload:install</i>.
 ==Usage
  
 To make your model use Lolita do like this
