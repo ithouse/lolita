@@ -1,6 +1,8 @@
 =Lolita
 
 Content management system that works with rails.
+==Demo
+See the demo page at Demo[http://lolita-demo.ithouse.lv]
 
 ==Installation
 

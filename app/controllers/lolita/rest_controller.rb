@@ -36,7 +36,6 @@ class Lolita::RestController < ApplicationController
   end
 
   def index
-    page=resource_class.lolita.list.paginate(params[:page])
     respond_to do |format|
       format.html do
         build_response_for(:list,:page=>page)
@@ -69,9 +68,12 @@ class Lolita::RestController < ApplicationController
   end
   
   def to_list
-    page=resource_class.lolita.list.paginate(params[:page])
     builder=build_response_for(:list,:page=>page)
     render :index
     #render_component *builder
+  end
+
+  def page
+    resource_class.lolita.list.paginate(params[:page])
   end
 end
