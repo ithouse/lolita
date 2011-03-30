@@ -18,10 +18,9 @@ module Lolita
           #     # GET /posts
           #     url_for #=> /posts
           def url_for_with_lolita options = {}
-            if options.is_a?(Hash)
+            if options.is_a?(Hash) !options[:use_route] && self.respond_to?(:lolita_mapping)
               controller = options[:controller].to_s
-              if Lolita.mappings[lolita_mapping.name].controllers.values.include?(controller) && 
-                !options[:use_route]
+              if Lolita.mappings[lolita_mapping.name].controllers.values.include?(controller)
                 resource_type = {
                   :index => :lolita_resources_path,
                   :new => :new_lolita_resource_path,
