@@ -28,7 +28,7 @@ module Lolita
       @module=options[:module] 
       mod=@module ? nil :  "lolita/"
       @controllers=Hash.new{|h,k|
-        h[k]="#{mod}#{k}" 
+        h[k]=options[:controller] || "#{mod}#{k}" 
       }
     end
   
