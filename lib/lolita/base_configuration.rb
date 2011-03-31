@@ -25,7 +25,7 @@ module Lolita
           if route.last.respond_to?(:call)
             route.last.call(klass)
           else
-            nil
+            route.last
           end
         end
       }.compact
@@ -36,7 +36,7 @@ module Lolita
     def common_routes(klasses)
       @routes.map{|name,route|
         unless route.first
-          klasses.map{|klass| route.last.is_a?(Proc) ? route.last.call(klass) : nil}
+          klasses.map{|klass| route.last.is_a?(Proc) ? route.last.call(klass) : route.last}
         end
       }.flatten.compact.uniq
     end
