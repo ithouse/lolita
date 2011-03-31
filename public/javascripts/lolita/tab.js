@@ -13,6 +13,11 @@ $(function(){
       data:data,
       success:function(data){
         $("#content").html(data);
+      },
+      error:function(xhr, textStatus, errorThrown){
+        f = $("#flash");
+        f.html("<span style='color:red'>An Error occured, please contact support personel</span>");
+        f.slideDown("fast")
       }
     })
   }
