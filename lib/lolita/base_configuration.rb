@@ -25,7 +25,7 @@ module Lolita
           if route.last.respond_to?(:call)
             route.last.call(klass)
           else
-            nil
+            true
           end
         end
       }.compact
