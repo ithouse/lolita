@@ -33,7 +33,7 @@ module Lolita
     # take first of defined #locales for Lolita, if there no defined locales for Lolita, than
     # look for I18n and take default locale from there or if there is no I18n than take :en
     def default_locale
-      @default_locale || @locales.first || (defined?(I18n) ? I18n.default_locale : :en)
+      @default_locale || self.locales.first || (defined?(I18n) ? I18n.default_locale : :en)
     end
     # Call (with #call) to route klass
     # And return all names of routes that are needed for resource.
