@@ -1,1 +1,5 @@
-<%= render_component :"lolita/field", :string,:field=>field %>
+<% 
+  value = self.instance_variable_get("@#{resource_name}").send("#{field.name}")
+  value = value.strftime(field.format) if field.format && (value.is_a?(DateTime) || value.is_a?(Time))
+%>
+<%= text_field resource_name, field.name, {:value=>value} %>
