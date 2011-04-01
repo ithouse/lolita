@@ -24,7 +24,14 @@ class Lolita::RestController < ApplicationController
     get_resource
     if self.resource
       self.resource=resource_with_attributes(self.resource,resource_attributes)
-      save_and_redirect
+      respond_to do |format|
+        format.html do
+          save_and_redirect
+        end
+        format.json do
+          render :json=>self.resource
+        end
+      end
     end
   end
 
