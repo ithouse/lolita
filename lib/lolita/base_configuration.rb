@@ -19,6 +19,13 @@ module Lolita
 
     # Call (with #call) to route klass
     # And return all names of routes that are needed for resource.
+    # When with #add_module routes are defined like 
+    #     Lolita.add_module MyModule, :route=>:my_module
+    # then this will be passed to the method that creates routes, but 
+    # when Proc is passed to <i>:route</i> then this Proc should return
+    # name of route or nil.
+    # These names then are used for methods like <em>lolita_[route_name]_route</em>
+    # that should be required somewhere in you module.
     def conditional_routes(klass=nil)
       @routes.map{|name,route|
         if route.first
