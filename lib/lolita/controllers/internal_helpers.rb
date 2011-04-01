@@ -11,6 +11,7 @@ module Lolita
        
         helper_method *helpers
         prepend_before_filter :is_lolita_resource?
+        prepend_around_filter :switch_locale
       end
 
       # Return instance variable named as resource
@@ -68,6 +69,15 @@ module Lolita
         @component_builder=@component_object.build(@component_options)
       end
       
+
+      private
+
+      def switch_locale
+        old_locale=I18n.locale
+        I18n.locale=params[:locale] || Lolita.default_locale
+        yield
+        I18n.locale=old_locale
+      end
     end
   end
 end

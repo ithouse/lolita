@@ -5,6 +5,7 @@ module Lolita
   
     attr_reader :scope, :modules, :routes, :controllers,:resources
     attr_accessor :mappings,:default_route,:user_classes,:authentication
+    attr_writer :default_locale
 
     def initialize(scope)
       @scope=scope
@@ -17,6 +18,23 @@ module Lolita
       @controllers={}
     end
 
+    def locales=(value)
+      unless value.is_a?(Array)
+        @locales=[value]
+      else
+        @locales=value
+      end
+    end
+
+    def locales
+      @locales || []
+    end
+    # Return default locale. First looks for defined default locale for Lolita, when not found than
+    # take first of defined #locales for Lolita, if there no defined locales for Lolita, than
+    # look for I18n and take default locale from there or if there is no I18n than take :en
+    def default_locale
+      @default_locale || @locales.first || (defined?(I18n) ? I18n.default_locale : :en)
+    end
     # Call (with #call) to route klass
     # And return all names of routes that are needed for resource.
     # When with #add_module routes are defined like 
