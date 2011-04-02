@@ -31,8 +31,11 @@ class Lolita::RestController < ApplicationController
   def destroy
     get_resource
     if self.resource && self.resource.destroy
-      to_list
+      flash.now[:notice] = I18n.t "lolita.shared.destroy_notice"
+    else
+      flash.now[:alert] = I18n.t "lolita.shared.destroy_alert"
     end
+    redirect_to :action=>"index"
   end
 
   def index
@@ -49,6 +52,11 @@ class Lolita::RestController < ApplicationController
   private
 
   def show_form
+    #TODO Valdis: ja es extendoju rest_controller un gribu pārdefinēt edit actionu, man vajag lai
+    #  varu norādīt citu šablonu, piemēram, manā gadījumā ir services_controller un jamais meklē
+    #  "services/form", bet es gribu izmantot to pašu "lolita/rest/form"
+    #  tagad man viss šitais jāpārkopē uz projektu
+
     build_response_for(:tabs)
     if request.xhr?
       render :form, :layout => false
