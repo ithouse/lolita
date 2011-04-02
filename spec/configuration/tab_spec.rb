@@ -156,5 +156,12 @@ describe Lolita::Configuration::Tab do
     tab.nested_fields_of("Comment").size.should > 0
   end
 
+  it "should return field with given name" do
+    tab=Lolita::Configuration::Tab.new(@dbi) do
+      default_fields
+    end
+    tab.fields.by_name(:title).name.should = :title
+  end
+
 end
 

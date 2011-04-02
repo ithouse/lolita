@@ -33,7 +33,7 @@ module Lolita
       # * <tt>*args</tt> See #set_attributes, for how these args are processed.
       # * <tt>&block</tt> Block can be passed, anything in block will be evaled for current instance.
       def initialize dbi,*args,&block
-        @fields=[]
+        @fields=Lolita::Configuration::Fields.new
         @field_sets=[]
         self.dbi=dbi
         self.current_dbi=dbi
@@ -65,7 +65,7 @@ module Lolita
       # Each array element can be Lolita::Configuration::Field object or
       # Hash, that will be passed to #field method.
       def fields=(fields)
-        @fields=[]
+        @fields=Lolita::Configuration::Fields.new
         if fields.is_a?(Array)
           fields.each{|field_attr|
             if field_attr.is_a?(Lolita::Configuration::Field)

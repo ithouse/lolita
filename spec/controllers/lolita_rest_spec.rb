@@ -21,5 +21,14 @@ describe Lolita::RestController do
     get :new
     response.body.should =~/select|input/
   end
+
+  it "should change name of field's label to 'bar' if title 'bar' given in fields configuration" do
+    tab = Post.lolita.tabs.first
+    tab.type.should == :content
+    tab.fields.by_name(:title).title = "foobar"
+    get :new
+    response.body.should =~/foobar/
+  end
+
 end
 
