@@ -18,3 +18,4 @@ spec/rails_app/tmp/
 Gemfile.lock
 .redcar
 pkg
+.bundle
