@@ -3,5 +3,13 @@
     <h1><%= tab.title %></h1>
     <div class="arrow"></div> <%# FIXME more DRY solution is needed for .arrow within .boxtitle, maybe box helper %>
   </div>
+  <% if resource.errors.any? %>
+    <p class="errorExplanation" id="errorExplanation">
+      <%= raw resource.errors.keys.collect{|k|
+                "#{tab.fields.by_name(k).title.humanize.capitalize}: "+
+                "#{resource.errors[k].collect{|m| m.capitalize}.join(" and ")}"
+              }.compact.join("<br>") %>
+    </p>
+  <% end %>
   <%= render_component :"lolita/tab", tab.type, :tab=>tab %>
 </div>
