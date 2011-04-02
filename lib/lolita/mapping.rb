@@ -19,7 +19,7 @@ module Lolita
     
     # TODO how it is when lolita plugin extend default path and there is module is this not break the logic?
     def initialize(name,options={})
-      @plural=name.to_sym#(options[:as] ? "#{options[:as]}_#{name}" : name).to_sym
+      @plural=(options[:as] ? options[:as] : name).to_sym
       @singular=(options[:singular] || @plural.to_s.singularize).to_sym
       @class_name=(options[:class_name] || name.to_s.classify).to_s
       @ref = ActiveSupport::Dependencies.ref(@class_name)

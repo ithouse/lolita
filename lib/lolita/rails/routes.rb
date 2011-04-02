@@ -6,6 +6,14 @@ module ActionDispatch::Routing
     # <code>resource method</code>, for example, lolita_rest, that should be added
     # to ActionDispatch::Routing::Mapper class, as a *protected* method.
     # Module can automaticliy add resource route or allow user to do it.
+    # It accepts some useful options
+    # * <tt>:module</tt>
+    # * <tt>:path</tt>
+    # * <tt>:as</tt>
+    # * <tt>:path_prefix</tt>
+    # * <tt>:controller</tt>
+    # * <tt>:class_name</tt>
+    # * <tt>:singular</tt>
     # ====Example
     #     Lolita.add_module Lolita::Gallery,:route=>:gallery
     #     # in route.rb
