@@ -30,5 +30,11 @@ describe Lolita::RestController do
     response.body.should =~/foobar/
   end
 
+  it "should display inline error messages if validations fail"
+
+  it "should display all error messages at top of from if a validations fail"
+
+  it "should use field.title instead of field.name when displaying all error messages at top of form"
+
 end
 
