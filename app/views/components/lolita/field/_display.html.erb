@@ -3,7 +3,7 @@
   <div class="field-value" id="field_<%=field.__id__%>_value">
     <%= render_component :"lolita/field", field.type_name.to_sym,:field=>field %>
   </div>
-  <% unless resource.errors[field.name].empty? %>
-    <p class="inline-errors"><%= raw resource.errors[field.name].join("<br>") %></p>
+  <% unless resource.errors[field.name.to_s.gsub(/_id$/,"").to_sym].empty? %>
+    <p class="inline-errors"><%= raw resource.errors[field.name.to_s.gsub(/_id$/,"").to_sym].join("<br>") %></p>
   <% end %>
 </div>

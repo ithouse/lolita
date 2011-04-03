@@ -50,6 +50,8 @@ module Lolita
         def set_association_type #TODO test
           if @association
             @association_type||=(@dbi.association_macro(@association) || :one)
+          else
+            @association_type||=:one
           end
         end
 

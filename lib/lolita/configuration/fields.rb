@@ -18,7 +18,7 @@ module Lolita
       end
       
       def by_name(name)
-        @fields.detect{|field| field.name==name.to_sym}
+        @fields.detect{|field| (field.name==name.to_sym || field.name=="#{name}_id".to_sym) }
       end
 
     private
