@@ -81,8 +81,13 @@ describe Lolita::Configuration::Field do
   end
 
   it "should set field type when not specified" do
-    field=Lolita::Configuration::Field.add(@dbi,:title)
-    field.type.should == "string"
+    require "rails_app/lib/lolita/configuration/field/my_custom_collection"
+    field=Lolita::Configuration::Field.add(@dbi,:comments, :my_custom_collection)
+    field.type.should == "my_custom_collection"
+  end
+
+  it "should change field type for association columns if custom type is given" do
+
   end
 
   it "should set field title when not specified" do

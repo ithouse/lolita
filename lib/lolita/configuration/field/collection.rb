@@ -6,7 +6,6 @@ module Lolita
 
         def initialize *args,&block
           @type="collection"
-          @association_type=:one
           @include_blank=true
           super
           set_association_type
@@ -50,7 +49,7 @@ module Lolita
 
         def set_association_type #TODO test
           if @association
-            @association_type||=@dbi.association_macro(@association)
+            @association_type||=(@dbi.association_macro(@association) || :one)
           end
         end
 
