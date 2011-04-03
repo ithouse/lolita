@@ -4,7 +4,6 @@
 %>
 <%= form_tag "#", :id=>"tab-form-#{tab.__id__}" do |form| %>
   <div class="tab-content">
-    <%#= error_messages_for resource #TODO removed in Rails 3, now available as plugin .. %> 
     <%= render_component :"lolita/tab", :fields, :tab=>tab %>
   </div>
 <% end %>
