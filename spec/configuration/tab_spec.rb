@@ -103,7 +103,7 @@ describe Lolita::Configuration::Tab do
       end
       field :name=>"six"
     end
-    tab.fields.collect{|f| f.name}.should == [:"one",:"two",:"three",:"four",:"five",:"six"]
+    tab.fields.collect{|f| f.name }.should == [:"one",:"two",:"three",:"four",:"five",:"six"]
   end
 
   it "should get fields from fieldset" do
@@ -160,7 +160,7 @@ describe Lolita::Configuration::Tab do
     tab=Lolita::Configuration::Tab.new(@dbi) do
       default_fields
     end
-    tab.fields.by_name(:title).name.should = :title
+    tab.fields.by_name(:title).name.should == :title
   end
 
 end

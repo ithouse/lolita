@@ -55,6 +55,13 @@ module Lolita
       value=build_element(value)
       collection_variable[index]=value
     end
+
+    #To support enumerable functions as each, collect etc.
+    def each
+      collection_variable.each{|collection_element| yield collection_element}
+    end
+
+
     private
 
     def collection_variable

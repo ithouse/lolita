@@ -21,15 +21,15 @@ module Lolita
         @fields.detect{|field| (field.name==name.to_sym || field.name=="#{name}_id".to_sym) }
       end
 
-    private
+      private
 
-    def collection_variable
-      @fields
-    end
+      def collection_variable
+        @fields
+      end
 
-    def build_element(element,&block)
-      element
-    end
+      def build_element(element,&block)
+        element
+      end
 
     end
   end
