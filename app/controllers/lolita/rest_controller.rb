@@ -3,7 +3,7 @@ class Lolita::RestController < ApplicationController
   include Lolita::Controllers::InternalHelpers
   
   before_filter :authenticate_lolita_user!
-  layout "lolita/layouts/application"
+  layout "lolita/application"
   
   def new
     build_resource
