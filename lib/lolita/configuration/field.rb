@@ -125,7 +125,7 @@ module Lolita
 
       def set_type
         @type=@type.to_s.downcase if @type
-        if @association
+        if @association && (@type.nil? || @type.to_s=="object")
           @type="collection"
         elsif @type.nil? || @type.to_s=="object"
           @type=@@default_type

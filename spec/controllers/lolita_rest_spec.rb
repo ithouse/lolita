@@ -21,5 +21,20 @@ describe Lolita::RestController do
     get :new
     response.body.should =~/select|input/
   end
+
+  it "should change name of field's label to 'bar' if title 'bar' given in fields configuration" do
+    tab = Post.lolita.tabs.first
+    tab.type.should == :content
+    tab.fields.by_name(:title).title = "foobar"
+    get :new
+    response.body.should =~/foobar/
+  end
+
+  it "should display inline error messages if validations fail"
+
+  it "should display all error messages at top of from if a validations fail"
+
+  it "should use field.title instead of field.name when displaying all error messages at top of form"
+
 end
 

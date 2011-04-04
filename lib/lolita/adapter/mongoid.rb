@@ -47,8 +47,8 @@ module Lolita
 
       def fields
         @fields||=self.klass.fields.collect{|name,field|
-          field_to_hash(name,field)
-        }
+          name[0] == '_' ? nil : field_to_hash(name,field)
+        }.compact
         @fields
       end
 

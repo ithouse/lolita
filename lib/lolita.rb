@@ -42,6 +42,7 @@ module Lolita
     autoload :Column, 'lolita/configuration/column'
     autoload :Columns, 'lolita/configuration/columns'
     autoload :Field, 'lolita/configuration/field'
+    autoload :Fields, 'lolita/configuration/fields'
     autoload :FieldSet, 'lolita/configuration/field_set'
     autoload :List, 'lolita/configuration/list'
     autoload :Page, 'lolita/configuration/page'

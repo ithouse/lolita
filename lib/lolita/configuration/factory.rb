@@ -32,9 +32,9 @@ module Lolita
       end
 
       def to_class(name)
-        name.to_s.downcase.gsub(/_\w/) do |m|
+        name.to_s.downcase.gsub(/_id$/, "").gsub(/(^\w|_\w)/) do |m|
           m.gsub("_","").upcase
-        end.humanize
+        end
       end
 
       def factory_name
