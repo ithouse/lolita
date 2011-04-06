@@ -127,7 +127,7 @@ module Lolita
         @type=@type.to_s.downcase if @type
         if @association && (@type.nil? || @type.to_s=="object")
           @type="collection"
-        elsif !@type && dbi_field=self.dbi.fields.detect{|f| f[:name]==@name}
+        elsif !@type && dbi_field=self.dbi.fields.detect{|f| f[:name].to_s==@name.to_s}
           @type=dbi_field[:type]
         end
         if @type.nil? || @type.to_s=="object"

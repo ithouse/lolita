@@ -49,7 +49,8 @@ module Lolita
     autoload :Page, 'lolita/configuration/page'
     autoload :Tab, 'lolita/configuration/tab'
     autoload :Tabs, 'lolita/configuration/tabs'
-
+    autoload :Filter, 'lolita/configuration/filter'
+    
     ["tab","field"].each do |type|
       Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
         base_name=File.basename(path,".rb")

@@ -86,7 +86,11 @@ module Lolita
           @columns<<args[0]
         end
       end
-    
+      
+      # Adds filter
+      def filter(*args,&block)
+        @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
+      end
     end
   end
 end

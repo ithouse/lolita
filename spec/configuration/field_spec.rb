@@ -80,10 +80,15 @@ describe Lolita::Configuration::Field do
     field.value.should==post.title
   end
 
-  it "should set field type when not specified" do
+  it "should detect type and create field with specified type" do
     require "rails_app/lib/lolita/configuration/field/my_custom_collection"
     field=Lolita::Configuration::Field.add(@dbi,:comments, :my_custom_collection)
     field.type.should == "my_custom_collection"
+  end
+
+  it "should detect field type when not specified" do
+    field=Lolita::Configuration::Field.add(@dbi,:is_public)
+    field.type.should == "boolean"
   end
 
   it "should change field type for association columns if custom type is given" do
@@ -107,6 +112,5 @@ describe Lolita::Configuration::Field do
     field.association_type.should == :many
   end
 
-  
 end
 
