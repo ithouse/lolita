@@ -18,6 +18,11 @@ module Lolita
       @controllers={}
     end
 
+    def navigation
+      @navigation||=Lolita::Navigation::Base.new()
+      @navigation
+    end
+
     def locales=(value)
       unless value.is_a?(Array)
         @locales=[value]

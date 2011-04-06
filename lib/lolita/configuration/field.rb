@@ -119,7 +119,7 @@ module Lolita
       def set_default_values
         set_association
         set_type
-        self.title||=self.name.to_s.capitalize
+        self.title||=self.name.to_s.gsub("_", " ").capitalize
         self.options||={}
       end
 
@@ -127,7 +127,10 @@ module Lolita
         @type=@type.to_s.downcase if @type
         if @association && (@type.nil? || @type.to_s=="object")
           @type="collection"
-        elsif @type.nil? || @type.to_s=="object"
+        elsif !@type && dbi_field=self.dbi.fields.detect{|f| f[:name]==@name}
+          @type=dbi_field[:type]
+        end
+        if @type.nil? || @type.to_s=="object"
           @type=@@default_type
         end
       end

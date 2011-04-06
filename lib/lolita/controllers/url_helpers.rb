@@ -43,19 +43,19 @@ module Lolita
       def lolita_resources_path(*args)
         options=args.extract_options!
         mapping=args[0]
-        send(lolita_resource_name(mapping,nil,true),options)
+        send(lolita_resource_name(:mapping=>mapping,:plural=>true),options)
       end
 
       def lolita_resource_path(*args) # TODO test
         options=args.extract_options!
         mapping=args[0]
-        send(lolita_resource_name(mapping),options)
+        send(lolita_resource_name(:mapping=>mapping),options)
       end
 
       def new_lolita_resource_path(*args)
         options=args.extract_options!
         mapping=args[0]
-        send(lolita_resource_name(mapping,:new),options)
+        send(lolita_resource_name(:mapping=>mapping,:action=>:new),options)
       end
 
       def edit_lolita_resource_path(*args)
@@ -63,14 +63,15 @@ module Lolita
         options[:id]||=resource.id if resource
         raise "Can edit resource without id." unless options[:id]
         mapping=args[0]
-        send(lolita_resource_name(mapping,:edit),options)
+        send(lolita_resource_name(:mapping=>mapping,:action=>:edit),options)
       end
 
-      def lolita_resource_name(mapping=nil,action=nil,plural=nil) #TODO test if path is right
-        mapping=(mapping||lolita_mapping)
-        name=!plural ? mapping.name : mapping.plural
+      def lolita_resource_name(options={}) #TODO test if path is right
+        options.assert_valid_keys(:mapping,:plural,:action)
+        mapping=(options[:mapping]||lolita_mapping)
+        name=!options[:plural] ? mapping.name : mapping.plural
         name="#{mapping.path}_#{name}"
-        :"#{action}#{action ? "_" : ""}#{name}_path"
+        :"#{options[:action]}#{options[:action] ? "_" : ""}#{name}_path"
       end
     end
   end
