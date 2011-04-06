@@ -91,6 +91,10 @@ module Lolita
       def filter(*args,&block)
         @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
       end
+
+      def filter?
+        @filter.is_a?(Lolita::Configuration::Filter)
+      end
     end
   end
 end

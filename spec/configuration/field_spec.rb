@@ -86,7 +86,7 @@ describe Lolita::Configuration::Field do
     field.type.should == "my_custom_collection"
   end
 
-  it "should detect field type when not specified" do
+  it "should fallback to string type if given type is not supported" do
     field=Lolita::Configuration::Field.add(@dbi,:is_public)
     field.type.should == "boolean"
   end

@@ -25,6 +25,7 @@ module Lolita
     #     end
     class Field
       extend Lolita::Configuration::Factory
+      include Lolita::Builder
 
       @@default_type="string"
       lolita_accessor :name,:title,:type,:field_set,:nested_for,:options, :html_options,:record,:association
@@ -63,6 +64,11 @@ module Lolita
         else
           @value=value
         end
+      end
+      
+      def type value=nil
+        @type=value.to_s.downcase if value
+        @type
       end
 
       def name=(value)
@@ -115,7 +121,10 @@ module Lolita
 
       private
      
-
+      def builder_local_variable_name 
+        :field
+      end
+    
       def set_default_values
         set_association
         set_type

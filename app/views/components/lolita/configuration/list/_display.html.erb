@@ -1,6 +1,7 @@
 <div class="box">
   <%= render_component :"lolita/list", :title %>
   <%= render_component :"lolita/list", :new_resource%>
+  <%= render_component :"lolita/list", :filter %>
   <div class="list">
     <table>
       <%= render_component :"lolita/list", :header, :columns=>list.columns %>

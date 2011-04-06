@@ -1,8 +1,9 @@
 module Lolita
   module Configuration
-    class DisabledField < Lolita::Configuration::Field
+    class TimeField < Lolita::Configuration::Field
+      attr_accessor :format
       def initialize *args
-        @type="disabled"
+        @type="time"
         super
       end
     end

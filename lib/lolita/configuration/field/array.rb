@@ -1,11 +1,11 @@
 module Lolita
   module Configuration
-    class CollectionField < Lolita::Configuration::Field
+    class ArrayField < Lolita::Configuration::Field
        lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type,:include_blank
       
 
         def initialize *args,&block
-          @type="collection"
+          @type="array"
           @include_blank=true
           super
           set_association_type
@@ -20,7 +20,7 @@ module Lolita
           @options_for_select
         end
 
-        # Collect values for collection type field.
+        # Collect values for array type field.
         # Uses <code>text_method</code> for content. By default it search for
         # first _String_ type field in DB. Uses <code>value_method</code> for value,
         # by default it it is <code>id</code>. Use <code>conditions</code> or

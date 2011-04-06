@@ -16,6 +16,12 @@ describe Lolita::Configuration::Filter do
     Lolita::Configuration::Filter.new(@dbi)
   end
 
+  it "should give fields as arguments" do
+    list=Lolita::Configuration::List.new(@dbi)
+    list.filters :name, :is_public
+    list.filters.fields.size.should == 2
+  end
+  
   it "should add default search field if none is given" do
     filter=Lolita::Configuration::Filter.new(@dbi)
     filter.fields.size.should == 1
@@ -49,6 +55,6 @@ describe Lolita::Configuration::Filter do
     filter.fields.size.should == 3
     filter.fields[0].type.should == "integer"
     filter.fields[1].type.should == "integer"
-    filter.fields[1].type.should == "datetime"
+    filter.fields[2].type.should == "datetime"
   end
 end
