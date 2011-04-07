@@ -1,0 +1,9 @@
+<%  #
+# FIXME: move to /tab_types/
+#
+%>
+<%= form_tag "#", :id=>"tab-form-#{tab.__id__}" do |form| %>
+  <div class="tab-content">
+    <%= render_component :"lolita/configuration/tab", :fields, :tab=>tab %>
+  </div>
+<% end %>
