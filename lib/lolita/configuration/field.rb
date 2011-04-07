@@ -29,14 +29,19 @@ module Lolita
         include Lolita::Builder
 
         @@default_type="string"
-        lolita_accessor :name,:title,:type,:field_set,:nested_for,:options, :html_options,:record,:association
+        lolita_accessor :name,:title,:field_set,:nested_for,:options, :html_options,:record,:association
         attr_reader :dbi,:nested_in
         
         def initialize dbi, *args, &block
+          debugger
           @dbi=dbi
+          before_init(*args)
           begin
             self.set_attributes(*args)
-            self.instance_eval(&block) if block_given?
+            if block_given?
+              self.instance_eval(&block)
+              process_type unless @type 
+            end
             set_default_values
             validate
           rescue Exception=>e
@@ -68,12 +73,16 @@ module Lolita
         end
         
         def type value=nil
-          @type=value.to_s.downcase if value
+          @type=value.to_s.underscore if value
           @type
         end
 
+        def type=(value)
+          @type=value ? value.to_s.underscore : nil
+        end
+
         def name=(value)
-          @name=value.to_sym
+          @name=value ? value.to_sym : nil
         end
 
         def type_name
@@ -99,16 +108,14 @@ module Lolita
             self.nested_in && self.nested_in.klass==dbi_or_class
           end
         end
-        
+      
+
         def set_attributes(*args)
-          if args
-            attributes=args.extract_options!
-            self.name=args.first if args.first
-            self.type=args[1] if args[1]
-            attributes.each{|attr,value|
+          @given_attributes.each{|attr,value|
+            if (attr.to_sym==:type && !@type) || attr.to_sym!=:type
               self.send(:"#{attr}=",value)
-            }
-          end
+            end
+          }
         end
 
         # TODO is this useable
@@ -127,21 +134,57 @@ module Lolita
         end
 
         def set_default_values
-          set_association
-          set_type
           self.title||=self.name.to_s.gsub("_", " ").capitalize
           self.options||={}
         end
 
-        def set_type
-          @type=@type.to_s.underscore if @type
-          if @association && (@type.nil? || @type.to_s=="object")
-            @type="array"
-          elsif !@type && dbi_field=self.dbi.fields.detect{|f| f[:name].to_s==@name.to_s}
-            @type=dbi_field[:type]
+         def before_init *args
+          extract_args *args
+          set_name
+          if @name
+            process_type
           end
-          if @type.nil? || @type.to_s=="object"
-            @type=@@default_type
+        end
+
+        def process_type
+           set_association
+            set_type_from_args
+            set_type
+        end
+
+         def extract_args *args
+          if args
+            @given_args=args
+            @given_attributes=@given_args.extract_options!
+          else
+            @given_args=[]
+            @given_attributes={}
+          end
+        end
+
+        def set_name
+          if @given_args.first
+            self.name=@given_args.first 
+          else
+            self.name=@given_attributes[:name]
+          end
+        end
+
+        def set_type_from_args
+          self.type=@given_args[1] if @given_args[1]
+        end
+
+        def set_type
+          debugger
+          if !@type
+           if @association
+                self.type="array"
+            elsif dbi_field=self.dbi.fields.detect{|f| f[:name].to_s==@name.to_s}
+              self.type=dbi_field[:type]
+            end
+          end
+          if @type.nil? || @type.to_s.downcase=="object"
+            self.type=@@default_type
           end
         end
 
