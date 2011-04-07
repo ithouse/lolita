@@ -8,7 +8,7 @@ module Lolita
     # Component should have fallowing module structure Components::[NameSpace]::[Component name]Component
     #     Components::Lolita::ListComponent
     # ====Example
-    #     render_component :"lolita/list", :dispaly
+    #     render_component :"lolita/configuration/list", :dispaly
     #     # try to find /helpers/components/lolita/list_component.rb in every directory in $: that
     #     # ends with /helpers
     #     # require this file if found and extend self with Components::Lolita::ListComponent.

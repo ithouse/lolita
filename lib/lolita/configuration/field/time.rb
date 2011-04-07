@@ -1,10 +1,12 @@
 module Lolita
   module Configuration
-    class TimeField < Lolita::Configuration::Field
-      attr_accessor :format
-      def initialize *args
-        @type="time"
-        super
+    module Field do
+      class Time < Lolita::Configuration::Field::Base
+        attr_accessor :format
+        def initialize *args
+          @type="time"
+          super
+        end
       end
     end
   end

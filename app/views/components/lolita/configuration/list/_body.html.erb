@@ -1,5 +1,5 @@
 <tbody>
   <% page.each_with_index do |record,index| %>
-    <%= render_component :"lolita/list", :row, :columns=>columns,:record=>record,:index=>index %>
+    <%= render_component :"lolita/configuration/list", :row, :columns=>columns,:record=>record,:index=>index %>
   <% end %>
 </tbody>
