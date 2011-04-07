@@ -1,10 +1,13 @@
 module Lolita
   module Configuration
-    class StringField < Lolita::Configuration::Field
+    module Field
+      class String < Lolita::Configuration::Field::Base
 
-      def initialize *args, &block
-        @type="string"
-        super
+        def initialize *args, &block
+          @type="string"
+          super
+        end
+        
       end
     end
   end

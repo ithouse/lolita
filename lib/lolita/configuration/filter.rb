@@ -53,7 +53,7 @@ module Lolita
               self.send("#{m}=".to_sym,value)
             }
           else
-            raise ArgumentError.new("Lolita::Configuration::Filter arguments must be Hash instead of #{args[0].class}")
+            fields args            
           end
         end
       end

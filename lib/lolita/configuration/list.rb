@@ -52,6 +52,11 @@ module Lolita
         @columns.generate! unless is_set?(:columns)
       end
 
+      # checks if filter defined
+      def filter?
+        @filter.is_a?(Lolita::Configuration::Filter)
+      end
+
       private
 
       # Used to set attributes if block not given.
@@ -92,9 +97,6 @@ module Lolita
         @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
       end
 
-      def filter?
-        @filter.is_a?(Lolita::Configuration::Filter)
-      end
     end
   end
 end

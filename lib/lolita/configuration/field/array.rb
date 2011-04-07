@@ -1,8 +1,8 @@
 module Lolita
   module Configuration
-    class ArrayField < Lolita::Configuration::Field
-       lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type,:include_blank
-      
+    module Field
+      class Array < Lolita::Configuration::Field::Base
+        lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type,:include_blank
 
         def initialize *args,&block
           @type="array"
@@ -28,45 +28,46 @@ module Lolita
         # is used, than <code>conditions</code> is ignored.
         def association_values() #TODO test
           @association_values||=if options_for_select
-            options_for_select
-          elsif @association
-            klass=@dbi.association_class_name(@association).camelize.constantize
-            current_text_method=@text_method || default_text_method(klass)
-            current_value_method=@value_method || :id
-            options=@find_options || {}
-            options[:conditions]||=@conditions
-            
-            klass.find(:all,options).map{|r|
-              [r.send(current_text_method),r.send(current_value_method)]
-            }
-          else
-            []
-          end
-          @association_values
-        end
+          options_for_select
+        elsif @association
+          klass=@dbi.association_class_name(@association).camelize.constantize
+          current_text_method=@text_method || default_text_method(klass)
+          current_value_method=@value_method || :id
+          options=@find_options || {}
+          options[:conditions]||=@conditions
 
-        private
-
-        def set_association_type #TODO test
-          if @association
-            @association_type||=(@dbi.association_macro(@association) || :one)
-          else
-            @association_type||=:one
-          end
+          klass.find(:all,options).map{|r|
+            [r.send(current_text_method),r.send(current_value_method)]
+          }
+        else
+          []
         end
+        @association_values
+      end
 
-        def default_text_method(klass)
-          assoc_dbi=Lolita::DBI::Base.new(klass)
-          field=assoc_dbi.fields.detect{|f| f[:type].downcase=="string"}
-          if field
-            field[:name]
-          else
-            raise Lolita::FieldTypeError, %^
-              Can't find any content field in #{assoc_dbi.klass}. 
-              Use text_method in #{klass} to set one.
-           ^
-          end
+      private
+
+      def set_association_type #TODO test
+        if @association
+          @association_type||=(@dbi.association_macro(@association) || :one)
+        else
+          @association_type||=:one
         end
+      end
+
+      def default_text_method(klass)
+        assoc_dbi=Lolita::DBI::Base.new(klass)
+        field=assoc_dbi.fields.detect{|f| f[:type].downcase=="string"}
+        if field
+          field[:name]
+        else
+          raise Lolita::FieldTypeError, %^
+          Can't find any content field in #{assoc_dbi.klass}.
+          Use text_method in #{klass} to set one.
+          ^
+        end
+      end
     end
   end
+end
 end
