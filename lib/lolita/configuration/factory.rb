@@ -10,7 +10,7 @@ module Lolita
       def add(dbi,*args,&block)
         @create_temp_object=true
         begin
-          temp_object=self.new(dbi,*args,&block)
+          temp_object=self.const_get(:Base).new(dbi,*args,&block)
         rescue Exception => e
           raise e
         ensure
@@ -24,8 +24,8 @@ module Lolita
 
       def factory(name)
         begin
-          self.const_get(:"#{to_class(name}")
-        rescue
+          self.const_get(:"#{to_class(name)}")
+        rescue NameError
           error_class=Lolita::ConfigurationClassNotFound
           raise error_class, "Can't find #{self}::#{to_class(name)}. Should be in /configuration/#{factory_name}/#{name}.rb"
         end

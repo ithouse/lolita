@@ -13,5 +13,5 @@
       }.compact.join("<br>") %>
     </p>
   <% end %>
-  <%= render_component :"lolita/tab", tab.type, :tab=>tab %>
+  <%= render_component *tab.build %>
 </div>

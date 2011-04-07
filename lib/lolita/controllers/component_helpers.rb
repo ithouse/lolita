@@ -26,6 +26,7 @@ module Lolita
       #      render_component "lolita/list", :display
       #      render_component "lolita/list/display"
       def render_component *args
+        
         @opts=args.extract_options!
         name=args[0]
         state=args[1]

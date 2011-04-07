@@ -50,11 +50,11 @@ describe Lolita::Configuration::Filter do
       fields :name, :is_public do
         type :integer
       end
-      field :created_at, :datetime
+      field :created_at, :time
     end
     filter.fields.size.should == 3
     filter.fields[0].type.should == "integer"
     filter.fields[1].type.should == "integer"
-    filter.fields[2].type.should == "datetime"
+    filter.fields[2].type.should == "time"
   end
 end

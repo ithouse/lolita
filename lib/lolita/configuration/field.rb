@@ -23,145 +23,147 @@ module Lolita
     #         end
     #       end
     #     end
-    class Field
-      extend Lolita::Configuration::Factory
-      include Lolita::Builder
+    module Field
 
-      @@default_type="string"
-      lolita_accessor :name,:title,:type,:field_set,:nested_for,:options, :html_options,:record,:association
-      attr_reader :dbi,:nested_in
-      
-      def initialize dbi, *args, &block
-        @dbi=dbi
-        begin
-          self.set_attributes(*args)
-          self.instance_eval(&block) if block_given?
-          set_default_values
-          validate
-        rescue Exception=>e
-          unless self.class.temp_object?
-            raise e
+      class Base
+        include Lolita::Builder
+
+        @@default_type="string"
+        lolita_accessor :name,:title,:type,:field_set,:nested_for,:options, :html_options,:record,:association
+        attr_reader :dbi,:nested_in
+        
+        def initialize dbi, *args, &block
+          @dbi=dbi
+          begin
+            self.set_attributes(*args)
+            self.instance_eval(&block) if block_given?
+            set_default_values
+            validate
+          rescue Exception=>e
+            unless Lolita::Configuration::Field.temp_object?
+              raise e
+            end
           end
         end
-      end
-      
-      def value value=nil, &block
-        self.send(:value=,value,&block) if value || block_given?
-        unless @value
-          self.record_value
-        else
-          if @value.is_a?(Proc)
-            @value.call(self)
+        
+        def value value=nil, &block
+          self.send(:value=,value,&block) if value || block_given?
+          unless @value
+            self.record_value
           else
-            @value
+            if @value.is_a?(Proc)
+              @value.call(self)
+            else
+              @value
+            end
           end
         end
-      end
 
-      def value=(value=nil,&block)
-        if block_given?
-          @value=block
-        else
-          @value=value
+        def value=(value=nil,&block)
+          if block_given?
+            @value=block
+          else
+            @value=value
+          end
         end
-      end
-      
-      def type value=nil
-        @type=value.to_s.downcase if value
-        @type
-      end
-
-      def name=(value)
-        @name=value.to_sym
-      end
-
-      def type_name
-        self.type.to_s.downcase
-      end
-
-      def nested_in=(dbi)
-        unless self.dbi.associations_class_names.include?(dbi.klass.to_s)
-          raise Lolita::ReferenceError, "There is no association between #{self.dbi.klass} and #{dbi.klass}"
+        
+        def type value=nil
+          @type=value.to_s.downcase if value
+          @type
         end
-        raise ArgumentError, "Field can be nested only in Lolita::DBI::Base object." unless dbi.is_a?(Lolita::DBI::Base)
-        @nested_in=dbi
-      end
-      
-      def nested?
-        !self.nested_in.nil?
-      end
 
-      def nested_in?(dbi_or_class)
-        if dbi_or_class.is_a?(Lolita::DBI::Base)
-          self.nested_in && self.nested_in.klass==dbi_or_class.klass
-        else
-          self.nested_in && self.nested_in.klass==dbi_or_class
+        def name=(value)
+          @name=value.to_sym
         end
-      end
-      
-      def set_attributes(*args)
-        if args
-          attributes=args.extract_options!
-          self.name=args.first if args.first
-          self.type=args[1] if args[1]
-          attributes.each{|attr,value|
-            self.send(:"#{attr}=",value)
-          }
-        end
-      end
 
-      # TODO is this useable
-      def record_value #TODO test
-        if self.record
-          self.record.send(self.name.to_sym)
-        else
-          nil
+        def type_name
+          self.type.to_s.downcase
         end
-      end
 
-      private
-     
-      def builder_local_variable_name 
-        :field
-      end
-    
-      def set_default_values
-        set_association
-        set_type
-        self.title||=self.name.to_s.gsub("_", " ").capitalize
-        self.options||={}
-      end
-
-      def set_type
-        @type=@type.to_s.downcase if @type
-        if @association && (@type.nil? || @type.to_s=="object")
-          @type="collection"
-        elsif !@type && dbi_field=self.dbi.fields.detect{|f| f[:name].to_s==@name.to_s}
-          @type=dbi_field[:type]
+        def nested_in=(dbi)
+          unless self.dbi.associations_class_names.include?(dbi.klass.to_s)
+            raise Lolita::ReferenceError, "There is no association between #{self.dbi.klass} and #{dbi.klass}"
+          end
+          raise ArgumentError, "Field can be nested only in Lolita::DBI::Base object." unless dbi.is_a?(Lolita::DBI::Base)
+          @nested_in=dbi
         end
-        if @type.nil? || @type.to_s=="object"
-          @type=@@default_type
+        
+        def nested?
+          !self.nested_in.nil?
         end
-      end
 
-      # Need here because this don't know how to recognize association.
-      # TODO maybe need move to adapter, and it is converted there
-      def set_association #TODO test
-        assoc_name=@name.to_s.gsub(/_id$/,"") 
-        @association||=@dbi.reflect_on_association(assoc_name.to_sym) ||
-          @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
-      end
-
-      def validate
-        unless self.name
-          raise Lolita::FieldNameError, "Field must have name."
+        def nested_in?(dbi_or_class)
+          if dbi_or_class.is_a?(Lolita::DBI::Base)
+            self.nested_in && self.nested_in.klass==dbi_or_class.klass
+          else
+            self.nested_in && self.nested_in.klass==dbi_or_class
+          end
         end
-        #FIXME need this validation
-        #        if !@value && !@dbi.klass.instance_methods.include?(self.name.to_s)
-        #          raise Lolita::FieldNameError, "#{@dbi.klass} must respond to #{self.name} method."
-        #        end
+        
+        def set_attributes(*args)
+          if args
+            attributes=args.extract_options!
+            self.name=args.first if args.first
+            self.type=args[1] if args[1]
+            attributes.each{|attr,value|
+              self.send(:"#{attr}=",value)
+            }
+          end
+        end
+
+        # TODO is this useable
+        def record_value #TODO test
+          if self.record
+            self.record.send(self.name.to_sym)
+          else
+            nil
+          end
+        end
+
+        private
+       
+        def builder_local_variable_name 
+          :field
+        end
+
+        def set_default_values
+          set_association
+          set_type
+          self.title||=self.name.to_s.gsub("_", " ").capitalize
+          self.options||={}
+        end
+
+        def set_type
+          @type=@type.to_s.underscore if @type
+          if @association && (@type.nil? || @type.to_s=="object")
+            @type="array"
+          elsif !@type && dbi_field=self.dbi.fields.detect{|f| f[:name].to_s==@name.to_s}
+            @type=dbi_field[:type]
+          end
+          if @type.nil? || @type.to_s=="object"
+            @type=@@default_type
+          end
+        end
+
+        # Need here because this don't know how to recognize association.
+        # TODO maybe need move to adapter, and it is converted there
+        def set_association #TODO test
+          assoc_name=@name.to_s.gsub(/_id$/,"") 
+          @association||=@dbi.reflect_on_association(assoc_name.to_sym) ||
+            @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
+        end
+
+        def validate
+          unless self.name
+            raise Lolita::FieldNameError, "Field must have name."
+          end
+          #FIXME need this validation
+          #        if !@value && !@dbi.klass.instance_methods.include?(self.name.to_s)
+          #          raise Lolita::FieldNameError, "#{@dbi.klass} must respond to #{self.name} method."
+          #        end
+        end
+       
       end
-     
     end
   end
 end

@@ -6,6 +6,7 @@ module Lolita
 
         def initialize *args,&block
           @type="array"
+          self.builder="select"
           @include_blank=true
           super
           set_association_type

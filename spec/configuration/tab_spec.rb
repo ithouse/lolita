@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 # temp class for extending tabs
-class Lolita::Configuration::MyTab < Lolita::Configuration::Tab
+class Lolita::Configuration::Tab::My < Lolita::Configuration::Tab::Base
   def initialize(dbi,*args,&block)
     @type=:my
     super
@@ -15,15 +15,16 @@ describe Lolita::Configuration::Tab do
     @dbi=Lolita::DBI::Base.new(Post)
   end
 
+  let(:tab_class){Lolita::Configuration::Tab::Base}
   describe "create extended tabs" do
 
     context "tab class is child class of ::Tab class " do
       it "should create new" do
-        Lolita::Configuration::MyTab.new(@dbi).type.should == :my
+        Lolita::Configuration::Tab::My.new(@dbi).type.should == :my
       end
 
       it "should create new with block" do
-        Lolita::Configuration::MyTab.new(@dbi) do 
+        Lolita::Configuration::Tab::My.new(@dbi) do 
           title "My New tab"
         end.title.should == "My New tab"
       end
@@ -33,33 +34,33 @@ describe Lolita::Configuration::Tab do
 
   describe "add tab" do
     it "should recognize type of tab added and create it as a related class object" do
-      Lolita::Configuration::Tab.add(@dbi){ field(:email)}.class.to_s.should=="Lolita::Configuration::DefaultTab"
-      Lolita::Configuration::Tab.add(@dbi,:my).class.to_s.should == "Lolita::Configuration::MyTab"
+      Lolita::Configuration::Tab.add(@dbi){ field(:email)}.class.to_s.should=="Lolita::Configuration::Tab::Default"
+      Lolita::Configuration::Tab.add(@dbi,:my).class.to_s.should == "Lolita::Configuration::Tab::My"
       Lolita::Configuration::Tab.add(@dbi) {
         type :my
-      }.class.to_s.should == "Lolita::Configuration::MyTab"
+      }.class.to_s.should == "Lolita::Configuration::Tab::My"
     end
 
     it "should raise error when tab is not recognized" do
       lambda{
         Lolita::Configuration::Tab.add(@dbi,:yourtab)
-      }.should raise_error(Lolita::TabNotFoundError)
+      }.should raise_error(Lolita::ConfigurationClassNotFound)
     end
   end
 
   it "should create tab" do
-    Lolita::Configuration::Tab.new(@dbi,:content)
+    tab_class.new(@dbi,:content)
   end
 
   it "should allow to set title" do
-    tab=Lolita::Configuration::Tab.new(@dbi,:content) do
+    tab=tab_class.new(@dbi,:content) do
       title "My tab"
     end
     tab.title.should == "My tab"
   end
   
   it "should have default title that is humanized type" do
-    tab=Lolita::Configuration::Tab.new(@dbi,:content)
+    tab=tab_class.new(@dbi,:content)
     tab.title.should=="Content"
   end
   
@@ -70,19 +71,19 @@ describe Lolita::Configuration::Tab do
   end
 
   it "should create tab when attributes are given" do
-    tab=Lolita::Configuration::Tab.new(@dbi,:fields=>[{:name=>"field one"}])
+    tab=tab_class.new(@dbi,:fields=>[{:name=>"field one"}])
     tab.fields.size.should == 1
   end
 
   it "should create tab when block is given" do
-    tab=Lolita::Configuration::Tab.new(@dbi) do
+    tab=tab_class.new(@dbi) do
       field :name=>"field one"
     end
     tab.fields.size.should == 1
   end
 
   it "should allow add fieldset to tab" do
-    tab=Lolita::Configuration::Tab.new(@dbi) do
+    tab=tab_class.new(@dbi) do
       field_set("Person information") do
         field :name=>"field one"
       end
@@ -91,7 +92,7 @@ describe Lolita::Configuration::Tab do
   end
 
   it "should keep order for fields added in tab and in tab fieldsets" do
-    tab=Lolita::Configuration::Tab.new(@dbi) do
+    tab=tab_class.new(@dbi) do
       field :name=>"one"
       field_set("Fieldset") do
         field :name=>"two"
@@ -107,7 +108,7 @@ describe Lolita::Configuration::Tab do
   end
 
   it "should get fields from fieldset" do
-     tab=Lolita::Configuration::Tab.new(@dbi) do
+     tab=tab_class.new(@dbi) do
       field :name=>"one"
       field_set("Fieldset") do
         field :name=>"two"
@@ -118,14 +119,14 @@ describe Lolita::Configuration::Tab do
   end
 
   it "should add default fields for any tab when specified" do
-    tab=Lolita::Configuration::Tab.new(@dbi,:images) do
+    tab=tab_class.new(@dbi,:images) do
       default_fields
     end
     tab.fields.size.should > 0
   end
 
   it "should add nested fields" do
-    tab=Lolita::Configuration::Tab.new(@dbi) do
+    tab=tab_class.new(@dbi) do
       default_fields
       nested_fields_for("Comment") do
         default_fields
@@ -137,7 +138,7 @@ describe Lolita::Configuration::Tab do
   end
 
   it "should detect that field is nested" do
-    tab=Lolita::Configuration::Tab.new(@dbi) do
+    tab=tab_class.new(@dbi) do
       default_fields
       nested_fields_for("Comment") do
         default_fields
@@ -147,7 +148,7 @@ describe Lolita::Configuration::Tab do
   end
   
   it "should return nested fields for specified class" do
-    tab=Lolita::Configuration::Tab.new(@dbi) do
+    tab=tab_class.new(@dbi) do
       default_fields
       nested_fields_for("Comment") do
         default_fields
@@ -157,7 +158,7 @@ describe Lolita::Configuration::Tab do
   end
 
   it "should return field with given name" do
-    tab=Lolita::Configuration::Tab.new(@dbi) do
+    tab=tab_class.new(@dbi) do
       default_fields
     end
     tab.fields.by_name(:title).name.should == :title

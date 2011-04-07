@@ -1,7 +1,7 @@
 module Lolita
   module Configuration
     module Tab
-      class Default < Lolita::Configuration::Tab
+      class Default < Lolita::Configuration::Tab::Base
 
         def initialize *args,&block
           self.type=:default

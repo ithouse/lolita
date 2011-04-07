@@ -105,7 +105,7 @@ module Lolita
       end
       
       def default_tab_types
-        Lolita::Configuration::Tab.default_types
+        Lolita::Configuration::Tab::Base.default_types
       end
 
       def set_tab_attributes(tab)
@@ -120,7 +120,7 @@ module Lolita
 
       def build_element(element,&block)
         current_tab=if element.is_a?(Hash) || element.is_a?(Symbol)
-          Lolita::Configuration::Tab.new(@dbi,element,&block)
+          Lolita::Configuration::Tab.add(@dbi,element,&block)
         else
           element
         end
