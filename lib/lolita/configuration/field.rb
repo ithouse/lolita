@@ -104,7 +104,7 @@ module Lolita
           if args
             attributes=args.extract_options!
             self.name=args.first if args.first
-            self.type=args[1] if args[1]
+            self.type=args[1] if args[1] && args[1].is_a?(Symbol)
             attributes.each{|attr,value|
               self.send(:"#{attr}=",value)
             }
