@@ -57,6 +57,11 @@ module Lolita
         @filter.is_a?(Lolita::Configuration::Filter)
       end
 
+      # Adds filter
+      def filter(*args,&block)
+        @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
+      end
+      
       private
 
       # Used to set attributes if block not given.
@@ -90,11 +95,6 @@ module Lolita
         else
           @columns<<args[0]
         end
-      end
-      
-      # Adds filter
-      def filter(*args,&block)
-        @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
       end
 
     end

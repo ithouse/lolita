@@ -48,7 +48,6 @@ module Lolita
         # For details how to pass args and block see Lolita::Configuration::Field.
         # Return field itself.
         def field *args, &block
-           debugger
           field=Lolita::Configuration::Field.add(self.current_dbi,*args,&block)
           field.field_set=current_fieldset
           if self.current_dbi!=self.dbi

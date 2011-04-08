@@ -18,8 +18,8 @@ describe Lolita::Configuration::Filter do
 
   it "should give fields as arguments" do
     list=Lolita::Configuration::List.new(@dbi)
-    list.filters :name, :is_public
-    list.filters.fields.size.should == 2
+    list.filter :name, :is_public
+    list.filter.fields.size.should == 2
   end
   
   it "should add default search field if none is given" do
