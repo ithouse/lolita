@@ -146,9 +146,9 @@ module Lolita
         end
 
         def process_type
-           set_association
-            set_type_from_args
-            set_type
+          set_association
+          set_type_from_args
+          set_type
         end
 
          def extract_args *args
@@ -179,6 +179,7 @@ module Lolita
                 self.type="array"
             elsif dbi_field=self.dbi.fields.detect{|f| f[:name].to_s==@name.to_s}
               self.type=dbi_field[:type]
+              self.options=dbi_field[:options]
             end
           end
           if @type.nil? || @type.to_s.downcase=="object"

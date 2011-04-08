@@ -1,7 +1,7 @@
 <% if list.filter? -%>
   <div class="filter">
     <% list.filter.fields.each do |field| %>
-      <%= render_component :"lolita/configuration/field", :display, :field=>field %>
+      <%= render_component *field.build %>
     <% end %>
   </div>
 <% end -%>
