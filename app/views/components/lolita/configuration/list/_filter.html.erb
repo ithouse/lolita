@@ -1,7 +1,8 @@
 <% if list.filter? -%>
-  <div class="filter">
+  <form action="" action="get" class="filter">
     <% list.filter.fields.each do |field| %>
       <%= render_component *field.build %>
     <% end %>
-  </div>
+    <button type="submit">Apply</button>
+  </form>
 <% end -%>

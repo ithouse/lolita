@@ -3,8 +3,6 @@ module Lolita
     class Column 
 
       MAX_TEXT_SIZE=20
-      DEFAULT_DATE_FORMAT="%Y-%m-%d"
-      DEFAULT_TIME_FORMAT="%H:%M:%S"
       lolita_accessor :name,:title,:type,:options,:format
       
       def initialize(*args,&block)
@@ -23,8 +21,10 @@ module Lolita
       #  end
       # <%= column.with_format([@post.id,@post.user_id])%>
       def with_format(value) #TODO test
-        if @format
+        if @format.respond_to?(:call)
           @format.call(value)
+        elsif @format && (value.is_a?(Time) || value.is_a?(Date))
+          format_for_datetime(value)
         else
           format_from_type(value)
         end
@@ -32,24 +32,22 @@ module Lolita
 
       def format_from_type(value) #TODO test
         if value
-          case self.type.to_s.downcase
-          when "string"
+          if value.is_a?(String)
             value
-          when "integer"
+          elsif value.is_a?(Integer)
             value
-          when "text"
-            new_value=value.to_s.gsub(/<\/?[^>]*>/, "").strip
-            if new_value.size>MAX_TEXT_SIZE
-              "#{new_value.slice(0..MAX_TEXT_SIZE)}..."
+          elsif value.is_a?(Date)
+            if defined?(I18n)
+              I18n.localize(value, :format => :long)
             else
-              new_value
+              value.to_s
             end
-          when "datetime"
-            value.strftime("#{DEFAULT_DATE_FORMAT} #{DEFAULT_TIME_FORMAT}")
-          when "date"
-            value.strftime(DEFAULT_DATE_FORMAT)
-          when "time"
-            value.strftime(DEFAULT_TIME_FORMAT)
+          elsif value.is_a?(Time)
+            if defined?(I18n)
+              I18n.localize(value, :format => :long)
+            else
+              value.to_s
+            end
           else
             value.to_s
           end
@@ -78,6 +76,14 @@ module Lolita
         @title||=@name.to_s.humanize
       end
       
+      def format_for_datetime value
+        if defined?(I18n)
+          I18n.localize(value, :format => @format)
+        else
+          value.to_s
+        end
+      end
+
       def validate
         raise ArgumentError.new("Column must have name.") unless self.name
       end
