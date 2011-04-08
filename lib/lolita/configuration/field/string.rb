@@ -7,7 +7,6 @@ module Lolita
           @type="string"
           super
         end
-        
       end
     end
   end
