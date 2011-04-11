@@ -1,9 +1,0 @@
-<thead>
-  <tr>
-    <%= render_component :"lolita/list",:checkbox_header %>
-    <% columns.each do |column| %>
-      <%= render_component :"lolita/list", :header_cell, :column=>column %>
-    <% end %>
-    <%= render_component :"lolita/list",:tool_header  %>
-  </tr>
-</thead>

@@ -10,7 +10,7 @@ module Lolita
       def add(dbi,*args,&block)
         @create_temp_object=true
         begin
-          temp_object=self.new(dbi,*args,&block)
+          temp_object=self.const_get(:Base).new(dbi,*args,&block)
         rescue Exception => e
           raise e
         ensure
@@ -24,10 +24,10 @@ module Lolita
 
       def factory(name)
         begin
-          Lolita::Configuration.const_get(:"#{to_class(name)}#{factory_name}")
-        rescue
-          error_class=Lolita.const_get(:"#{factory_name}NotFoundError")
-          raise error_class, "Can't find field Lolita::Configuration::#{to_class(name)}#{factory_name}. Add in /configuration/#{factory_name.downcase}/#{name.to_s.downcase}.rb"
+          self.const_get(:"#{to_class(name)}")
+        rescue NameError
+          error_class=Lolita::ConfigurationClassNotFound
+          raise error_class, "Can't find #{self}::#{to_class(name)}. Should be in /configuration/#{factory_name}/#{name}.rb"
         end
       end
 
@@ -38,7 +38,7 @@ module Lolita
       end
 
       def factory_name
-        @factory_name||=self.to_s.split("::").last
+        @factory_name||=self.to_s.split("::").last.downcase
         @factory_name
       end
     end

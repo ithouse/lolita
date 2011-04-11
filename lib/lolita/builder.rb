@@ -8,18 +8,21 @@ module Lolita
   #   String or Symbol for buider.
   #
   module Builder
+    lolita_accessor :builder
 
     # Build response. Render component for current class with given options.
-    def build(options=nil)
+    def build(*args)
+      args||=[]
+      options=args.extract_options!
       builder_options=self.builder_options || {}
       options=(options || {}).merge(builder_options)
-      builder_values=self.builder
+      builder_values=self.get_builder(args[0],args[1])
       return builder_values[:name],builder_values[:state],options
     end
 
     # Default options for class. This method should be overwritten.
     def builder_options
-      {builder_name.to_sym=>self}
+      {builder_local_variable_name=>self}
     end
 
     # Set or get builder for class.
@@ -29,9 +32,11 @@ module Lolita
     # * <tt>String or Symbol (one arg)</tt> - is used as _name_.
     # Default _name_ is Lolita::Configuration class name (example <code>:list</code>) and
     # default state is <code>:display</code>
-    def builder(*value)
+    def get_builder(*value)
       if value && !value.empty?
         set_builder(*value)
+      elsif @builder
+        set_builder(@builder)
       else
         unless @builder
           @builder=default_builder
@@ -42,28 +47,39 @@ module Lolita
 
     # Return default builder information.
     def default_builder
-      {:name=>"lolita/#{builder_name}",:state=>default_build_state}
+      {:name=>"/#{builder_name}",:state=>default_build_state}
     end
     
     private
 
-    def set_builder *value
-      if value[0].is_a?(Hash)
-        @builder=value[0]
-      elsif value.size>1
-        @builder={:name=>value[0],:state=>value[1]}
+    def set_builder value
+      if value.is_a?(Hash)
+        @builder=value
+      elsif value.is_a?(Array)
+        @builder={:name=>fix_name(value[0]),:state=>value[1] || default_build_state}
       else
-        @builder={:name=>value[0],:state=>default_build_state}
+        @builder={:name=>fix_name(value),:state=>default_build_state}
       end
     end
     
+    def fix_name value
+      if value.to_s[0] == '/'
+        value
+      else
+        "/#{builder_name}/#{value}"
+      end
+    end
+
     def default_build_state
       :display
     end
     
     def builder_name
-      self.class.to_s.split("::").last.downcase.to_sym
+      self.class.to_s.split("::").map(&:underscore).join("/").to_sym
     end
     
+    def builder_local_variable_name 
+      self.class.to_s.split("::").last.underscore.to_sym
+    end
   end
 end

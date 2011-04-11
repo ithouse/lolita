@@ -1,0 +1,17 @@
+<div class="tab box" id="tab_<%=tab.__id__%>">
+  <div class="tab-title boxtitle black" data-closed="false">
+    <h1><%= tab.title %></h1>
+    <div class="arrow"></div> <%# FIXME more DRY solution is needed for .arrow within .boxtitle, maybe box helper %>
+  </div>
+  <% if resource.errors.any? %>
+    <p class="errorExplanation" id="errorExplanation">
+      <%= raw resource.errors.keys.collect{|k|
+        if error_tab = tab.fields.by_name(k)
+          "#{error_tab.title.humanize.capitalize}: "+
+            "#{resource.errors[k].collect{|m| m.capitalize}.join(" and ")}"
+        end
+      }.compact.join("<br>") %>
+    </p>
+  <% end %>
+  <%= render_component *tab.build %>
+</div>

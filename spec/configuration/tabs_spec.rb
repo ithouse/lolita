@@ -2,7 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 module Lolita
   module Configuration
-    class ImagesTab < Lolita::Configuration::Tab
+    module Tab
+      class Images < Lolita::Configuration::Tab::Base
+      end
+      class Translation < Lolita::Configuration::Tab::Base
+      end
     end
   end
 end
@@ -30,7 +34,7 @@ describe Lolita::Configuration::Tabs do
   end
 
   it "should create tabs when specified as arguments" do
-    tabs=Lolita::Configuration::Tabs.new(@dbi,:tabs=>[Lolita::Configuration::Tab.new(@dbi,:content)])
+    tabs=Lolita::Configuration::Tabs.new(@dbi,:tabs=>[Lolita::Configuration::Tab::Base.new(@dbi,:content)])
     tabs.size.should == 1
   end
 
@@ -75,8 +79,8 @@ describe Lolita::Configuration::Tabs do
     tabs=Lolita::Configuration::Tabs.new(@dbi,:default=>:content)
     tabs<<:images
     tabs<<:translation
-    tabs[tabs.size-2].class.should == Lolita::Configuration::Tab
-    tabs[tabs.size-1].class.should == Lolita::Configuration::Tab
+    tabs[tabs.size-2].class.should == Lolita::Configuration::Tab::Images
+    tabs[tabs.size-1].class.should == Lolita::Configuration::Tab::Translation
   end
 
   it "should return all tab names" do

@@ -1,0 +1,5 @@
+<%= select resource_name,
+            field.name,
+            (field.options_for_select or field.association_values.respond_to?(:call) ? field.association_values.call(self) : field.association_values),
+            {:include_blank => field.include_blank},
+            field.html_options || {} %>

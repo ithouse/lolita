@@ -1,5 +1,0 @@
-<% if field.association_type==:one %>
-  <%= render_component :"lolita/field", :select,:field=>field %>
-<% else %>
-  <%= render_component :"lolita/field", :habtm_select,:field=>field %>
-<% end %>

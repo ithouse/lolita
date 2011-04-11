@@ -39,21 +39,34 @@ module Lolita
     autoload :Base, 'lolita/configuration/base'
     autoload :Column, 'lolita/configuration/column'
     autoload :Columns, 'lolita/configuration/columns'
-    autoload :Field, 'lolita/configuration/field'
     autoload :Fields, 'lolita/configuration/fields'
     autoload :FieldSet, 'lolita/configuration/field_set'
     autoload :List, 'lolita/configuration/list'
     autoload :Page, 'lolita/configuration/page'
-    autoload :Tab, 'lolita/configuration/tab'
     autoload :Tabs, 'lolita/configuration/tabs'
+    autoload :Filter, 'lolita/configuration/filter'
 
-    ["tab","field"].each do |type|
-      Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
-        base_name=File.basename(path,".rb")
-        autoload :"#{base_name.capitalize}#{type.humanize}", "lolita/configuration/#{type}/#{base_name}"
+    module Field
+      extend Lolita::Configuration::Factory
+      autoload :Base, 'lolita/configuration/field'
+       ["field"].each do |type|
+        Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
+          base_name=File.basename(path,".rb")
+          autoload :"#{base_name.camelize}", "lolita/configuration/#{type}/#{base_name}"
+        end
       end
     end
-
+    
+    module Tab
+      extend Lolita::Configuration::Factory
+      autoload :Base, 'lolita/configuration/tab'
+      ["tab"].each do |type|
+        Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
+          base_name=File.basename(path,".rb")
+          autoload :"#{base_name.camelize}", "lolita/configuration/#{type}/#{base_name}"
+        end
+      end
+    end
     
     def self.included(base)
       base.class_eval do
