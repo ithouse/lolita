@@ -60,19 +60,27 @@ module Lolita
         }
       end
 
-      def fire(*hook_names)
+      def fire(*hook_names,&block)
         options=hook_names.extract_options!
-        in_hooks_scope(options[:scope]) do
-          (hook_names || []).each do |hook_name|
-            raise Lolita::HookNotFound, "Hook #{hook_name} is not defined for #{self}." unless self.has_hook?(hook_name)
+        (hook_names || []).each do |hook_name|
+          raise Lolita::HookNotFound, "Hook #{hook_name} is not defined for #{self}." unless self.has_hook?(hook_name)
+          in_hooks_scope(options[:scope]) do
             callback=get_callback(hook_name)
-            run_callback(callback)
+            run_callback(callback,&block)
           end
         end
       end
 
       def has_hook?(name)
         self.hooks.include?(name.to_sym)
+      end
+
+      def method_missing(method_name, *args, &block)
+        if method_name.to_s.match(/fire_(\w+)/)
+          self.fire($1.to_sym,*args,&block)
+        else
+          super
+        end
       end
 
       protected
@@ -86,25 +94,38 @@ module Lolita
         end
       end
 
-      def run_callback(callback)
-        run_methods(callback[:methods])
-        run_blocks(callback[:blocks])
+      def run_callback(callback,&block)
+        run_methods(callback[:methods],&block)
+        run_blocks(callback[:blocks],&block)
       end
 
-      def run_methods methods
+      def run_methods methods, &block
         (methods||[]).each do |method_name|
-          hooks_scope.send(method_name,true)
+          hooks_scope.send(method_name,&block)
         end
       end
 
-      def run_blocks blocks
+      def run_blocks blocks,&given_block
         (blocks||[]).each do |block|
-          hooks_scope.instance_eval(&block)
+          if block_given?
+            hooks_scope.instance_eval do
+            block.call(&given_block)
+          end
+          else
+            hooks_scope.instance_eval(&block)
+          end
         end
       end
 
       def get_callback(name)
-        hooks_scope.callbacks[name.to_sym] || {}
+        scope_callbacks=hooks_scope.callbacks[name.to_sym] || {}
+        unless hooks_scope==self
+          class_callbacks=self.callbacks[name.to_sym] || {}
+          [:methods,:blocks].each do |attr|
+            scope_callbacks[attr]=((scope_callbacks[attr] || [])+(class_callbacks[attr] || [])).uniq
+          end
+        end
+        scope_callbacks
       end
 
       def register_callback(name,*methods,&block)
@@ -125,6 +146,14 @@ module Lolita
 
       def fire(*hook_names)
         self.class.fire(*hook_names,:scope=>self)
+      end
+
+      def method_missing(method_name,*args,&block)
+        if method_name.to_s.match(/fire_(\w+)/)
+          self.class.fire($1.to_sym,*args,&block)
+        else
+          super
+        end
       end
     end
 
