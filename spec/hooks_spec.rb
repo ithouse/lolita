@@ -1,5 +1,5 @@
-#require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require File.expand_path("../../lib/lolita",__FILE__)
+require File.expand_path(File.dirname(__FILE__) + '/../simple_spec_helper')
+
 
 class MyClass
   def self.value(value=nil)
