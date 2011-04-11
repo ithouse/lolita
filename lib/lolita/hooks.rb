@@ -1,4 +1,8 @@
 module Lolita
+  # Provide hook mechanism for Lolita. To use hooks for class start with including this in your own class.
+  #    class MyClass
+  #      include Lolita::Hooks
+  #    end
   module Hooks
     def self.included(base)
       base.extend(ClassMethods)
@@ -9,6 +13,8 @@ module Lolita
       }
     end
 
+    # Look for named hook with singular or plural name of method.
+    # 
     def self.method_missing method_name,*args, &block
       if named_hook=(Lolita::Hooks::NamedHook.by_name(method_name))
         Lolita::Hooks::NamedHook
