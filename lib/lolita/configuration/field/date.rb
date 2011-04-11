@@ -4,7 +4,7 @@ module Lolita
       class Datetime < Lolita::Configuration::Field::Base
         attr_accessor :format
         def initialize *args
-          @type="datetime"
+          @type="date"
           super
         end
       end

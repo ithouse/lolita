@@ -99,12 +99,23 @@ module Lolita
       def field_to_hash(column)
         {
           :name=>column.name,
-          :type=>column.type.to_s,
+          :type=>type_cast(column.type.to_s),
           :title=>column.name.to_s.humanize,
           :options=>{
-            :primary=>column.primary
+            :primary=>column.primary,
+            :native_type=>column.type.to_s
           }
         }
+      end
+
+      # Converts SQL types to normal ruby types
+      def type_cast name
+        types = {
+          'decimal' => 'big_decimal',
+          'datetime' => 'time',
+          'text' => 'string'
+        }
+        types[name.to_s] || name
       end
     end
   end

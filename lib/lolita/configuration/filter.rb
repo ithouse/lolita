@@ -53,7 +53,7 @@ module Lolita
               self.send("#{m}=".to_sym,value)
             }
           else
-            fields args            
+            fields *args            
           end
         end
       end

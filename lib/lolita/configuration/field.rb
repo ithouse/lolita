@@ -33,7 +33,6 @@ module Lolita
         attr_reader :dbi,:nested_in
         
         def initialize dbi, *args, &block
-          debugger
           @dbi=dbi
           before_init(*args)
           begin
@@ -147,9 +146,9 @@ module Lolita
         end
 
         def process_type
-           set_association
-            set_type_from_args
-            set_type
+          set_association
+          set_type_from_args
+          set_type
         end
 
          def extract_args *args
@@ -175,12 +174,12 @@ module Lolita
         end
 
         def set_type
-          debugger
           if !@type
            if @association
                 self.type="array"
             elsif dbi_field=self.dbi.fields.detect{|f| f[:name].to_s==@name.to_s}
               self.type=dbi_field[:type]
+              self.options=dbi_field[:options]
             end
           end
           if @type.nil? || @type.to_s.downcase=="object"
