@@ -77,12 +77,8 @@ module Lolita
 
       def switch_locale
         old_locale=I18n.locale
-        new_locale=if Lolita.locales.include?(params[:locale].to_s.to_sym)
-          params[:locale]
-        else
-          Lolita.default_locale
-        end
-        I18n.locale=new_locale
+        Lolita.locale=params[:locale]
+        I18n.locale=Lolita.locale
         yield
         I18n.locale=old_locale
       end

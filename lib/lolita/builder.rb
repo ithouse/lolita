@@ -16,8 +16,8 @@ module Lolita
       options=args.extract_options!
       builder_options=self.builder_options || {}
       options=(options || {}).merge(builder_options)
-      builder_values=self.get_builder(args[0],args[1])
-      return builder_values[:name],builder_values[:state],options
+      builder_values=self.get_builder(*args)
+      return builder_values[:name].to_sym,builder_values[:state].to_sym,options
     end
 
     # Default options for class. This method should be overwritten.
@@ -47,7 +47,7 @@ module Lolita
 
     # Return default builder information.
     def default_builder
-      {:name=>"/#{builder_name}",:state=>default_build_state}
+      {:name=>"/#{builder_name}".to_sym,:state=>default_build_state}
     end
     
     private
@@ -63,11 +63,12 @@ module Lolita
     end
     
     def fix_name value
-      if value.to_s[0] == '/'
+      name=if value.to_s[0] == '/'
         value
       else
         "/#{builder_name}/#{value}"
       end
+      name.gsub(/\/$/,"")
     end
 
     def default_build_state
