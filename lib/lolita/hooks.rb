@@ -9,6 +9,14 @@ module Lolita
       }
     end
 
+    def self.method_missing method_name,*args, &block
+      if named_hook=(Lolita::Hooks::NamedHook.by_name(method_name))
+        Lolita::Hooks::NamedHook
+      else 
+        super
+      end
+    end
+
     module CommonMethods
       
       def callbacks
@@ -29,6 +37,14 @@ module Lolita
 
       def hooks_scope
         @hooks_scope||self
+      end
+
+      def given_callback_content=(content)
+        @given_callback_content=content
+      end
+
+      def given_callback_content
+        @given_callback_content
       end
 
       def hooks
@@ -75,11 +91,23 @@ module Lolita
         self.hooks.include?(name.to_sym)
       end
 
-      def method_missing(method_name, *args, &block)
-        if method_name.to_s.match(/fire_(\w+)/)
-          self.fire($1.to_sym,*args,&block)
-        else
+      def method_missing(*args, &block)
+        unless self.recognize_hook_methods(*args,&block)
           super
+        end
+      end
+
+
+      def let_content
+        if content=self.given_callback_content
+          run_block(self.given_callback_content)
+        end
+      end
+
+      def recognize_hook_methods method_name, *args, &block
+        if method_name.to_s.match(/^fire_(\w+)/)
+          self.fire($1,&block)
+          true
         end
       end
 
@@ -101,20 +129,25 @@ module Lolita
 
       def run_methods methods, &block
         (methods||[]).each do |method_name|
-          hooks_scope.send(method_name,&block)
+          hooks_scope.__send__(method_name,&block)
         end
       end
 
       def run_blocks blocks,&given_block
         (blocks||[]).each do |block|
-          if block_given?
-            hooks_scope.instance_eval do
-            block.call(&given_block)
-          end
-          else
-            hooks_scope.instance_eval(&block)
+          begin
+            if block_given?
+              self.given_callback_content=given_block
+            end
+            run_block(block,&given_block)
+          ensure
+            self.given_callback_content=nil
           end
         end
+      end
+
+      def run_block block, &given_block
+        hooks_scope.instance_eval(&block)
       end
 
       def get_callback(name)
@@ -148,10 +181,12 @@ module Lolita
         self.class.fire(*hook_names,:scope=>self)
       end
 
-      def method_missing(method_name,*args,&block)
-        if method_name.to_s.match(/fire_(\w+)/)
-          self.class.fire($1.to_sym,*args,&block)
-        else
+      def let_content
+        self.class.let_content
+      end
+
+      def method_missing(*args,&block)
+        unless self.class.recognize_hook_methods(*args,&block)
           super
         end
       end

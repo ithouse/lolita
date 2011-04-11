@@ -32,6 +32,9 @@ module Lolita
   end
   
   autoload :Hooks, "lolita/hooks"
+  module Hooks
+    autoload :NamedHook, "lolita/hooks/named_hook"
+  end
  
 
   module Configuration

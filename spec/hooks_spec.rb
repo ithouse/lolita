@@ -119,9 +119,9 @@ describe Lolita::Hooks do
     context "wrap around" do
 
       it "should allow to wrap around when #fire receive block" do
-        MyClass.after_load do
+        MyClass.after_load do 
           value("first")
-          yield if block_given?
+          let_content()
           value("second")
         end
 
@@ -135,12 +135,17 @@ describe Lolita::Hooks do
 
 
   describe "named callbacks" do
+    before(:each) do
+       Lolita::Hooks::NamedHook.add(:components)
+    end
+
     it "should add callbacks" do
       Lolita::Hooks.components.add_hook(:before)
       Lolita::Hooks.components.hooks.should have(1).hook
     end
 
     it "should filter by name" do
+      Lolita::Hooks.components.add_hook(:before)
       Counter.set(0)
       Lolita::Hooks.component(:"list").before do
         Counter.set(1)
