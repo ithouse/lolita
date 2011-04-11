@@ -11,10 +11,12 @@ module Lolita
     lolita_accessor :builder
 
     # Build response. Render component for current class with given options.
-    def build(options=nil)
+    def build(*args)
+      args||=[]
+      options=args.extract_options!
       builder_options=self.builder_options || {}
       options=(options || {}).merge(builder_options)
-      builder_values=self.get_builder
+      builder_values=self.get_builder(args[0],args[1])
       return builder_values[:name],builder_values[:state],options
     end
 
@@ -31,10 +33,10 @@ module Lolita
     # Default _name_ is Lolita::Configuration class name (example <code>:list</code>) and
     # default state is <code>:display</code>
     def get_builder(*value)
-      if @builder
-        set_builder(@builder)
-      elsif value && !value.empty?
+      if value && !value.empty?
         set_builder(*value)
+      elsif @builder
+        set_builder(@builder)
       else
         unless @builder
           @builder=default_builder
@@ -54,7 +56,7 @@ module Lolita
       if value.is_a?(Hash)
         @builder=value
       elsif value.is_a?(Array)
-        @builder={:name=>value[0],:state=>value[1] || default_build_state}
+        @builder={:name=>fix_name(value[0]),:state=>value[1] || default_build_state}
       else
         @builder={:name=>fix_name(value),:state=>default_build_state}
       end

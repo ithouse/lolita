@@ -9,4 +9,5 @@ module Lolita
   class NotFound < ArgumentError; end
   class ConfigurationClassNotFound < NameError; end
   class AssociationError < ArgumentError; end
+  class HookNotFound < ArgumentError;end
 end

@@ -1,5 +1,14 @@
 module ActionDispatch::Routing
   
+  class RouteSet
+    # alias_method_chain :draw, :lolita
+
+    # def draw_with_lolita
+    #   Lolita::Hooks.run("")
+    #   draw_without_lolita
+    # end
+  end
+
   class Mapper
 
     # Every module, that is used with lolita and has routes, need to have

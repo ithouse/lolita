@@ -20,6 +20,7 @@ module Lolita
   autoload(:Builder,'lolita/builder')
   autoload(:BaseConfiguration,'lolita/base_configuration')
   autoload(:Navigation,"lolita/navigation")
+
   module Adapter
     autoload :AbstractAdapter, 'lolita/adapter/abstract_adapter'
     autoload :ActiveRecord, 'lolita/adapter/active_record'
@@ -30,12 +31,8 @@ module Lolita
     autoload :Base, 'lolita/dbi/base'
   end
   
-  module Hooks
-    require 'lolita/hooks/hooks'
-    include Lolita::Hooks::Hooks
-    autoload :Base, 'lolita/hooks/base'
-    autoload :Component, 'lolita/hooks/component'
-  end
+  autoload :Hooks, "lolita/hooks"
+ 
 
   module Configuration
     autoload :Factory, 'lolita/configuration/factory'
