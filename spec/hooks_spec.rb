@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/simple_spec_helper')
 
 
 class MyClass
-  add_hook :asdf
   def self.value(value=nil)
     @value=value if value
     @value
