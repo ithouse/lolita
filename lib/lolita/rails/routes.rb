@@ -30,6 +30,7 @@ module ActionDispatch::Routing
     #     # lolita_for try to call :lolita_gallery in Mapper class
     def lolita_for *resources
       #TODO refactor
+      return if migrating?
       options = resources.extract_options!
 
       # if as = options.delete(:as)
@@ -50,7 +51,6 @@ module ActionDispatch::Routing
       resources.each{|resource|
         mapping=Lolita.add_mapping(resource,options)
         Lolita.resources[mapping.name]=mapping
-        
         target_class=mapping.to
         all_resource_classes<<target_class
 
@@ -102,6 +102,12 @@ module ActionDispatch::Routing
       yield
     ensure
       @scope[:as], @scope[:path], @scope[:module] = old_as, old_path, old_module
+    end
+
+    private
+
+    def migrating?
+      File.basename($0)=="rake" && $ARGV.include?("db:migrate")
     end
   end
 end
