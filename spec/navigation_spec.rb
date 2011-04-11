@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe Lolita::Navigation
+describe Lolita::Navigation do
   
   describe "Tree" do
     let(:tree){Lolita::Navigation::Tree.new("test")}

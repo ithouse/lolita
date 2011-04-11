@@ -34,7 +34,7 @@ module Lolita
     # default state is <code>:display</code>
     def get_builder(*value)
       if value && !value.empty?
-        set_builder(*value)
+        set_builder(value)
       elsif @builder
         set_builder(@builder)
       else
