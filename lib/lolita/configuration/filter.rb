@@ -13,6 +13,7 @@ module Lolita
 
       def field *args, &block
         field=Lolita::Configuration::Field.add(self.dbi,*args,&block)
+        field
         @fields<<field
         field
       end
@@ -58,6 +59,9 @@ module Lolita
         end
       end
 
+      def field_name field
+        ('a'..'z').to_a[self.fields.index(field)]
+      end
     end
   end
 end

@@ -52,26 +52,36 @@ module Lolita
 
       # Require component helper file and extend current instance with component helper module.
       # ====Example
-      #     will_use_component :"lolita/list"
+      #     will_use_component :"lolita/configuration/list"
       def will_use_component component_name
-        @used_component_helpers||=[]
-        unless @used_component_helpers.include?(component_name)
-          if path=component_helper_path(component_name)
-            self.class.class_eval do
-              require path
+        helpers_for_component(component_name) do |possible_component_name|
+          @used_component_helpers||=[]
+          unless @used_component_helpers.include?(possible_component_name)
+            if path=component_helper_path(possible_component_name)
+              self.class.class_eval do
+                require path
+              end
+              class_name=possible_component_name.to_s.camelize
+              self.extend("Components::#{class_name}Component".constantize)
             end
-            class_name=component_name.to_s.camelize
-            self.extend("Components::#{class_name}Component".constantize)
+            @used_component_helpers<<possible_component_name
           end
-          @used_component_helpers<<component_name
         end
       end
       
+      def helpers_for_component component_name
+        names=component_name.to_s.split("/")
+        start_index=1 # first is lolita
+        start_index.upto(names.size) do |index|
+          yield name.slice(0..index).join("/")
+        end
+      end
+
       # Find path for given component.
       # 
       #    component_helper_path :"lolita/list" #=> [path_to_lolita]/app/helpers/components/lolita/list_component.rb
       def component_helper_path component_name
-         helper_paths=$:.reject{|p| !p.match(/\/helpers$/)}
+         @helper_paths||=$:.reject{|p| !p.match(/\/helpers$/)}
          get_path=lambda{|paths|
           extra_path=component_name.to_s.split("/")
           component=extra_path.pop
@@ -83,7 +93,7 @@ module Lolita
             end  
           nil
         }
-        path=get_path.call(helper_paths)
+        path=get_path.call(@helper_paths)
         path
       end
       

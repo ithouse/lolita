@@ -189,6 +189,15 @@ a.create {
   box-shadow: inset 0px 1px 1px #ddd;
 } 
 
+/* filter */
+#main form.filter input, select {
+  margin-right: 15px;
+}
+#main form.filter {
+  background: #F3F3F3;
+  padding: 10px;
+}
+
 /* --------------------------------------------- */
 
 /* TinyMCE advanced theme's skin "Cirkuit" overrides */
