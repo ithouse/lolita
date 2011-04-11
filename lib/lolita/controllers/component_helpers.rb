@@ -33,12 +33,13 @@ module Lolita
         format=@opts.delete(:format)
         raise "Can't render component without name!" unless name
         will_use_component name 
+        partial_name=File.join("/components",name.to_s,state ? state.to_s : nil)
         if format
           with_format(format) do
-            render(:partial=>"/components/#{name}#{state ? "/#{state}" : nil}",:locals=>@opts)
+            render(:partial=>partial_name,:locals=>@opts)
           end
         else
-          render(:partial=>"/components/#{name}#{state ? "/#{state}" : nil}",:locals=>@opts)
+          render(:partial=>partial_name,:locals=>@opts)
         end
       end
       
@@ -62,7 +63,7 @@ module Lolita
                 require path
               end
               class_name=possible_component_name.to_s.camelize
-              self.extend("Components::#{class_name}Component".constantize)
+              self.extend("Components::#{class_name}Component".constantize) rescue nil #FIXME too slow
             end
             @used_component_helpers<<possible_component_name
           end
@@ -73,7 +74,7 @@ module Lolita
         names=component_name.to_s.split("/")
         start_index=1 # first is lolita
         start_index.upto(names.size) do |index|
-          yield name.slice(0..index).join("/")
+          yield names.slice(0..index).join("/")
         end
       end
 
