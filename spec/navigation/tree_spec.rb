@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../simple_spec_helper')
 
 describe Lolita::Navigation::Tree do
 
-  context "#new"
+  context "#new" do
     it "should create new navigation tree with name" do
       tree=Lolita::Navigation::Tree.new("Test tree")
       tree.name.should == "Test tree"
