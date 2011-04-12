@@ -19,7 +19,6 @@ module Lolita
   autoload(:ObservedArray,'lolita/observed_array')
   autoload(:Builder,'lolita/builder')
   autoload(:BaseConfiguration,'lolita/base_configuration')
-  autoload(:Navigation,"lolita/navigation")
 
   module Adapter
     autoload :AbstractAdapter, 'lolita/adapter/abstract_adapter'
@@ -106,6 +105,11 @@ module Lolita
     autoload :ViewUserHelpers, 'lolita/controllers/view_user_helpers'
   end
 
+  autoload(:Navigation,"lolita/navigation")
+  module Navigation
+    autoload :Tree, "lolita/navigation"
+    autoload :Branch, "lolita/navigation"
+  end
 
   @@scopes={}
 

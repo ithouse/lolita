@@ -136,7 +136,11 @@ describe Lolita::Hooks do
 
   describe "named callbacks" do
     before(:each) do
-       Lolita::Hooks::NamedHook.add(:components)
+       Lolita::Hooks::NamedHook.add(:components) unless Lolita::Hooks::NamedHook.exist?(:component)
+    end
+
+    after(:each) do
+      Lolita::Hooks.components.clear_hooks
     end
 
     it "should add callbacks" do
@@ -148,15 +152,39 @@ describe Lolita::Hooks do
       Lolita::Hooks.components.add_hook(:before)
       Counter.set(0)
       Lolita::Hooks.component(:"list").before do
-        Counter.set(1)
+        Counter.set(Counter.get+1)
       end
 
       Lolita::Hooks.component(:"tab").before do
-        Counter.set(2)
+        Counter.set(Counter.get+1)
       end
 
       Lolita::Hooks.component(:"list").fire(:before) 
       Counter.get.should == 1
+    end
+
+    it "should run on each named object when defined for all collection" do
+      Lolita::Hooks.components.add_hook(:after)
+      Counter.set(0)
+      Lolita::Hooks.components.after do
+        Counter.set(Counter.get+1)
+      end
+      Lolita::Hooks.component(:"list").fire(:after)
+      Lolita::Hooks.component(:"tab").fire(:after)
+      Counter.get.should == 2
+    end
+
+    it "should run all named hook callbacks when fired on named collection" do
+      Lolita::Hooks.components.add_hook(:after)
+      Counter.set(0)
+      Lolita::Hooks.component(:"list").after do
+        Counter.set(Counter.get+1)
+      end
+      Lolita::Hooks.component(:"tab").after do
+        Counter.set(Counter.get+1)
+      end
+      Lolita::Hooks.components.fire(:after)
+      Counter.get.should == 2
     end
 
   end
