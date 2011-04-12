@@ -1,6 +1,7 @@
 module Lolita
   module Configuration
     module Field
+      
       class Array < Lolita::Configuration::Field::Base
         lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type,:include_blank
 

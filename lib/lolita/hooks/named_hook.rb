@@ -30,6 +30,7 @@ module Lolita
           named_hooks.keys
         end
 
+        # Detect that named hook exist with given name.
         def exist?(name)
           self.names.include?(name)
         end
@@ -44,6 +45,9 @@ module Lolita
           end
         end
 
+        # Find named hook filter.
+        # ====Example
+        #     Lolita::Hooks::NamedHook.find(:components,:"list")
         def find(hook_name,filter_name)
           if named_hook=self.by_name(hook_name)
             named_hook[filter_name.to_sym]
