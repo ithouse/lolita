@@ -30,6 +30,7 @@ describe Lolita::Hooks do
   after(:each) do
     MyClass.clear_hooks if MyClass.respond_to?(:clear_hooks)
     Counter.clear_hooks if Counter.respond_to?(:clear_hooks)
+    MyClass.value(0)
   end
 
   it "should be possible to define hooks for class" do
@@ -96,10 +97,12 @@ describe Lolita::Hooks do
 
     it "should have named fire method" do
       MyClass.after_load {
-        value("excelent")
+        MyClass.value(MyClass.value()+1)
       }
+      object=MyClass.new
       MyClass.fire_after_load
-      MyClass.value.should == "excelent"
+      object.fire_after_load
+      MyClass.value.should == 2
     end
 
     it "should execute callback each time" do
@@ -116,28 +119,33 @@ describe Lolita::Hooks do
     context "wrap around" do
 
       it "should allow to wrap around when #fire receive block" do
-        MyClass.after_load do
-          name="first"
-          yield
-          name="second"
+        MyClass.after_load do 
+          value("first")
+          let_content()
+          value("second")
         end
 
         MyClass.fire(:after_load) do
-          name.should=="first"
+          value().should=="first"
         end
-        MyClass.name.should == "second"
+        MyClass.value.should == "second"
       end
     end
   end
 
 
   describe "named callbacks" do
+    before(:each) do
+       Lolita::Hooks::NamedHook.add(:components)
+    end
+
     it "should add callbacks" do
       Lolita::Hooks.components.add_hook(:before)
       Lolita::Hooks.components.hooks.should have(1).hook
     end
 
     it "should filter by name" do
+      Lolita::Hooks.components.add_hook(:before)
       Counter.set(0)
       Lolita::Hooks.component(:"list").before do
         Counter.set(1)

@@ -34,6 +34,18 @@ module Lolita
     def locales
       @locales || []
     end
+
+    def locale()
+      @locale || default_locale
+    end
+
+    def locale=given_locale
+      @locale=if locales.include?(given_locale.to_s.to_sym)
+        given_locale.to_s.to_sym
+      else
+        Lolita.default_locale
+      end
+    end
     # Return default locale. First looks for defined default locale for Lolita, when not found than
     # take first of defined #locales for Lolita, if there no defined locales for Lolita, than
     # look for I18n and take default locale from there or if there is no I18n than take :en
