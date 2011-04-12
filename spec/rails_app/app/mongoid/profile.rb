@@ -4,9 +4,9 @@ class Profile
   field :name, :type=>String
   field :age
   field :genere
-  references_many :posts
-  references_many :comments
-  references_and_referenced_in_many :preferences, :inverse_of=>:profiles
+  has_many :posts
+  has_many :comments
+  has_and_belongs_to_many :preferences
   embeds_one :address
   lolita do
 

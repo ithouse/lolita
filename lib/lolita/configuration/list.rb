@@ -57,7 +57,10 @@ module Lolita
         @filter.is_a?(Lolita::Configuration::Filter)
       end
 
-      # Adds filter
+      # Filter by now works only for these field types:
+      # - belongs_to
+      # - boolean
+      #
       def filter(*args,&block)
         @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
       end

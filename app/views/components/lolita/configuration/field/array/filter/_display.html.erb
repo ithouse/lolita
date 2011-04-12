@@ -1,1 +1,1 @@
-<%= select_tag filter.field_name(field), options_for_filter(field),field.html_options || {} %>
+<%= select_tag filter.field_name(field), options_for_select(filter.options_for_select(field), params[filter.field_name(field)]),field.html_options || filter.html_option_for_select(field) %>

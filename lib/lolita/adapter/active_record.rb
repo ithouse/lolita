@@ -70,6 +70,33 @@ module Lolita
         self.klass.paginate(opt)
       end
 
+      def filter(opt={})
+        conditions = {}
+        joins = []
+        unless opt.empty?
+          opt.each_pair do |k,v|
+            field = klass.columns.detect{|f| f.name == k.to_s}
+            if field
+              conditions[k] = v
+            elsif association = associations[k.to_sym]
+              case association_macro(association)
+              when :many
+                conditions[association.name] = {:id => v}
+                joins << association.name
+              when :one
+                conditions[association.primary_key_name] = v
+              end
+            end
+          end
+          unless conditions.empty?
+            rs = self.klass.where(conditions)
+            joins.each { |join| rs = rs.joins(join) }
+            return rs
+          end
+        end
+        self
+      end
+
       def db
         self.klass.connection
       end
@@ -112,7 +139,7 @@ module Lolita
       def type_cast name
         types = {
           'decimal' => 'big_decimal',
-          'datetime' => 'time',
+          'datetime' => 'date_time',
           'text' => 'string'
         }
         types[name.to_s] || name

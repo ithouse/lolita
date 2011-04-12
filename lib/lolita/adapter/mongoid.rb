@@ -32,6 +32,10 @@ module Lolita
           :many
         when :referenced_in
           :one
+        when :has_many
+          :many
+        when :belongs_to
+          :one
         when :embeds_one
           :one
         when :embeds_many
@@ -64,6 +68,10 @@ module Lolita
         self.klass.paginate(options)
       end
 
+      def filter(opt={})
+        self
+      end
+      
       def db
         self.klass.db
       end

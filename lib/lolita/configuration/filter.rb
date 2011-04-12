@@ -1,3 +1,4 @@
+# coding: utf-8
 module Lolita
   module Configuration
     class Filter
@@ -60,7 +61,26 @@ module Lolita
       end
 
       def field_name field
-        ('a'..'z').to_a[self.fields.index(field)]
+        #'f_'+('a'..'z').to_a[self.fields.index(field)]
+        "f_#{field.name}"
+      end
+
+      def options_for_select field
+        if field.options_for_select
+          field.options_for_select
+        else
+          if field.association_values.respond_to?(:call)
+           field.association_values.call(self)
+          else
+            field.association_values
+          end
+        end
+      end
+
+      def html_option_for_select field
+        {
+          :include_blank => I18n.t('lolita.filter.include_blank_by_title', :title => field.title)
+        }
       end
     end
   end

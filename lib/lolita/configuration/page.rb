@@ -58,18 +58,19 @@ module Lolita
       def paginate *args
         options=args ? args.extract_options! : {}
         hold=options.delete(:hold)
+        @params=options.delete(:params)
         set_values_from_options(options)
         options[:page]||=((args && args.first) || 1)
         options[:per_page]||=@per_page || 10
         @last_options=options
-        @last_options[:sort]=self.sort_columns.empty? ? nil : self.sort_columns
+        @last_options[:sort]=self.sort_columns unless self.sort_columns.empty?
         unless hold
           get_page()
         end
       end
 
       def get_page()
-        @page=@dbi.paginate((@page_options||{}).merge(@last_options))
+        @page=@dbi.filter(filter_conditions).paginate((@page_options||{}).merge(@last_options))
       end
       
       # Return last paginated page
@@ -82,6 +83,21 @@ module Lolita
       end
 
       private
+
+      # returns filter conditions as Hash for get_page()
+      def filter_conditions
+        if @params
+          conditions = {}
+          @params.each_pair do |k,v|
+            if k.to_s =~ /^f_([a-z0-9_\-]+)$/ && !v.to_s.strip.blank?
+              conditions[$1.to_sym] = v
+            end
+          end
+          conditions
+        else
+          {}
+        end
+      end
 
       def allowed_options
         [:sort_columns,:asc,:desc]
