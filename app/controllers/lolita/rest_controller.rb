@@ -66,19 +66,20 @@ class Lolita::RestController < ApplicationController
   end
   
   def save_and_redirect
-      respond_to do |format|
-        format.html do
-          if self.resource.save
-            flash.now[:notice] = I18n.t "lolita.shared.save_notice"
-          else
-            flash.now[:alert] = I18n.t "lolita.shared.save_alert"
-          end
-          show_form
+    respond_to do |format|
+      format.html do
+        if self.resource.save
+          self.resource.reload
+          flash.now[:notice] = I18n.t "lolita.shared.save_notice"
+        else
+          flash.now[:alert] = I18n.t "lolita.shared.save_alert"
         end
-        format.json do
-          render :status => self.resource.save ? 200 : 400, :json => self.resource
-        end
+        show_form
       end
+      format.json do
+        render :status => self.resource.save ? 200 : 400, :json => self.resource.reload
+      end
+    end
   end
   
   def to_list
