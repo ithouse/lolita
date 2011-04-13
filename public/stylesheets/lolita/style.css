@@ -189,6 +189,22 @@ a.create {
   box-shadow: inset 0px 1px 1px #ddd;
 } 
 
+/* filter */
+#main form.filter {
+  background: #F3F3F3;
+  padding: 10px;
+}
+#main form.filter select {
+  margin-right: 15px;
+  margin-bottom: 3px;
+}
+#main form.filter input {
+  vertical-align: middle;
+  margin: 0 10px 2px 3px;
+}
+#main form.filter label {
+  color: #666;
+}
 /* --------------------------------------------- */
 
 /* TinyMCE advanced theme's skin "Cirkuit" overrides */

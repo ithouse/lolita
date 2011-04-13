@@ -11,3 +11,6 @@ en:
     list:
       add_new: Add new %{name}
       confirm: Are you sure you want to delete record?
+    filter:
+      apply_button: Apply
+      include_blank_by_title: " -- Filter by %{title} -- "
