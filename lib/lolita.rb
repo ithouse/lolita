@@ -4,16 +4,16 @@ LOLITA_VERSION=File.read(File.expand_path("../../VERSION",__FILE__)).gsub(/[^.\w
 puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""}"
 
 # TODO should allow run lolita seperated
-unless (["-d","--debug"] & ARGV).empty?
-  require "ruby-debug"
-  Debugger.settings[:autoeval]=true
-else
-  unless self.respond_to?(:debugger)
-    def debugger
-      warn "Debugger called at #{caller.first} was ignored, run lolita with -d to attatch debugger."
-    end
-  end
-end
+# unless (["-d","--debug"] & ARGV).empty?
+#   require "ruby-debug"
+#   Debugger.settings[:autoeval]=true
+# else
+#   unless self.respond_to?(:debugger)
+#     def debugger
+#       warn "Debugger called at #{caller.first} was ignored, run lolita with -d to attatch debugger."
+#     end
+#   end
+# end
 
 require 'abstract'
 require 'active_support/core_ext/numeric/time'

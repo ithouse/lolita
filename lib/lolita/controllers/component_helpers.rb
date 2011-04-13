@@ -26,23 +26,39 @@ module Lolita
       #      render_component "lolita/list", :display
       #      render_component "lolita/list/display"
       def render_component *args
-        
         @opts=args.extract_options!
         name=args[0]
         state=args[1]
         format=@opts.delete(:format)
         raise "Can't render component without name!" unless name
         will_use_component name 
-        partial_name=File.join("/components",name.to_s,state ? state.to_s : nil)
-        if format
-          with_format(format) do
-            render(:partial=>partial_name,:locals=>@opts)
-          end
-        else
-          render(:partial=>partial_name,:locals=>@opts)
-        end
+        component_name=File.join(name.to_s,state ? state.to_s : nil)
+        partial_name=File.join("/components",component_name)
+        raw(output_component(partial_name,component_name,:format=>format,:locals=>@opts))
       end
       
+      def output_component(partial_name,name,options={})
+        output=""
+        if options[:format]
+          with_format(options[:format]) do
+            output << output_with_callbacks(partial_name,name,options[:locals])
+          end
+        else
+          output << output_with_callbacks(partial_name,name,options[:locals])
+        end
+        output
+      end
+
+      def output_with_callbacks(partial_name,name,locals)
+        output= Lolita::Hooks.component(name).run(:before,:run_scope=>self).to_s
+        block_output=Lolita::Hooks.component(name).run(:around, :run_scope=>self) do
+          render(:partial=>partial_name,:locals=>locals)
+        end
+        output << block_output.to_s
+        output << Lolita::Hooks.component(name).run(:after,:run_scope=>self).to_s
+        output
+      end
+
       def with_format(format, &block)
         old_formats = formats
         self.formats = [format]

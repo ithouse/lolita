@@ -1,3 +1,20 @@
+=== Version 3.1.2 / 2011-04-
+* Enhancements
+  * Hooks for Lolita::RestController addeed (Arturs Meisters)
+  * Form save response splited in different methods for easy way to override (Arturs Meisters)
+  * Hooks for #render_components (Arturs Meisters)
+  * Hook #run return results from methods and blocks as one big string (Arturs Meisters)
+  * Hooks :run_scope inventend (Arturs Meisters)
+  
+* Bug fixes
+  * Migration detection fixed (Arturs Meisters)
+  * Hooks named fire methods fixed (Arturs Meisters)
+  * Bug fixes in hooks (Arturs Meisters)
+
+=== Version 3.1.1 / 2011-04-13
+* Enhancements
+  * Filters for list added (Gatis Tomsons)
+
 === Version 3.1.0 / 2011-04-12
 * Enhancements
   * Hooks added (Arturs Meisters)

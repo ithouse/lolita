@@ -117,19 +117,41 @@ describe Lolita::Hooks do
     end
 
 
+    describe "block content" do
+      it "should return block content" do
+        MyClass.after_load do
+          "My name"+
+          let_content.to_s
+        end
+
+        output=MyClass.run(:after_load) do
+          " is Earl"
+        end
+
+        output.should == "My name is Earl"
+      end
+    end
+
     context "wrap around" do
 
       it "should allow to wrap around when #run receive block" do
         MyClass.after_load do 
           value("first")
           let_content()
-          value("second")
         end
 
         MyClass.run(:after_load) do
-          value().should=="first"
+          value("second")
         end
         MyClass.value.should == "second"
+      end
+
+      it "should call default block when no block passed as callback" do
+        MyClass.run(:after_load) do
+          value("inblock")
+        end
+
+        MyClass.value.should=="inblock"
       end
     end
 
@@ -206,6 +228,15 @@ describe Lolita::Hooks do
       Lolita::Hooks.component(:"list").run(:after)
       Lolita::Hooks.component(:"tab").run(:after)
       Counter.get.should == 2
+    end
+
+    it "should execute run block when no callback block given" do
+      Lolita::Hooks.components.add_hook(:around)
+      Counter.set(0)
+      Lolita::Hooks.components.run(:around) do
+        Counter.set(1)
+      end
+      Counter.get.should==1
     end
 
     it "should run all named hook callbacks when runned on named collection" do

@@ -92,6 +92,7 @@ module Lolita
     end
 
     module ClassMethods
+      attr_accessor :hooks_run_scope
 
       # Setter for #hook_scope.
       def hooks_scope=(object)
@@ -154,14 +155,17 @@ module Lolita
       #     MyClass.run(:before_save,:after_save,:scope=>MyClass.new)
       #     # this will call callbacks in MyClass instance scope, that means that self will be MyClass instance.
       def run(*hook_names,&block)
+
+        result=nil
         options=hook_names.extract_options!
         (hook_names || []).each do |hook_name|
           raise Lolita::HookNotFound, "Hook #{hook_name} is not defined for #{self}." unless self.has_hook?(hook_name)
-          in_hooks_scope(options[:scope]) do
+          in_hooks_scope(options[:scope],options[:run_scope]) do
             callback=get_callback(hook_name)
-            run_callback(callback,&block)
+            result=run_callback(callback,&block)
           end
         end
+        result
       end
 
       # Is hook with <em>name</em> is defined for class.
@@ -201,46 +205,61 @@ module Lolita
 
       # Switch between self and given <em>scope</em>. Block will be executed with <em>scope</em>.
       # And after that it will switch back to self.
-      def in_hooks_scope(scope)
+      def in_hooks_scope(scope,run_scope=nil)
         begin
           self.hooks_scope=scope||self
+          if run_scope
+            run_scope.define_singleton_method(:let_content) do
+              scope.let_content
+            end
+          end
+          self.hooks_run_scope=run_scope || self.hooks_scope
           yield
         ensure
           self.hooks_scope=self
+          self.hooks_run_scope=self.hooks_scope
         end
       end
 
       # Run callback. Each callback is Hash with <i>:methods</i> Array and </i>:blocks</i> Array
       def run_callback(callback,&block)
-        run_methods(callback[:methods],&block)
-        run_blocks(callback[:blocks],&block)
+        method_results=run_methods(callback[:methods],&block)
+        block_results=run_blocks(callback[:blocks],&block)
+        method_results+block_results
       end
 
       # Run methods from <em>methods</em> Array
       def run_methods methods, &block
+        result=""
         (methods||[]).each do |method_name|
-          hooks_scope.__send__(method_name,&block)
+          result << (hooks_run_scope.__send__(method_name,&block)).to_s
         end
+        result
       end
 
       # Run blocks from <em>blocks</em> Array. Also it set #given_callback_content if block is given, this
       # will allow to call #let_content. Each block is runned with #run_block.
       def run_blocks blocks,&given_block
+        result=""
         (blocks||[]).each do |block|
           begin
             if block_given?
               self.given_callback_content=given_block
             end
-            run_block(block,&given_block)
+            result << (run_block(block,&given_block)).to_s
           ensure
             self.given_callback_content=nil
           end
         end
+        if block_given? && (!blocks || (blocks && blocks.empty?))
+          result << run_block(given_block).to_s
+        end
+        result
       end
 
       # Run block in scope. 
       def run_block block, &given_block
-        hooks_scope.instance_eval(&block)
+        hooks_run_scope.instance_eval(&block)
       end
 
       # Return all callbacks
@@ -277,8 +296,10 @@ module Lolita
     module InstanceMethods
 
       # See Lolita::Hooks::ClassMethods#run
-      def run(*hook_names)
-        self.class.run(*hook_names,:scope=>self)
+      def run(*hook_names,&block)
+        options=hook_names ? hook_names.extract_options! : {}
+        options[:scope]=self
+        self.class.run(*hook_names,options,&block)
       end
 
       # See Lolita::Hooks::ClassMethods#let_content

@@ -48,7 +48,49 @@ to all controllers.
 If you decide to use some newer version, you most likely should copy new assets to your project. 
 This can be done with
   rails g lolita:assets
+===Using hooks
 
+Lolita define hooks for RestController and for components.
+====RestController hooks
+
+There are two kind of hooks for all actions - <em>before_[action name]</em> and <em>after_[action name]</em>.
+Define callbacks for those hooks outside of controller. This will call User#log_action each time when #destroy 
+action is requested.
+   Lolita::RestController.before_destroy do
+      User.log_action("Going to delete #{params[:id]}") 
+   end
+Also you can define callbacks in your controllers that extend Lolita::RestController. This will call #set_default_params
+each time #new action is requested.
+   class PostController < Lolita::RestController
+      before_new :set_default_params
+
+      private
+
+      def set_default_params
+        params[:post][:title]="-Your title goes here-"
+      end
+  end
+====Component hooks
+
+Components have three hooks - <em>before</em>, <em>after</em> and <em>around</em>.
+Component hooks are different from controller hooks with names. Each component has it's own name, that is used to
+call component, like
+  render_component :"lolita/configuration/list/display"
+  #same as
+  render_component :"lolita/configuration/list", :display
+and this name is used to add callback for component. As components is not related to specific class, then there
+are only one way to define callback for them.
+  Lolita::Hooks.component(:"lolita/configuration/list/display").before do
+    "<div>My Custom text</div>"
+  end
+That what are inside of blocks depends on place where you define callback if it is in <i>.rb</i> file, than you
+should put HTML in quotes, if in <i>.erb</i> and similar files then there is no need for that. Also blocks with 
+Ruby code only return last line, so you should probably define HTML as shown in previous example.
+For <b>around</b> callback if you pass block, then original content will be replaced with that, but if you want
+to let original content inside of your block content than it is done like this with #let_content method.
+  Lolita::Hooks.component(:"lolita/configuration/list/display").around do
+    "<div style='color:red'>#{let_content}</div>"
+  end
 ==License
 
 Lolita is under MIT license. See LICENSE.txt[https://github.com/ithouse/lolita/blob/master/LICENSE.txt]
