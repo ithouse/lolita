@@ -1,0 +1,70 @@
+=== Version 3.1.0 / 2011-04-12
+* Enhancements
+  * Hooks added (Arturs Meisters)
+  * Builders updated to complete received names (Arturs Meisters)
+  * Fields renamed to related Ruby or ActiveSupport classes (Gatis Tomsons)
+  * Componente default naming changed to match related model/class structure (Gatis Tomsons)
+  * No need for <em>include Lolita::Configuration</em> and #lolita call for lolita_for 
+    related class (Arturs Meisters)
+  * Automatic field type detection from ORM (Arturs Meisters) 
+  * List filter introduced (Gatis Tomsons)
+  * Response for JSON (Gatis Tomsons)
+  * Configuration has locales, and Lolita using those to seperate project translation (Arturs Meisters)
+  * DateTime field formation for display only (Valdis Pornieks)
+
+* Bug fixes
+  * Validation errors fixed (Janis Kesteris)
+  * MongoID adapter fixed to work with new mongoid (Valdis Pornieks)
+  * AR :order option fixed for find methods (Aivils Stoss)
+  * AR migration error fixed (Arturs Meisters)
+  * Redirect after destroy to index (Valdis Pornieks)
+  * Route and nested route bugs fixed (Arturs Meisters)
+  * Multiple textareas with tinyMCE (Valdis Pornieks) 
+  * Resource path methods fixed (Arturs Meisters)
+  * #url_for fixed for lolita (Arturs Meisters, Gatis Tomsons)
+  * Layout fixed (Rolands Bondars)
+
+=== Version 3.0.7 / 2011-03-29
+* Enhancements
+  * Collection field updated (Arturs Meisters)
+  * #options_for_select added for collection field (Gatis Tomsons)
+
+=== Version 3.0.6 / 2011-03-29
+* Enhancements
+  * TinyMCE updated with new buttons (Janis Kesteris)
+  * #add_module changed to support nested routes (Arturs Meisters)
+  * Routes support nested resources (Arturs Meisters)
+  * Fields splited in classes based on type (Arturs Meisters)
+  * #render_component accept :format option (Arturs Meisters)
+
+* Bug fixes
+  * Collection field collection priority fixed (Arturs Meisters)
+  * JQuery Ajax request updated, to support Rails CSRF fix. (Arturs Meisters)
+
+=== Version 3.0.5 / 2011-03-23
+* Enhacements
+  * #by_type for tabs added (Arturs Meisters)
+  * Test module invented and #be_routable matcher added (Arturs Meisters)
+  * Cucumber added for testing (Rolands Bondars)
+
+* Bug fixes
+  * Small look fixes (Rolands Bondars)
+  * #content_for removed from tab components (Rolands Bondars)
+
+=== Version 3.0.4 / 2011-03-17
+* Enhancements
+  * Save button added (Rolands Bondars)
+  * Removed unnecessery stuff from TinyMCE (Rolands Bonadars)
+  * :content used as default type for tabs. (Arturs Meisters)
+
+=== Version 3.0.3 / 2011-03-16
+* Enhancements (Arturs Meisters)
+  * First version form 3.x series of Lolita
+  * Basic configuration classes
+  * Basic views
+  * Basic controller and views mechanism
+  * New look (Rolands Bondars)
+
+=== Versions before 3.0.3
+Lolita 3.0 is completely different from previous versions and don't have any compability or architecture same as
+old versions. 

@@ -1,7 +1,7 @@
 module Lolita
   module Navigation
 
-    class Base
+    class Tree
       include Lolita::ObservedArray
 
       def initialize

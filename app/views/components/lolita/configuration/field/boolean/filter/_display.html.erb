@@ -1,0 +1,2 @@
+<label for="<%= filter.field_name(field) %>"><%= field.title %></label>
+<%= check_box_tag filter.field_name(field), 1, params[filter.field_name(field)], field.html_options || {} %>

@@ -30,14 +30,16 @@ module Lolita
         case macro
         when :references_many
           :many
+        when :references_and_referenced_in_many
+          :many
         when :referenced_in
+          :one
+        when :references_one
           :one
         when :embeds_one
           :one
         when :embeds_many
           :many
-        when :references_one
-          :one
         end
       end
 
@@ -64,6 +66,27 @@ module Lolita
         self.klass.paginate(options)
       end
 
+      def filter(opt={})
+        conditions = {}
+        unless opt.empty?
+          opt.each_pair do |k,v|
+            field = klass.fields.detect{|name,f| name == k.to_s}
+            if field
+              conditions[k] = v
+            elsif association = associations[k.to_s]
+              case association_macro(association)
+              when :many
+                conditions[:"#{klass.reflect_on_association(k).key}".in] = [v]
+              when :one
+                conditions[klass.reflect_on_association(k).foreign_key] = v
+              end
+            end
+          end
+          return self.klass.where(conditions)
+        end
+        self
+      end
+      
       def db
         self.klass.db
       end

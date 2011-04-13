@@ -24,7 +24,7 @@ require 'rubygems'
 #require 'ruby-debug'
 LOLITA_ORM=:mongoid
 require "orm/#{LOLITA_ORM}"
-
+require "rails"
 require "rails_app/config/environment"
 require 'rspec/rails'
 require 'ffaker'

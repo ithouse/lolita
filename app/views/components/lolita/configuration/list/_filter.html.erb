@@ -1,8 +1,8 @@
 <% if list.filter? -%>
   <form action="" action="get" class="filter">
     <% list.filter.fields.each do |field| %>
-      <%= render_component *field.build %>
+      <%= render_component *field.build(:filter, :filter=>list.filter) %>
     <% end %>
-    <button type="submit">Apply</button>
+    <button type="submit"><%= I18n.t "lolita.filter.apply_button" %></button>
   </form>
 <% end -%>

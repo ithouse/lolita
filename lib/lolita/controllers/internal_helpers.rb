@@ -47,6 +47,7 @@ module Lolita
       end
 
       def resource_with_attributes(current_resource,attributes={})
+        #TODO: detect rails date_select and datetime_select special attributes
         attributes||=resource_attributes
         attributes.each{|key,value|
           current_resource.send(:"#{key}=",value)

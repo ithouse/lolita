@@ -98,6 +98,6 @@ class Lolita::RestController < ApplicationController
   end
 
   def page
-    resource_class.lolita.list.paginate(params[:page])
+    resource_class.lolita.list.paginate(params[:page], :params => params)
   end
 end

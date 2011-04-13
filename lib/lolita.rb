@@ -1,9 +1,23 @@
-main_time=Time.now
 
 $:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
+LOLITA_VERSION=File.read(File.expand_path("../../VERSION",__FILE__)).gsub(/[^.0-9]/,"")
+puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""}"
 
-require 'abstract' #FIXME remove from gem
+# TODO should allow run lolita seperated to 
+unless (["-d","--debug"] & ARGV).empty?
+  require "ruby-debug"
+  Debugger.settings[:autoeval]=true
+else
+  if self.respond_to?(:debugger)
+    def debugger
+      warn "Debugger called at #{caller.first} was ignored, run lolita with -d to attatch debugger."
+    end
+  end
+end
+
+require 'abstract'
 require 'active_support/core_ext/numeric/time'
+require 'active_support/core_ext/date_time/conversions'
 require 'active_support/concern'
 require 'active_support/callbacks'
 require 'active_support/dependencies'
@@ -19,7 +33,6 @@ module Lolita
   autoload(:ObservedArray,'lolita/observed_array')
   autoload(:Builder,'lolita/builder')
   autoload(:BaseConfiguration,'lolita/base_configuration')
-  autoload(:Navigation,"lolita/navigation")
 
   module Adapter
     autoload :AbstractAdapter, 'lolita/adapter/abstract_adapter'
@@ -106,6 +119,11 @@ module Lolita
     autoload :ViewUserHelpers, 'lolita/controllers/view_user_helpers'
   end
 
+  autoload(:Navigation,"lolita/navigation")
+  module Navigation
+    autoload :Tree, "lolita/navigation"
+    autoload :Branch, "lolita/navigation"
+  end
 
   @@scopes={}
 
@@ -141,12 +159,6 @@ module Lolita
   
 end
 
-engine_time=Time.now
-
 if defined?(Rails)
   require 'lolita/rails/all'
 end
-
-puts "Lolita engine started in #{Time.at(Time.now-engine_time).strftime("%M:%S.%3N")}"
-
-puts "Lolita started in #{Time.at(Time.now-main_time).strftime("%M:%S.%3N")}"

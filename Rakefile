@@ -16,9 +16,9 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/ithouse/lolita"
   gem.license = "MIT"
   gem.summary = %Q{Great Rails CMS.}
-  gem.description = %Q{Great Rails CMS that allow you to start working with models right when you add this to your project.}
+  gem.description = %Q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   gem.email = "support@ithouse.lv"
-  gem.authors = ["ITHouse","Arturs Meisters"]
+  gem.authors = ["ITHouse (Latvia) and Arturs Meisters"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
