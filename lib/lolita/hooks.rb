@@ -4,7 +4,7 @@ module Lolita
   # Hooks are stored in class <i>@hooks</i> variable, that is Hash and each key is hook name
   # and each hook also is Hash that have <em>:methods</em> and <em>:blocks</em>
   # keys. Both of those are Array, and each time you call callback method, like <i>before_save</i> and so on, block 
-  # and/or methods is stored. <b>Each time</b> #fire is called all blocks and methods will be executed.
+  # and/or methods is stored. <b>Each time</b> #run is called all blocks and methods will be executed.
   # It may look like this.
   #    class MyClass
   #      include Lolita::Hooks
@@ -19,7 +19,7 @@ module Lolita
   # ==Scopes
   # Most times hook callbacks are defined for class like in previous example, but also it's possible to do it
   # on class instances. Difference between calling it on class or on instance is that instance callbacks will
-  # be called only when event is fired on instance. Class callbacks will be called on class and also on instance
+  # be called only when event is runned on instance. Class callbacks will be called on class and also on instance
   # callbacks.
   #    my_object=MyClass.new
   #    MyClass.before_save do
@@ -29,25 +29,25 @@ module Lolita
   #      puts "instance callback"
   #    end
   #    
-  #    MyClass.fire(:before_save) #=> 
+  #    MyClass.run(:before_save) #=> 
   #      class_callback
   #    
-  #    my_object.fire(:before_save) #=>
+  #    my_object.run(:before_save) #=>
   #      class_callback
   #      instance_callback
   #   # As you can see, first class callbacks is called and after that instance callbacks.
   #
   # ==Firing events
-  # To execute callbacks, events should be called on object. Event names is same hooks names. #fire can be called
-  # on class or on instance. Also it is possible to pass block to fire event, that will replace callback block
+  # To execute callbacks, events should be called on object. Event names is same hooks names. #run can be called
+  # on class or on instance. Also it is possible to pass block to run event, that will replace callback block
   # or if #let_content is called than it will work like wrapper, like this
   #    # this is continuation of previous code
-  #    MyClass.fire(:before_save) do
+  #    MyClass.run(:before_save) do
   #      puts "replaced text"
   #    end
   #    # will produce #=> replaced text
   #    
-  #    MyClass.fire(:before_save) do
+  #    MyClass.run(:before_save) do
   #      puts "before callback"
   #      let_content
   #      puts "after callback"
@@ -108,7 +108,7 @@ module Lolita
         @given_callback_content=content
       end
 
-      # Callback content is used to let callback content executed insede of fire block.
+      # Callback content is used to let callback content executed insede of run block.
       def given_callback_content
         @given_callback_content
       end
@@ -147,13 +147,13 @@ module Lolita
         }
       end
 
-      # Fire is used to execute callback. Method accept one or more <i>hook_names</i> and optional block.
+      # run is used to execute callback. Method accept one or more <i>hook_names</i> and optional block.
       # It will raise error if hook don't exist for this class. Also it accept <em>:scope</em> options, that
       # is used to #get_callbacks and #run_callbacks.
       # ====Example
-      #     MyClass.fire(:before_save,:after_save,:scope=>MyClass.new)
+      #     MyClass.run(:before_save,:after_save,:scope=>MyClass.new)
       #     # this will call callbacks in MyClass instance scope, that means that self will be MyClass instance.
-      def fire(*hook_names,&block)
+      def run(*hook_names,&block)
         options=hook_names.extract_options!
         (hook_names || []).each do |hook_name|
           raise Lolita::HookNotFound, "Hook #{hook_name} is not defined for #{self}." unless self.has_hook?(hook_name)
@@ -169,19 +169,19 @@ module Lolita
         self.hooks.include?(name.to_sym)
       end
 
-      # Try to recognize named fire methods like 
-      #    MyClass.fire_after_save # will call MyClass.fire(:after_save) 
+      # Try to recognize named run methods like 
+      #    MyClass.run_after_save # will call MyClass.run(:after_save) 
       def method_missing(*args, &block)
         unless self.recognize_hook_methods(*args,&block)
           super
         end
       end
 
-      # Call callback block inside of fire block.
+      # Call callback block inside of run block.
       # ====Example
-      #     MyClass.fire(:before_save) do 
+      #     MyClass.run(:before_save) do 
       #        do_stuff
-      #        let_content # execute callback block(-s) in same scope as fire is executed.
+      #        let_content # execute callback block(-s) in same scope as run is executed.
       #     end
       def let_content
         if content=self.given_callback_content
@@ -191,8 +191,8 @@ module Lolita
 
       # Set #method_missing
       def recognize_hook_methods method_name, *args, &block
-        if method_name.to_s.match(/^fire_(\w+)/)
-          self.fire($1,&block)
+        if method_name.to_s.match(/^run_(\w+)/)
+          self.run($1,&block)
           true
         end
       end
@@ -276,9 +276,9 @@ module Lolita
     # Methods for instance.
     module InstanceMethods
 
-      # See Lolita::Hooks::ClassMethods#fire
-      def fire(*hook_names)
-        self.class.fire(*hook_names,:scope=>self)
+      # See Lolita::Hooks::ClassMethods#run
+      def run(*hook_names)
+        self.class.run(*hook_names,:scope=>self)
       end
 
       # See Lolita::Hooks::ClassMethods#let_content

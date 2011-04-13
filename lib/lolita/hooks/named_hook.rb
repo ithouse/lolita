@@ -11,7 +11,7 @@ module Lolita
     #      go_to_honeymoon
     #    end
     #    john=Person.new("John")
-    #    john.fire(:get_merried) # and now john will go to honeymoon
+    #    john.run(:get_merried) # and now john will go to honeymoon
     # Hooks are added for pluralized hook name, even if you pass like #add(:person), it will create named hook
     # with <i>people</i> name. This will be class, and when you call #person it will create instance for that class.
     class NamedHook
@@ -103,14 +103,14 @@ module Lolita
               @hook_name
             end
 
-            # def self.fire(*hook_names,&block)
+            # def self.run(*hook_names,&block)
             #   hook_names||=[]
             #   hook_names.extract_options!
             #   super(*hook_names,&block)
             #   if named_hook=self.by_name(self.hook_name)
             #     named_hook.each{|filter_name, filter|
             #       unless filter_name.to_sym==:"_class"
-            #         self.fire(*(hook_names + [{:scope=>filter}]),&block)
+            #         self.run(*(hook_names + [{:scope=>filter}]),&block)
             #       end
             #     }
             #   end

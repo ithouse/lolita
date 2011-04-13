@@ -9,11 +9,11 @@ class MyClass
 
   attr_accessor :name
   def initialize
-    self.fire(:after_init)
+    self.run(:after_init)
   end
 
   def save
-    self.fire(:before_save)
+    self.run(:before_save)
   end
 end
 
@@ -91,17 +91,17 @@ describe Lolita::Hooks do
       MyClass.after_load do
         value(true)
       end
-      MyClass.fire(:after_load)
+      MyClass.run(:after_load)
       MyClass.value.should be_true
     end
 
-    it "should have named fire method" do
+    it "should have named run method" do
       MyClass.after_load {
         MyClass.value(MyClass.value()+1)
       }
       object=MyClass.new
-      MyClass.fire_after_load
-      object.fire_after_load
+      MyClass.run_after_load
+      object.run_after_load
       MyClass.value.should == 2
     end
 
@@ -110,22 +110,22 @@ describe Lolita::Hooks do
       MyClass.after_load do
         value(value()+1)
       end
-      MyClass.fire(:after_load)
-      MyClass.fire(:after_load)
+      MyClass.run(:after_load)
+      MyClass.run(:after_load)
       MyClass.value.should == 2
     end
 
 
     context "wrap around" do
 
-      it "should allow to wrap around when #fire receive block" do
+      it "should allow to wrap around when #run receive block" do
         MyClass.after_load do 
           value("first")
           let_content()
           value("second")
         end
 
-        MyClass.fire(:after_load) do
+        MyClass.run(:after_load) do
           value().should=="first"
         end
         MyClass.value.should == "second"
@@ -159,7 +159,7 @@ describe Lolita::Hooks do
         Counter.set(Counter.get+1)
       end
 
-      Lolita::Hooks.component(:"list").fire(:before) 
+      Lolita::Hooks.component(:"list").run(:before) 
       Counter.get.should == 1
     end
 
@@ -169,12 +169,12 @@ describe Lolita::Hooks do
       Lolita::Hooks.components.after do
         Counter.set(Counter.get+1)
       end
-      Lolita::Hooks.component(:"list").fire(:after)
-      Lolita::Hooks.component(:"tab").fire(:after)
+      Lolita::Hooks.component(:"list").run(:after)
+      Lolita::Hooks.component(:"tab").run(:after)
       Counter.get.should == 2
     end
 
-    it "should run all named hook callbacks when fired on named collection" do
+    it "should run all named hook callbacks when runned on named collection" do
       pending "Need to update functionality to work."
       Lolita::Hooks.components.add_hook(:after)
       Counter.set(0)
@@ -184,7 +184,7 @@ describe Lolita::Hooks do
       Lolita::Hooks.component(:"tab").after do
         Counter.set(Counter.get+1)
       end
-      Lolita::Hooks.components.fire(:after)
+      Lolita::Hooks.components.run(:after)
       Counter.get.should == 2
     end
 

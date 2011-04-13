@@ -1,14 +1,14 @@
 
 $:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
-LOLITA_VERSION=File.read(File.expand_path("../../VERSION",__FILE__)).gsub(/[^.0-9]/,"")
+LOLITA_VERSION=File.read(File.expand_path("../../VERSION",__FILE__)).gsub(/[^.\w]/,"")
 puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""}"
 
-# TODO should allow run lolita seperated to 
+# TODO should allow run lolita seperated
 unless (["-d","--debug"] & ARGV).empty?
   require "ruby-debug"
   Debugger.settings[:autoeval]=true
 else
-  if self.respond_to?(:debugger)
+  unless self.respond_to?(:debugger)
     def debugger
       warn "Debugger called at #{caller.first} was ignored, run lolita with -d to attatch debugger."
     end
@@ -119,10 +119,9 @@ module Lolita
     autoload :ViewUserHelpers, 'lolita/controllers/view_user_helpers'
   end
 
-  autoload(:Navigation,"lolita/navigation")
   module Navigation
-    autoload :Tree, "lolita/navigation"
-    autoload :Branch, "lolita/navigation"
+    autoload :Tree, "lolita/navigation/tree"
+    autoload :Branch, "lolita/navigation/branch"
   end
 
   @@scopes={}
