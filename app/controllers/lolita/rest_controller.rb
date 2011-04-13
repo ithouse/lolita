@@ -79,7 +79,6 @@ class Lolita::RestController < ApplicationController
     respond_to do |format|
       if self.resource.save
         self.resource.reload
-        
         format.html{ respond_html_200}
         format.json{ respond_json_200}
       else
