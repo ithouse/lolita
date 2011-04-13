@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.0"
+  s.version = "3.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["ITHouse", "Arturs Meisters"]
-  s.date = %q{2011-04-12}
-  s.description = %q{Great Rails CMS that allow you to start working with models right when you add this to your project.}
+  s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
+  s.date = %q{2011-04-13}
+  s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     ".document",
-    ".project",
     ".rspec",
-    "GUIDELINE",
+    "GUIDELINES",
     "Gemfile",
+    "History.rdoc",
     "IDEA",
     "LICENSE.txt",
     "README.rdoc",
@@ -34,11 +34,16 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field/_label.html.erb",
     "app/views/components/lolita/configuration/field/_object.html.erb",
     "app/views/components/lolita/configuration/field/array/_display.html.erb",
+    "app/views/components/lolita/configuration/field/array/filter/_display.html.erb",
     "app/views/components/lolita/configuration/field/array/habtm/_display.html.erb",
     "app/views/components/lolita/configuration/field/array/select/_display.html.erb",
     "app/views/components/lolita/configuration/field/big_decimal/_display.html.erb",
     "app/views/components/lolita/configuration/field/boolean/_display.html.erb",
+    "app/views/components/lolita/configuration/field/boolean/filter/_display.html.erb",
     "app/views/components/lolita/configuration/field/date/_display.html.erb",
+    "app/views/components/lolita/configuration/field/date_time/_display.html.erb",
+    "app/views/components/lolita/configuration/field/date_time/date/_display.html.erb",
+    "app/views/components/lolita/configuration/field/date_time/time/_display.html.erb",
     "app/views/components/lolita/configuration/field/float/_display.html.erb",
     "app/views/components/lolita/configuration/field/integer/_display.html.erb",
     "app/views/components/lolita/configuration/field/string/_display.html.erb",
@@ -101,6 +106,7 @@ Gem::Specification.new do |s|
     "lib/lolita/configuration/field/big_decimal.rb",
     "lib/lolita/configuration/field/boolean.rb",
     "lib/lolita/configuration/field/date.rb",
+    "lib/lolita/configuration/field/date_time.rb",
     "lib/lolita/configuration/field/integer.rb",
     "lib/lolita/configuration/field/string.rb",
     "lib/lolita/configuration/field/time.rb",
@@ -126,14 +132,14 @@ Gem::Specification.new do |s|
     "lib/lolita/mapping.rb",
     "lib/lolita/modules.rb",
     "lib/lolita/modules/rest.rb",
-    "lib/lolita/navigation.rb",
+    "lib/lolita/navigation/branch.rb",
+    "lib/lolita/navigation/tree.rb",
     "lib/lolita/observed_array.rb",
     "lib/lolita/rails.rb",
     "lib/lolita/rails/all.rb",
     "lib/lolita/rails/routes.rb",
     "lib/lolita/ruby_ext/accessors.rb",
     "lib/lolita/test/matchers.rb",
-    "log/development.log",
     "lolita.gemspec",
     "public/images/lolita/plus.png",
     "public/javascripts/jquery-1.5.1.min.js",
@@ -216,10 +222,12 @@ Gem::Specification.new do |s|
     "spec/rails_app/app/controllers/application_controller.rb",
     "spec/rails_app/app/helpers/application_helper.rb",
     "spec/rails_app/app/mongoid/address.rb",
+    "spec/rails_app/app/mongoid/category.rb",
     "spec/rails_app/app/mongoid/comment.rb",
     "spec/rails_app/app/mongoid/post.rb",
     "spec/rails_app/app/mongoid/preference.rb",
     "spec/rails_app/app/mongoid/profile.rb",
+    "spec/rails_app/app/mongoid/tag.rb",
     "spec/rails_app/app/views/components/lolita/configuration/list/_body_cell.html.erb",
     "spec/rails_app/config/application.rb",
     "spec/rails_app/config/boot.rb",
@@ -295,9 +303,9 @@ Gem::Specification.new do |s|
     "spec/routing/routes_spec.rb",
     "spec/simple_spec_helper.rb",
     "spec/spec_helper.rb",
+    "spec/support/factories/category.rb",
     "spec/support/factories/post.rb",
-    "test/cells/form_cell_test.rb",
-    "test/test_helper.rb"
+    "spec/support/factories/tag.rb"
   ]
   s.homepage = %q{http://github.com/ithouse/lolita}
   s.licenses = ["MIT"]
@@ -328,10 +336,12 @@ Gem::Specification.new do |s|
     "spec/rails_app/app/controllers/application_controller.rb",
     "spec/rails_app/app/helpers/application_helper.rb",
     "spec/rails_app/app/mongoid/address.rb",
+    "spec/rails_app/app/mongoid/category.rb",
     "spec/rails_app/app/mongoid/comment.rb",
     "spec/rails_app/app/mongoid/post.rb",
     "spec/rails_app/app/mongoid/preference.rb",
     "spec/rails_app/app/mongoid/profile.rb",
+    "spec/rails_app/app/mongoid/tag.rb",
     "spec/rails_app/config/application.rb",
     "spec/rails_app/config/boot.rb",
     "spec/rails_app/config/environment.rb",
@@ -348,9 +358,9 @@ Gem::Specification.new do |s|
     "spec/routing/routes_spec.rb",
     "spec/simple_spec_helper.rb",
     "spec/spec_helper.rb",
+    "spec/support/factories/category.rb",
     "spec/support/factories/post.rb",
-    "test/cells/form_cell_test.rb",
-    "test/test_helper.rb"
+    "spec/support/factories/tag.rb"
   ]
 
   if s.respond_to? :specification_version then
