@@ -48,3 +48,7 @@ to all controllers.
 If you decide to use some newer version, you most likely should copy new assets to your project. 
 This can be done with
   rails g lolita:assets
+
+==License
+
+Lolita is under MIT license. See LICENSE.txt[https://github.com/ithouse/lolita/blob/master/LICENSE.txt]
