@@ -80,10 +80,43 @@ describe Lolita::Configuration::Filter do
   end
 
   it "should filter results for boolean" do
+    Factory.create(:post, :is_public => true)
+    Factory.create(:post, :is_public => true)
+    Factory.create(:post, :is_public => false)
 
+    filter=Lolita::Configuration::Filter.new(@dbi) do
+      field :is_public
+    end
+
+    @dbi.filter(:is_public => 1).size.should == 2
+    @dbi.filter(:is_public => 0).size.should == 1
   end
 
   it "should filter results for belongs_to" do
+    c1 = Factory.create(:category, :name => "Linux")
+    c2 = Factory.create(:category, :name => "Android")
+    p1=Factory.create(:post, :category => c1)
+    p2=Factory.create(:post, :category => c1)
+    p3=Factory.create(:post, :category => c2)
 
+    filter=Lolita::Configuration::Filter.new(@dbi) do
+      field :tags
+    end
+    @dbi.filter(:category => c1.id).size.should == 2
+    @dbi.filter(:category => c2.id).size.should == 1
+  end
+
+  it "should filter results for has_and_belongs_to_many" do
+    tag1 = Factory.create(:tag, :name => "Linux")
+    tag2 = Factory.create(:tag, :name => "Android")
+    p1=Factory.create(:post, :tags => [tag1,tag2])
+    p2=Factory.create(:post, :tags => [tag1,tag2])
+    p3=Factory.create(:post, :tags => [tag1])
+
+    filter=Lolita::Configuration::Filter.new(@dbi) do
+      field :tags
+    end
+    @dbi.filter(:tags => tag1.id).size.should == 3
+    @dbi.filter(:tags => tag2.id).size.should == 2
   end
 end
