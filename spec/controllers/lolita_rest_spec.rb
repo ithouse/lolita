@@ -13,6 +13,7 @@ describe Lolita::RestController do
   end
 
   it "should overwrite list component body_cell" do
+    Factory.create(:post)
     get :index
     response.body.should =~/overwritten cell/
   end

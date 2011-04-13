@@ -4,5 +4,5 @@ class Address
   field :city
   field :state
   field :post_code
-  embedded_in :person, :inverse_of => :address
+  embedded_in :person
 end

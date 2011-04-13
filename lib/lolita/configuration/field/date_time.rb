@@ -1,10 +1,10 @@
 module Lolita
   module Configuration
     module Field
-      class Date < Lolita::Configuration::Field::Base
+      class DateTime < Lolita::Configuration::Field::Base
         attr_accessor :format
         def initialize *args
-          @type="date"
+          @type="date_time"
           super
         end
       end

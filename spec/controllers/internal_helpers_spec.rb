@@ -32,5 +32,12 @@ describe MyController do
     @controller.send(:resource=,nil)
     @controller.resource.should be_nil
   end
+
+  it "should convert rails date_select and datetime_select values" do
+    resource=Post.new
+    sample_date = Date.civil(2011,1,1)
+    attributes={:published_at => {}}
+    @controller.send(:resource_with_attributes,resource,attributes)
+  end
 end
 
