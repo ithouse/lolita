@@ -8,5 +8,8 @@ class Post
   references_many :comments,:class_name=>"Comment"
   referenced_in :profile
   validates_presence_of :title
+
+  accepts_nested_attributes_for :comments, :reject_if => :all_blank
+
   lolita
 end

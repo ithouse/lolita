@@ -111,6 +111,7 @@ module ActionDispatch::Routing
     private
 
     def migrating?
+      #FIXME Valdis: man uz macosx laižot migrāciju saka ka $ARGV ir nil, attiecīgi šeit ir errors ka nil nav funkcija include?
       File.basename($0)=="rake" && $ARGV.include?("db:migrate")
     end
   end
