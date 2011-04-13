@@ -60,8 +60,10 @@ module Lolita
       end
 
       def build_resource(attributes=nil)
+        self.run(:before_build_resource)
         attributes||=resource_attributes
         self.resource=resource_with_attributes(resource_class.new,attributes)
+        self.run(:after_build_resource)
       end
 
       def build_response_for(conf_part,options={})

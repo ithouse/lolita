@@ -7,6 +7,17 @@ describe Lolita::RestController do
     @controller.request.env["lolita.mapping"]=Lolita.mappings[:post]
   end
 
+  describe "hooks" do
+    it "should call hooks on #index action" do
+      @controller.class.class_variable_set(:"@@temp",1)
+      @controller.before_index do
+        @@temp=2
+      end
+      get :index
+      @controller.class.class_variable_get(:"@@temp").should == 2
+    end
+  end
+
   it "should render list component for index action" do
     get :index
     response.should render_template("index")

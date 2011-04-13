@@ -192,7 +192,7 @@ module Lolita
       # Set #method_missing
       def recognize_hook_methods method_name, *args, &block
         if method_name.to_s.match(/^run_(\w+)/)
-          self.run($1,&block)
+          self.run($1,*args,&block)
           true
         end
       end
@@ -288,7 +288,7 @@ module Lolita
 
       # See Lolita::Hooks::ClassMethods#method_missing
       def method_missing(*args,&block)
-        unless self.class.recognize_hook_methods(*args,&block)
+        unless self.class.recognize_hook_methods(*args,:scope=>self,&block)
           super
         end
       end

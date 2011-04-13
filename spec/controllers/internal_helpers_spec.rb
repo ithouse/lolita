@@ -5,11 +5,31 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 class MyController < ApplicationController
   include Lolita::Controllers::InternalHelpers
+  include Lolita::Hooks
+  add_hook :before_build_resource,:after_build_resource
+  add_hook :before_index
+  before_index :modify
+
+  def index
+    @@temp=1
+    self.run_before_index
+  end
+
+  private
+
+  def modify
+    @@temp=3
+  end
 end
 
 describe MyController do
   before(:each) do
      @controller.request.env["lolita.mapping"]=Lolita.mappings[:post]
+  end
+
+  it "should call hook in #index" do
+    @controller.index
+    @controller.class.class_variable_get(:"@@temp").should == 3
   end
 
   it "should get resource name" do

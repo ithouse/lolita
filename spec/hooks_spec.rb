@@ -26,6 +26,7 @@ class Counter
     @value
   end
 end
+
 describe Lolita::Hooks do
   after(:each) do
     MyClass.clear_hooks if MyClass.respond_to?(:clear_hooks)
@@ -129,6 +130,39 @@ describe Lolita::Hooks do
           value().should=="first"
         end
         MyClass.value.should == "second"
+      end
+    end
+
+    context "methods as callbacks" do
+      class MethodTestClass 
+        include Lolita::Hooks
+        add_hook :before_save
+        before_save :set_name
+
+        def save
+          self.run_before_save
+        end
+
+        private
+
+        def self.set_name
+          @name="Class name"
+        end
+
+        def set_name
+          @name="Name"
+        end
+      end
+
+      it "should call callback for method on class" do
+        MethodTestClass.run_before_save
+        MethodTestClass.instance_variable_get(:"@name").should == "Class name"
+      end
+
+      it "should run callbac on instance" do
+        object=MethodTestClass.new
+        object.save
+        object.instance_variable_get(:"@name").should == "Name"
       end
     end
   end
