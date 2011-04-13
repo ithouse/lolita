@@ -27,7 +27,7 @@ describe Lolita::Navigation::Tree do
 
   context "#add" do
     it "should accept object, position and options" do
-      tree.add(Object,:append,:url=>"/mypath")
+      tree.add(Object.new,:append,:url=>"/mypath")
       tree.should have(1).branch
     end
   end

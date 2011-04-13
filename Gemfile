@@ -7,9 +7,9 @@ gem "abstract"
 gem "builder", "~> 2.1.2" #cucumber asks for builder 3 but rails supports 2.1
 
 group :mongoid do
-	gem "mongo"
-	gem "mongoid", "~> 2.0.0.rc.7"
-	gem "bson_ext"
+	gem "mongo", "~> 1.3.0"
+	gem "mongoid", "~> 2.0.0"
+	gem "bson_ext", "~> 1.3.0"
 end
 
 #gem 'cover_me', '>= 1.0.0.rc6', :group => :test
