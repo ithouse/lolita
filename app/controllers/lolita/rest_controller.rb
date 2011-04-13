@@ -34,6 +34,7 @@ class Lolita::RestController < ApplicationController
     if self.resource
       self.resource=resource_with_attributes(self.resource,resource_attributes)
       save_and_redirect
+
     end
   end
 
@@ -77,6 +78,8 @@ class Lolita::RestController < ApplicationController
   def save_and_redirect
     respond_to do |format|
       if self.resource.save
+        self.resource.reload
+        
         format.html{ respond_html_200}
         format.json{ respond_json_200}
       else
