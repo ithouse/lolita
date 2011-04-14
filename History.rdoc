@@ -1,4 +1,4 @@
-=== Version 3.1.2 / 2011-04-
+=== Version 3.1.2 / 2011-04-14
 * Enhancements
   * Hooks for Lolita::RestController addeed (Arturs Meisters)
   * Form save response splited in different methods for easy way to override (Arturs Meisters)
@@ -10,6 +10,7 @@
   * Migration detection fixed (Arturs Meisters)
   * Hooks named fire methods fixed (Arturs Meisters)
   * Bug fixes in hooks (Arturs Meisters)
+  * Builder bug fix, in production (Arturs Meisters)
 
 === Version 3.1.1 / 2011-04-13
 * Enhancements

@@ -30,11 +30,13 @@ module Lolita
         name=args[0]
         state=args[1]
         format=@opts.delete(:format)
+    
         raise "Can't render component without name!" unless name
         will_use_component name 
         component_name=File.join(name.to_s,state ? state.to_s : nil)
         partial_name=File.join("/components",component_name)
-        raw(output_component(partial_name,component_name,:format=>format,:locals=>@opts))
+        output=output_component(partial_name,component_name,:format=>format,:locals=>@opts)
+        self.respond_to?(:raw) ? raw(output) : output
       end
       
       def output_component(partial_name,name,options={})

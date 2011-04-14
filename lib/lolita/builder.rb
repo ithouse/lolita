@@ -34,14 +34,15 @@ module Lolita
     # default state is <code>:display</code>
     def get_builder(*value)
       if value && !value.empty?
-        set_builder(value)
+        builder_values_from(value)
       elsif @builder
-        set_builder(@builder)
+        builder_values_from(@builder)
       else
         unless @builder
-          @builder=default_builder
+          default_builder
+        else
+          @builder
         end
-        @builder
       end
     end
 
@@ -52,13 +53,13 @@ module Lolita
     
     private
 
-    def set_builder value
+    def builder_values_from value
       if value.is_a?(Hash)
-        @builder=value
+        value
       elsif value.is_a?(Array)
-        @builder={:name=>fix_name(value[0]),:state=>value[1] || default_build_state}
+        {:name=>fix_name(value[0]),:state=>value[1] || default_build_state}
       else
-        @builder={:name=>fix_name(value),:state=>default_build_state}
+        {:name=>fix_name(value),:state=>default_build_state}
       end
     end
     
