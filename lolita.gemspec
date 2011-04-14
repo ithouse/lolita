@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.1"
+  s.version = "3.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-04-13}
+  s.date = %q{2011-04-14}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -212,11 +212,13 @@ Gem::Specification.new do |s|
     "spec/configuration/tab_spec.rb",
     "spec/configuration/tabs_spec.rb",
     "spec/controllers/internal_helpers_spec.rb",
+    "spec/controllers/lolita_rest_nested_resources_spec.rb",
     "spec/controllers/lolita_rest_spec.rb",
     "spec/dbi/base_spec.rb",
     "spec/hooks_spec.rb",
     "spec/lolita_spec.rb",
     "spec/mapping_spec.rb",
+    "spec/navigation/branch_spec.rb",
     "spec/navigation/tree_spec.rb",
     "spec/orm/mongoid.rb",
     "spec/rails_app/app/controllers/application_controller.rb",
@@ -326,11 +328,13 @@ Gem::Specification.new do |s|
     "spec/configuration/tab_spec.rb",
     "spec/configuration/tabs_spec.rb",
     "spec/controllers/internal_helpers_spec.rb",
+    "spec/controllers/lolita_rest_nested_resources_spec.rb",
     "spec/controllers/lolita_rest_spec.rb",
     "spec/dbi/base_spec.rb",
     "spec/hooks_spec.rb",
     "spec/lolita_spec.rb",
     "spec/mapping_spec.rb",
+    "spec/navigation/branch_spec.rb",
     "spec/navigation/tree_spec.rb",
     "spec/orm/mongoid.rb",
     "spec/rails_app/app/controllers/application_controller.rb",
