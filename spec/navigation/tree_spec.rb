@@ -38,7 +38,7 @@ describe Lolita::Navigation::Tree do
 
     it "should iterate through all branches" do
       0.upto(3){|i|
-        tree.add(Object,:append,:url=>"/#{i}",:name=>"branch#{i}")
+        tree.add(Object.new,:append,:url=>"/#{i}",:name=>"branch#{i}")
       }
       tree.each_with_index do |branch,index|
         branch.name.should == "branch#{index}"

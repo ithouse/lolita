@@ -83,5 +83,5 @@
   * New look (Rolands Bondars)
 
 === Versions before 3.0.3
-Lolita 3.0 is completely different from previous versions and don't have any compability or architecture same as
+Lolita 3 is completely different from previous versions and don't have any compability or architecture same as
 old versions. 

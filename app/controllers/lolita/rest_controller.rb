@@ -89,11 +89,13 @@ class Lolita::RestController < ApplicationController
   end
   
   def respond_html_200
+    response.headers["Validation"] = 'true'
     flash.now[:notice] = I18n.t "lolita.shared.save_notice"
     show_form
   end
 
   def respond_html_400
+    response.headers["Validation"] = 'true'
     flash.now[:alert] = I18n.t "lolita.shared.save_alert"
     show_form
   end
