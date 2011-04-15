@@ -126,6 +126,10 @@ module Lolita
         @callbacks={}
       end
 
+      def add_hooks *names
+        add_hook *names
+      end
+
       # This method is used to add hooks for class. It accept one or more hook names.
       # ====Example
       #     add_hook :before_save
@@ -154,17 +158,17 @@ module Lolita
       # ====Example
       #     MyClass.run(:before_save,:after_save,:scope=>MyClass.new)
       #     # this will call callbacks in MyClass instance scope, that means that self will be MyClass instance.
-      def run(*hook_names,&block)
+      def run(hook_name,*args,&block)
 
         result=nil
-        options=hook_names.extract_options!
-        (hook_names || []).each do |hook_name|
-          raise Lolita::HookNotFound, "Hook #{hook_name} is not defined for #{self}." unless self.has_hook?(hook_name)
-          in_hooks_scope(options[:scope],options[:run_scope]) do
-            callback=get_callback(hook_name)
-            result=run_callback(callback,&block)
-          end
+        options=args ? args.extract_options! : {}
+
+        raise Lolita::HookNotFound, "Hook #{hook_name} is not defined for #{self}." unless self.has_hook?(hook_name)
+        in_hooks_scope(options[:scope],options[:run_scope]) do
+          callback=get_callback(hook_name)
+          result=run_callback(callback,&block)
         end
+
         result
       end
 
@@ -188,8 +192,10 @@ module Lolita
       #        let_content # execute callback block(-s) in same scope as run is executed.
       #     end
       def let_content
-        if content=self.given_callback_content
+        if self.given_callback_content.respond_to?(:call)
           run_block(self.given_callback_content)
+        elsif self.given_callback_content
+          self.given_callback_content
         end
       end
 
@@ -239,19 +245,20 @@ module Lolita
 
       # Run blocks from <em>blocks</em> Array. Also it set #given_callback_content if block is given, this
       # will allow to call #let_content. Each block is runned with #run_block.
+      # After first run result of first block become #given_callback_content, and when next block
+      # call #let_content, this string will be returned for that block
       def run_blocks blocks,&given_block
         result=""
-        (blocks||[]).each do |block|
-          begin
-            if block_given?
-              self.given_callback_content=given_block
-            end
+
+        self.given_callback_content=block_given? ? given_block : nil
+
+        if blocks && !blocks.empty?
+          blocks.each do |block|
             result << (run_block(block,&given_block)).to_s
-          ensure
-            self.given_callback_content=nil
+            self.given_callback_content=result
           end
-        end
-        if block_given? && (!blocks || (blocks && blocks.empty?))
+        elsif block_given?
+          self.given_callback_content=nil
           result << run_block(given_block).to_s
         end
         result

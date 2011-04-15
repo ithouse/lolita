@@ -47,7 +47,7 @@ class Lolita::RestController < ApplicationController
       flash.now[:alert] = I18n.t "lolita.shared.destroy_alert"
     end
     self.run(:after_destroy)
-    redirect_to :action=>"index"
+    redirect_to lolita_resources_path
   end
 
   def index
@@ -95,7 +95,7 @@ class Lolita::RestController < ApplicationController
   end
 
   def respond_html_400
-    response.headers["Validation"] = 'true'
+    response.headers["Validation"] = 'false'
     flash.now[:alert] = I18n.t "lolita.shared.save_alert"
     show_form
   end

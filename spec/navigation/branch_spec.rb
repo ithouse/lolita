@@ -15,8 +15,8 @@ describe Lolita::Navigation::Branch do
       branch.name.should match(/branch/)
     end
 
-    it "should not have level when branch is not in tree" do
-      branch.level.should be_nil
+    it "should have level 0 when branch is not in tree" do
+      branch.level.should == 0
     end
 
     it "should have options, that may containe any values needed" do
@@ -30,27 +30,6 @@ describe Lolita::Navigation::Branch do
         branch.tree=Object.new
       }.should raise_error(ArgumentError)
     end
-
-    context "relationships" do
-
-      it "should have parent" do
-        branch=tree.add(Object)
-        branch.parent.should == tree.root
-      end
-
-      it "should have childern" do
-        branch.append(Lolita::Navigation::Branch.new)
-        branch.children.class.should == Lolita::Navigation::Tree
-        branch.children.should have(1).item
-      end
-
-      it "should have siblings" do
-        tree.add(Object)
-        branch=tree.add(String)
-        branch.siblings[:before].should_not be_nil
-        branch.siblings[:after].should be_nil
-      end
-    end
   end
 
   describe "adding" do
@@ -60,7 +39,7 @@ describe Lolita::Navigation::Branch do
       new_branch.append(Lolita::Navigation::Branch.new)
       new_branch.append(Object)
       new_branch.append("Pages")
-      new_branch.children.should have(3).items
+      new_branch.children.branches.should have(3).items
     end
 
     it "should prepend to exsiting branch" do
@@ -70,11 +49,35 @@ describe Lolita::Navigation::Branch do
     end
 
     it "should add before and after branch" do
-      branch=tree.add(Object)
-      branch.before(Lolita::Navigation::Branch.new)
-      branch.after(Object)
+      branch=tree.append(Object)
+      first_branch=Lolita::Navigation::Branch.new
+      debugger
+      first_branch.before(branch)
+      last_branch=Lolita::Navigation::Branch.new
+      last_branch.after(branch)
       branch.siblings.values.compact.should have(2).items
     end
   end
 
+  describe "relationships" do
+    let(:branch){Lolita::Navigation::Branch.new}
+
+      it "should have parent" do
+        branch=tree.append(Object)
+        branch.parent.should == tree.root
+      end
+
+      it "should have childern" do
+        branch.append(Lolita::Navigation::Branch.new)
+        branch.children.class.should == Lolita::Navigation::Tree
+        branch.children.branches.should have(1).item
+      end
+
+      it "should have siblings" do
+        tree.append(Object)
+        branch=tree.append(String)
+        branch.siblings[:before].should_not be_nil
+        branch.siblings[:after].should be_nil
+      end
+    end
 end

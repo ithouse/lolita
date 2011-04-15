@@ -18,16 +18,13 @@ describe Lolita::Navigation::Tree do
 
   end
 
-  describe "work with nodes" do
-    it "should have root branch with level 0" do
-      tree.root.should_not be_nil
-      tree.root.level.should == 0
+  describe "adding" do
+    it "should append" do
+      tree.append(Lolita::Navigation::Branch.new)
     end
-  end
 
-  context "#add" do
     it "should accept object, position and options" do
-      tree.add(Object.new,:append,:url=>"/mypath")
+      tree.append(Object.new,:url=>"/mypath")
       tree.should have(1).branch
     end
   end
@@ -38,7 +35,7 @@ describe Lolita::Navigation::Tree do
 
     it "should iterate through all branches" do
       0.upto(3){|i|
-        tree.add(Object.new,:append,:url=>"/#{i}",:name=>"branch#{i}")
+        tree.append(Object.new,:url=>"/#{i}",:name=>"branch#{i}")
       }
       tree.each_with_index do |branch,index|
         branch.name.should == "branch#{index}"
@@ -46,37 +43,32 @@ describe Lolita::Navigation::Tree do
     end
 
     it "should itereate in each level" do
-      parent_branch=tree.root
       branch=empty_branch
       0.upto(5){|i|
-        parent_branch.append(branch)
+        tree.append(branch)
         parent_branch=branch
         branch=Lolita::Navigation::Branch.new(Object,:url=>"/")
       }
-      level_counter=1
-      tree.each_level do |branches,level|
-        branches.should have(1).item
-        level.should == level_counter
-        level_counter+=1
+      level_counter=0
+      tree.each do |branch|
+        branch.level.should == level_counter
       end
     end
   end
 
   it "should have callbacks" do
     Lolita::Navigation::Tree.should respond_to(:hooks)
-    hook_names=[:before_load,:after_load,:before_branch_added,:after_branch_added]
+    hook_names=[:before_branch_added,:after_branch_added]
     (Lolita::Navigation::Tree.hooks - hook_names).should be_empty
   end
 
   it "should have way to add branches based on earlier added branches" do
     tree.after_branch_added do
-      self.each do |branch|
-        if branch.resources.is_a?(Object)
-          branch.append(Object,:url=>"/")
-        end
+      unless self.detect{|branch| branch.options[:url]=="/"}
+        self.append(Object,:url=>"/")
       end
     end
-    tree.add(Object,:append,:url=>"/mypath")
+    tree.append(Object,:url=>"/mypath")
     tree.should have(2).branches
   end
 end

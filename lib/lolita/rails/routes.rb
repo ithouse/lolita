@@ -1,13 +1,18 @@
 module ActionDispatch::Routing
   
-class RouteSet
-    # alias_method_chain :draw, :lolita
+  class RouteSet
 
-    # def draw_with_lolita
-    #   Lolita::Hooks.run("")
-    #   draw_without_lolita
-    # end
+    def draw_with_lolita  *args,&block
+      unless Lolita::Navigation::Tree[:"left_side_navigation"]
+        tree=Lolita::Navigation::Tree.new(:"left_side_navigation")
+        Lolita::Navigation::Tree.remember(tree)
+      end
+      draw_without_lolita *args,&block
+    end
+
+    alias_method_chain :draw, :lolita
   end
+
   class Mapper
 
     # Every module, that is used with lolita and has routes, need to have
@@ -51,6 +56,7 @@ class RouteSet
         mapping=Lolita.add_mapping(resource,options)
         Lolita.resources[mapping.name]=mapping
         target_class=mapping.to
+        Lolita::Navigation::Tree[:"left_side_navigation"].append(mapping,:title=>mapping.name.to_s.humanize)
         all_resource_classes<<target_class
 
         lolita_scope mapping.name do

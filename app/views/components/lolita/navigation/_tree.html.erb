@@ -1,0 +1,24 @@
+<ul>
+  <%tree.branches.each do |branch| 
+     if branch.object.is_a?(Lolita::Mapping) 
+       branch.options[:url]||=lolita_resources_path(branch.object) 
+       active=branch.object.to==resource_class
+     else   
+
+       branch.options[:url]=if branch.options[:url].respond_to?(:call) 
+         self.instance_eval(&(branch.options[:url])) 
+       else 
+         branch.options[:url] 
+       end 
+       active=branch.options[:url]==request.path
+     end 
+     
+    %>
+    <li <%=active ? "class='active'" : ""%>>
+      <%= link_to branch.title, branch.options[:url] %>
+      <% if branch.children.branches.any? %>
+        <%= render_component(:"lolita/navigation",:tree,:tree=>branch.children) %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

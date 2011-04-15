@@ -29,7 +29,7 @@
     <div id="container">
       <%= render_component :"lolita/shared", :header %>
       <div id="main" role="main">
-        <%= render_component :"lolita/navigation",:display %>
+        <%= render_component :"lolita/navigation",:display,:tree=>Lolita::Navigation::Tree[:"left_side_navigation"] %>
         <div id="content" class="<%= content_classes %>">
           <%= yield %>
         </div>
