@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.2"
+  s.version = "3.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-04-14}
+  s.date = %q{2011-04-15}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -72,6 +72,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/tab/default/_display.html.erb",
     "app/views/components/lolita/configuration/tabs/_display.html.erb",
     "app/views/components/lolita/navigation/_display.html.erb",
+    "app/views/components/lolita/navigation/_tree.html.erb",
     "app/views/components/lolita/shared/_flash.html.erb",
     "app/views/components/lolita/shared/_header.html.erb",
     "app/views/components/lolita/shared/_right_sidebar.html.erb",
