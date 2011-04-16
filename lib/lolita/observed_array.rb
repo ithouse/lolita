@@ -1,4 +1,5 @@
-# This module overwrite Array methods that change Array to change element that is added to Array.
+module Lolita
+  # This module overwrite Array methods that change Array to change element that is added to Array.
 # Class that include this module must have collection_variable method that return collection
 # variable that hold all records.
 # Also build_element method must have with element and &block as arguments
@@ -29,7 +30,6 @@
 #           ...
 #         end
 #     end
-module Lolita
   module ObservedArray
 
     def method_missing(method,*args,&block)

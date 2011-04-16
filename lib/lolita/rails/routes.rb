@@ -56,22 +56,19 @@ module ActionDispatch::Routing
         mapping=Lolita.add_mapping(resource,options)
         Lolita.resources[mapping.name]=mapping
         target_class=mapping.to
-        Lolita::Navigation::Tree[:"left_side_navigation"].append(mapping,:title=>mapping.name.to_s.humanize)
+  #TODO refactor all these variables
         all_resource_classes<<target_class
 
         lolita_scope mapping.name do
           yield if block_given?
 
           with_lolita_exclusive_scope mapping.fullpath,mapping.path do
+            
             # if not defined lolita default configuration in model, than can't use :rest
             if !target_class.respond_to?(:lolita) && !Lolita::routes[mapping.name]
-               warn("Lolita not found in #{target_class}. Including Lolita::Configuration")
-               target_class.send(:include, Lolita::Configuration)
-               #raise Lolita::NotFound, "Lolita not found in #{target_class}. Include Lolita::Configuration"
+               raise Lolita::NotFound, "Lolita not found in #{target_class}. Include Lolita::Configuration"
             elsif target_class.respond_to?(:lolita) && target_class.instance_variable_get(:@lolita).nil?
-               warn "Calling #lolita on #{target_class}, because lolita not initialized yet."
-               target_class.lolita
-               #raise Lolita::NotInitialized, "Call lolita method in #{target_class}."
+               raise Lolita::NotInitialized, "Call lolita method in #{target_class}."
             else
               route=Lolita.routes[mapping.name] || Lolita.default_route
             end
@@ -86,6 +83,7 @@ module ActionDispatch::Routing
           end
 
         end
+        Lolita::Navigation::Tree[:"left_side_navigation"].append(mapping,:title=>mapping.name.to_s.humanize)
       }
       Lolita.common_routes(all_resource_classes).each do |route_name|
         send(:"lolita_#{route_name}_route")
