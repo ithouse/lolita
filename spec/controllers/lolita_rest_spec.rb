@@ -24,6 +24,7 @@ describe Lolita::RestController do
   end
 
   it "should overwrite list component body_cell" do
+    pending "Need to be seperated from whole project"
     Factory.create(:post)
     get :index
     response.body.should =~/overwritten cell/

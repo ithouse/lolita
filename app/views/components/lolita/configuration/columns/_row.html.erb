@@ -1,0 +1,7 @@
+<tr class="<%= index%2==0 ? "even" : "odd" %>">
+  <%= render_component columns,:first,:record=>record %>
+  <% columns.each do |column| %>
+    <%= render_component column, :record=>record %>
+  <% end %>
+  <%= render_component columns,:last,:record=>record %>
+</tr>

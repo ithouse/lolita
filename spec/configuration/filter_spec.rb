@@ -65,6 +65,7 @@ describe Lolita::Configuration::Filter do
   end
 
   it "should return right options_for_select" do
+    Category.delete_all
     3.times{ Factory.create(:category)}
     filter=Lolita::Configuration::Filter.new(@dbi) do
       field :category

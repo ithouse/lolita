@@ -4,6 +4,7 @@ module Lolita
 
       include Enumerable
       include ObservedArray
+      include Lolita::Builder
       
       attr_accessor :list
       attr_reader :dbi

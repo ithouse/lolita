@@ -1,7 +1,0 @@
-<tr class="<%= @class_name %>">
-  <%= render_component :"lolita/configuration/list", :checkbox_cell, :record=>record %>
-  <% columns.each do |column| %>
-    <%= render_component :"lolita/configuration/list",:body_cell, :value=>column.with_format(record.send(column.name.to_sym)) %>
-  <% end %>
-  <%= render_component :"lolita/configuration/list", :tool_cell,:record=>record %>
-</tr>

@@ -26,19 +26,27 @@ module Lolita
       #      render_component "lolita/list", :display
       #      render_component "lolita/list/display"
       def render_component *args
-        @opts=args.extract_options!
-        name=args[0]
-        state=args[1]
-        format=@opts.delete(:format)
-    
+        name,state,options=get_render_options(*args)
+        format=options.delete(:format)
+
         raise "Can't render component without name!" unless name
         will_use_component name 
         component_name=File.join(name.to_s,state ? state.to_s : nil)
         partial_name=File.join("/components",component_name)
-        output=output_component(partial_name,component_name,:format=>format,:locals=>@opts)
+        output=output_component(partial_name,component_name,:format=>format,:locals=>options)
         self.respond_to?(:raw) ? raw(output) : output
       end
       
+      def get_render_options *args
+        options=args.extract_options!
+        if args.first.respond_to?(:build) 
+          name,state,options=args[0].build("",args[1],options)
+        else
+          name,state=args
+        end
+        return name,state,options
+      end
+
       def output_component(partial_name,name,options={})
         output=""
         if options[:format]

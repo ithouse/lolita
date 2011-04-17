@@ -1,0 +1,9 @@
+<thead>
+  <tr>
+    <%= render_component columns,:first_column_header %>
+    <% columns.each do |column| %>
+      <%= render_component column,:header %>
+    <% end %>
+    <%= render_component columns,:last_column_header  %>
+  </tr>
+</thead>

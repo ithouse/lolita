@@ -2,8 +2,10 @@ module Lolita
   module Configuration
     class Column 
 
+      include Lolita::Builder
+      
       MAX_TEXT_SIZE=20
-      lolita_accessor :name,:title,:type,:options,:format
+      lolita_accessor :name,:title,:type,:options,:format,:sortable,:sort_direction
       
       def initialize(*args,&block)
         self.set_attributes(*args)
@@ -20,9 +22,9 @@ module Lolita
       #    end
       #  end
       # <%= column.with_format([@post.id,@post.user_id])%>
-      def with_format(value) #TODO test
+      def with_format(value,*optional_values) #TODO test
         if @format.respond_to?(:call)
-          @format.call(value)
+          @format.call(value,*optional_values)
         elsif @format && (value.is_a?(Time) || value.is_a?(Date))
           format_for_datetime(value)
         else
@@ -73,6 +75,8 @@ module Lolita
       private
       
       def set_default_values
+        @sortable||=true
+        @sort_direction||=:desc
         @title||=@name.to_s.humanize
       end
       
