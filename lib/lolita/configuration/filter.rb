@@ -1,6 +1,29 @@
 # coding: utf-8
 module Lolita
   module Configuration
+    # Lolita::Configuration::Filter is for filtering data in list view.
+    # By now it supports these field types:
+    # - Array
+    # - Boolean
+    #  
+    # To use it, call "filter" method in list block, filter method accepts field names
+    # as arguments. You can pass block and configure each field. Field configuration is just like in tab configuration.
+    #
+    # === Examples
+    #    
+    #    # this will build country select field and is_deleted checkbox
+    #    list do
+    #      filter :country, :is_deleted
+    #    end
+    #
+    #    # For example you have text field "status" with values opened,closed,rejected
+    #    list do
+    #      filter do
+    #        field :status, :array, :options_for_select => %w(open closed rejected)
+    #        field :is_deleted, :title => "Deleted"
+    #      end
+    #    end
+    #
     class Filter
       include Lolita::Builder
       attr_reader :dbi
@@ -61,7 +84,6 @@ module Lolita
       end
 
       def field_name field
-        #'f_'+('a'..'z').to_a[self.fields.index(field)]
         "f_#{field.name}"
       end
 
