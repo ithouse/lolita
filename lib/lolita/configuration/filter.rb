@@ -24,7 +24,6 @@ module Lolita
     #      end
     #    end
     #
-    # To "filter" you can 
     class Filter
       include Lolita::Builder
       attr_reader :dbi
