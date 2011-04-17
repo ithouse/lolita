@@ -109,7 +109,17 @@ module Lolita
             self.send(meth,options.delete(meth))
           end
         }
+        parse_params
       end
+
+      def parse_params
+        if @params
+          if @params.has_key?(:sc)
+            self.send((@params[:sd] || :asc).to_sym,@params[:sc])
+          end
+        end
+      end
+
     end
   end
 end

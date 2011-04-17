@@ -5,13 +5,30 @@ module Lolita
       include Lolita::Builder
       
       MAX_TEXT_SIZE=20
-      lolita_accessor :name,:title,:type,:options,:format,:sortable,:sort_direction
+      lolita_accessor :name,:title,:type,:options,:format,:sortable
       
       def initialize(*args,&block)
         self.set_attributes(*args)
         self.instance_eval(&block) if block_given?
         validate
         set_default_values
+      end
+
+      def sortable?
+        @sortable
+      end
+
+      def currently_sorting?(params)
+        params[:sc].to_s==self.name.to_s
+      end
+
+      def sort_options(params)
+        direction=if params[:sc].to_s==self.name.to_s
+          params[:sd].to_s=="asc" ? "desc" : "asc"
+        else
+          "desc"
+        end
+        {:sc=>self.name,:sd=>direction}
       end
       
       #

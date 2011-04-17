@@ -1,3 +1,7 @@
 <th>
-  <%= column.title %>
+  <% if column.sortable? %>
+    <%= render_component column, :sort %>
+  <% else %>
+    <%= column.title %>
+  <% end %>
 </th>
