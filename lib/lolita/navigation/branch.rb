@@ -19,7 +19,11 @@ module Lolita
       end
 
       def children
-        @children||=Lolita::Navigation::Tree.new("#{name}_children_tree")
+        unless @children
+          tree=Lolita::Navigation::Tree.new("#{name}_children_tree")
+          tree.set_parent(self)
+          @children=tree
+        end
         @children
       end
 

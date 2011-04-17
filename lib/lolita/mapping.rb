@@ -11,14 +11,18 @@ module Lolita
   #     # add paths like this to routes
   #     # admin_posts GET /admin/posts {:controller=>"lolita/rest", :action=>:index}
   #     # edit_admin_posts GET /admin/post/1/edit {:controller=>"lolita/rest",:action=>:edit}
-  # * <tt>:module</tt> - change module for path, it changes :controller that is used for lolita, like, 
-  # :module=>"admin", change controller to "admin/posts". If this is used without :path then no named routes will be generated
+  # * <tt>:module</tt> - change module for path, it changes <i>:controller</i> that is used for lolita, like, 
+  #   <code>:module=>"admin"</code>, change controller to "admin/posts". If this is used without :path then no named routes will be generated
+  # Instances of this class is used all over the Lolita, this class itself represent what name does resource has,
+  # what controller to use, what model is related with it and so on. This is used to generate urls and paths.
+  # Also eahc request containers information with mapping related to it.
   class Mapping
     attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:controllers,:as
     alias :name :singular
     
-    # TODO how it is when lolita plugin extend default path and there is module is this not break the logic?
+    
     def initialize(name,options={})
+      # TODO how it is when lolita plugin extend default path and there is module is this not break the logic?
       @as=options[:as]
       @plural=(options[:as] ? options[:as] : name).to_sym
       @singular=(options[:singular] || @plural.to_s.singularize).to_sym

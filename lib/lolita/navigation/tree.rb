@@ -18,7 +18,7 @@ module Lolita
 
       add_hooks :before_branch_added, :after_branch_added
 
-      attr_reader :name,:root,:default_position,:branches
+      attr_reader :name,:root,:default_position,:branches,:parent
 
       def initialize(name)
         @name=name
@@ -77,6 +77,10 @@ module Lolita
         raise ArgumentError, "Branch #{given_branch.inspect} not exists in #{self.inspect}"
       end
 
+      def set_parent(new_parent)
+        @parent=new_parent
+      end
+      
       private
 
       def adding_branch *branch
