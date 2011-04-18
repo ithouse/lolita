@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.3"
+  s.version = "3.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-04-15}
+  s.date = %q{2011-04-19}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -30,6 +30,17 @@ Gem::Specification.new do |s|
     "app/controllers/lolita/rest_controller.rb",
     "app/helpers/components/lolita/configuration/list_component.rb",
     "app/helpers/lolita_helper.rb",
+    "app/views/components/lolita/configuration/column/_display.html.erb",
+    "app/views/components/lolita/configuration/column/_header.html.erb",
+    "app/views/components/lolita/configuration/column/_sort.html.erb",
+    "app/views/components/lolita/configuration/columns/_body.html.erb",
+    "app/views/components/lolita/configuration/columns/_display.html.erb",
+    "app/views/components/lolita/configuration/columns/_first.html.erb",
+    "app/views/components/lolita/configuration/columns/_first_column_header.html.erb",
+    "app/views/components/lolita/configuration/columns/_header.html.erb",
+    "app/views/components/lolita/configuration/columns/_last.html.erb",
+    "app/views/components/lolita/configuration/columns/_last_column_header.html.erb",
+    "app/views/components/lolita/configuration/columns/_row.html.erb",
     "app/views/components/lolita/configuration/field/_display.html.erb",
     "app/views/components/lolita/configuration/field/_label.html.erb",
     "app/views/components/lolita/configuration/field/_object.html.erb",
@@ -52,20 +63,11 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field/string/text/_display.html.erb",
     "app/views/components/lolita/configuration/field/time/_display.html.erb",
     "app/views/components/lolita/configuration/field_set/_display.html.erb",
-    "app/views/components/lolita/configuration/list/_body.html.erb",
-    "app/views/components/lolita/configuration/list/_body_cell.html.erb",
-    "app/views/components/lolita/configuration/list/_checkbox_cell.html.erb",
-    "app/views/components/lolita/configuration/list/_checkbox_header.html.erb",
     "app/views/components/lolita/configuration/list/_display.html.erb",
     "app/views/components/lolita/configuration/list/_filter.html.erb",
-    "app/views/components/lolita/configuration/list/_header.html.erb",
-    "app/views/components/lolita/configuration/list/_header_cell.html.erb",
     "app/views/components/lolita/configuration/list/_new_resource.html.erb",
     "app/views/components/lolita/configuration/list/_paginator.html.erb",
-    "app/views/components/lolita/configuration/list/_row.html.erb",
     "app/views/components/lolita/configuration/list/_title.html.erb",
-    "app/views/components/lolita/configuration/list/_tool_cell.html.erb",
-    "app/views/components/lolita/configuration/list/_tool_header.html.erb",
     "app/views/components/lolita/configuration/tab/_display.html.erb",
     "app/views/components/lolita/configuration/tab/_fields.html.erb",
     "app/views/components/lolita/configuration/tab/content/_display.html.erb",
@@ -140,6 +142,8 @@ Gem::Specification.new do |s|
     "lib/lolita/rails/all.rb",
     "lib/lolita/rails/routes.rb",
     "lib/lolita/ruby_ext/accessors.rb",
+    "lib/lolita/support/formatter/base.rb",
+    "lib/lolita/support/formatter/rails.rb",
     "lib/lolita/test/matchers.rb",
     "lolita.gemspec",
     "public/images/lolita/plus.png",
@@ -212,6 +216,7 @@ Gem::Specification.new do |s|
     "spec/configuration/page_spec.rb",
     "spec/configuration/tab_spec.rb",
     "spec/configuration/tabs_spec.rb",
+    "spec/controllers/component_helpers_spec.rb",
     "spec/controllers/internal_helpers_spec.rb",
     "spec/controllers/lolita_rest_nested_resources_spec.rb",
     "spec/controllers/lolita_rest_spec.rb",
@@ -308,7 +313,8 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/support/factories/category.rb",
     "spec/support/factories/post.rb",
-    "spec/support/factories/tag.rb"
+    "spec/support/factories/tag.rb",
+    "spec/support/formatter/base_spec.rb"
   ]
   s.homepage = %q{http://github.com/ithouse/lolita}
   s.licenses = ["MIT"]
@@ -328,6 +334,7 @@ Gem::Specification.new do |s|
     "spec/configuration/page_spec.rb",
     "spec/configuration/tab_spec.rb",
     "spec/configuration/tabs_spec.rb",
+    "spec/controllers/component_helpers_spec.rb",
     "spec/controllers/internal_helpers_spec.rb",
     "spec/controllers/lolita_rest_nested_resources_spec.rb",
     "spec/controllers/lolita_rest_spec.rb",
@@ -365,7 +372,8 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/support/factories/category.rb",
     "spec/support/factories/post.rb",
-    "spec/support/factories/tag.rb"
+    "spec/support/factories/tag.rb",
+    "spec/support/formatter/base_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
