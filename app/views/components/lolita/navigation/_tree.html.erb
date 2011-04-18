@@ -1,13 +1,14 @@
 <ul <%=tree.parent ? "class='subtree'" : ""%> >
   <% last_branch=tree.branches.last %>
   <%tree.branches.each do |branch| 
+    debugger 
      if branch.object.is_a?(Lolita::Mapping) 
        branch.options[:url]||=lolita_resources_path(branch.object) 
        active=branch.object.to==resource_class
      else   
 
        branch.options[:url]=if branch.options[:url].respond_to?(:call) 
-         self.instance_eval(&(branch.options[:url])) 
+         branch.options[:url].call(self,branch) 
        else 
          branch.options[:url] 
        end 

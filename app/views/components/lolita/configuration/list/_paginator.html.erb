@@ -1,3 +1,5 @@
-<div class="paginator">
-  <%= will_paginate page %>
-</div>
+<% if page.is_a?(WillPaginate::Collection) %>
+  <div class="paginator">
+    <%= will_paginate page %>
+  </div>
+<% end %>

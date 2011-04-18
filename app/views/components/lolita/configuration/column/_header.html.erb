@@ -1,4 +1,4 @@
-<th>
+<th <%=column.currently_sorting?(params) ? "class='active'" : ""%> >
   <% if column.sortable? %>
     <%= render_component column, :sort %>
   <% else %>

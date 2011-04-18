@@ -192,6 +192,7 @@ a.create {
 .list table td input {vertical-align: middle;}
 .list table thead {background: #d5d5d5;}
 .list table thead th {text-align: left;}
+.list table thead th {font-weight:normal;}
 .list table thead th a {color: #a5a5a5;}
 .list table thead th.active a {color: #6c6c6c;} /* Style for active header */
 .list table tbody tr {border-bottom: 1px solid #e3e3e3;}

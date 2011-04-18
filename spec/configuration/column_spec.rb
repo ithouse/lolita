@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Lolita::Configuration::Column do
-
+  let(:column){Lolita::Configuration::Column.new(:col1)}
   
   it "should create new column with Hash attributes" do
     column=Lolita::Configuration::Column.new(:name=>"col1",:title=>"Col1",:type=>String)
@@ -41,5 +41,17 @@ describe Lolita::Configuration::Column do
       end
     }.should raise_error(ArgumentError, "Column must have name.")
   end
+
+  it "should allow to add formatter" do
+    column.formatter do|value|
+      "value #{value}"
+    end
+    column.formatter.with("1").should == "value 1"
+  end
+
+  it "should make default formater not defined" do
+    column.formatter.with(1).should == 1
+  end
+
 end
 

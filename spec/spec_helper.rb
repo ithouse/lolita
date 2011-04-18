@@ -30,7 +30,7 @@ require 'rspec/rails'
 require 'ffaker'
 require 'factory_girl'
 
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+Dir["#{File.dirname(__FILE__)}/support/factories/**/*.rb"].each {|f| require f}
 RSpec.configure do |config|
 # config.mock_with :mocha
 # config.mock_with :flexmock

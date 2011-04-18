@@ -124,6 +124,13 @@ module Lolita
     autoload :Branch, "lolita/navigation/branch"
   end
 
+  module Support
+    module Formatter
+      autoload :Base, 'lolita/support/formatter/base'
+      autoload :Rails, 'lolita/support/formatter/rails'
+    end
+  end
+
   @@scopes={}
 
   def self.scope name=nil

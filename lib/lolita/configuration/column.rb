@@ -5,7 +5,7 @@ module Lolita
       include Lolita::Builder
       
       MAX_TEXT_SIZE=20
-      lolita_accessor :name,:title,:type,:options,:format,:sortable
+      lolita_accessor :name,:title,:type,:options,:sortable
       
       def initialize(*args,&block)
         self.set_attributes(*args)
@@ -19,7 +19,7 @@ module Lolita
       end
 
       def currently_sorting?(params)
-        params[:sc].to_s==self.name.to_s
+        @sortable && params[:sc].to_s==self.name.to_s
       end
 
       def sort_options(params)
@@ -31,48 +31,14 @@ module Lolita
         {:sc=>self.name,:sd=>direction}
       end
       
-      #
-      #  column do
-      #    name "UID"
-      #    format do(values)
-      #      values.first+values.last
-      #    end
-      #  end
-      # <%= column.with_format([@post.id,@post.user_id])%>
-      def with_format(value,*optional_values) #TODO test
-        if @format.respond_to?(:call)
-          @format.call(value,*optional_values)
-        elsif @format && (value.is_a?(Time) || value.is_a?(Date))
-          format_for_datetime(value)
-        else
-          format_from_type(value)
+      # Define format, for details see Lolita::Support::Formatter::Base and Lolita::Support::Formater::Rails
+      def formatter(value=nil,&block)
+        if block_given?
+          @formatter=Lolita::Support::Formatter::Base.new(value,&block) 
+        elsif value || !@formatter
+          @formatter=Lolita::Support::Formatter::Rails.new(value)
         end
-      end
-
-      def format_from_type(value) #TODO test
-        if value
-          if value.is_a?(String)
-            value
-          elsif value.is_a?(Integer)
-            value
-          elsif value.is_a?(Date)
-            if defined?(I18n)
-              I18n.localize(value, :format => :long)
-            else
-              value.to_s
-            end
-          elsif value.is_a?(Time)
-            if defined?(I18n)
-              I18n.localize(value, :format => :long)
-            else
-              value.to_s
-            end
-          else
-            value.to_s
-          end
-        else
-          ""
-        end
+        @formatter
       end
       
       def set_attributes(*args)
@@ -95,14 +61,6 @@ module Lolita
         @sortable||=true
         @sort_direction||=:desc
         @title||=@name.to_s.humanize
-      end
-      
-      def format_for_datetime value
-        if defined?(I18n)
-          I18n.localize(value, :format => @format)
-        else
-          value.to_s
-        end
       end
 
       def validate

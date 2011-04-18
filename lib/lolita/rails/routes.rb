@@ -33,7 +33,7 @@ module ActionDispatch::Routing
     #     lolita_for :galleries
     #     # lolita_for try to call :lolita_gallery in Mapper class
     def lolita_for *resources
-      #TODO refactor
+  
       return if migrating?
       options = resources.extract_options!
 
@@ -83,7 +83,11 @@ module ActionDispatch::Routing
           end
 
         end
-        Lolita::Navigation::Tree[:"left_side_navigation"].append(mapping,:title=>mapping.name.to_s.humanize)
+       
+        tree=Lolita::Navigation::Tree[:"left_side_navigation"]
+        unless tree.branches.detect{|b| b.object.is_a?(Lolita::Mapping) && b.object.to==mapping.to}
+          tree.append(mapping,:title=>mapping.name.to_s.humanize)
+        end
       }
       Lolita.common_routes(all_resource_classes).each do |route_name|
         send(:"lolita_#{route_name}_route")

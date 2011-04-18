@@ -1,4 +1,4 @@
 <td>
-  <% value=column.with_format(record.send(column.name.to_sym),record) %>
+  <% value=column.formatter.with(record.send(column.name.to_sym),record) %>
   <%= value.to_s %>
 </td>
