@@ -1,13 +1,13 @@
-=== Version 3.2.0 / 2011-04-
+=== Version 3.1.4 / 2011-04-
 * Enhancements
   * #render_component improved, to support any class with build method as first argument (Arturs Meister)
   * list components refactore; columns and column components created (Arturs Meisters)
   * documentation for Filters (Gatis Tomsons)
   * sorting configuration for columns (Arturs Meisters)
-  * icons added for Edit and Destroy in list
 
 * Bug fixes
   * paginator updated, to use WillPaginate only when it is accessable (Arturs Meisters)
+  * resource cheching for tree (Arturs Meisters)
 
 === Version 3.1.3 / 2011-04-15
 * Enhancements
