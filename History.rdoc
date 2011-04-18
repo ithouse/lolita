@@ -1,10 +1,10 @@
-=== Version 3.1.5 / 
-=== Version 3.1.4 / 2011-04-18
+=== Version 3.1.4 / 2011-04-19
 * Enhancements
   * #render_component improved, to support any class with build method as first argument (Arturs Meister)
   * list components refactore; columns and column components created (Arturs Meisters)
   * documentation for Filters (Gatis Tomsons)
   * sorting configuration for columns (Arturs Meisters)
+  * lolita:assets generator invoke :assets for all added modules
 
 * Bug fixes
   * paginator updated, to use WillPaginate only when it is accessable (Arturs Meisters)

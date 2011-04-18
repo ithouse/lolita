@@ -134,6 +134,7 @@ module Lolita
     #        end
     #     end
     def add_module module_container, options={}
+      raise ArgumentError, "Can't add module without module container!" unless module_container
       options.assert_valid_keys(:controller,:route,:model,:path,:name,:nested)
       name=options[:name]||module_container.to_s.to_sym
       self.modules<<module_container

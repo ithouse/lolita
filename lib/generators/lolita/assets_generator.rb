@@ -7,6 +7,13 @@ module Lolita
       def copy_all
         copy_dir("public")
       end      
+
+       def call_modules
+        Lolita.modules.each do |module_name|
+          command="#{module_name.to_s.underscore.gsub("/","_")}:assets" 
+          invoke command rescue nil
+        end
+      end
     end
   end
 end
