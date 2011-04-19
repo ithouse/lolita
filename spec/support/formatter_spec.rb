@@ -1,7 +1,7 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../simple_spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../simple_spec_helper')
 
-describe Lolita::Support::Formatter::Base do
-  let(:klass){Lolita::Support::Formatter::Base}
+describe Lolita::Support::Formatter do
+  let(:klass){Lolita::Support::Formatter}
 
   context "create new" do
 

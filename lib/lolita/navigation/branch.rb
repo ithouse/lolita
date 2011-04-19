@@ -27,6 +27,17 @@ module Lolita
         @children
       end
 
+      def self_with_children
+        if block_given?
+          yield self
+          @children.each do |branch|
+            yield branch
+          end
+        else
+          [self]+@children.map{|b| b}
+        end
+      end
+
       def index
         self.tree.get_branch_index(self)
       end

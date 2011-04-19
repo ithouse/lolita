@@ -7,7 +7,10 @@ module Lolita
     # or return True when no authentication is defined.
     module UserHelpers
       extend ActiveSupport::Concern
-
+      included do
+        helper LolitaHelper
+      end
+      
       private
     # FIXME what to do when block or method return false, and do not redirect
     # need some redirect, but how to detect it?

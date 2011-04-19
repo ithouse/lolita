@@ -1,22 +1,32 @@
-<ul <%=tree.parent ? "class='subtree'" : ""%> >
+<% if tree.root? 
+  tree.each do |branch|
+    if branch.object.is_a?(Lolita::Mapping)
+      branch.options[:url]||=lolita_resources_path(branch.object)
+    else
+      branch.options[:url]=if branch.options[:url].respond_to?(:call)
+        branch.options[:url].call(self,branch)
+      else
+        branch.options[:url]
+      end
+    end
+  end
+end %>
+<ul <%=!tree.root? ? "class='subtree'" : ""%> >
   <% last_branch=tree.branches.last %>
   <%tree.branches.each do |branch| 
      if branch.object.is_a?(Lolita::Mapping) 
-       branch.options[:url]||=lolita_resources_path(branch.object) 
-       active=branch.object.to==resource_class
-     else   
-
-       branch.options[:url]=if branch.options[:url].respond_to?(:call) 
-         branch.options[:url].call(self,branch) 
-       else 
-         branch.options[:url] 
-       end 
-       active=branch.options[:url]==request.path
+       active=if self.respond_to?(:resource_class)
+          branch.object.to==resource_class
+        else
+          branch.options[:url]==request.path
+        end
+     else  
+       active=branch.self_with_children.detect{|b| b.options[:url]==request.path}
      end 
      
     %>
-    <li class="<%=active ? "active" : ""%> <%=branch.children.branches.any? ? "with-subtree" : ""%> <%=branch==last_branch ? "last-in-subtree" : ""%>">
-      <%= link_to branch.title, branch.options[:url] %>
+    <li class="<%=active ? "active" : ""%> <%=branch.children.branches.any? ? "with-subtree" : ""%> <%=!tree.root? && branch==last_branch ? "last-in-subtree" : ""%>">
+      <%= link_to branch.title, branch.options[:url] || "#" %>
       <% if branch.children.branches.any? %>
         <%= render_component(:"lolita/navigation",:tree,:tree=>branch.children) %>
       <% end %>

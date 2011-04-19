@@ -37,6 +37,10 @@ module Lolita
         end
       end
 
+      def root?
+        !parent
+      end
+
       def method_missing method_name, *args
         @branches.send(method_name.to_sym,*args)
       end

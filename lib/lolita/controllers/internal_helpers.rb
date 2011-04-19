@@ -79,11 +79,11 @@ module Lolita
       private
 
       def switch_locale
-        old_locale=I18n.locale
+        old_locale=::I18n.locale
         Lolita.locale=params[:locale]
-        I18n.locale=Lolita.locale
+        ::I18n.locale=Lolita.locale
         yield
-        I18n.locale=old_locale
+        ::I18n.locale=old_locale
       end
     end
   end

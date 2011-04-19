@@ -34,7 +34,7 @@ module Lolita
       # Define format, for details see Lolita::Support::Formatter::Base and Lolita::Support::Formater::Rails
       def formatter(value=nil,&block)
         if block_given?
-          @formatter=Lolita::Support::Formatter::Base.new(value,&block) 
+          @formatter=Lolita::Support::Formatter.new(value,&block) 
         elsif value || !@formatter
           @formatter=Lolita::Support::Formatter::Rails.new(value)
         end

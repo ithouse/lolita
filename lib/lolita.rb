@@ -22,12 +22,16 @@ require 'active_support/concern'
 require 'active_support/callbacks'
 require 'active_support/dependencies'
 require 'lolita/errors'
+require "lolita/hooks"
 # Require all ruby extensions
 Dir["#{File.dirname(__FILE__)}/lolita/ruby_ext/**/*.*"].each do |path|
   require path
 end
 
 module Lolita
+  include Lolita::Hooks
+  add_hook :before_setup, :after_setup, :after_routes_loaded,:before_routes_loaded
+  
   autoload(:LazyLoader,'lolita/lazy_loader')
   autoload(:VERSION,'lolita/version')
   autoload(:ObservedArray,'lolita/observed_array')
@@ -44,7 +48,6 @@ module Lolita
     autoload :Base, 'lolita/dbi/base'
   end
   
-  autoload :Hooks, "lolita/hooks"
   module Hooks
     autoload :NamedHook, "lolita/hooks/named_hook"
   end
@@ -125,8 +128,8 @@ module Lolita
   end
 
   module Support
-    module Formatter
-      autoload :Base, 'lolita/support/formatter/base'
+    autoload :Formatter, 'lolita/support/formatter'
+    class Formatter
       autoload :Rails, 'lolita/support/formatter/rails'
     end
   end
@@ -140,7 +143,9 @@ module Lolita
   end
 
   def self.setup
+    self.run(:before_setup)
     yield scope
+    self.run(:after_setup)
   end
 
   def self.scope_name
@@ -159,12 +164,16 @@ module Lolita
     scope.send(method_name,*args,&block)
   end
 
+  def self.rails3?
+    defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
+  end
+
   module Generators
     autoload :FileHelper, File.join(Lolita.root,"lib","generators","helpers","file_helper")
   end
   
 end
 
-if defined?(Rails)
+if Lolita.rails3?
   require 'lolita/rails/all'
 end
