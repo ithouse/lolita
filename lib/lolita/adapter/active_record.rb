@@ -62,12 +62,15 @@ module Lolita
       end
 
       def paginate(opt={})
-        #FIXME depend on will_paginate
         if order=opt.delete(:sort)
           order=order.map{|c| c.join(" ")}.join(", ")
           opt[:order]=order
         end
-        self.klass.paginate(opt)
+        if defined?(Kaminari)
+          self.klass.page(opt[:page]).per(opt[:per_page]).order(opt[:order])
+        else
+          self.klass.paginate(opt)
+        end
       end
 
       def filter(opt={})
