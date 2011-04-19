@@ -43,11 +43,10 @@ module Lolita
       end
 
       def resource_attributes
-        params[resource_name] || {}
+        fix_attributes(params[resource_name] || {})
       end
 
       def resource_with_attributes(current_resource,attributes={})
-        #TODO: detect rails date_select and datetime_select special attributes
         attributes||=resource_attributes
         attributes.each{|key,value|
           current_resource.send(:"#{key}=",value)
@@ -77,6 +76,26 @@ module Lolita
       
 
       private
+
+      def fix_attributes attributes
+        fix_rails_date_attributes attributes
+      end
+
+      def fix_rails_date_attributes attributes
+        #{"created_at(1i)"=>"2011", "created_at(2i)"=>"4", "created_at(3i)"=>"19", "created_at(4i)"=>"16", "created_at(5i)"=>"14"}
+        date_attributes = {}
+        attributes.each_pair do |k,v|
+          if k.to_s =~ /(.+)\((\d)i\)$/
+            date_attributes[$1] = {} unless date_attributes[$1]
+            date_attributes[$1][$2.to_i] = v.to_i
+            attributes.delete(k)
+          end
+        end
+        date_attributes.each_pair do |k,v|
+          attributes[k] = v.size == 3 ? Date.new(v[1],v[2],v[3]) : DateTime.new(v[1],v[2],v[3],v[4],v[5])
+        end
+        attributes
+      end
 
       def switch_locale
         old_locale=::I18n.locale

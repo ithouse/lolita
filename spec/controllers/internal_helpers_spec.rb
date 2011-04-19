@@ -59,5 +59,18 @@ describe MyController do
     attributes={:published_at => {}}
     @controller.send(:resource_with_attributes,resource,attributes)
   end
+
+  it "should fix rails date attributes" do
+    params = {"date_till(1i)"=>"2011", "date_till(2i)"=>"4", "date_till(3i)"=>"19", "description"=>"", "created_at(1i)"=>"2011", "created_at(2i)"=>"4", "created_at(3i)"=>"19", "created_at(4i)"=>"16", "created_at(5i)"=>"14"}
+    attributes = @controller.send(:fix_attributes,params)
+    attributes['date_till'].should == Date.new(2011,4,19)
+  end
+
+  it "should fix rails date_time attributes" do
+    params = {"created_at(1i)"=>"2011", "created_at(2i)"=>"4", "created_at(3i)"=>"19", "created_at(4i)"=>"16", "created_at(5i)"=>"14"}
+    attributes = @controller.send(:fix_attributes,params)
+    attributes['created_at'].should == DateTime.new(2011,4,19,16,14)
+  end
+
 end
 
