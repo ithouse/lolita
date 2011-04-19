@@ -54,11 +54,11 @@ module Lolita
       end
 
       def find_by_id(id)
-        self.klass.where(:id=>id).first
+        self.klass.unscoped.where(:id=>id).first
       end
       
       def find(*args)
-        self.klass.find(*args)
+        self.klass.unscoped.find(*args)
       end
 
       def paginate(opt={})
@@ -67,9 +67,9 @@ module Lolita
           opt[:order]=order
         end
         if defined?(Kaminari)
-          self.klass.page(opt[:page]).per(opt[:per_page]).order(opt[:order])
+          self.klass.unscoped.page(opt[:page]).per(opt[:per_page]).order(opt[:order])
         else
-          self.klass.paginate(opt)
+          self.klass.unscoped.paginate(opt)
         end
       end
 
@@ -92,7 +92,7 @@ module Lolita
             end
           end
           unless conditions.empty?
-            rs = self.klass.where(conditions)
+            rs = self.klass.unscoped.where(conditions)
             joins.each { |join| rs = rs.joins(join) }
             return rs
           end

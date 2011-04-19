@@ -55,11 +55,11 @@ module Lolita
       end
 
       def find_by_id(id)
-        self.klass.where(:_id=>id).first
+        self.klass.unscoped.where(:_id=>id).first
       end
 
       def find *args
-        self.klass.find(*args)
+        self.klass.unscoped.find(*args)
       end
 
       def paginate(options={})
@@ -82,7 +82,7 @@ module Lolita
               end
             end
           end
-          return self.klass.where(conditions)
+          return self.klass.unscoped.where(conditions)
         end
         self
       end
