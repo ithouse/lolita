@@ -1,10 +1,10 @@
 === Version 3.1.5 / 2011-04
 * Changes
-  * Moved from WillPaginate to Kaminari
+  * Moved from WillPaginate to Kaminari (Gatis Tomsons, Arturs Meisters)
   
 * Enhancements
-  * Lolita #before_setup and #after_setup hooks added
-  * Lolita #before_routes_load and #after_routes_load hooks added
+  * Lolita #before_setup and #after_setup hooks added (Arturs Meisters)
+  * Lolita #before_routes_load and #after_routes_load hooks added (Arturs Meisters)
   * added Kaminari[https://github.com/amatsuda/kaminari] support to paginator (Gatis Tomsons)
 
 * Bug fixes
