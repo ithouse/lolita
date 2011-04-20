@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rspec",
+    "GUIDELINES.rdoc",
     "Gemfile",
     "History.rdoc",
     "LICENSE.txt",
