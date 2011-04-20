@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.4"
+  s.version = "3.1.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-04-19}
+  s.date = %q{2011-04-20}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -19,10 +19,8 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rspec",
-    "GUIDELINES",
     "Gemfile",
     "History.rdoc",
-    "IDEA",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
@@ -79,7 +77,6 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/shared/_header.html.erb",
     "app/views/components/lolita/shared/_right_sidebar.html.erb",
     "app/views/layouts/lolita/application.html.erb",
-    "app/views/layouts/lolita/application.html.erb_spec.rb",
     "app/views/lolita/rest/form.html.erb",
     "app/views/lolita/rest/index.html.erb",
     "author",
@@ -142,7 +139,7 @@ Gem::Specification.new do |s|
     "lib/lolita/rails/all.rb",
     "lib/lolita/rails/routes.rb",
     "lib/lolita/ruby_ext/accessors.rb",
-    "lib/lolita/support/formatter/base.rb",
+    "lib/lolita/support/formatter.rb",
     "lib/lolita/support/formatter/rails.rb",
     "lib/lolita/test/matchers.rb",
     "lolita.gemspec",
@@ -245,7 +242,6 @@ Gem::Specification.new do |s|
     "spec/rails_app/config/environments/test.rb",
     "spec/rails_app/config/initializers/backtrace_silencers.rb",
     "spec/rails_app/config/initializers/inflections.rb",
-    "spec/rails_app/config/initializers/load_my_cells.rb",
     "spec/rails_app/config/initializers/secret_token.rb",
     "spec/rails_app/config/routes.rb",
     "spec/rails_app/db/schema.rb",
@@ -314,7 +310,7 @@ Gem::Specification.new do |s|
     "spec/support/factories/category.rb",
     "spec/support/factories/post.rb",
     "spec/support/factories/tag.rb",
-    "spec/support/formatter/base_spec.rb"
+    "spec/support/formatter_spec.rb"
   ]
   s.homepage = %q{http://github.com/ithouse/lolita}
   s.licenses = ["MIT"]
@@ -362,7 +358,6 @@ Gem::Specification.new do |s|
     "spec/rails_app/config/environments/test.rb",
     "spec/rails_app/config/initializers/backtrace_silencers.rb",
     "spec/rails_app/config/initializers/inflections.rb",
-    "spec/rails_app/config/initializers/load_my_cells.rb",
     "spec/rails_app/config/initializers/secret_token.rb",
     "spec/rails_app/config/routes.rb",
     "spec/rails_app/db/schema.rb",
@@ -373,7 +368,7 @@ Gem::Specification.new do |s|
     "spec/support/factories/category.rb",
     "spec/support/factories/post.rb",
     "spec/support/factories/tag.rb",
-    "spec/support/formatter/base_spec.rb"
+    "spec/support/formatter_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -381,7 +376,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rails>, ["~> 3.0"])
-      s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+      s.add_runtime_dependency(%q<kaminari>, ["~> 0.11.0"])
       s.add_runtime_dependency(%q<abstract>, [">= 0"])
       s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -396,7 +391,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<akephalos>, [">= 0"])
     else
       s.add_dependency(%q<rails>, ["~> 3.0"])
-      s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+      s.add_dependency(%q<kaminari>, ["~> 0.11.0"])
       s.add_dependency(%q<abstract>, [">= 0"])
       s.add_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
@@ -412,7 +407,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<rails>, ["~> 3.0"])
-    s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
+    s.add_dependency(%q<kaminari>, ["~> 0.11.0"])
     s.add_dependency(%q<abstract>, [">= 0"])
     s.add_dependency(%q<builder>, ["~> 2.1.2"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])

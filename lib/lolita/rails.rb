@@ -1,4 +1,5 @@
 require 'lolita/rails/routes'
+require 'kaminari'
 
 ActiveSupport.on_load(:action_controller) {
 	include Lolita::Controllers::ViewUserHelpers

@@ -62,8 +62,8 @@ module Lolita
         self.klass.unscoped.find(*args)
       end
 
-      def paginate(options={})
-        self.klass.paginate(options)
+      def paginate(opt={})
+        self.klass.unscoped.order_by(opt[:sort]).page(opt[:page]).per(opt[:per_page])
       end
 
       def filter(opt={})

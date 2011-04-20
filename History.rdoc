@@ -1,4 +1,7 @@
 === Version 3.1.5 / 2011-04
+* Changes
+  * Moved from WillPaginate to Kaminari
+  
 * Enhancements
   * Lolita #before_setup and #after_setup hooks added
   * Lolita #before_routes_load and #after_routes_load hooks added

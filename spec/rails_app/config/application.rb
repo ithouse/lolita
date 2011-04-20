@@ -8,7 +8,7 @@ Bundler.require(:default, LOLITA_ORM, Rails.env) if defined?(Bundler)
 #require 'cells'
 require 'lolita'
 require "lolita/rails/all"
-require 'will_paginate'
+require 'kaminari'
 
 module RailsApp
 	class Application < Rails::Application

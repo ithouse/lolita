@@ -66,11 +66,7 @@ module Lolita
           order=order.map{|c| c.join(" ")}.join(", ")
           opt[:order]=order
         end
-        if defined?(Kaminari)
-          self.klass.unscoped.page(opt[:page]).per(opt[:per_page]).order(opt[:order])
-        else
-          self.klass.unscoped.paginate(opt)
-        end
+        self.klass.unscoped.page(opt[:page]).per(opt[:per_page]).order(opt[:order])
       end
 
       def filter(opt={})

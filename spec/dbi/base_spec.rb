@@ -37,8 +37,8 @@ describe Lolita::DBI::Base do
     Factory.create(:post, :title => "Banana")
     Factory.create(:post, :title => "Cucumber")
     dbi=Lolita::DBI::Base.new(Post)
-    dbi.paginate(:per_page => 3, :page => 1, :sort => [:title,:desc]).map(&:title).should == %w(Cucumber Banana Apple)
-    dbi.paginate(:per_page => 3, :page => 1, :sort => [:title,:asc]).map(&:title).should == %w(Apple Banana Cucumber)
+    dbi.paginate(:per_page => 3, :page => 1, :sort => [[:title,:desc]]).map(&:title).should == %w(Cucumber Banana Apple)
+    dbi.paginate(:per_page => 3, :page => 1, :sort => [[:title,:asc]]).map(&:title).should == %w(Apple Banana Cucumber)
   end
 end
 
