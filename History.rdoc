@@ -1,3 +1,11 @@
+=== Version 3.1.6 / 2011-04
+* Enhancements
+  * added Kaminari[https://github.com/amatsuda/kaminari] support to paginator
+
+* Bug fixes
+  * order in list view works when model has default_scope (Gatis Tomsons)
+  * rest_controller now understands Rails date/date_time generated attributes
+
 === Version 3.1.5 / 2011-04
 * Enhancements
   * Lolita #before_setup and #after_setup hooks added
