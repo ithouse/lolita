@@ -1,20 +1,15 @@
-=== Version 3.1.6 / 2011-04
-* Enhancements
-  * added Kaminari[https://github.com/amatsuda/kaminari] support to paginator
-
-* Bug fixes
-  * order in list view works when model has default_scope (Gatis Tomsons)
-  * rest_controller now understands Rails date/date_time generated attributes
-
 === Version 3.1.5 / 2011-04
 * Enhancements
   * Lolita #before_setup and #after_setup hooks added
   * Lolita #before_routes_load and #after_routes_load hooks added
+  * added Kaminari[https://github.com/amatsuda/kaminari] support to paginator (Gatis Tomsons)
 
 * Bug fixes
   * array field values lazy assigment removed (Arturs Meisters)
   * tree fixed that can use mapping without InternalHelper  (Arturs Meisters)
   * tree now can detect if parent is active, when any of children is active (Arturs Meisters)
+  * order in list view works when model has default_scope (Gatis Tomsons)
+  * rest_controller now understands Rails date/date_time generated attributes (Gatis Tomsons)
 
 === Version 3.1.4 / 2011-04-19
 * Enhancements
