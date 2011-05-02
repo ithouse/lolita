@@ -55,6 +55,7 @@ class Lolita::RestController < ApplicationController
     respond_to do |format|
       format.html do
         build_response_for(:list,:page=>page)
+        render "/lolita/rest/index"
       end
       format.json do
         render :json=>page
