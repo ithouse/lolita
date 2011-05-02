@@ -120,6 +120,17 @@ module Lolita
         @hooks
       end
 
+      def all_hooks
+        @all_hooks||=self.ancestors.inject([]) do |result,const_name|
+          if const_name.respond_to?(:hooks)
+            result+=const_name.send(:hooks)
+          else
+            result
+          end
+        end
+        @all_hooks
+      end
+
       # Reset all hooks and callbacks to defaults.
       def clear_hooks
         @hooks=[]
@@ -174,7 +185,7 @@ module Lolita
 
       # Is hook with <em>name</em> is defined for class.
       def has_hook?(name)
-        self.hooks.include?(name.to_sym)
+        self.all_hooks.include?(name.to_sym)
       end
 
       # Try to recognize named run methods like 
@@ -274,12 +285,19 @@ module Lolita
       # class callbacks always will be called before scope callbacks.
       def get_callback(name)
         scope_callbacks=hooks_scope.callbacks[name.to_sym] || {}
-        unless hooks_scope==self
-          class_callbacks=self.callbacks[name.to_sym] || {}
+  
+        superclasses.each do |const_name|
+          scope_callbacks=collect_callbacks_from(name,const_name,scope_callbacks)
+        end
+        scope_callbacks
+      end
+
+
+      def collect_callbacks_from(name,const_name,scope_callbacks)
+          class_callbacks=const_name.callbacks[name.to_sym] || {}
           [:methods,:blocks].each do |attr|
             scope_callbacks[attr]=((class_callbacks[attr] || [])+(scope_callbacks[attr] || [])).uniq
           end
-        end
         scope_callbacks
       end
 
@@ -296,6 +314,18 @@ module Lolita
       # Register hook for scope.
       def register_hook(name)
         self.hooks<<name
+      end
+
+      def superclasses
+        unless @klasses
+          @klasses=[]
+          self.ancestors.each do |const_name|
+            if const_name.respond_to?(:hooks)
+              @klasses<<const_name
+            end
+          end
+        end
+        @klasses
       end
     end
 

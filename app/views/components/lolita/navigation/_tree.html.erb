@@ -17,13 +17,17 @@ end %>
      if branch.object.is_a?(Lolita::Mapping) 
        active=if self.respond_to?(:resource_class)
           branch.object.to==resource_class
-        else
-          branch.options[:url]==request.path
         end
-     else  
-       active=branch.self_with_children.detect{|b| b.options[:url]==request.path}
      end 
-     
+     unless active
+       active=branch.self_with_children.detect{|b| 
+         if b.options[:active].respond_to?(:call)
+          b.options[:active].call(self,branch,b)
+         else
+          b.options[:url]==request.path
+         end
+       }
+     end
     %>
     <li class="<%=active ? "active" : ""%> <%=branch.children.branches.any? ? "with-subtree" : ""%> <%=!tree.root? && branch==last_branch ? "last-in-subtree" : ""%>">
       <%= link_to branch.title, branch.options[:url] || "#" %>
