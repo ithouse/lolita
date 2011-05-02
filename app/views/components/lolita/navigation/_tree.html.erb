@@ -16,7 +16,7 @@ end %>
   <%tree.branches.each do |branch| 
      if branch.object.is_a?(Lolita::Mapping) 
        active=if self.respond_to?(:resource_class)
-          branch.object.to==resource_class
+          branch.object ? branch.object.to==resource_class : false
         end
      end 
      unless active
