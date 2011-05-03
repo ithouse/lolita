@@ -8,7 +8,7 @@ module Lolita
     #       value.to_i**2
     #     end
     #     # or as String
-    #     Lolita::Support::Formatter.new("%Y-%m")
+    #     Lolita::Support::Formatter.new("%U")
     # To format any value with defined formater call #with
     # ====Example
     #     # Previous examples may be called like this
