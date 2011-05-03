@@ -31,16 +31,28 @@ module Lolita
         {:sc=>self.name,:sd=>direction}
       end
       
-      # Define format, for details see Lolita::Support::Formatter::Base and Lolita::Support::Formater::Rails
+      # Define format, for details see Lolita::Support::Formatter and Lolita::Support::Formater::Rails
       def formatter(value=nil,&block)
         if block_given?
           @formatter=Lolita::Support::Formatter.new(value,&block) 
         elsif value || !@formatter
-          @formatter=Lolita::Support::Formatter::Rails.new(value)
+          if value.kind_of?(Lolita::Support::Formatter)
+            @formatter=value
+          else
+            @formatter=Lolita::Support::Formatter::Rails.new(value)
+          end
         end
         @formatter
       end
-      
+
+      def formatter=(value)
+        if value.kind_of?(Lolita::Support::Formatter)
+          @formatter=value
+        else
+          @formatter=Lolita::Support::Formatter::Rails.new(value)
+        end
+      end
+
       def set_attributes(*args)
         if !args.empty?
           if args[0].is_a?(Hash)
@@ -49,6 +61,11 @@ module Lolita
             }
           elsif args[0].is_a?(Symbol) || args[0].is_a?(String)
             self.name=args[0].to_s
+            if args[1].is_a?(Hash)
+              args[1].each{|m,value|
+                self.send("#{m}=".to_sym,value)
+              }
+            end
           else
             raise ArgumentError.new("Lolita::Configuration::Column arguments must be Hash or Symbol or String instead of #{args[0].class}")
           end

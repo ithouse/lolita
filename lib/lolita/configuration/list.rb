@@ -96,7 +96,7 @@ module Lolita
         if block_given?
           @columns<<block
         else
-          @columns<<args[0]
+          @columns.add(Lolita::Configuration::Column.new(*args))
         end
       end
 

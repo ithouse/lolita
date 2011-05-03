@@ -28,9 +28,9 @@ module Lolita
         def use_default_format(value,*optional_values)
           if value
             if value.is_a?(String)
-              value
+              @format ? (@format % value) : value
             elsif value.is_a?(Numeric)
-              value
+              @format ? (@format % value) : value
             elsif value.is_a?(Date)
               if defined?(::I18n)
                 ::I18n.localize(value, :format => :long)

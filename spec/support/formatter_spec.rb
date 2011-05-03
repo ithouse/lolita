@@ -35,8 +35,8 @@ describe Lolita::Support::Formatter do
     end
 
     it "should convert received value to string and call #unpack" do
-      formatter=klass.new('C')
-      formatter.with("\100").should == [64]
+      formatter=klass.new("%.3f")
+      formatter.with(44.88).should == "44.880"
     end
   end
 end

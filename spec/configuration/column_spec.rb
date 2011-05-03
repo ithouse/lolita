@@ -42,11 +42,41 @@ describe Lolita::Configuration::Column do
     }.should raise_error(ArgumentError, "Column must have name.")
   end
 
-  it "should allow to add formatter" do
+  it "should allow to add formatter with block" do
     column.formatter do|value|
       "value #{value}"
     end
     column.formatter.with("1").should == "value 1"
+  end
+
+  it "should allow to add formatter as attribute" do
+    column.type :float
+    column.formatter = "%.3f"
+    column.formatter.with(44.88).should == "44.880"
+  end
+
+  it "should allow to add formatter as attribute with Lolita::Support instance" do
+    column.formatter = Lolita::Support::Formatter.new("%s")
+    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_false
+    column.formatter = "%s"
+    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_true
+  end
+
+  it "should allow to add formatter as block with Lolita::Support instance" do
+    column=Lolita::Configuration::Column.new do
+      name "col1"
+      title "Col one"
+      type String
+      formatter Lolita::Support::Formatter.new("%s")
+    end
+    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_false
+    column=Lolita::Configuration::Column.new do
+      name "col1"
+      title "Col one"
+      type String
+      formatter "%s"
+    end    
+    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_true
   end
 
   it "should make default formater not defined" do

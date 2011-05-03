@@ -49,7 +49,7 @@ module Lolita
         if value.respond_to?(:format)
           call_block(value,*optional_values)
         else
-          value.to_s.unpack(@format)
+          @format ? (@format % value) : value
         end
       end
 
