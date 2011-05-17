@@ -4,6 +4,7 @@
   * Column now can be configured with attributes, updated :formatter (Gatis Tomsons)
   * Titles and labels now user localization (Arturs Meisters)
   * Latvian translation for default text added (Arturs Meisters)
+	* TinyMCE initialization/configuration script moved to separate file in 'public/javascripts' directory (Rolands Bondars)
 
 * Bug fixes
     
