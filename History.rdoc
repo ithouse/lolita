@@ -7,6 +7,7 @@
 	* TinyMCE initialization/configuration script moved to separate file (Rolands Bondars)
 
 * Bug fixes
+	* Restored TinyMCE 'util' folder, it is required for certain actions (Rolands Bondars)
     
 === Version 3.1.5 / 2011-04-20
 * Changes
