@@ -1,0 +1,16 @@
+lv:
+  lolita:
+    shared:
+      save_notice: Veiksmīgi saglabāts.
+      save_alert: Saglabāšana neizdevās.
+      log_out: Atteikties
+    tabs:
+      last_save: Pēdējā saglabāšana
+      save: Saglabāt
+      save_all: Saglabāt visu
+    list:
+      add_new: Pievienot jaunu %{name}
+      confirm: "Vai esat pārliecināts, ka vēlaties dzēst ierakstu?"
+    filter:
+      apply_button: Pielietot
+      include_blank_by_title: " -- Filtrēt pēc %{title} -- "
