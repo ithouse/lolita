@@ -65,6 +65,16 @@ module Lolita
         @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
       end
       
+      # Block setter for columns
+      def column(*args,&block)
+        set_attribute(:columns)
+        if block_given?
+          @columns<<block
+        else
+          @columns.add(Lolita::Configuration::Column.new(@dbi,*args))
+        end
+      end
+
       private
 
       # Used to set attributes if block not given.
@@ -88,16 +98,6 @@ module Lolita
       # Determine if attribute is set and don't need to generate it.
       def is_set?(var)
         @set_attributes.include?(var)
-      end
-
-      # Block setter for columns
-      def column(*args,&block)
-        set_attribute(:columns)
-        if block_given?
-          @columns<<block
-        else
-          @columns.add(Lolita::Configuration::Column.new(*args))
-        end
       end
 
     end

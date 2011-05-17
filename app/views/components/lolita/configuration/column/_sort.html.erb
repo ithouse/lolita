@@ -1,4 +1,4 @@
  <% param_options=params.reject{|k,v| [:controller,:action].include?(k)} %>
  <% options=param_options.merge(column.sort_options(params)) %>
  <% direction_indicator=column.currently_sorting?(params) && options[:sd].to_s=="desc" ? raw('&uArr;') : raw('&dArr;') %>
- <%= link_to raw("#{column.title} #{direction_indicator}"), lolita_resources_path(options) %>
+ <%= link_to raw("#{column.title } #{direction_indicator}"), lolita_resources_path(options) %>

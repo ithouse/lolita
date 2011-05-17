@@ -126,7 +126,7 @@ module Lolita
         {
           :name=>column.name,
           :type=>type_cast(column.type.to_s),
-          :title=>column.name.to_s.humanize,
+          :title=>self.klass.human_attribute_name(column.name),
           :options=>{
             :primary=>column.primary,
             :native_type=>column.type.to_s

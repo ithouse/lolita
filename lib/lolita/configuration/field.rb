@@ -71,6 +71,12 @@ module Lolita
           end
         end
         
+        def title(value=nil)
+          @title=value if value
+          @title||=@dbi.klass.human_attribute_name(@name)
+          @title
+        end
+
         def type value=nil
           @type=value.to_s.underscore if value
           @type
@@ -133,7 +139,6 @@ module Lolita
         end
 
         def set_default_values
-          self.title||=self.name.to_s.gsub("_", " ").capitalize
           self.options||={}
         end
 

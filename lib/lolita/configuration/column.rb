@@ -7,11 +7,18 @@ module Lolita
       MAX_TEXT_SIZE=20
       lolita_accessor :name,:title,:type,:options,:sortable
       
-      def initialize(*args,&block)
+      def initialize(dbi,*args,&block)
+        @dbi=dbi
         self.set_attributes(*args)
         self.instance_eval(&block) if block_given?
         validate
         set_default_values
+      end
+
+      def title(value=nil)
+        @title=value if value
+        @title||=@dbi.klass.human_attribute_name(@name.to_s)
+        @title
       end
 
       def sortable?
@@ -77,7 +84,6 @@ module Lolita
       def set_default_values
         @sortable||=true
         @sort_direction||=:desc
-        @title||=@name.to_s.humanize
       end
 
       def validate

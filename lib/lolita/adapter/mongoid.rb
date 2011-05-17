@@ -117,7 +117,7 @@ module Lolita
         {
           :name=>name,
           :type=>field.type.to_s,
-          :title=>name.to_s.humanize,
+          :title=>self.klass.human_attribute_name(name.to_s),
           :options=>field.options.merge({
             :primary=>name.to_s=="_id"
           })

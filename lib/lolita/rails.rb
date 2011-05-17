@@ -15,7 +15,6 @@ ActiveSupport.on_load(:action_view) {
 module Lolita
 	class Engine < Rails::Engine
 		config.lolita=Lolita
-	#config.asset_path = "/lolita/%s"
-	# config.serve_static_assets = true
+	  config.i18n.load_path += Dir[File.join(Lolita.root,'config', 'locales','default', '*.{yml}')]
 	end
 end

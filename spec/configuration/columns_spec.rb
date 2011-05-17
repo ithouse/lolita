@@ -26,7 +26,7 @@ describe Lolita::Configuration::Columns do
   it "should make Lolita::Configuration::Column for each element " do
     columns=Lolita::Configuration::Columns.new(@list)
     columns<<{:name=>"col1"}
-    columns<<Lolita::Configuration::Column.new(:name=>"col2")
+    columns<<Lolita::Configuration::Column.new(@dbi,:name=>"col2")
     columns.first.class.should == Lolita::Configuration::Column
   end
 

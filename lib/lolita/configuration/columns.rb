@@ -28,7 +28,7 @@ module Lolita
       def generate!
         @columns.clear
         @dbi.fields.each_with_index{|field,index|
-          @columns[index]=Lolita::Configuration::Column.new(field)
+          @columns[index]=Lolita::Configuration::Column.new(@dbi,field)
         }
       end
 
@@ -51,11 +51,11 @@ module Lolita
         if column.is_a?(Lolita::Configuration::Column)
           column
         elsif column.is_a?(Proc)
-          Lolita::Configuration::Column.new(&column)
+          Lolita::Configuration::Column.new(@dbi,&column)
         elsif block_given?
-          Lolita::Configuration::Column.new(&block)
+          Lolita::Configuration::Column.new(@dbi,&block)
         elsif [Symbol,String,Hash].include?(column.class)
-          Lolita::Configuration::Column.new(column)
+          Lolita::Configuration::Column.new(@dbi,column)
         else
           raise ArgumentError.new("Column can not be defined with #{column.class}.")
         end
