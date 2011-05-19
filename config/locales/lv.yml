@@ -4,10 +4,15 @@ lv:
       save_notice: Veiksmīgi saglabāts.
       save_alert: Saglabāšana neizdevās.
       log_out: Atteikties
+      edit: Edit
+      delete: Delete
     tabs:
       last_save: Pēdējā saglabāšana
       save: Saglabāt
       save_all: Saglabāt visu
+      titles:
+        default: "Noklusētais"
+        content: "Saturs"
     list:
       add_new: Pievienot jaunu %{name}
       confirm: "Vai esat pārliecināts, ka vēlaties dzēst ierakstu?"

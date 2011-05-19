@@ -1,13 +1,5 @@
-<div id="flash" style="display:none">
-  <%= flash[:notice] if flash[:notice] %>
-  <%= flash[:alert]  if flash[:alert] %>
+<div id="flash" style="display:block">
+  <% if local_assigns[:message] %>
+    <%= message %>
+  <% end %>
 </div>
-
-<% if request.xhr? && (flash[:notice] || flash[:alert]) %>
-  <script>
-    $("#flash").slideDown("fast");
-    setTimeout(function() { 
-      $("#flash").slideUp("fast") 
-    }, 10000); //wait 10 seconds and then slide up
-  </script>
-<% end%>

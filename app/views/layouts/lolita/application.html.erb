@@ -14,10 +14,15 @@
 
     <%= stylesheet_link_tag "lolita/default","lolita/style" %>
     <%= yield :style %>
-     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js">
+    
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js">
+     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js">
     </script>
     <script>
-      window.jQuery || document.write('<script src="/javascripts/jquery-1.5.1.min.js">\x3C/script>')
+      if(!window.jQuery){
+        document.write('<script src="/javascripts/jquery-1.6.min.js">\x3C/script>');
+        document.write('<script src="/javascripts/jquery-ui.1.8.13.min.js">\x3C/script>');
+      }
     </script>
     <%= javascript_include_tag "modernizr-1.7.min" %>
     <%= javascript_include_tag "rails","lolita/tab","lolita/main" %>
@@ -25,7 +30,7 @@
     <%= raw csrf_meta_tag %>
   </head>
   <body>
-
+    <%= render_component :"lolita/shared", :flash%>
     <div id="container">
       <%= render_component :"lolita/shared", :header %>
       <div id="main" role="main">

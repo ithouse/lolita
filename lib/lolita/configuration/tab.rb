@@ -154,9 +154,17 @@ module Lolita
         def set_default_attributes
           @type=@@default_tab_type unless @type
           @name="tab_#{self.__id__}" unless @name
-          @title=@type.to_s.humanize unless @title
+          @title=set_default_title unless @title
         end
         
+        def set_default_title
+          if defined?(I18n)
+            I18n.translate("lolita.tabs.titles.#{@type}")
+          else
+            @type.to_s.humanize
+          end
+        end
+
         def get_class(str_or_sym_or_class)
           str_or_sym_or_class.is_a?(Class) ? str_or_sym_or_class : str_or_sym_or_class.to_s.camelize.constantize
         end

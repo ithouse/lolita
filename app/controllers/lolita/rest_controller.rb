@@ -42,9 +42,9 @@ class Lolita::RestController < ApplicationController
     self.run(:before_destroy)
     get_resource
     if self.resource && self.resource.destroy
-      flash.now[:notice] = I18n.t "lolita.shared.destroy_notice"
+      flash[:notice] = I18n.t "lolita.shared.destroy_notice"
     else
-      flash.now[:alert] = I18n.t "lolita.shared.destroy_alert"
+      flash[:alert] = I18n.t "lolita.shared.destroy_alert"
     end
     self.run(:after_destroy)
     redirect_to lolita_resources_path
@@ -55,7 +55,7 @@ class Lolita::RestController < ApplicationController
     respond_to do |format|
       format.html do
         build_response_for(:list,:page=>page)
-        render "/lolita/rest/index"
+        show_index
       end
       format.json do
         render :json=>page
@@ -74,6 +74,10 @@ class Lolita::RestController < ApplicationController
     else
       render "/lolita/rest/form"
     end
+  end
+  
+  def show_index
+    render "/lolita/rest/index"
   end
   
   def save_and_redirect

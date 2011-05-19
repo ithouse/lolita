@@ -1,9 +1,12 @@
-=== Version 3.1.6 / 2011-05-17
+=== Version 3.1.6 / 2011-05-19
 * Enhancements
   * Hooks run all callbacks from superclasses and included modules too. (Arturs Meisters)
   * Column now can be configured with attributes, updated :formatter (Gatis Tomsons)
   * Titles and labels now user localization (Arturs Meisters)
   * Latvian translation for default text added (Arturs Meisters)
+  * Lolita don't use flash messages anymore, now messages goes through reponse header. (Arturs Meisters)
+  * jQuery updated to v1.6
+  * jQuery UI added v1.8.13, by default in layout
 
 * Bug fixes
     

@@ -4,10 +4,15 @@ en:
       save_notice: Successfully saved.
       save_alert: Save did not succeed.
       log_out: Log out
+      edit: Edit
+      delete: Delete
     tabs:
       last_save: Last saved
       save: Save
       save_all: Save all
+      titles:
+        default: Default
+        content: Content
     list:
       add_new: Add new %{name}
       confirm: Are you sure you want to delete record?

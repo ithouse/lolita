@@ -39,7 +39,4 @@ $(function(){
       tab_title.data("closed",!closed)
     })
     // Flash is hidden when clicked on
-  $("#flash").live("click", function(){
-    $(this).slideUp("fast");
-  })
 })
