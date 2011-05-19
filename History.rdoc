@@ -1,3 +1,6 @@
+=== Version 3.1.7 / 2011-
+* Enhancements
+
 === Version 3.1.6 / 2011-05-19
 * Enhancements
   * Hooks run all callbacks from superclasses and included modules too. (Arturs Meisters)
@@ -7,9 +10,7 @@
   * Lolita don't use flash messages anymore, now messages goes through reponse header. (Arturs Meisters)
   * jQuery updated to v1.6
   * jQuery UI added v1.8.13, by default in layout
-
-* Bug fixes
-    
+   
 === Version 3.1.5 / 2011-04-20
 * Changes
   * Moved from WillPaginate to Kaminari (Gatis Tomsons, Arturs Meisters)

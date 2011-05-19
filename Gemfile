@@ -15,12 +15,10 @@ end
 #gem 'cover_me', '>= 1.0.0.rc6', :group => :test
 gem "jeweler", "~> 1.5.2", :group=>:development
 group :test,:development do
-	gem "rspec", ">=2.2.0"
-	gem "rspec-rails"
+	gem "rspec", "~>2.6.0"
+	gem "rspec-rails","~>2.6.0"
 	gem "factory_girl"
 	gem 'ffaker'
-	# gem "rspec-cells"
-	#gem "sqlite3-ruby"
 	gem "ruby-debug19"
 	gem "cucumber-rails"
 	gem "capybara"

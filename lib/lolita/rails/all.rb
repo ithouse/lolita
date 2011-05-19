@@ -1,3 +1,6 @@
+unless defined?(Lolita)
+  require 'lolita'
+end
 require 'lolita/mapping'
 require 'lolita/rails'
 require 'lolita/modules'

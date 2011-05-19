@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.5"
+  s.version = "3.1.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-04-20}
+  s.date = %q{2011-05-19}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -81,7 +81,9 @@ Gem::Specification.new do |s|
     "app/views/lolita/rest/form.html.erb",
     "app/views/lolita/rest/index.html.erb",
     "author",
+    "config/locales/default/lv.yml",
     "config/locales/en.yml",
+    "config/locales/lv.yml",
     "db/seed.rb",
     "features/create_page.feature",
     "features/step_definitions/lolita_steps.rb",
@@ -145,7 +147,8 @@ Gem::Specification.new do |s|
     "lib/lolita/test/matchers.rb",
     "lolita.gemspec",
     "public/images/lolita/plus.png",
-    "public/javascripts/jquery-1.5.1.min.js",
+    "public/javascripts/jquery-1.6.min.js",
+    "public/javascripts/jquery-ui-1.8.13.min.js",
     "public/javascripts/lolita/main.js",
     "public/javascripts/lolita/tab.js",
     "public/javascripts/modernizr-1.7.min.js",
@@ -381,8 +384,8 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<abstract>, [">= 0"])
       s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
-      s.add_development_dependency(%q<rspec>, [">= 2.2.0"])
-      s.add_development_dependency(%q<rspec-rails>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
+      s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.0"])
       s.add_development_dependency(%q<factory_girl>, [">= 0"])
       s.add_development_dependency(%q<ffaker>, [">= 0"])
       s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
@@ -396,8 +399,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<abstract>, [">= 0"])
       s.add_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
-      s.add_dependency(%q<rspec>, [">= 2.2.0"])
-      s.add_dependency(%q<rspec-rails>, [">= 0"])
+      s.add_dependency(%q<rspec>, ["~> 2.6.0"])
+      s.add_dependency(%q<rspec-rails>, ["~> 2.6.0"])
       s.add_dependency(%q<factory_girl>, [">= 0"])
       s.add_dependency(%q<ffaker>, [">= 0"])
       s.add_dependency(%q<ruby-debug19>, [">= 0"])
@@ -412,8 +415,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<abstract>, [">= 0"])
     s.add_dependency(%q<builder>, ["~> 2.1.2"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
-    s.add_dependency(%q<rspec>, [">= 2.2.0"])
-    s.add_dependency(%q<rspec-rails>, [">= 0"])
+    s.add_dependency(%q<rspec>, ["~> 2.6.0"])
+    s.add_dependency(%q<rspec-rails>, ["~> 2.6.0"])
     s.add_dependency(%q<factory_girl>, [">= 0"])
     s.add_dependency(%q<ffaker>, [">= 0"])
     s.add_dependency(%q<ruby-debug19>, [">= 0"])
