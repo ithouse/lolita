@@ -123,11 +123,11 @@ module ActionDispatch::Routing
     private
 
     def migrating?
-      File.basename($0)=="rake" && (ARGV.include?("db:migrate"))
+      File.basename($0).match(/^rake/) && (ARGV.include?("db:migrate"))
     end
 
     def generating_instalation?
-      File.basename($0) == "rails" && (ARGV.detect{|arg| arg.to_s.match(/lolita[^:]*:.*/)})
+      File.basename($0).match(/^rails/) && (ARGV.detect{|arg| arg.to_s.match(/lolita[^:]*:.*/)})
     end
   end
 end
