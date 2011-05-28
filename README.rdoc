@@ -36,7 +36,7 @@ For more detailed usage read Usage[https://github.com/ithouse/lolita/wiki/Usage]
 
 ===Add authorization to Lolita
 
-Easiest way to add authentication is with Devise. First install Devise as gem, than add to it your project.
+Easiest way to add authentication is with Devise. First install Devise as gem, than add it to your project.
 Make Devise model, lets say, User. After that add these lines in <i>/config/initializers/lolita.rb</i>
   config.user_classes << User
   config.authentication = :authenticate_user!
