@@ -39,7 +39,7 @@ module ActionDispatch::Routing
     #     # lolita_for try to call :lolita_gallery in Mapper class
     def lolita_for *resources
   
-      return if migrating?
+      return if migrating? || generating_instalation?
       options = resources.extract_options!
 
       # if as = options.delete(:as)
@@ -91,7 +91,7 @@ module ActionDispatch::Routing
        
         tree=Lolita::Navigation::Tree[:"left_side_navigation"]
         unless tree.branches.detect{|b| b.object.is_a?(Lolita::Mapping) && b.object.to==mapping.to}
-          tree.append(mapping,:title=>mapping.to.human_name(:count=>2))
+          tree.append(mapping,:title=>mapping.to.model_name.human(:count=>2))
         end
       }
       Lolita.common_routes(all_resource_classes).each do |route_name|
@@ -124,6 +124,10 @@ module ActionDispatch::Routing
 
     def migrating?
       File.basename($0)=="rake" && (ARGV.include?("db:migrate"))
+    end
+
+    def generating_instalation?
+      File.basename($0) == "rails" && (ARGV.detect{|arg| arg.to_s.match(/lolita[^:]*:.*/)})
     end
   end
 end

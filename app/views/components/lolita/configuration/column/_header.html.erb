@@ -2,6 +2,6 @@
   <% if column.sortable? %>
     <%= render_component column, :sort %>
   <% else %>
-    <%= column.title %>
+    <%= column.title.to_s.capitalize %>
   <% end %>
 </th>

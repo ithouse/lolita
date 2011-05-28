@@ -1,4 +1,4 @@
 <td class="tool-cell">
-  <%= link_to I18n.t("lolita.shared.edit"),edit_lolita_resource_path(:id=>record.id) %>
-  <%= link_to I18n.t("lolita.shared.delete"), lolita_resource_path(:id=>record.id),:method=>:delete,:confirm=>I18n.t("lolita.list.confirm") %>
+  <%= link_to ::I18n.t("lolita.shared.edit"),edit_lolita_resource_path(:id=>record.id) %>
+  <%= link_to ::I18n.t("lolita.shared.delete"), lolita_resource_path(:id=>record.id),:method=>:delete,:confirm=>I18n.t("lolita.list.confirm") %>
 </td>

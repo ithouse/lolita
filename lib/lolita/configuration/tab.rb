@@ -158,8 +158,8 @@ module Lolita
         end
         
         def set_default_title
-          if defined?(I18n)
-            I18n.translate("lolita.tabs.titles.#{@type}")
+          if defined?(::I18n)
+            ::I18n.translate("lolita.tabs.titles.#{@type}")
           else
             @type.to_s.humanize
           end

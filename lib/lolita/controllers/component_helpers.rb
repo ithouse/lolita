@@ -28,7 +28,6 @@ module Lolita
       def render_component *args
         name,state,options=get_render_options(*args)
         format=options.delete(:format)
-
         raise "Can't render component without name!" unless name
         will_use_component name 
         component_name=File.join(name.to_s,state ? state.to_s : nil)
@@ -60,12 +59,12 @@ module Lolita
       end
 
       def output_with_callbacks(partial_name,name,locals)
-        output= Lolita::Hooks.component(name).run(:before,:run_scope=>self).to_s
-        block_output=Lolita::Hooks.component(name).run(:around, :run_scope=>self) do
-          render(:partial=>partial_name,:locals=>locals)
+        output = Lolita::Hooks.component(name).run(:before,:run_scope => self).to_s
+        block_output = Lolita::Hooks.component(name).run(:around, :run_scope => self) do
+          render(:partial => partial_name,:locals=>locals)
         end
         output << block_output.to_s
-        output << Lolita::Hooks.component(name).run(:after,:run_scope=>self).to_s
+        output << Lolita::Hooks.component(name).run(:after,:run_scope => self).to_s
         output
       end
 

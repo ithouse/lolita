@@ -68,10 +68,9 @@ module Lolita
       def build_response_for(conf_part,options={})
         # FIXME when asked for some resources that always create new object, there may
         # not be any args, like lolita.report on something like that
-        
-        @component_options=options
-        @component_object=resource_class.lolita.send(conf_part.to_sym)
-        @component_builder=@component_object.build(@component_options)
+        @component_options = options
+        @component_object = resource_class.lolita.send(conf_part.to_sym)
+        @component_builder = @component_object.build(@component_options)
       end
       
 

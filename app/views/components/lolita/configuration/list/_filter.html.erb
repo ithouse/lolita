@@ -3,6 +3,6 @@
     <% list.filter.fields.each do |field| %>
       <%= render_component *field.build(:filter, :filter=>list.filter) %>
     <% end %>
-    <button type="submit"><%= I18n.t "lolita.filter.apply_button" %></button>
+    <button type="submit"><%= ::I18n.t "lolita.filter.apply_button" %></button>
   </form>
 <% end -%>

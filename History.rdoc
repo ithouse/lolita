@@ -1,5 +1,9 @@
 === Version 3.1.7 / 2011-
 * Enhancements
+  * Builder refactore. Now support conditions.
+
+* Bug fixes
+  * Lolita messaging not used in RestController
 
 === Version 3.1.6 / 2011-05-19
 * Enhancements

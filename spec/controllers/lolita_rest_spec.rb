@@ -40,7 +40,7 @@ describe Lolita::RestController do
     tab.type.should == :content
     tab.fields.by_name(:title).title = "foobar"
     get :new
-    response.body.should =~/foobar/
+    response.body.should match(/foobar/i)
   end
 
   it "should display inline error messages if validations fail"

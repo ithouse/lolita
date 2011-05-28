@@ -36,6 +36,9 @@ module Lolita
   autoload(:VERSION,'lolita/version')
   autoload(:ObservedArray,'lolita/observed_array')
   autoload(:Builder,'lolita/builder')
+  module Builder
+    autoload(:Custom, 'lolita/builder')
+  end
   autoload(:BaseConfiguration,'lolita/base_configuration')
 
   module Adapter

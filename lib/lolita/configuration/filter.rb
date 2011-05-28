@@ -101,7 +101,7 @@ module Lolita
 
       def html_option_for_select field
         {
-          :include_blank => I18n.t('lolita.filter.include_blank_by_title', :title => field.title)
+          :include_blank => ::I18n.t('lolita.filter.include_blank_by_title', :title => field.title)
         }
       end
     end

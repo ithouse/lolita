@@ -51,7 +51,6 @@ describe Lolita::Navigation::Branch do
     it "should add before and after branch" do
       branch=tree.append(Object)
       first_branch=Lolita::Navigation::Branch.new
-      debugger
       first_branch.before(branch)
       last_branch=Lolita::Navigation::Branch.new
       last_branch.after(branch)

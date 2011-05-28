@@ -42,9 +42,9 @@ class Lolita::RestController < ApplicationController
     self.run(:before_destroy)
     get_resource
     if self.resource && self.resource.destroy
-      flash[:notice] = I18n.t "lolita.shared.destroy_notice"
+      flash[:notice] = ::I18n.t "lolita.shared.destroy_notice"
     else
-      flash[:alert] = I18n.t "lolita.shared.destroy_alert"
+      flash[:alert] = ::I18n.t "lolita.shared.destroy_alert"
     end
     self.run(:after_destroy)
     redirect_to lolita_resources_path
@@ -95,13 +95,13 @@ class Lolita::RestController < ApplicationController
   
   def respond_html_200
     response.headers["Validation"] = 'true'
-    flash.now[:notice] = I18n.t "lolita.shared.save_notice"
+    response.headers["Lolita-Notice"] = ::I18n.t "lolita.shared.save_notice"
     show_form
   end
 
   def respond_html_400
     response.headers["Validation"] = 'false'
-    flash.now[:alert] = I18n.t "lolita.shared.save_alert"
+    response.headers["Lolita-Alert"] = ::I18n.t "lolita.shared.save_alert"
     show_form
   end
 

@@ -20,11 +20,11 @@
     <script>
       if(!window.jQuery){
         document.write('<script src="/javascripts/jquery-1.6.min.js">\x3C/script>');
-        document.write('<script src="/javascripts/jquery-ui.1.8.13.min.js">\x3C/script>');
+        document.write('<script src="/javascripts/jquery-ui-1.8.13.min.js">\x3C/script>');
       }
     </script>
     <%= javascript_include_tag "modernizr-1.7.min" %>
-    <%= javascript_include_tag "rails","lolita/tab","lolita/main" %>
+    <%= javascript_include_tag "rails","lolita/tab","lolita/main","lolita/application" %>
     <%= yield :script %>
     <%= raw csrf_meta_tag %>
   </head>
