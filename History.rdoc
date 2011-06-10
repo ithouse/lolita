@@ -1,4 +1,7 @@
 === Version 3.1.7 / 2011-
+* Changes
+  * Updated Kaminari to 0.12.4 - previous version has serious BUG (Arturs Meisters, Gatis Tomsons)
+
 * Enhancements
   * Builder refactore. Now support conditions.
 
