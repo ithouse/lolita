@@ -5,7 +5,7 @@
   * Builder refactored. Now support conditions. (Arturs Meisters)
 
 * Bug fixes
-  * Kaminari updated, now DB queries are correct. (Arturs Meisters)
+  * Updated Kaminari to 0.12.4 - previous version has serious BUG (Arturs Meisters, Gatis Tomsons)
   * Lolita messaging not used in RestController (Arturs Meisters)
 
 === Version 3.1.6 / 2011-05-19
