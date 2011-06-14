@@ -1,7 +1,10 @@
 class Lolita::InfoController < ApplicationController
   @@properties = []
+
   def index
+    render :layout => false
   end
+
   def properties
     if request.local?
       render :inline => to_html

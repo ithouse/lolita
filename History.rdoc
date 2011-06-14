@@ -1,5 +1,9 @@
-=== Version 3.1.8 / 2011
+=== Version 3.1.9 / 
 
+=== Version 3.1.8 / 2011-06-
+* Bug fixes
+  * Show layout on info page
+  
 === Version 3.1.7 / 2011-06-10
 * Enhancements
   * Builder refactored. Now support conditions. (Arturs Meisters)

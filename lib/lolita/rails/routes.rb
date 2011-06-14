@@ -12,10 +12,6 @@ module ActionDispatch::Routing
       end
       Lolita.run(:before_routes_loaded)
       draw_without_lolita *args,&block
-      draw_without_lolita *args, do
-          match '/lolita' => "lolita/info#index"
-          match '/lolita/info/properties' => "lolita/info#properties"
-      end
       Lolita.run(:after_routes_loaded)
     end
 

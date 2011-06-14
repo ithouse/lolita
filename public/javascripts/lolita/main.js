@@ -1,7 +1,8 @@
 $(function(){
   $.ajaxSetup({
     headers:{
-      "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
+      "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
+      "lolita_xhr": "true"
     }
   })
   $("#flash").slideUp("fast");

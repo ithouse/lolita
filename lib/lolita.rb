@@ -16,11 +16,13 @@ puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""
 # end
 
 require 'abstract'
-require 'active_support/core_ext/numeric/time'
-require 'active_support/core_ext/date_time/conversions'
-require 'active_support/concern'
-require 'active_support/callbacks'
-require 'active_support/dependencies'
+unless defined?(ActiveSupport)
+  require 'active_support/core_ext/numeric/time'
+  require 'active_support/core_ext/date_time/conversions'
+  require 'active_support/concern'
+  require 'active_support/callbacks'
+  require 'active_support/dependencies'
+end
 require 'lolita/errors'
 require "lolita/hooks"
 # Require all ruby extensions

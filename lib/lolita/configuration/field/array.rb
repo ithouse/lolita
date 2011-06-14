@@ -30,22 +30,22 @@ module Lolita
         # is used, than <code>conditions</code> is ignored.
         def association_values() #TODO test
           @association_values=if options_for_select
-          options_for_select
-        elsif @association
-          klass=@dbi.association_class_name(@association).camelize.constantize
-          current_text_method=@text_method || default_text_method(klass)
-          current_value_method=@value_method || :id
-          options=@find_options || {}
-          options[:conditions]||=@conditions
+            options_for_select
+          elsif @association
+            klass=@dbi.association_class_name(@association).camelize.constantize
+            current_text_method=@text_method || default_text_method(klass)
+            current_value_method=@value_method || :id
+            options=@find_options || {}
+            options[:conditions]||=@conditions
 
-          klass.find(:all,options).map{|r|
-            [r.send(current_text_method),r.send(current_value_method)]
-          }
-        else
-          []
+            klass.find(:all,options).map{|r|
+              [r.send(current_text_method),r.send(current_value_method)]
+            }
+          else
+            []
+          end
+          @association_values
         end
-        @association_values
-      end
 
       private
 

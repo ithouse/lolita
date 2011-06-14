@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 # Thing how to seperate gems for Rails Engine from those that are only for lolita
-gem "rails", "~>3.0"
+gem "rails", "~>3.0.7"
 gem "kaminari", "~>0.12.4"
 gem "abstract"
 gem "builder", "~> 2.1.2" #cucumber asks for builder 3 but rails supports 2.1
