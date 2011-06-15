@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-06-13}
+  s.date = %q{2011-06-15}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -86,6 +86,7 @@ Gem::Specification.new do |s|
     "config/locales/default/lv.yml",
     "config/locales/en.yml",
     "config/locales/lv.yml",
+    "config/routes.rb",
     "db/seed.rb",
     "features/create_page.feature",
     "features/step_definitions/lolita_steps.rb",
