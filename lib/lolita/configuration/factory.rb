@@ -9,14 +9,24 @@ module Lolita
 
       def add(dbi,*args,&block)
         @create_temp_object=true
-        begin
-          temp_object=self.const_get(:Base).new(dbi,*args,&block)
-        rescue Exception => e
-          raise e
-        ensure
-          @create_temp_object=false
+        name =  nil
+        if self == Lolita::Configuration::Tab
+          if args && args.first
+            name = args.first
+          else
+            raise ArgumentError, "Define tab with type."
+          end
+        else
+          begin
+            temp_object=self.const_get(:Base).new(dbi,*args,&block)
+            name =temp_object.type
+          rescue Exception => e
+            raise e
+          ensure
+            @create_temp_object=false
+          end
         end
-        factory(temp_object.type).new(dbi,*args,&block)
+        factory(name).new(dbi,*args,&block)
       end
 
 

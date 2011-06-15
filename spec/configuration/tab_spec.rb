@@ -34,11 +34,8 @@ describe Lolita::Configuration::Tab do
 
   describe "add tab" do
     it "should recognize type of tab added and create it as a related class object" do
-      Lolita::Configuration::Tab.add(@dbi){ field(:email)}.class.to_s.should=="Lolita::Configuration::Tab::Default"
+      Lolita::Configuration::Tab.add(@dbi,:default){ field(:email)}.class.to_s.should=="Lolita::Configuration::Tab::Default"
       Lolita::Configuration::Tab.add(@dbi,:my).class.to_s.should == "Lolita::Configuration::Tab::My"
-      Lolita::Configuration::Tab.add(@dbi) {
-        type :my
-      }.class.to_s.should == "Lolita::Configuration::Tab::My"
     end
 
     it "should raise error when tab is not recognized" do
@@ -66,7 +63,7 @@ describe Lolita::Configuration::Tab do
   
   it "should raise error when no fields are given for default type tab" do
     lambda{
-      Lolita::Configuration::Tab.add(@dbi)
+      Lolita::Configuration::Tab.add(@dbi,:default)
     }.should raise_error Lolita::NoFieldsGivenError
   end
 
