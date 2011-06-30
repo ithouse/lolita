@@ -140,6 +140,7 @@ module Lolita
 
         def set_default_values
           self.options||={}
+          self.html_options ||= {}
         end
 
          def before_init *args
