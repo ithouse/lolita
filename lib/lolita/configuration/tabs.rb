@@ -97,7 +97,7 @@ module Lolita
       end
       
       def validate_type(tab)
-        if tab && tab.type!=:default
+        if tab && ![:default,:files].include?(tab.type)
           if @tabs.detect{|c_tab| c_tab.type==tab.type}
             raise Lolita::SameTabTypeError, "Same type tabs was detected (#{tab.type})."
           end
