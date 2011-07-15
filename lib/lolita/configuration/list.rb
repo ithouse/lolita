@@ -19,7 +19,7 @@ module Lolita
       # Look for methods in Page class. Load @page on demand and call method on it.
       def method_missing(method_name,*args,&block)
         if Lolita::Configuration::Page.public_instance_methods.include?(method_name.to_sym)
-          @page||=Lolita::Configuration::Page.new(@dbi)
+          @page||=Lolita::Configuration::Page.new(@dbi,self)
           @page.send(method_name.to_sym,*args,&block)
         else
           super

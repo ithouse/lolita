@@ -1,4 +1,12 @@
-=== Version 3.1.9 / 
+=== Version 3.1.11 / 2011-07-15
+* Enhancements
+  * By default columns are not sortable
+
+=== Version 3.1.10 / 2011-07-06
+* Enhancements
+  * File tabs can be more than one time
+  
+=== Version 3.1.9 / 2011-06-30
 * Bug fixes
   * Rails view helpers uses html options and options from field configuration
 

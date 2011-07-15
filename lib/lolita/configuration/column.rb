@@ -82,7 +82,6 @@ module Lolita
       private
       
       def set_default_values
-        @sortable||=true
         @sort_direction||=:desc
       end
 
