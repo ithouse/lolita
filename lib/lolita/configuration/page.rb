@@ -5,7 +5,7 @@ module Lolita
       # page options is used to define specific options for pagination like :joins or :conditions
       lolita_accessor :page_options
       attr_writer :per_page
-      def initialize(dbi, list)
+      def initialize(dbi, list=nil)
         @dbi=dbi
         @list = list
         @sort_columns=[]
