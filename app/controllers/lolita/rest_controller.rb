@@ -19,6 +19,7 @@ class Lolita::RestController < ApplicationController
   def create
     self.run(:before_create)
     build_resource
+    debugger
     save_and_redirect
   end
 

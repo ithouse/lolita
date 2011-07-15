@@ -91,7 +91,7 @@ module Lolita
           end
         end
         date_attributes.each_pair do |k,v|
-          unless v.detect{|index,value| value == 0}
+          unless v.detect{|index,value| value == 0 && index<4}
             attributes[k] = v.size == 3 ? Date.new(v[1],v[2],v[3]) : Time.new(v[1],v[2],v[3],v[4],v[5])
           end
         end
