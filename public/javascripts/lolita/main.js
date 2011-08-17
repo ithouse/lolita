@@ -5,7 +5,7 @@ $(function(){
       "lolita_xhr": "true"
     }
   })
-  $("#flash").slideUp("fast");
+  //$("#flash").slideUp("fast");
   $("#flash").live("click", function(){
     $(this).slideUp("fast");
   })
@@ -15,13 +15,13 @@ $(function(){
     var error=request.getResponseHeader("Lolita-Error");
     var alert_msg=request.getResponseHeader("Lolita-Alert");
     if(notice){
-      show_flash("<span style='color:green'>"+notice+"</span>");
+      show_flash("<span style='color:green'>"+Base64.decode(notice)+"</span>");
     }else{
       if(error){
-        show_flash("<span style='color:red'>"+error+"</span>");
+        show_flash("<span style='color:red'>"+Base64.decode(error)+"</span>");
       }else{
         if(alert_msg){
-          show_flash("<span style='color:yellow'>"+alert_msg+"</span>");
+          show_flash("<span style='color:#ea7c15'>"+Base64.decode(alert_msg)+"</span>");
         }
       }
     }

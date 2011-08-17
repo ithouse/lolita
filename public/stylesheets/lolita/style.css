@@ -247,7 +247,23 @@ a.create {
   -webkit-box-sizing: border-box;
   box-sizing: border-box; /* IE7 does not support it, IE8 does */
 }
-
+.habtm-container{
+  float:left;
+  margin-bottom: 3px;
+}
+.habtm-container label{
+  float:right;
+  color: #666 !important;
+  width: 150px;
+}
+.habtm-container input{
+  width:30px !important;
+  float:left;
+  margin-right: 5px;
+}
+.clear{
+  clear:both;
+}
 /* --------------------------------------------- */
 
 

@@ -14,7 +14,7 @@ module Lolita
       end
 
       # Same as in mongoid
-      def associations_klass_names
+      def associations_class_names
         names=[]
         associations.each{|name,association|
           names << association.class_name

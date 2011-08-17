@@ -32,7 +32,7 @@ module Lolita
         will_use_component name 
         component_name=File.join(name.to_s,state ? state.to_s : nil)
         partial_name=File.join("/components",component_name)
-        output=output_component(partial_name,component_name,:format=>format,:locals=>options)
+        output=output_component(partial_name,component_name,:format=>format ,:locals=>options)
         self.respond_to?(:raw) ? raw(output) : output
       end
       

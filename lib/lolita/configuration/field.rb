@@ -29,7 +29,7 @@ module Lolita
         include Lolita::Builder
 
         @@default_type="string"
-        lolita_accessor :name,:title,:field_set,:nested_for,:options, :html_options,:record,:association
+        lolita_accessor :name,:title,:field_set, :nested_form,:nested_for,:options, :html_options,:record,:association
         attr_reader :dbi,:nested_in
         
         def initialize dbi, *args, &block

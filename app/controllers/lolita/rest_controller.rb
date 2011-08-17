@@ -19,7 +19,6 @@ class Lolita::RestController < ApplicationController
   def create
     self.run(:before_create)
     build_resource
-    debugger
     save_and_redirect
   end
 
@@ -96,13 +95,13 @@ class Lolita::RestController < ApplicationController
   
   def respond_html_200
     response.headers["Validation"] = 'true'
-    response.headers["Lolita-Notice"] = ::I18n.t "lolita.shared.save_notice"
+    response.headers["Lolita-Notice"] = Base64.encode64(::I18n.t "lolita.shared.save_notice")
     show_form
   end
 
   def respond_html_400
     response.headers["Validation"] = 'false'
-    response.headers["Lolita-Alert"] = ::I18n.t "lolita.shared.save_alert"
+    response.headers["Lolita-Alert"] = Base64.encode64(::I18n.t "lolita.shared.save_alert")
     show_form
   end
 

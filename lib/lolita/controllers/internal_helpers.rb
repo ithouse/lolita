@@ -6,7 +6,7 @@ module Lolita
         helper LolitaHelper
         #TODO pārnest helperus uz lolitu vai arī uz lolita app nevis likt iekš controllers iekš lolitas
         helpers = %w(resource resource_name
-                     resource_class lolita_mapping show_response)
+                     resource_class lolita_mapping show_response tab_form tab_form=)
         hide_action *helpers
        
         helper_method *helpers
@@ -30,6 +30,14 @@ module Lolita
       
       def lolita_mapping
         @lolita_mapping||=request.env["lolita.mapping"]
+      end
+
+      def tab_form=(form)
+        @tab_form = form
+      end
+
+      def tab_form
+        @tab_form
       end
       
       protected

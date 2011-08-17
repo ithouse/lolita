@@ -16,6 +16,7 @@ puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""
 # end
 
 require 'abstract'
+require "base64"
 unless defined?(ActiveSupport)
   require 'active_support/core_ext/numeric/time'
   require 'active_support/core_ext/date_time/conversions'
@@ -69,6 +70,7 @@ module Lolita
     autoload :Page, 'lolita/configuration/page'
     autoload :Tabs, 'lolita/configuration/tabs'
     autoload :Filter, 'lolita/configuration/filter'
+    autoload :NestedForm, 'lolita/configuration/nested_form'
 
     module Field
       extend Lolita::Configuration::Factory

@@ -161,5 +161,16 @@ describe Lolita::Configuration::Tab do
     tab.fields.by_name(:title).name.should == :title
   end
 
+  it "should have nested forms" do
+    tab = tab_class.new(@dbi) do
+      default_fields
+      nested_fields_for("Comment") do
+        default_fields
+      end
+    end
+    tab.nested_forms.should have(1).item
+    tab.nested_forms[0].fields.size.should > 0
+  end
+
 end
 

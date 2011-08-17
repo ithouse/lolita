@@ -2,8 +2,10 @@
 # FIXME: move to /tab_types/
 #
 %>
-<%= form_tag "#",:multipart=>true, :id=>"tab-form-#{tab.__id__}",:method => resource.new_record? ? :post : :put do |form| %>
+<%= form_for resource, :url => "#",:html => {:multipart=>true, :id=>"tab-form-#{tab.__id__}",:method => resource.new_record? ? :post : :put} do |form| %>
+  <% self.tab_form = form %>
   <div class="tab-content">
-    <%= render_component :"lolita/configuration/tab", :fields, :tab=>tab %>
+    <%= render_component :"lolita/configuration/tab", :fields, :tab=>tab, %>
   </div>
 <% end %>
+<% self.tab_form = nil %>

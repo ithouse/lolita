@@ -1,0 +1,16 @@
+<div class = "nested-fields" >
+  <%= tab_form.fields_for field.nested_form.resource_name do |nested_form| %>
+    <% 
+      old_tab_form = tab_form
+      self.tab_form = nested_form
+    %>
+    <%- fields.each do |field| %>
+      <% if field.is_a?(Array) %>
+        <%# implement fieldset in nested form here%>
+      <% else %>
+        <%= render_component *field.build(field.nested_form.options) %>
+      <% end %>
+    <%- end %>
+    <% self.tab_form = old_tab_form %>
+  <% end %>
+</div>

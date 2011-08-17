@@ -26,8 +26,8 @@ module Lolita
         @@available_types=[:content]
      
         lolita_accessor :title,:name,:type
-        attr_accessor :dbi,:current_fieldset,:current_dbi
-        attr_reader :field_sets,:nested_form
+        attr_accessor :dbi,:current_fieldset, :current_nested_form,:current_dbi
+        attr_reader :field_sets,:nested_forms
 
         # To create new tab the following parametrs need to be provided.
         # * <tt>dbi</tt> Lolita::DBI::Base object, that represents database.
@@ -35,7 +35,8 @@ module Lolita
         # * <tt>&block</tt> Block can be passed, anything in block will be evaled for current instance.
         def initialize dbi,*args,&block
           @fields=Lolita::Configuration::Fields.new
-          @field_sets=[]
+          @field_sets = []
+          @nested_forms = []
           self.dbi=dbi
           self.current_dbi=dbi
           self.set_attributes(*args)
@@ -49,11 +50,12 @@ module Lolita
         # Return field itself.
         def field *args, &block
           field=Lolita::Configuration::Field.add(self.current_dbi,*args,&block)
-          field.field_set=current_fieldset
+          field.field_set = current_fieldset
           if self.current_dbi!=self.dbi
             field.nested_in=self.dbi
+            field.nested_form = current_nested_form
           end
-          @fields<<field
+          @fields << field
           field
         end
 
@@ -88,11 +90,15 @@ module Lolita
 
         # Add tab nested fields for <em>class_or_name</em> and <em>&block</em>
         # that will be evaluted in current tab instance.
-        def nested_fields_for class_or_name,&block
+        def nested_fields_for class_or_name, options ={},&block
           current_class=get_class(class_or_name)
+          nested_form = Lolita::Configuration::NestedForm.new(self,current_class.to_s.downcase, options)
+          self.current_nested_form = nested_form
+          @nested_forms << nested_form
           self.current_dbi=Lolita::DBI::Base.new(current_class)
           self.instance_eval(&block)
           self.current_dbi=self.dbi
+          self.current_nested_form = nil
         end
 
         # Return nested field for given <em>class_or_name</em>
@@ -107,8 +113,8 @@ module Lolita
         # that will be evaluted in current tab instance.
         def field_set name,&block
           field_set=Lolita::Configuration::FieldSet.new(self,name)
-          self.current_fieldset=field_set
-          @field_sets<<field_set
+          self.current_fieldset = field_set
+          @field_sets << field_set
           self.instance_eval(&block)
           self.current_fieldset=nil
         end
@@ -126,11 +132,34 @@ module Lolita
             end
           }
         end
+
         # tab.field do
         #  tab.fields_with_fieldset do |field,fieldset|
         #    =field
         #  end
 
+        def fields_by_forms
+          forms = []
+          current_form = nil
+          content = forms
+          self.fields.each do |field|
+            if field.nested_form 
+              if current_form != field.nested_form
+                form_fields = []
+                forms << form_fields
+                content = form_fields
+              end
+              content << field
+            end
+          end
+          if block_given?
+            forms.each do |form_or_field|
+              yield form_or_field
+            end
+          else
+            forms
+          end
+        end
 
         # Set attributes from given <em>*args</em>.
         # First element of args is used as <i>type</i> other interpreted as options.
