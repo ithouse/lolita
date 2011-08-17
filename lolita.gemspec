@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.12"
+  s.version = "3.1.13"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-07-15}
+  s.authors = [%q{ITHouse (Latvia) and Arturs Meisters}]
+  s.date = %q{2011-08-17}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -46,7 +46,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field/_object.html.erb",
     "app/views/components/lolita/configuration/field/array/_display.html.erb",
     "app/views/components/lolita/configuration/field/array/filter/_display.html.erb",
-    "app/views/components/lolita/configuration/field/array/habtm/_display.html.erb",
+    "app/views/components/lolita/configuration/field/array/habtm/_display.html.haml",
     "app/views/components/lolita/configuration/field/array/select/_display.html.erb",
     "app/views/components/lolita/configuration/field/big_decimal/_display.html.erb",
     "app/views/components/lolita/configuration/field/boolean/_display.html.erb",
@@ -70,6 +70,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/list/_title.html.erb",
     "app/views/components/lolita/configuration/tab/_display.html.erb",
     "app/views/components/lolita/configuration/tab/_fields.html.erb",
+    "app/views/components/lolita/configuration/tab/_nested_form.html.erb",
     "app/views/components/lolita/configuration/tab/content/_display.html.erb",
     "app/views/components/lolita/configuration/tab/default/_display.html.erb",
     "app/views/components/lolita/configuration/tabs/_display.html.erb",
@@ -120,6 +121,7 @@ Gem::Specification.new do |s|
     "lib/lolita/configuration/fields.rb",
     "lib/lolita/configuration/filter.rb",
     "lib/lolita/configuration/list.rb",
+    "lib/lolita/configuration/nested_form.rb",
     "lib/lolita/configuration/page.rb",
     "lib/lolita/configuration/tab.rb",
     "lib/lolita/configuration/tab/content.rb",
@@ -153,6 +155,7 @@ Gem::Specification.new do |s|
     "public/javascripts/jquery-1.6.min.js",
     "public/javascripts/jquery-ui-1.8.13.min.js",
     "public/javascripts/lolita/application.js",
+    "public/javascripts/lolita/base64.js",
     "public/javascripts/lolita/main.js",
     "public/javascripts/lolita/tab.js",
     "public/javascripts/modernizr-1.7.min.js",
@@ -326,9 +329,9 @@ Gem::Specification.new do |s|
     "spec/support/formatter_spec.rb"
   ]
   s.homepage = %q{http://github.com/ithouse/lolita}
-  s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
+  s.licenses = [%q{MIT}]
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.8}
   s.summary = %q{Great Rails CMS.}
   s.test_files = [
     "spec/adapter_helper.rb",
