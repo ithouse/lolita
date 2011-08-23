@@ -140,10 +140,11 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
+	margin-bottom: 10px;
 } 
 
-.boxtitle {position: relative;} 
-.boxtitle h1 {padding: 35px 25px 15px; line-height: 1;} /* h1 contains bgcolor, color and text position because arrow needs different bg and it follows after */
+.boxtitle {position: relative; z-index: 2} 
+.boxtitle h1 {padding: 35px 25px 15px; line-height: 1; cursor: pointer;} /* h1 contains bgcolor, color and text position because arrow needs different bg and it follows after */
 .boxtitle .arrow {
   position: absolute;
   left: 50%;
@@ -174,16 +175,18 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
 .tools > div > * {margin-right: 10px;}
 
 a.create {
+	position: relative;
   display: block;
+	z-index: 1;
   background: #9d81f8;
   background: -moz-linear-gradient(top, #ae91eb, #9d81f8);
   background: -webkit-linear-gradient(top, #ae91eb, #9d81f8);
   padding-right: 30px;
-  line-height: 35px; 
+  line-height: 37px; 
   text-align: right;
   color: #efefef;
 }
-.create img {position: absolute; right: -20px;}
+.create img {position: absolute; right: -18px;}
 
 .list {overflow-x: auto;} /* additional html element that encloses table for horizontal overflow scrollbar if too wide */
 .list table {width: 100%;}
