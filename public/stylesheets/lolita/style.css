@@ -206,6 +206,9 @@ a.create {
   -webkit-box-shadow: inset 0px 1px 1px #ddd;
   box-shadow: inset 0px 1px 1px #ddd;
 } 
+.list table tbody tr .tool-cell {width: 5%;}
+.list table tbody tr .tool-cell a {visibility: hidden; margin-right: 5px;}
+.list table tbody tr:hover .tool-cell a {visibility: visible;}
 
 /* filter */
 #main form.filter {
