@@ -1,3 +1,6 @@
+=== Version 3.1.14 / 2011-08-24
+* Enhancements
+  * request notifications moved to related methods in ::Controllers::InternalHelpers
 === Version 3.1.13 / 2011-08-16
 * Enhancements
   * Color for Lolita-Alert popup changed

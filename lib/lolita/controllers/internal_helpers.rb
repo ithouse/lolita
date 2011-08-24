@@ -42,6 +42,18 @@ module Lolita
       
       protected
 
+      def notice(msg)
+        response.headers["Lolita-Notice"] = Base64.encode64(msg)
+      end
+
+      def alert(msg)
+        response.headers["Lolita-Alert"] = Base64.encode64(msg)
+      end
+
+      def error(msg)
+        response.headers["Lolita-Error"] = Base64.encode64(msg)
+      end
+
       def is_lolita_resource?
         raise ActionController::UnknownAction unless lolita_mapping
       end

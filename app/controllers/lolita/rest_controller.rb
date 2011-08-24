@@ -95,13 +95,13 @@ class Lolita::RestController < ApplicationController
   
   def respond_html_200
     response.headers["Validation"] = 'true'
-    response.headers["Lolita-Notice"] = Base64.encode64(::I18n.t "lolita.shared.save_notice")
+    notice(::I18n.t "lolita.shared.save_notice")
     show_form
   end
 
   def respond_html_400
     response.headers["Validation"] = 'false'
-    response.headers["Lolita-Alert"] = Base64.encode64(::I18n.t "lolita.shared.save_alert")
+    alert(::I18n.t "lolita.shared.save_alert")
     show_form
   end
 
