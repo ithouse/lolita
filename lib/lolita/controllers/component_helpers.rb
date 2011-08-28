@@ -40,6 +40,8 @@ module Lolita
         options=args.extract_options!
         if args.first.respond_to?(:build) 
           name,state,options=args[0].build("",args[1],options)
+        elsif args.first.class.ancestors.include?(Lolita::Configuration)
+          raise ArgumentError, "Include Lolita::Builder in #{args.first.class}"
         else
           name,state=args
         end

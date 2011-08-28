@@ -60,6 +60,7 @@ module Lolita
  
 
   module Configuration
+    autoload :Helper, 'lolita/configuration/helper'
     autoload :Factory, 'lolita/configuration/factory'
     autoload :Base, 'lolita/configuration/base'
     autoload :Column, 'lolita/configuration/column'

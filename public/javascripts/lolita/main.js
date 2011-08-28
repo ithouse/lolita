@@ -37,3 +37,13 @@ function show_flash(html){
     $(this).html("")
   })
 }
+function remove_fields(link) {
+  $(link).prev("input[type=hidden]").val(1)
+  $(link).parent(".fields").hide();
+}
+
+function add_fields(link, association, content) {
+  var new_id = new Date().getTime();
+  var regexp = new RegExp("new_" + association, "g")
+  $(content.replace(regexp, new_id)).insertBefore($(link).parent());
+}

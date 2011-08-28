@@ -1,7 +1,8 @@
 module Lolita
   module Configuration
     class NestedForm
-       @@last_nested_form=0
+      include Lolita::Builder
+      @@last_nested_form=0
       
       attr_reader :parent, :options
       attr_accessor :name
@@ -14,6 +15,10 @@ module Lolita
 
       def fields
         self.parent.fields.reject{|f| f.nested_form!=self}
+      end
+
+      def klass
+        @parent.dbi.reflect_on_association(name).klass
       end
 
       private

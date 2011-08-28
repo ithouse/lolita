@@ -23,6 +23,8 @@ module Lolita
       end
 
       def reflect_on_association(name)
+        # TODO create association proxy for different dbi, so use of attributes will go through them
+        # like #klass, it's same for mongoid ar AR but it may change for others
         klass.reflect_on_association(name)
       end
 

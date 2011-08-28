@@ -36,7 +36,13 @@ module Lolita
         @tab_form = form
       end
 
-      def tab_form
+      def tab_form(temp_form = nil)
+        if block_given?
+          old_form = @tab_form
+          @tab_form = temp_form
+          content = yield
+          @tab_form = old_form
+        end
         @tab_form
       end
       

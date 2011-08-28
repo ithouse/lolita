@@ -28,7 +28,9 @@ module Lolita
       def generate!
         @columns.clear
         @dbi.fields.each_with_index{|field,index|
-          @columns[index]=Lolita::Configuration::Column.new(@dbi,field)
+          unless Lolita::Configuration::Helper.tehnical_field?(field,@dbi)
+            @columns[index]=Lolita::Configuration::Column.new(@dbi,field)
+          end
         }
       end
 

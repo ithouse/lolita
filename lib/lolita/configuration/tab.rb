@@ -84,20 +84,20 @@ module Lolita
         # See Lolita::Adapter classes for use of DB field method.
         def default_fields
           self.current_dbi.fields.each{|db_field|
-            self.field(db_field)
+            self.field(db_field) unless Lolita::Configuration::Helper.tehnical_field?(db_field,self.current_dbi)
           }
         end
 
         # Add tab nested fields for <em>class_or_name</em> and <em>&block</em>
         # that will be evaluted in current tab instance.
         def nested_fields_for class_or_name, options ={},&block
-          current_class=get_class(class_or_name)
-          nested_form = Lolita::Configuration::NestedForm.new(self,current_class.to_s.downcase, options)
+          current_class = get_class(class_or_name)
+          nested_form = Lolita::Configuration::NestedForm.new(self,class_or_name, options)
           self.current_nested_form = nested_form
           @nested_forms << nested_form
-          self.current_dbi=Lolita::DBI::Base.new(current_class)
+          self.current_dbi = Lolita::DBI::Base.new(current_class)
           self.instance_eval(&block)
-          self.current_dbi=self.dbi
+          self.current_dbi = self.dbi
           self.current_nested_form = nil
         end
 
@@ -133,31 +133,25 @@ module Lolita
           }
         end
 
-        # tab.field do
-        #  tab.fields_with_fieldset do |field,fieldset|
-        #    =field
-        #  end
+        # Return fields in groups where in one group are fields for same model.
+        # It return all groups as array or yield each group when block is given.
+        def fields_in_groups()
+          groups = []
+          current_class = nil
+          self.fields.each do |group_field|
 
-        def fields_by_forms
-          forms = []
-          current_form = nil
-          content = forms
-          self.fields.each do |field|
-            if field.nested_form 
-              if current_form != field.nested_form
-                form_fields = []
-                forms << form_fields
-                content = form_fields
-              end
-              content << field
+            klass = group_field.dbi.klass
+            if current_class == klass
+              groups.last << group_field
+            else
+              groups << [group_field]
             end
+            current_class = klass
           end
           if block_given?
-            forms.each do |form_or_field|
-              yield form_or_field
-            end
+            groups.each{|group| yield group }
           else
-            forms
+            groups
           end
         end
 
@@ -194,8 +188,12 @@ module Lolita
           end
         end
 
-        def get_class(str_or_sym_or_class)
-          str_or_sym_or_class.is_a?(Class) ? str_or_sym_or_class : str_or_sym_or_class.to_s.camelize.constantize
+        def get_class(association_name)
+          if association_name.is_a?(Symbol) && assoc = self.current_dbi.reflect_on_association(association_name)
+            assoc.klass
+          else
+            raise ArgumentError, "Association named `#{association_name}` not found for #{self.current_dbi.klass}."
+          end
         end
         
         def validate

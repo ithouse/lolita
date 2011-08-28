@@ -1,0 +1,7 @@
+<div class = "fields" >
+  <% nested_form.fields.each do |field| %>
+    <%= render_component field %>
+  <% end %>
+  <%= link_to_remove_fields I18n.t("lolita.shared.delete").downcase, tab_form %>
+</div>
+  

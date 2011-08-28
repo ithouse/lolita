@@ -125,7 +125,7 @@ describe Lolita::Configuration::Tab do
   it "should add nested fields" do
     tab=tab_class.new(@dbi) do
       default_fields
-      nested_fields_for("Comment") do
+      nested_fields_for(:comments) do
         default_fields
       end
     end
@@ -137,7 +137,7 @@ describe Lolita::Configuration::Tab do
   it "should detect that field is nested" do
     tab=tab_class.new(@dbi) do
       default_fields
-      nested_fields_for("Comment") do
+      nested_fields_for(:comments) do
         default_fields
       end
     end
@@ -147,11 +147,11 @@ describe Lolita::Configuration::Tab do
   it "should return nested fields for specified class" do
     tab=tab_class.new(@dbi) do
       default_fields
-      nested_fields_for("Comment") do
+      nested_fields_for(:comments) do
         default_fields
       end
     end
-    tab.nested_fields_of("Comment").size.should > 0
+    tab.nested_fields_of(:comments).size.should > 0
   end
 
   it "should return field with given name" do
@@ -161,15 +161,34 @@ describe Lolita::Configuration::Tab do
     tab.fields.by_name(:title).name.should == :title
   end
 
-  it "should have nested forms" do
-    tab = tab_class.new(@dbi) do
-      default_fields
-      nested_fields_for("Comment") do
+  context "nested fields" do
+    it "should have nested forms" do
+      tab = tab_class.new(@dbi) do
         default_fields
+        nested_fields_for(:comments) do
+          default_fields
+        end
       end
+      tab.nested_forms.should have(1).item
+      tab.nested_forms[0].fields.size.should > 0
+    end 
+
+    it "should return nested field sets" do
+      tab = tab_class.new(@dbi) do
+        field :name => "one"
+        nested_fields_for(:comments) do
+          default_fields
+        end
+        field :name => "two"
+        nested_fields_for(:profile) do
+          default_fields
+        end
+        field :name => "last"
+      end
+
+      tab.fields_in_groups.size.should == 5
+      tab.fields_in_groups[3].first.dbi == Profile
     end
-    tab.nested_forms.should have(1).item
-    tab.nested_forms[0].fields.size.should > 0
   end
 
 end

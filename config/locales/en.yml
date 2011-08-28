@@ -6,6 +6,8 @@ en:
       log_out: Log out
       edit: Edit
       delete: Delete
+    nested_form:
+      add: "Add %{resource_name}"
     tabs:
       last_save: Last saved
       save: Save
