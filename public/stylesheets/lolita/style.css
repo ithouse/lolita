@@ -1,6 +1,10 @@
 body {background: #f3f3f3; font-size: 13px;}
 
 a, a:visited, a:active {color: #7ac1ed; text-decoration: none;}
+input[type="button"] {vertical-align: top; padding: 3px 9px;}
+h1 {font-size: 28px; font-weight: normal; letter-spacing: -1px; line-height: 85px;}
+
+#container {width: 90%; margin: 0 auto;}
 
 /* same button styles for links and both types of html buttons */
 button, a.button, input[type="button"] {
@@ -16,10 +20,6 @@ button, a.button, input[type="button"] {
   box-sizing: border-box; 
 }
 a.button {padding: 4px 11px; color: #8f8f8f;}
-input[type="button"] {vertical-align: top; padding: 3px 9px;}
-h1 {font-size: 28px; font-weight: normal; letter-spacing: -1px; line-height: 85px;}
-
-#container {width: 90%; margin: 0 auto;}
 /* ----------------------------------------------*/
 
 /* header styles */
@@ -30,10 +30,16 @@ header nav .username {margin-right: 15px;}
 /* ----------------------------------------------*/
 
 /* vertical middle container */
+
 #main {position: relative; padding-left: 150px;} /* setting the left portion width for navigation */
+
+/* ---------------------------------------------- */
+
+/* form styles */
 
 #main .box form {background: #FFF; padding: 30px 25px;}
 #main .box form label {color: #c3c3c3; font-size: 13px;}
+#main .box form select {min-width: 150px;}
 #main .box form .field {margin: 10px 0;}
 #main .box form .field:first-child input {
   font-size: 24px;
@@ -63,6 +69,30 @@ header nav .username {margin-right: 15px;}
   box-sizing: border-box;  /* IE7 does not support it, IE8 does */
 }
 /* ----------------------------------------------*/
+
+/* nested forms */
+
+#main .box form .nested_form {}
+#main .box form .nested_form label {display: block; margin-bottom: 5px;}
+#main .box form .nested_form .fields {
+  margin: 5px 0 5px 50px; 
+  padding-bottom: 5px;
+  border-bottom: 1px dashed #DDD;
+}
+#main .box form .nested_form p {margin-left: 50px;}
+#main .box form .nested_form input {
+  border: 1px solid #cdcdcd;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 2px 5px;
+  color: #494949;  
+}
+
+/* -------------------------------- */
 
 /* error fields and notifications */
 .field_with_errors input,
