@@ -1,8 +1,11 @@
-<%= tab_form.fields_for nested_form.name,resource.send(nested_form.name) do |form| %>
-  <% tab_form(form) do %>
-    <%= render_component nested_form, :fields %>
+<div class="nested_form" id=<%= "nested_form_#{nested_form.__id__}" %>>
+	<%= label_tag nested_form.name %>
+	<%= tab_form.fields_for nested_form.name do |form| %>
+		<% tab_form(form) do %>
+				<%= render_component nested_form, :fields %>
+		<% end %>
+	<% end %>
+  <% if nested_form.expandable? %>
+	 <p><%= link_to_add_fields ::I18n.t("lolita.nested_form.add", :resource_name => nested_form.klass.model_name.human.downcase), tab_form, nested_form %> </p>
   <% end %>
-<% end %>
-<% if nested_form.expandable? %>
-  <p><%= link_to_add_fields ::I18n.t("lolita.nested_form.add", :resource_name => nested_form.klass.model_name.human.downcase), tab_form, nested_form %> </p>
-<% end %>
+</div>
