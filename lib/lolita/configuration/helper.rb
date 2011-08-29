@@ -11,7 +11,7 @@ module Lolita
           if name.match(/^created_at|updated_at|type$/)
             true
           elsif name.match(/_id$/)
-            !!dbi.associations.values.detect{|assoc| assoc.association_foreign_key == name}
+            !dbi.associations.values.detect{|assoc| assoc.association_foreign_key == name}
           elsif dbi.klass.respond_to?(:uploaders)
             dbi_klass.uploaders.keys.include?(name.to_sym)
           end
