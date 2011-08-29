@@ -1,5 +1,7 @@
 <div class="nested_form" id=<%= "nested_form_#{nested_form.__id__}" %>>
-	<%= label_tag nested_form.name %>
+  <% unless nested_form.field_style == :normal %>
+	 <%= label_tag nested_form.name %>
+  <% end %>
 	<%= tab_form.fields_for nested_form.name do |form| %>
 		<% tab_form(form) do %>
 				<%= render_component nested_form, :fields %>
