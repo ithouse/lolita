@@ -1,4 +1,4 @@
-<div class=<%= "nested_form_#{nested_form.__id__}" %>>
+<div class="nested_form" id=<%= "nested_form_#{nested_form.__id__}" %>>
 	<%= label_tag nested_form.name %>
 	<%= tab_form.fields_for nested_form.name do |form| %>
 		<% tab_form(form) do %>
