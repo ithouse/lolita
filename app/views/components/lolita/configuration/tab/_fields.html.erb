@@ -1,6 +1,6 @@
 <% tab.fields_in_groups do |group| %>
   <% if group.first.nested_form %>
-    <%= render_component group.first.nested_form%>
+    <%= render_component group.first.nested_form %>
   <% else %>
     <% group.each do |field| %>
       <%= render_component "lolita/configuration/field", :display, :field => field %>
