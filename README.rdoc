@@ -84,7 +84,7 @@ call component, like
   render_component :"lolita/configuration/list", :display
 and this name is used to add callback for component. As components is not related to specific class, then there
 are only one way to define callback for them.
-  Lolita::Hooks.component(:"lolita/configuration/list/display").before do
+  Lolita::Hooks.component(:"/lolita/configuration/list/display").before do
     "<div>My Custom text</div>"
   end
 That what are inside of blocks depends on place where you define callback if it is in <i>.rb</i> file, than you
@@ -92,7 +92,7 @@ should put HTML in quotes, if in <i>.erb</i> and similar files then there is no 
 Ruby code only return last line, so you should probably define HTML as shown in previous example.
 For <b>around</b> callback if you pass block, then original content will be replaced with that, but if you want
 to let original content inside of your block content than it is done like this with #let_content method.
-  Lolita::Hooks.component(:"lolita/configuration/list/display").around do
+  Lolita::Hooks.component(:"/lolita/configuration/list/display").around do
     "<div style='color:red'>#{let_content}</div>"
   end
 ==License
