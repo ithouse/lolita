@@ -2,7 +2,7 @@ body {background: #f3f3f3; font-size: 13px;}
 
 a, a:visited, a:active {color: #7ac1ed; text-decoration: none;}
 
-/* identically looking button styles for links and both types of html buttons */
+/* same button styles for links and both types of html buttons */
 button, a.button, input[type="button"] {
   padding: 4px 10px; 
   border: none; 
@@ -20,6 +20,7 @@ input[type="button"] {vertical-align: top; padding: 3px 9px;}
 h1 {font-size: 28px; font-weight: normal; letter-spacing: -1px; line-height: 85px;}
 
 #container {width: 90%; margin: 0 auto;}
+/* ----------------------------------------------*/
 
 /* header styles */
 header {position: relative; height: 85px;}
@@ -61,6 +62,7 @@ header nav .username {margin-right: 15px;}
   -webkit-box-sizing: border-box;
   box-sizing: border-box;  /* IE7 does not support it, IE8 does */
 }
+/* ----------------------------------------------*/
 
 /* error fields and notifications */
 .field_with_errors input,
@@ -74,11 +76,12 @@ header nav .username {margin-right: 15px;}
   left: 0;
   width: 100%; 
   padding: 25px 0; 
+  background: #fff;
   background: rgba(256,256,256,0.9);
   font-size: 16px;
   text-align: center;
   cursor: pointer;
-  z-index: 2;
+  z-index: 5;
 }
 
 /* ---------------------------------- */
@@ -97,7 +100,7 @@ header nav .username {margin-right: 15px;}
 
 
 /* navigation styles on left */
-#main nav {position: absolute; left: 0; min-width: 150px; margin-top: 5px;} /* width just for now */ 
+#main nav {position: absolute; left: 0; width: 150px; margin-top: 5px;} /* width just for now */ 
 #main nav ul {margin-bottom: 50px;}
 #main nav ul.subtree{margin-bottom: 0px;}
 #main nav ul li a {display: block; padding: 10px 15px; color: #737373;}
@@ -152,6 +155,7 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
   border-style: solid;
   border-width: 10px 10px 0;
 }
+/* ----------------------------------------------*/
 
 /* different colors*/
 .black {
@@ -273,3 +277,42 @@ a.create {
 /* --------------------------------------------- */
 
 
+/* IE7 fixes */
+.ie7 #main .box,
+.ie7 #main nav ul li.active a, 
+.ie7 button, a.button, input[type="button"],
+.ie7 #main .box form .field-value input, 
+.ie7 #main .box form .field-value textarea,
+.ie7 .black,
+.ie7 #flash
+{behavior: url(/stylesheets/lolita/PIE-custom.htc)}
+.ie7 #main .box form .field-value input, 
+.ie7 #main .box form .field-value textarea
+{position: relative;}
+.ie7 #main .box a.create {zoom: 1}
+.ie7 #main nav {zoom: 1}
+.ie7 #main nav ul {zoom: 1}
+.ie7 #main nav ul li {zoom: 1}
+.ie7 #main nav ul li a {zoom: 1}
+.ie7 a.create img {top: 0;}
+.ie7 header nav a.username {position: relative; top: -4px;}
+.ie7 .black {-pie-background: linear-gradient(top, #686868, #2f2f2f);}
+.ie7 #flash {-pie-background: rgba(256,256,256,0.9);}
+/* ----------------------------------------------*/
+
+/* IE8 fixes */
+.ie8 #main .box,
+.ie8 #main nav ul li.active a, 
+.ie8 button, a.button, input[type="button"], 
+.ie8 #main .box form .field-value input, 
+.ie8 #main .box form .field-value textarea,
+.ie8 .black,
+.ie8 #flash
+{behavior: url(/stylesheets/lolita/PIE.htc)}
+.ie8 #main .box form .field-value input, 
+.ie8 #main .box form .field-value textarea
+{position: relative;}
+.ie8 .black {-pie-background: linear-gradient(top, #686868, #2f2f2f);}
+.ie8 #flash {-pie-background: rgba(256,256,256,0.9);}
+/* ----------------------------------------------*/
+/* ----------------------------------------------*/
