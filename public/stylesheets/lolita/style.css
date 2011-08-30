@@ -74,7 +74,9 @@ header nav .username {margin-right: 15px;}
 
 /* nested forms */
 
-#main .box form .nested_form {}
+#main .box form .nested_form {
+  margin-bottom: 10px;
+}
 #main .box form .nested_form label {display: block; margin-bottom: 5px;}
 #main .box form .nested_form .fields {
   margin: 5px 0 5px 50px; 
