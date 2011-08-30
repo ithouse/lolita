@@ -2,6 +2,9 @@ class Lolita::InfoController < ApplicationController
   @@properties = []
 
   def index
+    if Lolita.mappings.any?
+      return redirect_to(lolita_resources_path(Lolita.mappings.values.first))
+    end
     render :layout => false
   end
 

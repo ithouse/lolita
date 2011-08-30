@@ -13,5 +13,5 @@
       }.compact.join("<br>") %>
     </p>
   <% end %>
-  <%= render_component *tab.build %>
+  <%= render_component "lolita/configuration/tab", :form, :tab => tab %>
 </div>

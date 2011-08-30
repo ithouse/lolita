@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.14"
+  s.version = "3.1.15"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{ITHouse (Latvia) and Arturs Meisters}]
-  s.date = %q{2011-08-24}
+  s.date = %q{2011-08-29}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
     "app/controllers/lolita/info_controller.rb",
     "app/controllers/lolita/rest_controller.rb",
     "app/helpers/components/lolita/configuration/list_component.rb",
+    "app/helpers/components/lolita/configuration_component.rb",
     "app/helpers/lolita_helper.rb",
     "app/views/components/lolita/configuration/column/_display.html.erb",
     "app/views/components/lolita/configuration/column/_header.html.erb",
@@ -56,6 +57,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field/date_time/date/_display.html.erb",
     "app/views/components/lolita/configuration/field/date_time/time/_display.html.erb",
     "app/views/components/lolita/configuration/field/float/_display.html.erb",
+    "app/views/components/lolita/configuration/field/hidden/_display.html.erb",
     "app/views/components/lolita/configuration/field/integer/_display.html.erb",
     "app/views/components/lolita/configuration/field/string/_display.html.erb",
     "app/views/components/lolita/configuration/field/string/disabled/_display.html.erb",
@@ -68,9 +70,11 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/list/_new_resource.html.erb",
     "app/views/components/lolita/configuration/list/_paginator.html.erb",
     "app/views/components/lolita/configuration/list/_title.html.erb",
+    "app/views/components/lolita/configuration/nested_form/_display.html.erb",
+    "app/views/components/lolita/configuration/nested_form/_fields.html.erb",
     "app/views/components/lolita/configuration/tab/_display.html.erb",
     "app/views/components/lolita/configuration/tab/_fields.html.erb",
-    "app/views/components/lolita/configuration/tab/_nested_form.html.erb",
+    "app/views/components/lolita/configuration/tab/_form.html.erb",
     "app/views/components/lolita/configuration/tab/content/_display.html.erb",
     "app/views/components/lolita/configuration/tab/default/_display.html.erb",
     "app/views/components/lolita/configuration/tabs/_display.html.erb",
@@ -114,12 +118,14 @@ Gem::Specification.new do |s|
     "lib/lolita/configuration/field/boolean.rb",
     "lib/lolita/configuration/field/date.rb",
     "lib/lolita/configuration/field/date_time.rb",
+    "lib/lolita/configuration/field/hidden.rb",
     "lib/lolita/configuration/field/integer.rb",
     "lib/lolita/configuration/field/string.rb",
     "lib/lolita/configuration/field/time.rb",
     "lib/lolita/configuration/field_set.rb",
     "lib/lolita/configuration/fields.rb",
     "lib/lolita/configuration/filter.rb",
+    "lib/lolita/configuration/helper.rb",
     "lib/lolita/configuration/list.rb",
     "lib/lolita/configuration/nested_form.rb",
     "lib/lolita/configuration/page.rb",
@@ -215,6 +221,8 @@ Gem::Specification.new do |s|
     "public/javascripts/tinymce/utils/mctabs.js",
     "public/javascripts/tinymce/utils/validate.js",
     "public/javascripts/tinymce_config.js",
+    "public/stylesheets/lolita/PIE-custom.htc",
+    "public/stylesheets/lolita/PIE.htc",
     "public/stylesheets/lolita/default.css",
     "public/stylesheets/lolita/style.css",
     "spec/adapter_helper.rb",

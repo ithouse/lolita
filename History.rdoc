@@ -1,13 +1,20 @@
-=== Version 3.1.15 / 
+=== Version 3.1.15 / 2011-08-29
 * Enhancements
   * By default content tab excludes technical columns, like created_at, updated_at etc.
   * It's possible to define and lolita uses nested fields in each tab through nested_fields_for.
   * All fields (except array/habtm) uses #tab_form for field generation, that is current tab form.
   * Lolita know how to vizualize habtm relation
+  * Added #component_locals method for views, so it is possible to access next component locals.
+  * Hidden field type added
+  * Nested forms updated to be more flexible
   
 * Changes
   * For unknown period field_sets are removed from use, it is possible to define them and use in your own views.
-  
+
+* Bug fixes
+  * /lolita now redirects to first existing mapping if any defined (Issue #14)
+  * component hooks fixed to use right local variable and detect right name of current component
+
 === Version 3.1.14 / 2011-08-24
 * Enhancements
   * request notifications moved to related methods in ::Controllers::InternalHelpers

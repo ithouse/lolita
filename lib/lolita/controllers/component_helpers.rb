@@ -26,13 +26,19 @@ module Lolita
       #      render_component "lolita/list", :display
       #      render_component "lolita/list/display"
       def render_component *args
+        @rendering_components ||= []
         name,state,options=get_render_options(*args)
         format=options.delete(:format)
         raise "Can't render component without name!" unless name
         will_use_component name 
         component_name=File.join(name.to_s,state ? state.to_s : nil)
         partial_name=File.join("/components",component_name)
+
+        @rendering_components.push(component_name)
+        @current_component_name = component_name
         output=output_component(partial_name,component_name,:format=>format ,:locals=>options)
+        @rendering_components.pop
+        @current_component_name = @rendering_components.last
         self.respond_to?(:raw) ? raw(output) : output
       end
       
@@ -44,6 +50,7 @@ module Lolita
           raise ArgumentError, "Include Lolita::Builder in #{args.first.class}"
         else
           name,state=args
+          name = "/#{name}" unless name.to_s.match(/^\//)
         end
         return name,state,options
       end
@@ -61,12 +68,16 @@ module Lolita
       end
 
       def output_with_callbacks(partial_name,name,locals)
+        @component_locals ||={}
+        @component_locals[name] = locals
+        
         output = Lolita::Hooks.component(name).run(:before,:run_scope => self).to_s
         block_output = Lolita::Hooks.component(name).run(:around, :run_scope => self) do
           render(:partial => partial_name,:locals=>locals)
         end
         output << block_output.to_s
         output << Lolita::Hooks.component(name).run(:after,:run_scope => self).to_s
+        @component_locals[name] = nil
         output
       end
 
@@ -123,6 +134,11 @@ module Lolita
         }
         path=get_path.call(@helper_paths)
         path
+      end
+
+      # Return locals for component that will be rendered next. Very useful in hook views, where is no locals.
+      def component_locals
+        @component_locals[@current_component_name]
       end
       
     end
