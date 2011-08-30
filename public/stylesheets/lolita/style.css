@@ -317,9 +317,10 @@ a.create {
 #main nav.pagination span.current,
 #main nav.pagination span.page a {
   display: inline-block;
-  width: 25px; height: 25px; line-height: 25px;
+  min-width: 25px; height: 25px; line-height: 25px;
   font-size: 13px;
   border: 1px solid #d5d5d5;
+  padding: 0 5px;
 }
 #main nav.pagination span.page a:hover {background: #d5d5d5;}
 #main nav.pagination span.current {background: #9d81f8; color: #fff;}

@@ -22,3 +22,10 @@ lv:
     filter:
       apply_button: Pielietot
       include_blank_by_title: " -- Filtrēt pēc %{title} -- "
+  views:
+    pagination:
+      previous: "&laquo; Atpakaļ"
+      next: "Uz priekšu &raquo;"
+      last: "Beigas"
+      first: "Sākums"
+      truncate: "..."

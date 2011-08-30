@@ -5,6 +5,7 @@ gem "rails", "~>3.0.10"
 gem "kaminari", "~>0.12.4"
 gem "abstract"
 gem "builder", "~> 2.1.2" #cucumber asks for builder 3 but rails supports 2.1
+gem "haml", "~> 3.1.2"
 
 group :mongoid do
 	gem "mongo", "~> 1.3.0"
