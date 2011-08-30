@@ -1,4 +1,4 @@
-<div class="field" id="field_<%=field.__id__%>">
+<div class="field <%= field.type %>" id="field_<%=field.__id__%>">
   <% unless field.type == "hidden" %>
     <%= render_component *field.build(:name=>"/lolita/configuration/field", :state => :"label") %>
   <% end %>

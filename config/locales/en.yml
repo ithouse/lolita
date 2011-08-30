@@ -6,6 +6,7 @@ en:
       log_out: Log out
       edit: Edit
       delete: Delete
+      and: and
     nested_form:
       add: "Add %{resource_name}"
     tabs:

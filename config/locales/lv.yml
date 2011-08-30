@@ -6,6 +6,7 @@ lv:
       log_out: Atteikties
       edit: Labot
       delete: Dzēst
+      and: un
     nested_form:
       add: "Pievienot %{resource_name}"
     tabs:
