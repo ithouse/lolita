@@ -40,7 +40,7 @@ header nav .username {margin-right: 15px;}
 #main .box form {background: #FFF; padding: 30px 25px;}
 #main .box form label {color: #c3c3c3; font-size: 13px;}
 #main .box form select {min-width: 150px;}
-#main .box form .field {margin: 10px 0;}
+#main .box form .field {margin: 10px 0; overflow: hidden;}
 #main .box form .field:first-child input {
   font-size: 24px;
   -moz-border-radius: 5px;
@@ -68,6 +68,8 @@ header nav .username {margin-right: 15px;}
   -webkit-box-sizing: border-box;
   box-sizing: border-box;  /* IE7 does not support it, IE8 does */
 }
+
+#main .box form .field.boolean .field-value {float: left; margin: 0 5px 0 0;} /* for checkboxes */
 /* ----------------------------------------------*/
 
 /* nested forms */
