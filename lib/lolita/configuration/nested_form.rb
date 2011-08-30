@@ -19,31 +19,56 @@ module Lolita
       
       attr_reader :parent, :options, :field_style
       attr_accessor :name, :expandable, :field_rejection_proc
+      attr_writer :build_method
 
       def initialize parent,name=nil, options ={}
         @parent=parent
         @options = options
         self.name=name || "nested_form_#{next_nested_form}"
+        set_attributes_from(options)
       end
 
+      def allow_destroy?
+        dbi.klass.nested_attributes_options[name][:allow_destroy]
+      end
+
+      def update_only?
+        dbi.klass.nested_attributes_options[name][:update_only]
+      end
+
+      def build_method
+        @build_method || self.name
+      end
+      # Set field style - normal or simple. Default - normal.      
       def field_style=(value)
         allowed_values = [:normal,:simple]
         raise ArgumentError, "Only #{allowed_values.inspect} are allowed" unless allowed_values.include?(value)
         @field_style = value
       end
 
+      # Detect if it's possible to add more than one field group, like if model has many other objects.
       def expandable?
         @expandable == true || (@expandable == nil && macro == :many)
       end
 
+      # Create field, that is not real field, but represents nested attributes as one.
+      # It is used to create label.
+      def as_field
+        Lolita::Configuration::Field.add(dbi,self.name, :string)
+      end
+
+      # Parent (a.k.a tab) dbi
       def dbi
         @parent.dbi
       end
 
+      # Fields setter. Fields should be array and each element should be Lolita::Configuration::Field object.
       def fields=(new_fields)
         @fields = new_fields
       end
 
+      # Return all fields. Each time fields ar returned from @fields if its defined or calculated by using #field_rejection_proc
+      # or collected from parent (tab) where fields nested form is same with self.
       def fields
         if @fields
           @fields
@@ -54,10 +79,12 @@ module Lolita
         end
       end
 
+      # Parent (tab) dbi klass
       def klass
         dbi.reflect_on_association(name).klass
       end
 
+      # Parent (tab) dbi klass reflection with #name and macros of that.
       def macro
         dbi.association_macro(dbi.reflect_on_association(name))
       end
@@ -66,6 +93,12 @@ module Lolita
 
       def next_nested_form
         @@last_nested_form+=1
+      end
+
+      def set_attributes_from(options)
+        options.each{|key,value|
+          instance_variable_set(:"@#{key}",value)
+        }
       end
     end
   end
