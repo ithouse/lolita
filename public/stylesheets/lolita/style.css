@@ -38,6 +38,7 @@ header nav .username {margin-right: 15px;}
 /* form styles */
 
 #main .box form {background: #FFF; padding: 30px 25px;}
+#main .box form input {background: #FFF;}
 #main .box form label {color: #c3c3c3; font-size: 13px;}
 #main .box form select {min-width: 150px;}
 #main .box form .field {margin: 10px 0; overflow: hidden;}
@@ -69,14 +70,12 @@ header nav .username {margin-right: 15px;}
   box-sizing: border-box;  /* IE7 does not support it, IE8 does */
 }
 
-#main .box form .field.boolean .field-value {float: left; margin: 0 5px 0 0;} /* for checkboxes */
+#main .box form .field.boolean .field-value {float: left; width: 20px; margin: 0 5px 0 0;} /* for checkboxes */
 /* ----------------------------------------------*/
 
 /* nested forms */
 
-#main .box form .nested_form {
-  margin-bottom: 10px;
-}
+#main .box form .nested_form {margin: 10px 0;}
 #main .box form .nested_form label {display: block; margin-bottom: 5px;}
 #main .box form .nested_form .fields {
   margin: 5px 0 5px 50px; 
@@ -134,6 +133,7 @@ header nav .username {margin-right: 15px;}
 	background: #ab8def; 
 	color: #ffd;
 }
+#main .box .save button:active {position: relative; top: 1px;}
 
 /* ---------------------------------- */
 
@@ -144,6 +144,7 @@ header nav .username {margin-right: 15px;}
 #main nav ul {margin-bottom: 50px;}
 #main nav ul.subtree{margin-bottom: 0px;}
 #main nav ul li a {display: block; padding: 10px 15px; color: #737373;}
+#main nav ul li a:active {position: relative; top: 1px;}
 #main nav ul li.active a {
   background: #d9d9d9; 
   background: -moz-linear-gradient(left, #e1e1e1, #d5d5d5);
@@ -239,8 +240,8 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
 .black, a.black {color: #f1f1f1;}
 .grey {
   background: #ededed; /* for IE, Opera */
-  background: -moz-linear-gradient(top, #ededed, #e2e2e2);
-  background: -webkit-linear-gradient(top, #ededed, #e2e2e2);
+  background: -moz-linear-gradient(top, #e4e4e4, #e2e2e2);
+  background: -webkit-linear-gradient(top, #e4e4e4, #e2e2e2);
 }
 .grey, a.grey {color: #8f8f8f;}
 /* --------------------------------------------- */
@@ -286,6 +287,8 @@ a.create {
 .list table tbody tr .tool-cell {width: 5%;}
 .list table tbody tr .tool-cell a {visibility: hidden; margin-right: 5px;}
 .list table tbody tr:hover .tool-cell a {visibility: visible;}
+
+.list table td a:active {position: relative; top: 1px;}
 
 /* filter */
 #main form.filter {
