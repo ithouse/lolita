@@ -1,0 +1,14 @@
+<% if resource.errors.any? %>
+  <p class="errorExplanation" id="errorExplanation">
+    <%= raw resource.errors.keys.collect{|k|
+      title = if k.to_s.match(/\./)
+        assoc_name, attr_name = k.to_s.split(".")
+        klass = resource.lolita.dbi.reflect_on_association(assoc_name.to_sym).klass
+        klass.human_attribute_name(attr_name).downcase
+      else
+        resource.class.human_attribute_name(k)
+      end
+      "#{title.to_s.capitalize}: #{resource.errors[k].join(" #{::I18n.t("lolita.shared.and")} ")}"
+    }.compact.join("<br>") %>
+  </p>
+<% end %>

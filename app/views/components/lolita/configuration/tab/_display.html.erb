@@ -3,19 +3,6 @@
     <h1><%= tab.title %></h1>
     <div class="arrow"></div>
   </div>
-  <% if resource.errors.any? %>
-    <p class="errorExplanation" id="errorExplanation">
-      <%= raw resource.errors.keys.collect{|k|
-        if k.to_s.match(/\./)
-          assoc_name, attr_name = k.to_s.split(".")
-          klass = resource.lolita.dbi.reflect_on_association(assoc_name.to_sym).klass
-          title = klass.human_attribute_name(attr_name)
-        else
-          title = resource.class.human_attribute_name(k)
-        end
-        "#{title}: #{resource.errors[k].map(&:capitalize).join(" #{::I18n.t("lolita.shared.and")} ")}"
-      }.compact.join("<br>") %>
-    </p>
-  <% end %>
+  <%= render_component "lolita/configuration/tab", :error_msg, :tab => tab %>
   <%= render_component "lolita/configuration/tab", :form, :tab => tab %>
 </div>
