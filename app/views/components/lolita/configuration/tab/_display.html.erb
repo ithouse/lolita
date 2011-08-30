@@ -3,7 +3,6 @@
     <h1><%= tab.title %></h1>
     <div class="arrow"></div>
   </div>
-  <% debugger %>
   <% if resource.errors.any? %>
     <p class="errorExplanation" id="errorExplanation">
       <%= raw resource.errors.keys.collect{|k|
