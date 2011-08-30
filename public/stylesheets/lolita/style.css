@@ -99,8 +99,8 @@ header nav .username {margin-right: 15px;}
 
 /* error fields and notifications */
 
-.field_with_errors input,
-.field_with_errors textarea {background: #ffe6e7;}
+#main .box form .field_with_errors input,
+#main .box form .field_with_errors textarea {background: #ffe6e7;}
 .inline-errors {padding-top: 3px; color:#F66; font-size: 110%;}
 .errorExplanation {color:#F66; font-size: 110%; padding:25px 25px 0; background:white;}
 
@@ -144,7 +144,6 @@ header nav .username {margin-right: 15px;}
 #main nav ul {margin-bottom: 50px;}
 #main nav ul.subtree{margin-bottom: 0px;}
 #main nav ul li a {display: block; padding: 10px 15px; color: #737373;}
-#main nav ul li a:active {position: relative; top: 1px;}
 #main nav ul li.active a {
   background: #d9d9d9; 
   background: -moz-linear-gradient(left, #e1e1e1, #d5d5d5);
