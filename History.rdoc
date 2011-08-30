@@ -1,3 +1,8 @@
+=== Version 3.1.16 / 2011-08-30
+* Bug fixes
+  * Component helper name detection fixed
+  * Nested forms normal style fixed
+  
 === Version 3.1.15 / 2011-08-29
 * Enhancements
   * By default content tab excludes technical columns, like created_at, updated_at etc.

@@ -94,22 +94,29 @@ module Lolita
       #     will_use_component :"lolita/configuration/list"
       def will_use_component component_name
         helpers_for_component(component_name) do |possible_component_name|
-          @used_component_helpers||=[]
+          @used_component_helpers||={}
           unless @used_component_helpers.include?(possible_component_name)
             if path=component_helper_path(possible_component_name)
               self.class.class_eval do
                 require path
               end
               class_name=possible_component_name.to_s.camelize
-              self.extend("Components::#{class_name}Component".constantize) rescue nil #FIXME too slow
+              helper_module = "Components::#{class_name}Component".constantize rescue nil
+              if helper_module
+                self.extend(helper_module) 
+              end
             end
-            @used_component_helpers<<possible_component_name
+            @used_component_helpers[possible_component_name] = helper_module
+          else
+            if helper_module = @used_component_helpers[possible_component_name]
+              self.extend(helper_module)
+            end
           end
         end
       end
       
       def helpers_for_component component_name
-        names=component_name.to_s.split("/")
+        names=component_name.to_s.gsub(/^\//,"").split("/")
         start_index=1 # first is lolita
         start_index.upto(names.size) do |index|
           yield names.slice(0..index).join("/")
