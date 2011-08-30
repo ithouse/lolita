@@ -237,8 +237,8 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
 .black, a.black {color: #f1f1f1;}
 .grey {
   background: #ededed; /* for IE, Opera */
-  background: -moz-linear-gradient(top, #e4e4e4, #e2e2e2);
-  background: -webkit-linear-gradient(top, #e4e4e4, #e2e2e2);
+  background: -moz-linear-gradient(top, #ededed, #e2e2e2);
+  background: -webkit-linear-gradient(top, #ededed, #e2e2e2);
 }
 .grey, a.grey {color: #8f8f8f;}
 /* --------------------------------------------- */
@@ -301,6 +301,29 @@ a.create {
 #main form.filter label {
   color: #666;
 }
+/* --------------------------------------------- */
+
+/* Pagination */
+
+#main nav.pagination {
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+}
+#main nav.pagination span.current,
+#main nav.pagination span.page a {
+  display: inline-block;
+  width: 25px; height: 25px; line-height: 25px;
+  font-size: 13px;
+  border: 1px solid #d5d5d5;
+}
+#main nav.pagination span.page a:hover {background: #d5d5d5;}
+#main nav.pagination span.current {background: #9d81f8; color: #fff;}
+#main nav.pagination span.first,
+#main nav.pagination span.prev {margin-right: 5px}
+#main nav.pagination span.next,
+#main nav.pagination span.last {margin-left: 5px;}
+
 /* --------------------------------------------- */
 
 /* TinyMCE advanced theme's skin "Cirkuit" overrides */
