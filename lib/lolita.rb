@@ -42,7 +42,11 @@ module Lolita
   module Builder
     autoload(:Custom, 'lolita/builder')
   end
-  autoload(:BaseConfiguration,'lolita/base_configuration')
+
+  module SystemConfiguration
+    autoload :Base, 'lolita/system_configuration/base'
+    autoload :Application, 'lolita/system_configuration/application'
+  end
 
   module Adapter
     autoload :AbstractAdapter, 'lolita/adapter/abstract_adapter'
@@ -146,7 +150,7 @@ module Lolita
 
   def self.scope name=nil
     name||=scope_name
-    @@scopes[name]||=Lolita::BaseConfiguration.new(name)
+    @@scopes[name]||=Lolita::SystemConfiguration::Base.new(name)
     @@scopes[name]
   end
 

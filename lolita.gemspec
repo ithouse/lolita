@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.16"
+  s.version = "3.1.17"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{ITHouse (Latvia) and Arturs Meisters}]
@@ -73,6 +73,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/nested_form/_display.html.erb",
     "app/views/components/lolita/configuration/nested_form/_fields.html.erb",
     "app/views/components/lolita/configuration/tab/_display.html.erb",
+    "app/views/components/lolita/configuration/tab/_error_msg.html.erb",
     "app/views/components/lolita/configuration/tab/_fields.html.erb",
     "app/views/components/lolita/configuration/tab/_form.html.erb",
     "app/views/components/lolita/configuration/tab/content/_display.html.erb",
@@ -83,6 +84,13 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/shared/_flash.html.erb",
     "app/views/components/lolita/shared/_header.html.erb",
     "app/views/components/lolita/shared/_right_sidebar.html.erb",
+    "app/views/kaminari/lolita/_first_page.html.haml",
+    "app/views/kaminari/lolita/_gap.html.haml",
+    "app/views/kaminari/lolita/_last_page.html.haml",
+    "app/views/kaminari/lolita/_next_page.html.haml",
+    "app/views/kaminari/lolita/_page.html.haml",
+    "app/views/kaminari/lolita/_paginator.html.haml",
+    "app/views/kaminari/lolita/_prev_page.html.haml",
     "app/views/layouts/lolita/application.html.erb",
     "app/views/lolita/info/index.html.erb",
     "app/views/lolita/rest/form.html.erb",

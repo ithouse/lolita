@@ -7,6 +7,7 @@ lv:
       edit: Labot
       delete: Dzēst
       and: un
+      powered: Darbojas ar Lolita (2010-%{year})
     nested_form:
       add: "Pievienot %{resource_name}"
     tabs:
