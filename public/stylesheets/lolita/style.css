@@ -95,10 +95,13 @@ header nav .username {margin-right: 15px;}
 /* -------------------------------- */
 
 /* error fields and notifications */
+
 .field_with_errors input,
 .field_with_errors textarea {background: #ffe6e7;}
 .inline-errors {padding-top: 3px; color:#F66; font-size: 110%;}
 .errorExplanation {color:#F66; font-size: 110%; padding:25px 25px 0; background:white;}
+
+.nested_form .fields .field_with_errors {display: inline;}
 
 #flash {
   position: fixed;
@@ -117,6 +120,7 @@ header nav .username {margin-right: 15px;}
 /* ---------------------------------- */
 
 /* save box */
+
 #main .box .save {padding: 20px 10px;}
 #main .box .last-save {color: #808080; margin-bottom: 5px;}
 #main .box .save button {
@@ -126,10 +130,12 @@ header nav .username {margin-right: 15px;}
 	background: #ab8def; 
 	color: #ffd;
 }
+
 /* ---------------------------------- */
 
 
 /* navigation styles on left */
+
 #main nav {position: absolute; left: 0; width: 150px; margin-top: 5px;} /* width just for now */ 
 #main nav ul {margin-bottom: 50px;}
 #main nav ul.subtree{margin-bottom: 0px;}
@@ -160,14 +166,17 @@ header nav .username {margin-right: 15px;}
 /* --------------------------------------------- */
 
 /* main content part */
+
 #content {overflow: visible; position: relative;} /* overflow for clearing containing floats */
 #content .secondary {position: absolute; right: 0; width: 23%;}
 #content.with-secondary {padding-right: 25%;}
+
 /* --------------------------------------------- */
 
 footer {height: 50px;} /* for not leaving empty space in bottom */
 
 /* boxes that, possibly, will be draggable/droppable */
+
 #main .box { /* list-container for small/big bordered box that takes all available parent width */ 
   border: 5px solid #d5d5d5;
   -moz-border-radius: 5px;
@@ -177,6 +186,7 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
 } 
 
 .boxtitle {position: relative; z-index: 2} 
+
 .boxtitle h1 {padding: 35px 25px 15px; line-height: 1; cursor: pointer;} /* h1 contains bgcolor, color and text position because arrow needs different bg and it follows after */
 .boxtitle .arrow {
   position: absolute;
@@ -185,6 +195,35 @@ footer {height: 50px;} /* for not leaving empty space in bottom */
   border-style: solid;
   border-width: 10px 10px 0;
 }
+.boxtitle.grey .arrow {
+  border-color: #e2e2e2 transparent transparent;
+}
+
+#main .tab.box.default {border: none;} /* styles for not-on-top grey boxes */
+#main .tab.box.default .boxtitle {
+  border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+}
+#main .tab.box.default form {
+  border: 5px solid #e2e2e2; 
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  -moz-border-radius: 0 0 5px 5px;
+  -webkit-border-radius: 0 0 5px 5px;
+}
+
+
+#main .tab.box.minimized .boxtitle {
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  height: 50px;
+}
+#main .tab.box.minimized .boxtitle h1 {font-size: 16px; line-height: 50px; padding: 0 0 0 15px;}
+#main .tab.box.minimized .boxtitle .arrow {display: none;}
+#main .tab.box.minimized form {display: none;}
+
 /* ----------------------------------------------*/
 
 /* different colors*/

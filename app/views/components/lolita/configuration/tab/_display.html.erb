@@ -1,7 +1,7 @@
-<div class="tab box" id="tab_<%=tab.__id__%>">
-  <div class="tab-title boxtitle black" data-closed="false">
+<div class="tab box <%=resource.lolita.tabs.first == tab ? "first-tab" : "default minimized"%>" id="tab_<%=tab.__id__%>">
+	<div class="tab-title boxtitle <%= resource.lolita.tabs.first == tab ? "black" : "grey"%>" >
     <h1><%= tab.title %></h1>
-    <div class="arrow"></div> <%# FIXME more DRY solution is needed for .arrow within .boxtitle, maybe box helper %>
+    <div class="arrow"></div>
   </div>
   <% debugger %>
   <% if resource.errors.any? %>

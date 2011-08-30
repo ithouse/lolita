@@ -29,14 +29,6 @@ $(function(){
   })
   // All tabs are closable when clicked on tab title.
   $(".tab .tab-title").live('click',function(){
-    var tab_title=$(this)
-    var closed=tab_title.data("closed") || (tab_title.attr("data-closed")=="false" ? false : true)
-      if(closed){
-        tab_title.parents(".tab").find(".tab-content").show("fast")
-      }else{
-        tab_title.parents(".tab").find(".tab-content").hide("fast")
-      }
-      tab_title.data("closed",!closed)
-    })
-    // Flash is hidden when clicked on
+		$(this).parent().toggleClass("minimized", 200)
+	})
 })
