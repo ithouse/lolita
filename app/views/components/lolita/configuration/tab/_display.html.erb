@@ -12,7 +12,7 @@
           klass = resource.lolita.dbi.reflect_on_association(assoc_name.to_sym).klass
           title = klass.human_attribute_name(attr_name)
         else
-          resource.class.human_attribute_name(k)
+          title = resource.class.human_attribute_name(k)
         end
         "#{title}: #{resource.errors[k].map(&:capitalize).join(" #{::I18n.t("lolita.shared.and")} ")}"
       }.compact.join("<br>") %>
