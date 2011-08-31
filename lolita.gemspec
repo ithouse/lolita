@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-08-30}
+  s.date = %q{2011-08-31}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -84,13 +84,13 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/shared/_flash.html.erb",
     "app/views/components/lolita/shared/_header.html.erb",
     "app/views/components/lolita/shared/_right_sidebar.html.erb",
-    "app/views/kaminari/lolita/_first_page.html.haml",
-    "app/views/kaminari/lolita/_gap.html.haml",
-    "app/views/kaminari/lolita/_last_page.html.haml",
-    "app/views/kaminari/lolita/_next_page.html.haml",
-    "app/views/kaminari/lolita/_page.html.haml",
-    "app/views/kaminari/lolita/_paginator.html.haml",
-    "app/views/kaminari/lolita/_prev_page.html.haml",
+    "app/views/kaminari/lolita/_first_page.html.erb",
+    "app/views/kaminari/lolita/_gap.html.erb",
+    "app/views/kaminari/lolita/_last_page.html.erb",
+    "app/views/kaminari/lolita/_next_page.html.erb",
+    "app/views/kaminari/lolita/_page.html.erb",
+    "app/views/kaminari/lolita/_paginator.html.erb",
+    "app/views/kaminari/lolita/_prev_page.html.erb",
     "app/views/layouts/lolita/application.html.erb",
     "app/views/lolita/info/index.html.erb",
     "app/views/lolita/rest/form.html.erb",

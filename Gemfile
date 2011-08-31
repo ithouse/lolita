@@ -9,7 +9,7 @@ gem "haml", "~> 3.1.2"
 
 group :mongoid do
 	gem "mongo", "~> 1.3.0"
-	gem "mongoid", "~> 2.0.0"
+	gem "mongoid", "~> 2.1.7"
 	gem "bson_ext", "~> 1.3.0"
 end
 
