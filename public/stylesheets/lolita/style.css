@@ -1,5 +1,4 @@
-html {height:100%;}
-body {height:100%;background: #f3f3f3; font-size: 13px;}
+body {background: #f3f3f3; font-size: 13px;}
 
 a, a:visited, a:active {color: #7ac1ed; text-decoration: none;}
 input[type="button"] {vertical-align: top; padding: 3px 9px;}
@@ -7,7 +6,6 @@ h1 {font-size: 28px; font-weight: normal; letter-spacing: -1px; line-height: 85p
 
 #container {
   width: 90%; margin: 0 auto;
-  min-height: 100%;height: auto !important;height: 100%;margin: 0 auto -30px;
 }
 
 /* same button styles for links and both types of html buttons */
@@ -131,11 +129,11 @@ header nav .username {margin-right: 15px;}
 #main .box .save {padding: 20px 10px;}
 #main .box .last-save {color: #808080; margin-bottom: 5px;}
 #main .box .save button {
-	width: 100%; 
-	padding: 10px 0; 
-	font-size: 24px; 
-	background: #ab8def; 
-	color: #ffd;
+  width: 100%; 
+  padding: 10px 0; 
+  font-size: 24px; 
+  background: #ab8def; 
+  color: #ffd;
 }
 #main .box .save button:active {position: relative; top: 1px;}
 
@@ -181,12 +179,13 @@ header nav .username {margin-right: 15px;}
 
 /* --------------------------------------------- */
 
-.push, footer {
+footer {
   height: 30px;
-  text-align:right;
+  text-align: center;
   width:100%;
   clear:both;
-} /* for not leaving empty space in bottom */
+} 
+/* for not leaving empty space in bottom */
 #powered{
   font-size: 11px;
   margin-right:10px;
@@ -199,7 +198,7 @@ header nav .username {margin-right: 15px;}
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 } 
 
 .boxtitle {position: relative; z-index: 2} 
@@ -265,9 +264,9 @@ header nav .username {margin-right: 15px;}
 .tools > div > * {margin-right: 10px;}
 
 a.create {
-	position: relative;
+  position: relative;
   display: block;
-	z-index: 1;
+  z-index: 1;
   background: #9d81f8;
   background: -moz-linear-gradient(top, #ae91eb, #9d81f8);
   background: -webkit-linear-gradient(top, #ae91eb, #9d81f8);
@@ -324,8 +323,9 @@ a.create {
 
 #main nav.pagination {
   width: 100%;
-  margin-top: 20px;
+  margin: 15px 0;
   text-align: center;
+  position: static !important;
 }
 #main nav.pagination span.current,
 #main nav.pagination span.page a {
@@ -426,5 +426,4 @@ a.create {
 {position: relative;}
 .ie8 .black {-pie-background: linear-gradient(top, #686868, #2f2f2f);}
 .ie8 #flash {-pie-background: rgba(256,256,256,0.9);}
-/* ----------------------------------------------*/
 /* ----------------------------------------------*/
