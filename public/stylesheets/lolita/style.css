@@ -1,3 +1,6 @@
+html,body{
+  height: 100%;
+}
 body {background: #f3f3f3; font-size: 13px;}
 
 a, a:visited, a:active {color: #7ac1ed; text-decoration: none;}
@@ -5,7 +8,14 @@ input[type="button"] {vertical-align: top; padding: 3px 9px;}
 h1 {font-size: 28px; font-weight: normal; letter-spacing: -1px; line-height: 85px;}
 
 #container {
-  width: 90%; margin: 0 auto;
+  width: 90%;
+  min-height: 100%;height: auto !important;height: 100%;margin: 0 auto -30px;
+}
+#container:before{ /* Opera and IE8 "redraw" bug fix */
+  content:"";
+  float:left;
+  height:100%;
+  margin-top:-999em;
 }
 
 /* same button styles for links and both types of html buttons */
@@ -33,7 +43,7 @@ header nav .username {margin-right: 15px;}
 
 /* vertical middle container */
 
-#main {position: relative; padding-left: 150px;} /* setting the left portion width for navigation */
+#main {position: relative; padding-left: 150px; margin-bottom: 50px;} /* setting the left portion width for navigation */
 
 /* ---------------------------------------------- */
 
@@ -181,10 +191,14 @@ header nav .username {margin-right: 15px;}
 
 footer {
   height: 30px;
-  text-align: center;
-  width:100%;
+  text-align: right;
+  width:90%;
   clear:both;
+  margin: 0 auto;
 } 
+.push{
+  padding-bottom: 30px;
+}
 /* for not leaving empty space in bottom */
 #powered{
   font-size: 11px;
@@ -323,9 +337,9 @@ a.create {
 
 #main nav.pagination {
   width: 100%;
-  margin: 15px 0;
+  margin-top: 20px;
   text-align: center;
-  position: static !important;
+  position: absolute;
 }
 #main nav.pagination span.current,
 #main nav.pagination span.page a {
