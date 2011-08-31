@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version = "3.1.17"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = %q{2011-08-31}
+  s.authors = [%q{ITHouse (Latvia) and Arturs Meisters}]
+  s.date = %q{2011-08-30}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -345,9 +345,9 @@ Gem::Specification.new do |s|
     "spec/support/formatter_spec.rb"
   ]
   s.homepage = %q{http://github.com/ithouse/lolita}
-  s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
+  s.licenses = [%q{MIT}]
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.8}
   s.summary = %q{Great Rails CMS.}
   s.test_files = [
     "spec/adapter_helper.rb",

@@ -1,10 +1,14 @@
-body {background: #f3f3f3; font-size: 13px;}
+html {height:100%;}
+body {height:100%;background: #f3f3f3; font-size: 13px;}
 
 a, a:visited, a:active {color: #7ac1ed; text-decoration: none;}
 input[type="button"] {vertical-align: top; padding: 3px 9px;}
 h1 {font-size: 28px; font-weight: normal; letter-spacing: -1px; line-height: 85px;}
 
-#container {width: 90%; margin: 0 auto;}
+#container {
+  width: 90%; margin: 0 auto;
+  min-height: 100%;height: auto !important;height: 100%;margin: 0 auto -30px;
+}
 
 /* same button styles for links and both types of html buttons */
 button, a.button, input[type="button"] {
@@ -177,7 +181,16 @@ header nav .username {margin-right: 15px;}
 
 /* --------------------------------------------- */
 
-footer {height: 50px;} /* for not leaving empty space in bottom */
+.push, footer {
+  height: 30px;
+  text-align:right;
+  width:100%;
+  clear:both;
+} /* for not leaving empty space in bottom */
+#powered{
+  font-size: 11px;
+  margin-right:10px;
+}
 
 /* boxes that, possibly, will be draggable/droppable */
 
