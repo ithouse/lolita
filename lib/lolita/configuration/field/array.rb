@@ -47,6 +47,16 @@ module Lolita
           @association_values
         end
 
+        # used in views for shorter accessing to values
+        def view_values(view)
+          values = association_values
+          if values.respond_to?(:call)
+            values.call(view)
+          else
+            association_values
+          end
+        end
+
       private
 
       def set_association_type #TODO test
