@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{ITHouse (Latvia) and Arturs Meisters}]
-  s.date = %q{2011-08-30}
+  s.date = %q{2011-09-01}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -114,7 +114,6 @@ Gem::Specification.new do |s|
     "lib/lolita/adapter/abstract_adapter.rb",
     "lib/lolita/adapter/active_record.rb",
     "lib/lolita/adapter/mongoid.rb",
-    "lib/lolita/base_configuration.rb",
     "lib/lolita/builder.rb",
     "lib/lolita/configuration/base.rb",
     "lib/lolita/configuration/column.rb",
@@ -163,6 +162,8 @@ Gem::Specification.new do |s|
     "lib/lolita/ruby_ext/accessors.rb",
     "lib/lolita/support/formatter.rb",
     "lib/lolita/support/formatter/rails.rb",
+    "lib/lolita/system_configuration/application.rb",
+    "lib/lolita/system_configuration/base.rb",
     "lib/lolita/test/matchers.rb",
     "lolita.gemspec",
     "public/images/lolita/plus.png",
