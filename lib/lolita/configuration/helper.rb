@@ -15,7 +15,7 @@ module Lolita
             key_method = dbi.adapter_name == :active_record ? :association_foreign_key : :key
             !dbi.associations.values.detect{|assoc| assoc.send(key_method) == name}
           elsif dbi.klass.respond_to?(:uploaders)
-            dbi_klass.uploaders.keys.include?(name.to_sym)
+            dbi.klass.uploaders.keys.include?(name.to_sym)
           end
         end
       end
