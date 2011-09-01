@@ -1,6 +1,12 @@
 === Version 3.1.17 / 
 * Bug fixes
   * Error explanation updated with nested errors
+
+* Enhancements
+  * Array field have special method for values
+  * HAML support added
+  * look improved 
+  * project configuration added
   
 === Version 3.1.16 / 2011-08-30
 * Bug fixes
