@@ -1,5 +1,5 @@
 = hidden_field_tag "#{resource_name}[#{field.name.to_s.singularize}_ids][]",""
-- field.values(self).each do |value|
+- field.view_values(self).each do |value|
   - editors = resource.send(:"#{field.name.to_s.singularize}_ids")
   .habtm-container
     = label_tag "#{resource_name}_#{field.name}_#{value.last}",value.first, :class => "habtm-label"
