@@ -3,5 +3,5 @@
   - editors = resource.send(:"#{field.name.to_s.singularize}_ids")
   .habtm-container
     = label_tag "#{resource_name}_#{field.name}_#{value.last}",value.first, :class => "habtm-label"
-    = check_box_tag "#{resource_name}[#{field.name.to_s.singularize}_ids][]", value.last, resource.send(field.name).include?(value.last), :id => "#{resource_name}_#{field.name}_#{value.last}", :class => "habtm-checkbox"
+    = check_box_tag "#{resource_name}[#{field.name.to_s.singularize}_ids][]", value.last, resource.send("#{field.name.to_s.singularize}_ids").include?(value.last), :id => "#{resource_name}_#{field.name}_#{value.last}", :class => "habtm-checkbox"
 .clear
