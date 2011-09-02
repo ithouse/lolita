@@ -47,6 +47,7 @@ module Lolita
                 options = self.send(resource_type[action] || :lolita_resource_path,options)
               end
             end
+            
             url_for_without_lolita(options)
           end
           alias_method_chain :url_for, :lolita
@@ -104,7 +105,10 @@ module Lolita
         mapping=(options[:mapping]||lolita_mapping)
         name=!options[:plural] ? mapping.name : mapping.plural
         name="#{mapping.path}_#{name}"
-        :"#{options[:action]}#{options[:action] ? "_" : ""}#{name}_path"
+        addon = if mapping.plural == mapping.singular && options[:plural]
+          "_index"
+        end
+        :"#{options[:action]}#{options[:action] ? "_" : ""}#{name}#{addon}_path"
       end
     end
   end

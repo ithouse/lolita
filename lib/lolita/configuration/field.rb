@@ -199,6 +199,9 @@ module Lolita
           assoc_name=@name.to_s.gsub(/_id$/,"") 
           @association||=@dbi.reflect_on_association(assoc_name.to_sym) ||
             @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
+          if @association && @association.options[:polymorphic]
+            @association = nil
+          end
         end
 
         def validate
