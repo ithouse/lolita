@@ -13,7 +13,8 @@ module Lolita
           elsif name.match(/_id$/)
             # FIXME move this to dbi association proxy
             key_method = dbi.adapter_name == :active_record ? :association_foreign_key : :key
-            !dbi.associations.values.detect{|assoc| assoc.send(key_method) == name}
+            assoc = dbi.associations.values.detect{|assoc| assoc.send(key_method) == name}
+            !assoc || assoc.options[:polymorphic]
           elsif dbi.klass.respond_to?(:uploaders)
             dbi.klass.uploaders.keys.include?(name.to_sym)
           end
