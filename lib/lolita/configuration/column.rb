@@ -15,6 +15,21 @@ module Lolita
         set_default_values
       end
 
+      def value(record)
+        if self.name.to_s.match(/_id$/) && record.respond_to?(self.name.to_s.gsub(/_id$/,"").to_sym)
+          remote_record = record.send(self.name.to_s.gsub(/_id$/,"").to_sym)
+          if remote_record.respond_to?(:title)
+            remote_record.send(:title)
+          elsif remote_record.respond_to?(:name)
+            remote_record.send(:name)
+          else
+            record.send(self.name)
+          end
+        else
+          record.send(self.name)
+        end
+      end
+
       def title(value=nil)
         @title=value if value
         @title||=@dbi.klass.human_attribute_name(@name.to_s)
