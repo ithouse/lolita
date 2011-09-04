@@ -14,16 +14,17 @@ Gem::Specification.new do |s|
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
     ".rspec",
+    ".rvmrc",
     "GUIDELINES.rdoc",
     "Gemfile",
     "History.rdoc",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "app/controllers/lolita/info_controller.rb",
@@ -113,6 +114,7 @@ Gem::Specification.new do |s|
     "lib/lolita.rb",
     "lib/lolita/adapter/abstract_adapter.rb",
     "lib/lolita/adapter/active_record.rb",
+    "lib/lolita/adapter/field_helper.rb",
     "lib/lolita/adapter/mongoid.rb",
     "lib/lolita/builder.rb",
     "lib/lolita/configuration/base.rb",
@@ -137,7 +139,6 @@ Gem::Specification.new do |s|
     "lib/lolita/configuration/field_set.rb",
     "lib/lolita/configuration/fields.rb",
     "lib/lolita/configuration/filter.rb",
-    "lib/lolita/configuration/helper.rb",
     "lib/lolita/configuration/list.rb",
     "lib/lolita/configuration/nested_form.rb",
     "lib/lolita/configuration/tab.rb",
@@ -170,74 +171,6 @@ Gem::Specification.new do |s|
     "lib/lolita/system_configuration/base.rb",
     "lib/lolita/test/matchers.rb",
     "lolita.gemspec",
-    "public/images/lolita/plus.png",
-    "public/javascripts/jquery-1.6.min.js",
-    "public/javascripts/jquery-ui-1.8.13.min.js",
-    "public/javascripts/lolita/application.js",
-    "public/javascripts/lolita/base64.js",
-    "public/javascripts/lolita/main.js",
-    "public/javascripts/lolita/tab.js",
-    "public/javascripts/modernizr-1.7.min.js",
-    "public/javascripts/rails.js",
-    "public/javascripts/tinymce/jquery.tinymce.js",
-    "public/javascripts/tinymce/langs/en.js",
-    "public/javascripts/tinymce/license.txt",
-    "public/javascripts/tinymce/themes/advanced/about.htm",
-    "public/javascripts/tinymce/themes/advanced/anchor.htm",
-    "public/javascripts/tinymce/themes/advanced/charmap.htm",
-    "public/javascripts/tinymce/themes/advanced/color_picker.htm",
-    "public/javascripts/tinymce/themes/advanced/editor_template.js",
-    "public/javascripts/tinymce/themes/advanced/editor_template_src.js",
-    "public/javascripts/tinymce/themes/advanced/image.htm",
-    "public/javascripts/tinymce/themes/advanced/img/colorpicker.jpg",
-    "public/javascripts/tinymce/themes/advanced/img/flash.gif",
-    "public/javascripts/tinymce/themes/advanced/img/icons.gif",
-    "public/javascripts/tinymce/themes/advanced/img/iframe.gif",
-    "public/javascripts/tinymce/themes/advanced/img/pagebreak.gif",
-    "public/javascripts/tinymce/themes/advanced/img/quicktime.gif",
-    "public/javascripts/tinymce/themes/advanced/img/realmedia.gif",
-    "public/javascripts/tinymce/themes/advanced/img/shockwave.gif",
-    "public/javascripts/tinymce/themes/advanced/img/trans.gif",
-    "public/javascripts/tinymce/themes/advanced/img/video.gif",
-    "public/javascripts/tinymce/themes/advanced/img/windowsmedia.gif",
-    "public/javascripts/tinymce/themes/advanced/js/about.js",
-    "public/javascripts/tinymce/themes/advanced/js/anchor.js",
-    "public/javascripts/tinymce/themes/advanced/js/charmap.js",
-    "public/javascripts/tinymce/themes/advanced/js/color_picker.js",
-    "public/javascripts/tinymce/themes/advanced/js/image.js",
-    "public/javascripts/tinymce/themes/advanced/js/link.js",
-    "public/javascripts/tinymce/themes/advanced/js/source_editor.js",
-    "public/javascripts/tinymce/themes/advanced/langs/en.js",
-    "public/javascripts/tinymce/themes/advanced/langs/en_dlg.js",
-    "public/javascripts/tinymce/themes/advanced/link.htm",
-    "public/javascripts/tinymce/themes/advanced/shortcuts.htm",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/content.css",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/dialog.css",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/butt2.png",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/button-bg.png",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/buttons.png",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/down_arrow.gif",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/fade-butt.png",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/icons.png",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/items.gif",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/menu-arrow.png",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/menu-check.png",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/progress.gif",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/tabs.gif",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/img/toolbarbg.png",
-    "public/javascripts/tinymce/themes/advanced/skins/cirkuit/ui.css",
-    "public/javascripts/tinymce/themes/advanced/source_editor.htm",
-    "public/javascripts/tinymce/tiny_mce.js",
-    "public/javascripts/tinymce/tiny_mce_popup.js",
-    "public/javascripts/tinymce/utils/editable_selects.js",
-    "public/javascripts/tinymce/utils/form_utils.js",
-    "public/javascripts/tinymce/utils/mctabs.js",
-    "public/javascripts/tinymce/utils/validate.js",
-    "public/javascripts/tinymce_config.js",
-    "public/stylesheets/lolita/PIE-custom.htc",
-    "public/stylesheets/lolita/PIE.htc",
-    "public/stylesheets/lolita/default.css",
-    "public/stylesheets/lolita/style.css",
     "spec/adapter_helper.rb",
     "spec/builder_spec.rb",
     "spec/configuration/base_spec.rb",
@@ -410,11 +343,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rails>, ["~> 3.0.10"])
+      s.add_runtime_dependency(%q<rails>, ["~> 3.1.0"])
       s.add_runtime_dependency(%q<kaminari>, ["~> 0.12.4"])
       s.add_runtime_dependency(%q<abstract>, [">= 0"])
-      s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
+      s.add_runtime_dependency(%q<builder>, ["~> 3.0"])
       s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
+      s.add_runtime_dependency(%q<jquery-rails>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<metric_fu>, ["= 2.0.1"])
       s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
@@ -427,11 +361,12 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<database_cleaner>, [">= 0"])
       s.add_development_dependency(%q<akephalos>, [">= 0"])
     else
-      s.add_dependency(%q<rails>, ["~> 3.0.10"])
+      s.add_dependency(%q<rails>, ["~> 3.1.0"])
       s.add_dependency(%q<kaminari>, ["~> 0.12.4"])
       s.add_dependency(%q<abstract>, [">= 0"])
-      s.add_dependency(%q<builder>, ["~> 2.1.2"])
+      s.add_dependency(%q<builder>, ["~> 3.0"])
       s.add_dependency(%q<haml>, ["~> 3.1.2"])
+      s.add_dependency(%q<jquery-rails>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<metric_fu>, ["= 2.0.1"])
       s.add_dependency(%q<rspec>, ["~> 2.6.0"])
@@ -445,11 +380,12 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<akephalos>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rails>, ["~> 3.0.10"])
+    s.add_dependency(%q<rails>, ["~> 3.1.0"])
     s.add_dependency(%q<kaminari>, ["~> 0.12.4"])
     s.add_dependency(%q<abstract>, [">= 0"])
-    s.add_dependency(%q<builder>, ["~> 2.1.2"])
+    s.add_dependency(%q<builder>, ["~> 3.0"])
     s.add_dependency(%q<haml>, ["~> 3.1.2"])
+    s.add_dependency(%q<jquery-rails>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<metric_fu>, ["= 2.0.1"])
     s.add_dependency(%q<rspec>, ["~> 2.6.0"])

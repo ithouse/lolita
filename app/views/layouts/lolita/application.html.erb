@@ -15,16 +15,16 @@
     <%= stylesheet_link_tag "lolita/default","lolita/style" %>
     <%= yield :style %>
     
-     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
      <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
     <script>
       if(!window.jQuery){
-        document.write('<script src="/javascripts/jquery-1.6.min.js">\x3C/script>');
+        document.write('<script src="/javascripts/jquery-1.6.2.min.js">\x3C/script>');
         document.write('<script src="/javascripts/jquery-ui-1.8.13.min.js">\x3C/script>');
       }
     </script>
     <%= javascript_include_tag "modernizr-1.7.min" %>
-    <%= javascript_include_tag "rails","lolita/tab","lolita/main","lolita/application", "lolita/base64" %>
+    <%= javascript_include_tag "lolita/tab","lolita/main","lolita/application", "lolita/base64" %>
     <%= yield :script %>
     <%= raw csrf_meta_tag %>
   </head>

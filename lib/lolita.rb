@@ -17,6 +17,7 @@ puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""
 
 require 'abstract'
 require "base64"
+require 'kaminari'
 unless defined?(ActiveSupport)
   require 'active_support/core_ext/numeric/time'
   require 'active_support/core_ext/date_time/conversions'

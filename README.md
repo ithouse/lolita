@@ -36,7 +36,7 @@ This will make routes like
   `/lolita/posts`
   `/lolita/posts/1/edit`
   `/lolita/posts/new`
-Or open */lolita* and it will redirect to first available resource list view.
+or open `/lolita` and it will redirect to first available resource list view.
 
 For more detailed usage read [Usage](https://github.com/ithouse/lolita/wiki/Usage) at wiki.
 

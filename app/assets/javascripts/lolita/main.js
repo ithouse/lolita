@@ -1,3 +1,4 @@
+//= require jquery_ujs
 $(function(){
   $.ajaxSetup({
     headers:{
