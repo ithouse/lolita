@@ -84,7 +84,7 @@ module Lolita
         # See Lolita::Adapter classes for use of DB field method.
         def default_fields
           self.current_dbi.fields.each{|db_field|
-            self.field(:name => db_field.name, :type => db_field.type, :dbi_field => db_field) unless Lolita::Configuration::Helper.tehnical_field?(db_field,self.current_dbi)
+            self.field(:name => db_field.name, :type => db_field.type, :dbi_field => db_field) if db_field.content?
           }
         end
 
@@ -172,6 +172,10 @@ module Lolita
         end
 
         private
+
+        def my_type
+          self.class.to_s.split("::").last.downcase.to_sym
+        end
 
         def set_default_attributes
           @name="tab_#{self.__id__}" unless @name

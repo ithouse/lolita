@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lolita}
-  s.version = "3.1.17"
+  s.version = "3.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{ITHouse (Latvia) and Arturs Meisters}]
-  s.date = %q{2011-09-01}
+  s.date = %q{2011-09-04}
   s.description = %q{Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. }
   s.email = %q{support@ithouse.lv}
   s.extra_rdoc_files = [
@@ -118,16 +118,21 @@ Gem::Specification.new do |s|
     "lib/lolita/configuration/base.rb",
     "lib/lolita/configuration/column.rb",
     "lib/lolita/configuration/columns.rb",
-    "lib/lolita/configuration/factory.rb",
+    "lib/lolita/configuration/factory/field.rb",
+    "lib/lolita/configuration/factory/tab.rb",
     "lib/lolita/configuration/field.rb",
     "lib/lolita/configuration/field/array.rb",
     "lib/lolita/configuration/field/big_decimal.rb",
     "lib/lolita/configuration/field/boolean.rb",
     "lib/lolita/configuration/field/date.rb",
     "lib/lolita/configuration/field/date_time.rb",
+    "lib/lolita/configuration/field/float.rb",
+    "lib/lolita/configuration/field/hash.rb",
     "lib/lolita/configuration/field/hidden.rb",
     "lib/lolita/configuration/field/integer.rb",
+    "lib/lolita/configuration/field/range.rb",
     "lib/lolita/configuration/field/string.rb",
+    "lib/lolita/configuration/field/symbol.rb",
     "lib/lolita/configuration/field/time.rb",
     "lib/lolita/configuration/field_set.rb",
     "lib/lolita/configuration/fields.rb",
@@ -135,7 +140,6 @@ Gem::Specification.new do |s|
     "lib/lolita/configuration/helper.rb",
     "lib/lolita/configuration/list.rb",
     "lib/lolita/configuration/nested_form.rb",
-    "lib/lolita/configuration/page.rb",
     "lib/lolita/configuration/tab.rb",
     "lib/lolita/configuration/tab/content.rb",
     "lib/lolita/configuration/tab/default.rb",
@@ -243,7 +247,6 @@ Gem::Specification.new do |s|
     "spec/configuration/field_spec.rb",
     "spec/configuration/filter_spec.rb",
     "spec/configuration/list_spec.rb",
-    "spec/configuration/page_spec.rb",
     "spec/configuration/tab_spec.rb",
     "spec/configuration/tabs_spec.rb",
     "spec/controllers/component_helpers_spec.rb",
@@ -360,7 +363,6 @@ Gem::Specification.new do |s|
     "spec/configuration/field_spec.rb",
     "spec/configuration/filter_spec.rb",
     "spec/configuration/list_spec.rb",
-    "spec/configuration/page_spec.rb",
     "spec/configuration/tab_spec.rb",
     "spec/configuration/tabs_spec.rb",
     "spec/controllers/component_helpers_spec.rb",
@@ -414,6 +416,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
+      s.add_development_dependency(%q<metric_fu>, ["= 2.0.1"])
       s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.0"])
       s.add_development_dependency(%q<factory_girl>, [">= 0"])
@@ -430,6 +433,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_dependency(%q<haml>, ["~> 3.1.2"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
+      s.add_dependency(%q<metric_fu>, ["= 2.0.1"])
       s.add_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_dependency(%q<rspec-rails>, ["~> 2.6.0"])
       s.add_dependency(%q<factory_girl>, [">= 0"])
@@ -447,6 +451,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<builder>, ["~> 2.1.2"])
     s.add_dependency(%q<haml>, ["~> 3.1.2"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
+    s.add_dependency(%q<metric_fu>, ["= 2.0.1"])
     s.add_dependency(%q<rspec>, ["~> 2.6.0"])
     s.add_dependency(%q<rspec-rails>, ["~> 2.6.0"])
     s.add_dependency(%q<factory_girl>, [">= 0"])

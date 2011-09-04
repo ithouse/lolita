@@ -49,6 +49,7 @@ module Lolita
   end
 
   module Adapter
+    autoload :FieldHelper, 'lolita/adapter/field_helper'
     autoload :AbstractAdapter, 'lolita/adapter/abstract_adapter'
     autoload :ActiveRecord, 'lolita/adapter/active_record'
     autoload :Mongoid, 'lolita/adapter/mongoid'
@@ -62,9 +63,8 @@ module Lolita
     autoload :NamedHook, "lolita/hooks/named_hook"
   end
  
-
+  # Keep all configuration classes and modules, that is used to configure classes with lolita.
   module Configuration
-    autoload :Helper, 'lolita/configuration/helper'
     autoload :Base, 'lolita/configuration/base'
     autoload :Column, 'lolita/configuration/column'
     autoload :Columns, 'lolita/configuration/columns'
@@ -75,12 +75,13 @@ module Lolita
     autoload :Filter, 'lolita/configuration/filter'
     autoload :NestedForm, 'lolita/configuration/nested_form'
 
+    # Module contains classes that is used to create specific type class based on given arguments.
     module Factory
       autoload :Field, "lolita/configuration/factory/field"
       autoload :Tab, "lolita/configuration/factory/tab"
     end
 
-    
+    # Contains all supported field types. Class name is Lolita::Configuration::Field::[FieldType]
     module Field
       autoload :Base,'lolita/configuration/field'
       Dir["#{File.dirname(__FILE__)}/lolita/configuration/field/**/*.*"].each do |path|

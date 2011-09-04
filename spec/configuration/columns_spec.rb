@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Lolita::Configuration::Columns do
 
   before(:each) do
-    @dbi=Lolita::DBI::Base.new(Post)
+    @dbi=Lolita::DBI::Base.create(Post)
     @list=Lolita::Configuration::List.new(@dbi)
   end
 

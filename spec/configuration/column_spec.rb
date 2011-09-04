@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Lolita::Configuration::Column do
-  let(:dbi){Lolita::DBI::Base.new(Post)}
+  let(:dbi){Lolita::DBI::Base.create(Post)}
   let(:column){Lolita::Configuration::Column.new(dbi,:col1)}
   
   
@@ -31,7 +31,7 @@ describe Lolita::Configuration::Column do
 
   it "should create new column when String or Symbol is given" do
     column=Lolita::Configuration::Column.new(dbi,:col1)
-    column.name.should == "col1"
+    column.name.should == :col1
     column=Lolita::Configuration::Column.new(dbi,"col2")
     column.name.should == "col2"
   end

@@ -15,7 +15,7 @@ module Lolita
         @dbi=dbi
         @tabs=[]
         @excluded=[]
-        @tab_type = [:content]
+        @tab_types = [:content]
         self.set_attributes(*args)
         self.instance_eval(&block) if block_given?
       end
@@ -67,15 +67,17 @@ module Lolita
           @tab_types
         end
         tab_types.each{|type|
-          self<<Lolita::Configuration::Tab.add(@dbi,type.to_sym)
+          self<<Lolita::Configuration::Factory::Tab.add(@dbi,type.to_sym)
         }
       end
 
       def exclude *args
         @excluded=if args && args.include?(:all)
           tab_types
-        else
+        elsif args.is_a?(Array)
           args
+        else
+          []
         end
       end
 
@@ -118,7 +120,7 @@ module Lolita
 
       def build_element(element,&block)
         current_tab=if element.is_a?(Hash) || element.is_a?(Symbol)
-          Lolita::Configuration::Tab.add(@dbi,element,&block)
+          Lolita::Configuration::Factory::Tab.add(@dbi,element,&block)
         else
           element
         end

@@ -64,7 +64,9 @@ module Lolita
 
       # Each field from ORM is changed to this class instance.
       class Field
-        attr_reader :field, :name,:options, :type
+        include Lolita::Adapter::FieldHelper
+
+        attr_reader :field, :name,:options, :type, :adapter
         def initialize(column,adapter)
           @field = column
           raise ArgumentError, "Cannot initialize adapter field for nil" unless @field
@@ -73,9 +75,13 @@ module Lolita
         end
 
         def association
-          @association ||= @adapter.associations.detect{|name,association|
-            association.key.to_s == @name.to_s
-          }
+          unless @association
+            possible_association = @adapter.associations.detect{|name,association|
+              [association.key.to_s].include?(@name.to_s)
+            }
+            @association = possible_association.last if possible_association
+          end
+          @association
         end
 
         def method_missing(method,*args,&block)
@@ -88,11 +94,21 @@ module Lolita
 
         private
 
+        def type_cast(type)
+          if type.to_s=="Object" || type.to_s.split("::").last == "Object"
+            "string" 
+          elsif type.to_s.match(/::/) 
+            type.to_s.split("::").last
+          else
+            type.to_s.underscore
+          end
+        end
+
         def set_attributes
           @name = @field.name
-          @type = @field.type.to_s.underscore
+          @type = type_cast(@field.type)
           @options = @field.options.merge({
-            :primary => @field.name.to_s == "_id",
+            :primary => @field.type.to_s == "BSON::ObjectId",
             :native_type => @field.type.to_s
           })
         end
@@ -110,6 +126,15 @@ module Lolita
         self.fields.detect{|field|
           field.name.to_s == name.to_s
         }
+      end
+
+      def field_by_association(name)
+        possible_association = self.associations.detect{|assoc_name,association|
+          name.to_s == assoc_name.to_s
+        }
+        if possible_association
+          self.field_by_name(possible_association.last.key)
+        end
       end
 
       def find_by_id(id)
@@ -137,6 +162,7 @@ module Lolita
           else
             scope = pagination_scope_from_klass(options[:pagination_method],page,per,options)
           end
+          raise ArgumentError, "Didn't generate any scope from #{options} page:{page} per:#{per}" unless scope
           scope
         else
           klass.unscoped.page(page).per(per)

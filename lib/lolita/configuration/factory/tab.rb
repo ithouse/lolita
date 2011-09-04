@@ -5,7 +5,7 @@ module Lolita
 
         def self.add(dbi,*args, &block)
           type = args && args[0].is_a?(Symbol) ? args[0] : :default
-          field_class(type).new(dbi,type,*args,&block)
+          field_class(type).new(dbi,*args,&block)
         end
 
         def self.field_class(name)

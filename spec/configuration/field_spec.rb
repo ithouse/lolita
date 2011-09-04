@@ -2,52 +2,29 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Lolita::Configuration::Field do
   before(:each) do
-    @dbi=Lolita::DBI::Base.new(Post)
-    @dbi2=Lolita::DBI::Base.new(Comment)
+    @dbi=Lolita::DBI::Base.create(Post)
+    @dbi2=Lolita::DBI::Base.create(Comment)
   end
 
   let(:field_class){Lolita::Configuration::Field::Base}
 
   it "should create new field" do
-    Lolita::Configuration::Field::Base.new(@dbi,:title)
+    Lolita::Configuration::Field::Base.new(@dbi,:title,:string)
   end
 
   it "should create field when block given" do
-    field=field_class.new(@dbi) do
-      name :title
+    field=field_class.new(@dbi,:title,:string) do
+  
     end
     field.name.should == :title
   end
 
-  it "should create field from Hash arguments" do
-    field=field_class.new(@dbi,:name=>:title)
-    field.name.should == :title
-  end
-  
   it "should raise error when no name specified" do
     lambda{
-     field_class.new(@dbi)
+     field_class.new(@dbi,nil,nil)
     }.should raise_error Lolita::FieldNameError
   end
 
-  it "should allow set field value" do
-    field=field_class.new(@dbi) do
-      name :custom_field
-      value "Field value"
-    end
-    field.value.should == "Field value"
-  end
-
-  it "should allow set field value as block" do
-    field=field_class.new(@dbi) do
-      value do |field|
-        field.name.to_s.upcase
-      end
-      name :custom_field
-    end
-    field.value.should == "CUSTOM_FIELD"
-  end
-  
   it "should raise error when class don't respond to field method when not value specified" do
 #    Lolita::Configuration::Field.new(@dbi,:title,:value=>"Field value")
 #    lambda{
@@ -76,25 +53,19 @@ describe Lolita::Configuration::Field do
     field.nested_in?(@dbi.klass).should be_true
   end
 
-  it "should return field value" do
-    post=Post.create!(:title=>"First post")
-    field=field_class.new(@dbi,:title,:record=>post)
-    field.value.should==post.title
-  end
-
   it "should detect type and create field with specified type" do
     require "rails_app/lib/lolita/configuration/field/my_custom_collection"
-    field=Lolita::Configuration::Field.add(@dbi,:comments, :my_custom_collection)
+    field=Lolita::Configuration::Factory::Field.add(@dbi,:comments, :my_custom_collection)
     field.type.should == "my_custom_collection"
   end
 
   it "should fallback to string type if given type is not supported" do
-    field=Lolita::Configuration::Field.add(@dbi,:is_public)
+    field=Lolita::Configuration::Factory::Field.add(@dbi,:is_public)
     field.type.should == "boolean"
   end
 
   it "should change field type for association columns if custom type is given" do
-
+    pending
   end
 
   it "should set field title when not specified" do
@@ -103,15 +74,15 @@ describe Lolita::Configuration::Field do
   end
 
   it "should allow set field that is referenced in (belongs_to) any class" do
-    field=Lolita::Configuration::Field.add(@dbi2,:post)
+    field=Lolita::Configuration::Factory::Field.add(@dbi2,:post,:array)
     field.type.should == "array"
-    field.association_type.should == :one
+    field.association.macro.should == :one
   end
 
   it "should allow set field that references to (has_many or has_one) any class" do
-    field=Lolita::Configuration::Field.add(@dbi,:comments)
+    field=Lolita::Configuration::Factory::Field.add(@dbi,:comments,:array)
     field.type.should == "array"
-    field.association_type.should == :many
+    field.association.macro.should == :many
   end
 
 end

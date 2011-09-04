@@ -28,15 +28,18 @@ module Lolita
       class Base
         include Lolita::Builder
 
-        @@default_type="string"
-        lolita_accessor :name,:title,:field_set, :nested_form,:nested_for,:options, :html_options,:association
+        @@default_type = :string
+        lolita_accessor :name,:title,:field_set, :nested_form,:nested_for,:options, :html_options
         attr_reader :dbi,:nested_in
         attr_accessor :dbi_field
         
-        def initialize dbi,name,type,options, &block
+        def initialize dbi,name,*args, &block
           @dbi=dbi
           self.name = name
-          self.type = type
+          options = args ? args.extract_options! : {}
+          type = args[0]
+
+          self.type = type || @@default_type
 
           self.set_attributes(options)
           if block_given?
@@ -69,7 +72,9 @@ module Lolita
           unless self.dbi.associations_class_names.include?(dbi.klass.to_s)
             raise Lolita::ReferenceError, "There is no association between #{self.dbi.klass} and #{dbi.klass}"
           end
-          raise ArgumentError, "Field can be nested only in Lolita::DBI::Base object." unless dbi.is_a?(Lolita::DBI::Base)
+          if !dbi.is_a?(Lolita::DBI::Base) && !dbi.class.to_s.match(/Lolita::Adapter/)
+            raise ArgumentError, "Field can be nested only in Lolita::DBI::Base object." 
+          end
           @nested_in=dbi
         end
         
@@ -78,7 +83,7 @@ module Lolita
         end
 
         def nested_in?(dbi_or_class)
-          if dbi_or_class.is_a?(Lolita::DBI::Base)
+          if dbi_or_class.respond_to?(:klass)
             self.nested_in && self.nested_in.klass==dbi_or_class.klass
           else
             self.nested_in && self.nested_in.klass==dbi_or_class
@@ -91,6 +96,12 @@ module Lolita
             unless excluded_keys.include?(attr.to_sym)
               self.send(:"#{attr}=",value)
             end
+          }
+        end
+
+        def find_dbi_field
+          @dbi_field ||= self.dbi.detect{|field|
+            field.name.to_s == self.name.to_s || (field.association && field.association.name.to_s == self.name.to_s)
           }
         end
 

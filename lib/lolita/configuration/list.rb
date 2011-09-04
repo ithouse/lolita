@@ -4,10 +4,10 @@ module Lolita
       include Lolita::Builder
        
       attr_reader :dbi,:initialized_attributes
-      lolita_accessor :per
+      lolita_accessor :per, :pagination_method
       
       def initialize(*args,&block)
-        if args && args[0].is_a?(Lolita::DBI::Base)
+        if args && args[0].class.to_s.match(/Lolita::Adapter/) || args[0].is_a?(Lolita::DBI::Base)
           @dbi=args.shift
         end
         @columns=Lolita::Configuration::Columns.new(self)
@@ -30,7 +30,7 @@ module Lolita
       end
 
       def paginate(current_page, request)
-        dbi.paginate(current_page,@per,:request => request)
+        dbi.paginate(current_page,@per,:request => request, :pagination_method => @pagination_method)
       end
 
       # Set columns. Allowed classes are Lolita::Configuration::Columns or

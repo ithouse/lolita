@@ -3,7 +3,7 @@ module Lolita
     module Tab
     	class Content < Lolita::Configuration::Tab::Base
 
-    	  def initialize(dbi,type,*args,&block)
+    	  def initialize(*args,&block)
     	  	super
     	  	set_default_fields
     	  end

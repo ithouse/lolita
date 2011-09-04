@@ -16,6 +16,7 @@ end
 #gem 'cover_me', '>= 1.0.0.rc6', :group => :test
 gem "jeweler", "~> 1.5.2", :group=>:development
 group :test,:development do
+	gem "metric_fu", "2.0.1"
 	gem "rspec", "~>2.6.0"
 	gem "rspec-rails","~>2.6.0"
 	gem "factory_girl"

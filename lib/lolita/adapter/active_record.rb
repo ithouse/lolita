@@ -65,7 +65,9 @@ module Lolita
 
       # Each field from ORM is changed to this class instance.
       class Field
-        attr_reader :field, :name,:options, :type
+        include Lolita::Adapter::FieldHelper
+
+        attr_reader :field, :name,:options, :type, :adapter
         def initialize(column,adapter)
           @field = column
           raise ArgumentError, "Cannot initialize adapter field for nil" unless @field
@@ -126,6 +128,15 @@ module Lolita
         self.fields.detect{|field|
           field.name.to_s == name.to_s
         }
+      end
+
+      def field_by_association(name)
+        possible_association = self.associations.detect{|assoc_name,association|
+          name.to_s == assoc_name.to_s
+        }
+        if possible_association
+          self.field_by_name(possible_association.last.key)
+        end
       end
 
       def find_by_id(id)

@@ -21,27 +21,38 @@
 #end
 
 require 'rubygems'
+require 'benchmark'
 #require 'ruby-debug'
-LOLITA_ORM=:mongoid
-require "orm/#{LOLITA_ORM}"
-require "rails"
-require "rails_app/config/environment"
-require 'rspec/rails'
-require 'ffaker'
-require 'factory_girl'
+Benchmark.bm do |x|
+  x.report("Loading ORM: ") do
+    LOLITA_ORM=:mongoid
+    require "orm/#{LOLITA_ORM}"
+  end
+  x.report("Loading rails: ") do
+    require "rails"
+    require "rails_app/config/environment"
+  end
+  x.report("Loading test stuff: ") do
+    require 'rspec/rails'
+    require 'ffaker'
+    require 'factory_girl'
+  end
+  x.report("Loading factories") do
+    Dir["#{File.dirname(__FILE__)}/support/factories/**/*.rb"].each {|f| require f}
+  end
+  RSpec.configure do |config|
+  # config.mock_with :mocha
+  # config.mock_with :flexmock
+  # config.mock_with :rr
+    config.mock_with :rspec
 
-Dir["#{File.dirname(__FILE__)}/support/factories/**/*.rb"].each {|f| require f}
-RSpec.configure do |config|
-# config.mock_with :mocha
-# config.mock_with :flexmock
-# config.mock_with :rr
-config.mock_with :rspec
+    if LOLITA_ORM==:active_record
+      #config.fixture_path = "#{::Rails.root}/spec/fixtures"
+      config.use_transactional_fixtures = true
+    end
+  end
+end
 
-if LOLITA_ORM==:active_record
-  #config.fixture_path = "#{::Rails.root}/spec/fixtures"
-  config.use_transactional_fixtures = true
-end
-end
 #CoverMe.complete!
 #require 'simplecov'
 #SimpleCov.start 'rails'
