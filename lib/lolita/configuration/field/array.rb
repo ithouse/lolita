@@ -5,8 +5,7 @@ module Lolita
       class Array < Lolita::Configuration::Field::Base
         lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type,:include_blank
 
-        def initialize *args,&block
-          @type="array"
+        def initialize dbi,name,type,options, &block
           self.builder="select"
           @include_blank=true
           super
@@ -68,7 +67,7 @@ module Lolita
       end
 
       def default_text_method(klass)
-        assoc_dbi=Lolita::DBI::Base.new(klass)
+        assoc_dbi=Lolita::DBI::Base.create(klass)
         field=assoc_dbi.fields.detect{|f| f[:type].downcase=="string"}
         if field
           field[:name]

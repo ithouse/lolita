@@ -2,8 +2,8 @@ module Lolita
   module Configuration
     module Field
       class Hidden < Lolita::Configuration::Field::Base
-        def initialize *args
-          @type="hidden"
+        def initialize dbi,name,type,options, &block
+          
           super
         end
       end

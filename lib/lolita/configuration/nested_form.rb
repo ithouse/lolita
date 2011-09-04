@@ -54,7 +54,7 @@ module Lolita
       # Create field, that is not real field, but represents nested attributes as one.
       # It is used to create label.
       def as_field
-        Lolita::Configuration::Field.add(dbi,self.name, :string)
+        Lolita::Configuration::Factory::Field.add(dbi,self.name, :string)
       end
 
       # Parent (a.k.a tab) dbi
@@ -86,7 +86,7 @@ module Lolita
 
       # Parent (tab) dbi klass reflection with #name and macros of that.
       def macro
-        dbi.association_macro(dbi.reflect_on_association(name))
+        dbi.reflect_on_association(name).macro
       end
 
       private

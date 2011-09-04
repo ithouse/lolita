@@ -1,5 +1,1 @@
-<% if field.options[:native_type] == "text" %>
- <%= render_component :"lolita/configuration/field/string/text", :display, :field=>field %>
-<% else %>
-  <%= tab_form.text_field field.name, field.html_options %>
-<% end %>
+<%= tab_form.text_field field.name, field.html_options %>

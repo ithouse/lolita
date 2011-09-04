@@ -88,6 +88,10 @@ module Lolita
                 self.send("#{m}=".to_sym,value)
               }
             end
+          elsif args[0].is_a?(Lolita::Adapter::ActiveRecord::Field)
+            [:name,:type].each do |attr|
+              self.send(:"#{attr}=",args[0].send(attr))
+            end
           else
             raise ArgumentError.new("Lolita::Configuration::Column arguments must be Hash or Symbol or String instead of #{args[0].class}")
           end

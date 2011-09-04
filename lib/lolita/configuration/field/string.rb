@@ -3,10 +3,13 @@ module Lolita
     module Field
       class String < Lolita::Configuration::Field::Base
         lolita_accessor :simple, :rows
-        def initialize *args, &block
-          @type="string"
+        def initialize dbi,name,type,options, &block
           super
+          if self.dbi_field && self.dbi_field.options[:native_type] == "text"
+            self.builder = :text unless @builder
+          end
         end
+
       end
     end
   end

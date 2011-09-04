@@ -65,31 +65,31 @@ module Lolita
 
   module Configuration
     autoload :Helper, 'lolita/configuration/helper'
-    autoload :Factory, 'lolita/configuration/factory'
     autoload :Base, 'lolita/configuration/base'
     autoload :Column, 'lolita/configuration/column'
     autoload :Columns, 'lolita/configuration/columns'
     autoload :Fields, 'lolita/configuration/fields'
     autoload :FieldSet, 'lolita/configuration/field_set'
     autoload :List, 'lolita/configuration/list'
-    autoload :Page, 'lolita/configuration/page'
     autoload :Tabs, 'lolita/configuration/tabs'
     autoload :Filter, 'lolita/configuration/filter'
     autoload :NestedForm, 'lolita/configuration/nested_form'
 
+    module Factory
+      autoload :Field, "lolita/configuration/factory/field"
+      autoload :Tab, "lolita/configuration/factory/tab"
+    end
+
+    
     module Field
-      extend Lolita::Configuration::Factory
-      autoload :Base, 'lolita/configuration/field'
-       ["field"].each do |type|
-        Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
-          base_name=File.basename(path,".rb")
-          autoload :"#{base_name.camelize}", "lolita/configuration/#{type}/#{base_name}"
-        end
+      autoload :Base,'lolita/configuration/field'
+      Dir["#{File.dirname(__FILE__)}/lolita/configuration/field/**/*.*"].each do |path|
+        base_name=File.basename(path,".rb")
+        autoload :"#{base_name.camelize}", "lolita/configuration/field/#{base_name}"
       end
     end
-    
+
     module Tab
-      extend Lolita::Configuration::Factory
       autoload :Base, 'lolita/configuration/tab'
       ["tab"].each do |type|
         Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|

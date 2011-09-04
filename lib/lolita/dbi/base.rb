@@ -1,15 +1,21 @@
 module Lolita
   module DBI
-    # Lolita::DBI::Base is DataBase Interface class, that handle the request to ORM classes.
+    # Lolita::DBI::Base is ORM Interface class, that handle the request to ORM classes.
     # Depending on given class DBI::Base detect which ORM class is used and include right adapter
     # for that class. Other Lolita classes that need to manipulate with data need to have dbi object
     # or it can be created in that class.
     # Lolita::DBI::Base support Mongoid and ActiveRecord::Base, or details see Lolita::Adapter.
     class Base
 
+      def self.create(class_object)
+        dbi = self.new(class_object)
+        return dbi.adapter
+      end
+
       attr_reader :adapter_name #return connected adapter name
       attr_reader :klass # return related orm class object
       attr_reader :adapter # connected Adaptee for adapter
+      
       # Expect ORM class that is supported by Lolita. See Adapter for available adapters.
       def initialize(class_object) 
         @klass=class_object

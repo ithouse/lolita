@@ -7,7 +7,7 @@ lv:
       edit: Labot
       delete: Dzēst
       and: un
-      powered: Darbojas ar Lolita (2010-%{year})
+      powered: Tiek darbināta ar Lolita (2010-%{year})
     nested_form:
       add: "Pievienot %{resource_name}"
     tabs:
@@ -25,8 +25,8 @@ lv:
       include_blank_by_title: " -- Filtrēt pēc %{title} -- "
   views:
     pagination:
-      previous: "&laquo; Atpakaļ"
-      next: "Uz priekšu &raquo;"
-      last: "Beigas"
-      first: "Sākums"
+      previous: "&laquo; Iepriekšējā"
+      next: "Nākošā &raquo;"
+      last: "Pēdējā"
+      first: "Pirmā"
       truncate: "..."

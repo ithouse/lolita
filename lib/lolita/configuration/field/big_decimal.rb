@@ -2,8 +2,8 @@ module Lolita
   module Configuration
     module Field
       class BigDecimal < Lolita::Configuration::Field::Base
-        def initialize *args, &block
-          @type="big_decimal"
+        def initialize dbi,name,type,options, &block
+          
           super
         end
       end

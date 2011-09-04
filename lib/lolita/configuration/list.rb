@@ -4,6 +4,7 @@ module Lolita
       include Lolita::Builder
        
       attr_reader :dbi,:initialized_attributes
+      lolita_accessor :per
       
       def initialize(*args,&block)
         if args && args[0].is_a?(Lolita::DBI::Base)
@@ -14,17 +15,24 @@ module Lolita
         set_attributes(*args)
         self.instance_eval(&block) if block_given?
         self.generate!()
+        set_default_attributes
       end
 
-      # Look for methods in Page class. Load @page on demand and call method on it.
-      def method_missing(method_name,*args,&block)
-        if Lolita::Configuration::Page.public_instance_methods.include?(method_name.to_sym)
-          @page||=Lolita::Configuration::Page.new(@dbi,self)
-          @page.send(method_name.to_sym,*args,&block)
-        else
-          super
+      def pagination_method(value = nil)
+        if value
+          self.pagination_method = value
         end
+        @pagination_method
       end
+
+      def pagination_method=(value)
+        @pagination_method = value
+      end
+
+      def paginate(current_page, request)
+        dbi.paginate(current_page,@per,:request => request)
+      end
+
       # Set columns. Allowed classes are Lolita::Configuration::Columns or
       # Array.
       def columns=(value)
@@ -73,6 +81,10 @@ module Lolita
         else
           @columns.add(Lolita::Configuration::Column.new(@dbi,*args))
         end
+      end
+
+      def set_default_attributes
+        @per ||= 10
       end
 
       private

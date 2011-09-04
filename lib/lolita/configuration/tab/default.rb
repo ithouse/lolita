@@ -4,7 +4,6 @@ module Lolita
       class Default < Lolita::Configuration::Tab::Base
 
         def initialize *args,&block
-          self.type=:default
           super
         end
 

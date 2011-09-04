@@ -3,8 +3,8 @@ module Lolita
     module Field
       class Time < Lolita::Configuration::Field::Base
         attr_accessor :format
-        def initialize *args
-          @type="time"
+        def initialize dbi,name,type,options, &block
+         
           super
         end
       end
