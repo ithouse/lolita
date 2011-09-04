@@ -1,10 +1,10 @@
-=Lolita
+#Lolita
 
 Great Rails CMS, that turns your business logic into good-looking, fully functional workspace.
-==Demo
+##Demo
 See the demo page at Demo[http://lolita-demo.ithouse.lv]
 
-==Installation
+##Installation
 
 First install Lolita gem
   sudo gem install lolita
@@ -13,12 +13,12 @@ Then go to your rails project and
  rails g lolita:install
 
 That will create initializer and copy all assets.
-Also it will call <em>install</em> on all added modules to lolita. 
+Also it will call *install* on all added modules to lolita. 
 So if you in Gemfile have following
   gem "lolita"
   gem "lolita-file-upload"
-It will also call <i>lolita_file_upload:install</i>.
-==Usage
+It will also call *lolita_file_upload:install*.
+##Usage
  
 To make your model use Lolita do like this
   class Post < ActiveRecord::Base
@@ -35,35 +35,35 @@ Or open /lolita and it will redirect to first available resource list view.
 
 For more detailed usage read Usage[https://github.com/ithouse/lolita/wiki/Usage] at wiki.
 
-===Add authorization to Lolita
+###Add authorization to Lolita
 
 Easiest way to add authentication is with Devise. First install Devise as gem, than add it to your project.
-Make Devise model, lets say, User. After that add these lines in <i>/config/initializers/lolita.rb</i>
+Make Devise model, lets say, User. After that add these lines in */config/initializers/lolita.rb*
   config.user_classes << User
   config.authentication = :authenticate_user!
-This will make before each Lolita requests call before filter, that than will call <em>authenticate_user!</em>
+This will make before each Lolita requests call before filter, that than will call *authenticate_user!*
 that is Devise method for authenticating user. Without it Lolita will be acessable for everyone.
 You can also add any other authentication method like
   config.authentication = :authenticate_admin
-And than put this method for common use in <em>ApplicationController</em> or in some other place that is accessable
+And than put this method for common use in *ApplicationController* or in some other place that is accessable
 to all controllers.
-===Using newer version of Lolita
+###Using newer version of Lolita
 
 If you decide to use some newer version, you most likely should copy new assets to your project. 
 This can be done with
   rails g lolita:assets
-===Using hooks
+###Using hooks
 
 Lolita define hooks for RestController and for components.
-====RestController hooks
+####RestController hooks
 
-There are two kind of hooks for all actions - <em>before_[action name]</em> and <em>after_[action name]</em>.
+There are two kind of hooks for all actions - *before_[action name]* and *after_[action name]*.
 Define callbacks for those hooks outside of controller. This will call User#log_action each time when #destroy 
 action is requested.
    Lolita::RestController.before_destroy do
       User.log_action("Going to delete #{params[:id]}") 
    end
-Also you can define callbacks in your controllers that extend Lolita::RestController. This will call #set_default_params
+Also you can define callbacks in your controllers that extend Lolita::RestController. This will call #set\_default\_params
 each time #new action is requested.
    class PostController < Lolita::RestController
       before_new :set_default_params
@@ -74,9 +74,9 @@ each time #new action is requested.
         params[:post][:title]="-Your title goes here-"
       end
   end
-====Component hooks
+####Component hooks
 
-Components have three hooks - <em>before</em>, <em>after</em> and <em>around</em>.
+Components have three hooks - *before*, *after* and *around*.
 Component hooks are different from controller hooks with names. Each component has it's own name, that is used to
 call component, like
   render_component :"lolita/configuration/list/display"
@@ -95,6 +95,6 @@ to let original content inside of your block content than it is done like this w
   Lolita::Hooks.component(:"/lolita/configuration/list/display").around do
     "<div style='color:red'>#{let_content}</div>"
   end
-==License
+##License
 
 Lolita is under MIT license. See LICENSE.txt[https://github.com/ithouse/lolita/blob/master/LICENSE.txt]

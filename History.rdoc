@@ -9,6 +9,7 @@
 * Changes
   * #value, #value=, #record_value removed from Lolita::Configuration::Field
   * Created pagination in list and in adapters; its possible to customize it for model.
+  * All fields must have name as well as tabs must have type
   
 * Bug fixes
   * All classes fixed to work with both mongoid and AR
