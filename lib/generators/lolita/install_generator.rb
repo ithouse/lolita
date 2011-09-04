@@ -5,15 +5,11 @@ module Lolita
     class InstallGenerator < Rails::Generators::Base
       include Lolita::Generators::FileHelper
       source_root File.expand_path("../../templates", __FILE__)
-      desc "Create lolita initializer. Copy assets and create migrations. Load seed data."
+      desc "Create lolita initializer."
 
       
       def copy_initializer
         template "lolita.rb", "config/initializers/lolita.rb" unless file_exists?("config/initializers/lolita.rb")
-      end
-
-      def copy_assets
-        generate("lolita:assets")
       end
 
       def install_modules
