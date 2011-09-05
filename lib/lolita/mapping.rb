@@ -27,7 +27,7 @@ module Lolita
       @plural=(options[:as] ? options[:as] : name).to_sym
       @singular=(options[:singular] || @plural.to_s.singularize).to_sym
       @class_name=(options[:class_name] || name.to_s.classify).to_s
-      @ref = ActiveSupport::Dependencies.ref(@class_name)
+      @ref = @class_name.to_s.camelize
       @path_prefix=options[:path_prefix]
       @path=(options[:path] || "lolita").to_s
       @module=options[:module] 
@@ -39,7 +39,7 @@ module Lolita
   
     # Return class that is related with mapping.
     def to
-      @ref.get
+      @ref.constantize
     end
     
     # full path of current mapping
