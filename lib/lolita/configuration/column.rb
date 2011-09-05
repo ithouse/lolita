@@ -12,7 +12,6 @@ module Lolita
         self.set_attributes(*args)
         self.instance_eval(&block) if block_given?
         validate
-        set_default_values
       end
 
       def value(record)
@@ -44,15 +43,6 @@ module Lolita
         @sortable && params[:sc].to_s==self.name.to_s
       end
 
-      def sort_options(params)
-        direction=if params[:sc].to_s==self.name.to_s
-          params[:sd].to_s=="asc" ? "desc" : "asc"
-        else
-          "desc"
-        end
-        {:sc=>self.name,:sd=>direction}
-      end
-      
       # Define format, for details see Lolita::Support::Formatter and Lolita::Support::Formater::Rails
       def formatter(value=nil,&block)
         if block_given?
@@ -76,29 +66,20 @@ module Lolita
       end
 
       def set_attributes(*args)
-        if !args.empty?
-          if args[0].is_a?(Hash)
-            args[0].each{|m,value|
-              self.send("#{m}=".to_sym,value)
-            }
-          elsif args[0].is_a?(Symbol) || args[0].is_a?(String)
-            self.name=args[0].to_s
-            if args[1].is_a?(Hash)
-              args[1].each{|m,value|
-                self.send("#{m}=".to_sym,value)
-              }
-            end
-          else
-            raise ArgumentError.new("Lolita::Configuration::Column arguments must be Hash or Symbol or String instead of #{args[0].class}")
+        options = args ? args.extract_options! : {}
+        if args[0].respond_to?(:field)
+          [:name,:type].each do |attr|
+            self.send(:"#{attr}=",args[0].send(attr))
           end
+        elsif args[0]
+          self.name = args[0]
+        end
+        options.each do |attr_name,value|
+          self.send(:"#{attr_name}=",value)
         end
       end
       
       private
-      
-      def set_default_values
-        @sort_direction||=:desc
-      end
 
       def validate
         raise ArgumentError.new("Column must have name.") unless self.name

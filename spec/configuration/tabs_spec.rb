@@ -13,7 +13,7 @@ end
 
 describe Lolita::Configuration::Tabs do
   before(:each) do
-    @dbi=Lolita::DBI::Base.new(Post)
+    @dbi=Lolita::DBI::Base.create(Post)
   end
 
   it "should create tabs when Array is given" do
@@ -94,7 +94,7 @@ describe Lolita::Configuration::Tabs do
     it "should find by type" do
       tabs=Lolita::Configuration::Tabs.new(@dbi) do
         tab :default do
-          field :name
+          field :name, :string
         end
         tab :content
       end

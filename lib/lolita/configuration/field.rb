@@ -28,47 +28,25 @@ module Lolita
       class Base
         include Lolita::Builder
 
-        @@default_type="string"
-        lolita_accessor :name,:title,:field_set, :nested_form,:nested_for,:options, :html_options,:record,:association
+        @@default_type = :string
+        lolita_accessor :name,:title,:field_set, :nested_form,:nested_for,:options, :html_options
         attr_reader :dbi,:nested_in
+        attr_accessor :dbi_field
         
-        def initialize dbi, *args, &block
+        def initialize dbi,name,*args, &block
           @dbi=dbi
-          before_init(*args)
-          begin
-            self.set_attributes(*args)
-            if block_given?
-              self.instance_eval(&block)
-              process_type unless @type 
-            end
-            set_default_values
-            validate
-          rescue Exception=>e
-            unless Lolita::Configuration::Field.temp_object?
-              raise e
-            end
-          end
-        end
-        
-        def value value=nil, &block
-          self.send(:value=,value,&block) if value || block_given?
-          unless @value
-            self.record_value
-          else
-            if @value.is_a?(Proc)
-              @value.call(self)
-            else
-              @value
-            end
-          end
-        end
+          self.name = name
+          options = args ? args.extract_options! : {}
+          type = args[0]
 
-        def value=(value=nil,&block)
+          self.type = type || @@default_type
+
+          self.set_attributes(options)
           if block_given?
-            @value=block
-          else
-            @value=value
+            self.instance_eval(&block)
           end
+          set_default_values
+          validate
         end
         
         def title(value=nil)
@@ -87,18 +65,16 @@ module Lolita
         end
 
         def name=(value)
-          @name=value ? value.to_sym : nil
-        end
-
-        def type_name
-          self.type.to_s.downcase
+          @name= value ? value.to_sym : nil
         end
 
         def nested_in=(dbi)
           unless self.dbi.associations_class_names.include?(dbi.klass.to_s)
             raise Lolita::ReferenceError, "There is no association between #{self.dbi.klass} and #{dbi.klass}"
           end
-          raise ArgumentError, "Field can be nested only in Lolita::DBI::Base object." unless dbi.is_a?(Lolita::DBI::Base)
+          if !dbi.is_a?(Lolita::DBI::Base) && !dbi.class.to_s.match(/Lolita::Adapter/)
+            raise ArgumentError, "Field can be nested only in Lolita::DBI::Base object." 
+          end
           @nested_in=dbi
         end
         
@@ -107,29 +83,26 @@ module Lolita
         end
 
         def nested_in?(dbi_or_class)
-          if dbi_or_class.is_a?(Lolita::DBI::Base)
+          if dbi_or_class.respond_to?(:klass)
             self.nested_in && self.nested_in.klass==dbi_or_class.klass
           else
             self.nested_in && self.nested_in.klass==dbi_or_class
           end
         end
       
-
-        def set_attributes(*args)
-          @given_attributes.each{|attr,value|
-            if (attr.to_sym==:type && !@type) || attr.to_sym!=:type
+        def set_attributes(attributes)
+          excluded_keys = [:name,:type]
+          attributes.each{|attr,value|
+            unless excluded_keys.include?(attr.to_sym)
               self.send(:"#{attr}=",value)
             end
           }
         end
 
-        # TODO is this useable
-        def record_value #TODO test
-          if self.record
-            self.record.send(self.name.to_sym)
-          else
-            nil
-          end
+        def find_dbi_field
+          @dbi_field ||= self.dbi.fields.detect{|field|
+            field.name.to_s == self.name.to_s || (field.association && field.association.name.to_s == self.name.to_s)
+          }
         end
 
         private
@@ -143,77 +116,11 @@ module Lolita
           self.html_options ||= {}
         end
 
-         def before_init *args
-          extract_args *args
-          set_name
-          if @name
-            process_type
-          end
-        end
-
-        def process_type
-          set_association
-          set_type_from_args
-          set_type
-        end
-
-         def extract_args *args
-          if args
-            @given_args=args
-            @given_attributes=@given_args.extract_options!
-          else
-            @given_args=[]
-            @given_attributes={}
-          end
-        end
-
-        def set_name
-          if @given_args.first
-            self.name=@given_args.first 
-          else
-            self.name=@given_attributes[:name]
-          end
-        end
-
-        def set_type_from_args
-          self.type=@given_args[1] if @given_args[1]
-        end
-
-        def set_type
-          if !@type
-           if @association
-                self.type="array"
-            elsif dbi_field=self.dbi.fields.detect{|f| f[:name].to_s==@name.to_s}
-              self.type=dbi_field[:type]
-              self.options=dbi_field[:options]
-            end
-          end
-          if @type.nil? || @type.to_s.downcase=="object"
-            self.type=@@default_type
-          end
-        end
-
-        # Need here because this don't know how to recognize association.
-        # TODO maybe need move to adapter, and it is converted there
-        def set_association #TODO test
-          assoc_name=@name.to_s.gsub(/_id$/,"") 
-          @association||=@dbi.reflect_on_association(assoc_name.to_sym) ||
-            @dbi.reflect_on_association(assoc_name.pluralize.to_sym)
-          if @association && @association.options[:polymorphic]
-            @association = nil
-          end
-        end
-
         def validate
           unless self.name
             raise Lolita::FieldNameError, "Field must have name."
           end
-          #FIXME need this validation
-          #        if !@value && !@dbi.klass.instance_methods.include?(self.name.to_s)
-          #          raise Lolita::FieldNameError, "#{@dbi.klass} must respond to #{self.name} method."
-          #        end
         end
-       
       end
     end
   end

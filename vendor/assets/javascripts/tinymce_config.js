@@ -1,6 +1,6 @@
 function load_tinymce(){
 	$("textarea[data-simple!=true]").tinymce({
-		script_url: "/javascripts/tinymce/tiny_mce.js",
+		script_url: "/assets/tinymce/tiny_mce.js",
 		theme: "advanced",
 		skin: "cirkuit",
 		mode: "textareas",

@@ -22,7 +22,6 @@ module Lolita
         include Lolita::Builder
 
         # For different types there are different builders(cells)
-        @@default_tab_type=:default
         @@available_types=[:content]
      
         lolita_accessor :title,:name,:type
@@ -33,10 +32,11 @@ module Lolita
         # * <tt>dbi</tt> Lolita::DBI::Base object, that represents database.
         # * <tt>*args</tt> See #set_attributes, for how these args are processed.
         # * <tt>&block</tt> Block can be passed, anything in block will be evaled for current instance.
-        def initialize dbi,*args,&block
-          @fields=Lolita::Configuration::Fields.new
+        def initialize dbi,type,*args,&block
+          @fields = Lolita::Configuration::Fields.new
           @field_sets = []
           @nested_forms = []
+          @type = type
           self.dbi=dbi
           self.current_dbi=dbi
           self.set_attributes(*args)
@@ -49,7 +49,7 @@ module Lolita
         # For details how to pass args and block see Lolita::Configuration::Field.
         # Return field itself.
         def field *args, &block
-          field=Lolita::Configuration::Field.add(self.current_dbi,*args,&block)
+          field=Lolita::Configuration::Factory::Field.add(self.current_dbi,*args,&block)
           field.field_set = current_fieldset
           if self.current_dbi!=self.dbi
             field.nested_in=self.dbi
@@ -61,7 +61,7 @@ module Lolita
 
         # Return all fields in tab.
         def fields
-          @fields
+          @fields 
         end
 
         # Set all fields in tab. Accept <code>fields</code> as Array.
@@ -84,7 +84,7 @@ module Lolita
         # See Lolita::Adapter classes for use of DB field method.
         def default_fields
           self.current_dbi.fields.each{|db_field|
-            self.field(db_field) unless Lolita::Configuration::Helper.tehnical_field?(db_field,self.current_dbi)
+            self.field(:name => db_field.name, :type => db_field.type, :dbi_field => db_field) if db_field.content?
           }
         end
 
@@ -95,7 +95,7 @@ module Lolita
           nested_form = Lolita::Configuration::NestedForm.new(self,class_or_name, options)
           self.current_nested_form = nested_form
           @nested_forms << nested_form
-          self.current_dbi = Lolita::DBI::Base.new(current_class)
+          self.current_dbi = Lolita::DBI::Base.create(current_class)
           self.instance_eval(&block)
           self.current_dbi = self.dbi
           self.current_nested_form = nil
@@ -164,7 +164,6 @@ module Lolita
         def set_attributes *args
           if args
             options=args.extract_options!
-            self.type=args.first if args.first.is_a?(Symbol)
             options.each{|method,options|
               self.send(:"#{method}=",options)
             }
@@ -174,8 +173,11 @@ module Lolita
 
         private
 
+        def my_type
+          self.class.to_s.split("::").last.downcase.to_sym
+        end
+
         def set_default_attributes
-          @type=@@default_tab_type unless @type
           @name="tab_#{self.__id__}" unless @name
           @title=set_default_title unless @title
         end
@@ -204,11 +206,6 @@ module Lolita
           :tab
         end
         
-        class << self
-          def default_types
-            @@available_types
-          end
-        end
       end
     end
   end

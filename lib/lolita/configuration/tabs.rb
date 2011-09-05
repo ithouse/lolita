@@ -3,17 +3,19 @@ module Lolita
     # Lolita::Configuration::Tabs is container class that holds all
     # tabs for each lolita instance. 
     # Also it has some useful methods.
-
     class Tabs
       include Enumerable
       include Lolita::ObservedArray
       include Lolita::Builder
 
       attr_reader :dbi,:excluded
+      attr_accessor :tab_types
+
       def initialize dbi,*args,&block
         @dbi=dbi
         @tabs=[]
         @excluded=[]
+        @tab_types = [:content]
         self.set_attributes(*args)
         self.instance_eval(&block) if block_given?
       end
@@ -43,7 +45,7 @@ module Lolita
       end
 
       def tab *args,&block
-        self<<Lolita::Configuration::Tab.add(@dbi,*args,&block)
+        self<<Lolita::Configuration::Factory::Tab.add(@dbi,*args,&block)
       end
 
       def by_type(type)
@@ -62,18 +64,20 @@ module Lolita
         tab_types=if args
           args
         else
-          default_tab_types
+          @tab_types
         end
         tab_types.each{|type|
-          self<<Lolita::Configuration::Tab.add(@dbi,type.to_sym)
+          self<<Lolita::Configuration::Factory::Tab.add(@dbi,type.to_sym)
         }
       end
 
       def exclude *args
         @excluded=if args && args.include?(:all)
-          default_tab_types
-        else
+          tab_types
+        elsif args.is_a?(Array)
           args
+        else
+          []
         end
       end
 
@@ -103,10 +107,6 @@ module Lolita
           end
         end
       end
-      
-      def default_tab_types
-        Lolita::Configuration::Tab::Base.default_types
-      end
 
       def set_tab_attributes(tab)
         if tab
@@ -120,7 +120,7 @@ module Lolita
 
       def build_element(element,&block)
         current_tab=if element.is_a?(Hash) || element.is_a?(Symbol)
-          Lolita::Configuration::Tab.add(@dbi,element,&block)
+          Lolita::Configuration::Factory::Tab.add(@dbi,element,&block)
         else
           element
         end

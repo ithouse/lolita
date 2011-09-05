@@ -1,3 +1,20 @@
+=== Version 3.2.0
+* Enhancements
+  * Created adapter Field and Association classes. Field and association access methods convert data to thoes class objects
+  * Factory module created where factory classes are located
+  * Removed specific pagination methods from adapters 
+  * Removed Lolita::Configuration::Factory and Lolita::Configuration::Page
+  * Range, Float, Symbol, Hash fields are added to support Mongoid ORM
+
+* Changes
+  * #value, #value=, #record_value removed from Lolita::Configuration::Field
+  * Created pagination in list and in adapters; its possible to customize it for model.
+  * All fields must have name as well as tabs must have type
+  
+* Bug fixes
+  * All classes fixed to work with both mongoid and AR
+   
+
 === Version 3.1.18 / 
 * Enhancements
   * 

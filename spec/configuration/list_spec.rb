@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Lolita::Configuration::List do
 
   before(:each) do
-    @dbi=Lolita::DBI::Base.new(Post)
+    @dbi=Lolita::DBI::Base.create(Post)
   end
   
   after(:each) do
@@ -23,9 +23,9 @@ describe Lolita::Configuration::List do
 
   it "should generate columns if none is given" do
     list=Lolita::Configuration::List.new(@dbi)
-    list.columns.size.should == @dbi.fields.size
+    list.columns.size.should == @dbi.fields.reject{|f| f.technical?}.size
     list=Lolita::Configuration::List.new(@dbi){}
-    list.columns.size.should == @dbi.fields.size
+    list.columns.size.should == @dbi.fields.reject{|f| f.technical?}.size
   end
 
   it "should not generate columns if one or more is given" do
@@ -44,9 +44,8 @@ describe Lolita::Configuration::List do
 
   it "should get records for list page" do
     1.upto(5) { Factory.create(:post)}
-    list=Lolita::Configuration::List.new(@dbi,:per_page=>1)
-    list.paginate(1,:per_page=>2).size.should == 2
-    list.paginate(1).size.should == 1
+    list=Lolita::Configuration::List.new(@dbi,:per => 1)
+    list.paginate(1,Object.new).to_a.size.should == 1
   end
 
   it "should define columns when Symbols are given as args" do

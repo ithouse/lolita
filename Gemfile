@@ -4,8 +4,11 @@ source "http://rubygems.org"
 gem "rails", "~>3.1.0"
 gem "kaminari", "~>0.12.4"
 gem "abstract"
-gem "builder", "~> 3.0,7" #cucumber asks for builder 3 but rails supports 2.1
+
+gem "builder", "~> 3.0" 
+
 gem "haml", "~> 3.1.2"
+gem 'jquery-rails'
 
 group :mongoid do
 	gem "mongo", "~> 1.3.0"

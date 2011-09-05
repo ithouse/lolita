@@ -31,14 +31,8 @@ describe Lolita::DBI::Base do
     Lolita::DBI::Base.adapters.size.should > 0
   end
 
-  it "should order with paginate" do
-    Post.destroy_all
-    Factory.create(:post, :title => "Apple")
-    Factory.create(:post, :title => "Banana")
-    Factory.create(:post, :title => "Cucumber")
-    dbi=Lolita::DBI::Base.new(Post)
-    dbi.paginate(:per_page => 3, :page => 1, :sort => [[:title,:desc]]).map(&:title).should == %w(Cucumber Banana Apple)
-    dbi.paginate(:per_page => 3, :page => 1, :sort => [[:title,:asc]]).map(&:title).should == %w(Apple Banana Cucumber)
+  it "should create adapter through #create" do
+    Lolita::DBI::Base.create(Post).class.to_s.should match(/Lolita::Adapter::/)
   end
-end
+ end
 

@@ -3,14 +3,14 @@ module Lolita
     module Field
       
       class Array < Lolita::Configuration::Field::Base
-        lolita_accessor :conditions,:text_method,:value_method,:find_options,:association_type,:include_blank
+        lolita_accessor :conditions,:text_method,:value_method,:find_options,:association,:include_blank
 
-        def initialize *args,&block
-          @type="array"
+        def initialize dbi,name,*args, &block
           self.builder="select"
           @include_blank=true
           super
-          set_association_type
+          self.find_dbi_field unless self.dbi_field
+          @association = self.dbi_field ? self.dbi_field.association : nil
         end
 
         def options_for_select=(value=nil)
@@ -32,7 +32,7 @@ module Lolita
           @association_values=if options_for_select
             options_for_select
           elsif @association
-            klass=@dbi.association_class_name(@association).camelize.constantize
+            klass=@association.klass
             current_text_method=@text_method || default_text_method(klass)
             current_value_method=@value_method || :id
             options=@find_options || {}
@@ -59,19 +59,11 @@ module Lolita
 
       private
 
-      def set_association_type #TODO test
-        if @association
-          @association_type||=(@dbi.association_macro(@association) || :one)
-        else
-          @association_type||=:one
-        end
-      end
-
       def default_text_method(klass)
-        assoc_dbi=Lolita::DBI::Base.new(klass)
-        field=assoc_dbi.fields.detect{|f| f[:type].downcase=="string"}
+        assoc_dbi=Lolita::DBI::Base.create(klass)
+        field=assoc_dbi.fields.detect{|f| f.type.to_s=="string"}
         if field
-          field[:name]
+          field.name
         else
           raise Lolita::FieldTypeError, %^
           Can't find any content field in #{assoc_dbi.klass}.

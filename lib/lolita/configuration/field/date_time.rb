@@ -3,8 +3,8 @@ module Lolita
     module Field
       class DateTime < Lolita::Configuration::Field::Base
         attr_accessor :format
-        def initialize *args
-          @type="date_time"
+        def initialize dbi,name,*args, &block
+          
           super
         end
       end
