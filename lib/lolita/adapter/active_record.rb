@@ -76,9 +76,17 @@ module Lolita
         end
 
         def association
-          @association ||= @adapter.associations.detect{|name,association|
-            association.key.to_s == @name.to_s
-          }
+          unless @association
+            possible_association = @adapter.associations.detect{|name,association|
+              [association.key.to_s].include?(@name.to_s)
+            }
+            @association = possible_association.last if possible_association
+          end
+          @association
+        end
+
+        def key
+          @association.foreign_association_key
         end
 
         def method_missing(method,*args,&block)

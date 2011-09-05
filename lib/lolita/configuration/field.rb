@@ -100,7 +100,7 @@ module Lolita
         end
 
         def find_dbi_field
-          @dbi_field ||= self.dbi.detect{|field|
+          @dbi_field ||= self.dbi.fields.detect{|field|
             field.name.to_s == self.name.to_s || (field.association && field.association.name.to_s == self.name.to_s)
           }
         end
