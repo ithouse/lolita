@@ -80,7 +80,7 @@ module Lolita
       end
 
       def build
-        
+    
         path = if conditions?
           switch_path do |name,state|
             if conditions_met?

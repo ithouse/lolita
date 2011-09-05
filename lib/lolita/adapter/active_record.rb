@@ -12,10 +12,11 @@ module Lolita
 
       # Association adapter
       class Association
-        attr_reader :association
+        attr_reader :association, :adapter
 
-        def initialize(assoc_object)
+        def initialize(assoc_object,adapter)
           @association = assoc_object
+          @adapter = adapter
         end
 
         def method_missing(method, *args, &block)
@@ -43,7 +44,7 @@ module Lolita
         unless @associations
           @associations = {}
           klass.reflections.each{|name,association|
-            @associations[name] = Association.new(association)
+            @associations[name] = Association.new(association,self)
           }
         end
         @associations
@@ -59,7 +60,7 @@ module Lolita
       # Detect if class reflect on association by name
       def reflect_on_association(name)
         if orm_association = klass.reflect_on_association(name)
-          Association.new(orm_association)
+          Association.new(orm_association,self)
         end
       end
 

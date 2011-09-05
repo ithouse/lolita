@@ -82,7 +82,6 @@ class Lolita::RestController < ApplicationController
   
   def save_and_redirect
     respond_to do |format|
-      debugger
       if self.resource.save
         self.resource.reload
         format.html{ respond_html_200}
