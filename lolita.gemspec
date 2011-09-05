@@ -13,12 +13,8 @@ Gem::Specification.new do |s|
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
-<<<<<<< HEAD
-    "LICENSE.txt"
-=======
     "LICENSE.txt",
     "README.md"
->>>>>>> edge
   ]
   s.files = [
     ".document",
@@ -27,10 +23,7 @@ Gem::Specification.new do |s|
     "Gemfile",
     "History.rdoc",
     "LICENSE.txt",
-<<<<<<< HEAD
-=======
     "README.md",
->>>>>>> edge
     "Rakefile",
     "VERSION",
     "app/assets/images/lolita/plus.png",
@@ -134,11 +127,8 @@ Gem::Specification.new do |s|
     "lib/lolita/configuration/base.rb",
     "lib/lolita/configuration/column.rb",
     "lib/lolita/configuration/columns.rb",
-<<<<<<< HEAD
-=======
     "lib/lolita/configuration/factory/field.rb",
     "lib/lolita/configuration/factory/tab.rb",
->>>>>>> edge
     "lib/lolita/configuration/field.rb",
     "lib/lolita/configuration/field/array.rb",
     "lib/lolita/configuration/field/big_decimal.rb",
