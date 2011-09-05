@@ -188,7 +188,11 @@ module Lolita
       end
 
       def collection_name
-        collection.name
+        self.klass.collection_name
+      end
+
+      def collection_name=(value)
+        self.klass.collection_name = value
       end
 
       def collections

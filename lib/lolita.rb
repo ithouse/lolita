@@ -14,7 +14,7 @@ puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""
 #     end
 #   end
 # end
-
+require "rubygems"
 require 'abstract'
 require "base64"
 require 'kaminari'

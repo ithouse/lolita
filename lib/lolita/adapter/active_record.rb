@@ -192,6 +192,10 @@ module Lolita
         self.klass.table_name
       end
 
+      def collection_name=(value)
+        self.klass.table_name = value
+      end
+
       def collections
         self.klass #FIXME not  realy same as in mongoid
       end
