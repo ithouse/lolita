@@ -1,6 +1,10 @@
 RailsApp::Application.configure do
   # Settings specified here will take precedence over those in config/environment.rb
-
+# Do not compress assets
+config.assets.compress = false
+ 
+# Expands the lines which load the assets
+config.assets.debug = true
   # The test environment is used exclusively to run your application's
   # test suite.  You never need to work with it otherwise.  Remember that
   # your test database is "scratch space" for the test suite and is wiped

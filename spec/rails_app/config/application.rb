@@ -3,9 +3,10 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
 require "rails/test_unit/railtie"
+require "sprockets/railtie"
 
 Bundler.require(:default, LOLITA_ORM, Rails.env) if defined?(Bundler)
-#require 'cells'
+
 require 'lolita'
 require "lolita/rails/all"
 require 'kaminari'
@@ -22,5 +23,15 @@ module RailsApp
 		config.filter_parameters << :password
 
 		config.action_mailer.default_url_options = { :host => "localhost:3000" }
+		 config.encoding = "utf-8"
+
+    # Configure sensitive parameters which will be filtered from the log file.
+    config.filter_parameters += [:password]
+
+    # Enable the asset pipeline
+    config.assets.enabled = true
+
+    # Version of your assets, change this if you want to expire all your assets
+    config.assets.version = '1.0'
 	end
 end

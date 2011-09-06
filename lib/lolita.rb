@@ -193,5 +193,6 @@ if Lolita.rails3?
   require "base64"
   require 'kaminari'
   require 'tinymce-rails'
+  require 'jquery-rails'
   require 'lolita/rails/all'
 end

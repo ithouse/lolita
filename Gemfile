@@ -18,15 +18,21 @@ group :mongoid do
 end
 
 #gem 'cover_me', '>= 1.0.0.rc6', :group => :test
+group :assets do
+ 	gem 'sass-rails',   "~> 3.1.0"
+  gem 'coffee-rails', "~> 3.1.0"
+  gem 'uglifier'
+end
+
 gem "jeweler", "~> 1.5.2", :group=>:development
 group :test,:development do
 	gem "rspec", "~>2.6.0"
-	gem "rspec-rails","~>2.6.0"
+	gem "rspec-rails","~>2.6.1"
 	gem "factory_girl"
 	gem 'ffaker'
 	gem "ruby-debug19"
-	gem "cucumber-rails"
-	gem "capybara"
+	# gem "cucumber-rails"
+	# gem "capybara"
 	gem "database_cleaner"
-	gem "akephalos"
+	# gem "akephalos"
 end
