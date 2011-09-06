@@ -31,7 +31,7 @@ $(function(){
     save_all()
   })
   // All tabs are closable when clicked on tab title.
-  $(".tab.minimized .tab-title").live('click',function(){
-		$(this).parent().toggleClass("minimized", 200)
+  $(".tab .tab-title.grey").live('click',function(){
+		$(this).parent().toggleClass("minimized")
 	})
 })
