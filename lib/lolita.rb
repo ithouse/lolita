@@ -1,7 +1,10 @@
 
 $:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
 LOLITA_VERSION=File.read(File.expand_path("../../VERSION",__FILE__)).gsub(/[^.\w]/,"")
-puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""}"
+FRAMEWORK = if defined?(Rails)
+  " with Rails #{::Rails::VERSION::STRING}"
+end
+puts "=> Lolita #{LOLITA_VERSION} starting#{FRAMEWORK}"
 
 # TODO should allow run lolita seperated
 # unless (["-d","--debug"] & ARGV).empty?
@@ -16,8 +19,6 @@ puts "=> Lolita #{LOLITA_VERSION} starting#{defined?(Rails) ? " with Rails" : ""
 # end
 require "rubygems"
 require 'abstract'
-require "base64"
-require 'kaminari'
 unless defined?(ActiveSupport)
   require 'active_support/core_ext/numeric/time'
   require 'active_support/core_ext/date_time/conversions'
@@ -189,5 +190,8 @@ module Lolita
 end
 
 if Lolita.rails3?
+  require "base64"
+  require 'kaminari'
+  require 'tinymce-rails'
   require 'lolita/rails/all'
 end

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = "2011-09-05"
+  s.date = "2011-09-06"
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
@@ -33,8 +33,6 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/lolita/tab.js",
     "app/assets/stylesheets/lolita/PIE-custom.htc",
     "app/assets/stylesheets/lolita/PIE.htc",
-    "app/assets/stylesheets/lolita/default.css",
-    "app/assets/stylesheets/lolita/style.css",
     "app/controllers/lolita/info_controller.rb",
     "app/controllers/lolita/rest_controller.rb",
     "app/helpers/components/lolita/configuration/list_component.rb",
@@ -287,41 +285,7 @@ Gem::Specification.new do |s|
     "spec/support/factories/post.rb",
     "spec/support/factories/tag.rb",
     "spec/support/formatter_spec.rb",
-    "vendor/assets/javascripts/jquery-1.6.2.min.js",
     "vendor/assets/javascripts/jquery-ui-1.8.13.min.js",
-    "vendor/assets/javascripts/modernizr-1.7.min.js",
-    "vendor/assets/javascripts/tinymce/jquery.tinymce.js",
-    "vendor/assets/javascripts/tinymce/langs/en.js",
-    "vendor/assets/javascripts/tinymce/license.txt",
-    "vendor/assets/javascripts/tinymce/themes/advanced/about.htm",
-    "vendor/assets/javascripts/tinymce/themes/advanced/anchor.htm",
-    "vendor/assets/javascripts/tinymce/themes/advanced/charmap.htm",
-    "vendor/assets/javascripts/tinymce/themes/advanced/color_picker.htm",
-    "vendor/assets/javascripts/tinymce/themes/advanced/editor_template.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/editor_template_src.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/image.htm",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/colorpicker.jpg",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/flash.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/icons.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/iframe.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/pagebreak.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/quicktime.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/realmedia.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/shockwave.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/trans.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/video.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/img/windowsmedia.gif",
-    "vendor/assets/javascripts/tinymce/themes/advanced/js/about.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/js/anchor.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/js/charmap.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/js/color_picker.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/js/image.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/js/link.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/js/source_editor.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/langs/en.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/langs/en_dlg.js",
-    "vendor/assets/javascripts/tinymce/themes/advanced/link.htm",
-    "vendor/assets/javascripts/tinymce/themes/advanced/shortcuts.htm",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/content.css",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/dialog.css",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/img/butt2.png",
@@ -337,13 +301,6 @@ Gem::Specification.new do |s|
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/img/tabs.gif",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/img/toolbarbg.png",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/ui.css",
-    "vendor/assets/javascripts/tinymce/themes/advanced/source_editor.htm",
-    "vendor/assets/javascripts/tinymce/tiny_mce.js",
-    "vendor/assets/javascripts/tinymce/tiny_mce_popup.js",
-    "vendor/assets/javascripts/tinymce/utils/editable_selects.js",
-    "vendor/assets/javascripts/tinymce/utils/form_utils.js",
-    "vendor/assets/javascripts/tinymce/utils/mctabs.js",
-    "vendor/assets/javascripts/tinymce/utils/validate.js",
     "vendor/assets/javascripts/tinymce_config.js"
   ]
   s.homepage = "http://github.com/ithouse/lolita"
@@ -414,6 +371,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<builder>, ["~> 3.0"])
       s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
       s.add_runtime_dependency(%q<jquery-rails>, [">= 0"])
+      s.add_runtime_dependency(%q<tinymce-rails>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.0"])
@@ -431,6 +389,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<builder>, ["~> 3.0"])
       s.add_dependency(%q<haml>, ["~> 3.1.2"])
       s.add_dependency(%q<jquery-rails>, [">= 0"])
+      s.add_dependency(%q<tinymce-rails>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_dependency(%q<rspec-rails>, ["~> 2.6.0"])
@@ -449,6 +408,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<builder>, ["~> 3.0"])
     s.add_dependency(%q<haml>, ["~> 3.1.2"])
     s.add_dependency(%q<jquery-rails>, [">= 0"])
+    s.add_dependency(%q<tinymce-rails>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<rspec>, ["~> 2.6.0"])
     s.add_dependency(%q<rspec-rails>, ["~> 2.6.0"])

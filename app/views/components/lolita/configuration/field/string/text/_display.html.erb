@@ -1,10 +1,3 @@
-<% if @textarea_component_include_tinymce_once.nil? %>
-  <% content_for :script do %>
-    <%= javascript_include_tag "tinymce/jquery.tinymce" %>
-		<%= javascript_include_tag "tinymce_config.js" %>
-  <% end %>
-<% end %>
-
 <%= tab_form.text_area field.name, :rows=>(field.rows || 20), :"data-simple"=>field.simple %>
 <% if @textarea_component_include_tinymce_once.nil? %>
   <script type="text/javascript">
