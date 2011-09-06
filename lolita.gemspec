@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "lolita"
-  s.version = "3.2.0.rc1"
+  s.version = "3.2.0.rc2"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
@@ -33,6 +33,9 @@ Gem::Specification.new do |s|
     "app/assets/javascripts/lolita/tab.js",
     "app/assets/stylesheets/lolita/PIE-custom.htc",
     "app/assets/stylesheets/lolita/PIE.htc",
+    "app/assets/stylesheets/lolita/application.css",
+    "app/assets/stylesheets/lolita/default.css.erb",
+    "app/assets/stylesheets/lolita/style.css.erb",
     "app/controllers/lolita/info_controller.rb",
     "app/controllers/lolita/rest_controller.rb",
     "app/helpers/components/lolita/configuration/list_component.rb",
@@ -285,7 +288,9 @@ Gem::Specification.new do |s|
     "spec/support/factories/post.rb",
     "spec/support/factories/tag.rb",
     "spec/support/formatter_spec.rb",
+    "vendor/assets/javascripts/application_vendor_lolita.js",
     "vendor/assets/javascripts/jquery-ui-1.8.13.min.js",
+    "vendor/assets/javascripts/modernizr_1_7_min.js",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/content.css",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/dialog.css",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/img/butt2.png",
@@ -374,14 +379,11 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<tinymce-rails>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
-      s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.0"])
+      s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_development_dependency(%q<factory_girl>, [">= 0"])
       s.add_development_dependency(%q<ffaker>, [">= 0"])
       s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
-      s.add_development_dependency(%q<cucumber-rails>, [">= 0"])
-      s.add_development_dependency(%q<capybara>, [">= 0"])
       s.add_development_dependency(%q<database_cleaner>, [">= 0"])
-      s.add_development_dependency(%q<akephalos>, [">= 0"])
     else
       s.add_dependency(%q<rails>, ["~> 3.1.0"])
       s.add_dependency(%q<kaminari>, ["~> 0.12.4"])
@@ -392,14 +394,11 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<tinymce-rails>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<rspec>, ["~> 2.6.0"])
-      s.add_dependency(%q<rspec-rails>, ["~> 2.6.0"])
+      s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_dependency(%q<factory_girl>, [">= 0"])
       s.add_dependency(%q<ffaker>, [">= 0"])
       s.add_dependency(%q<ruby-debug19>, [">= 0"])
-      s.add_dependency(%q<cucumber-rails>, [">= 0"])
-      s.add_dependency(%q<capybara>, [">= 0"])
       s.add_dependency(%q<database_cleaner>, [">= 0"])
-      s.add_dependency(%q<akephalos>, [">= 0"])
     end
   else
     s.add_dependency(%q<rails>, ["~> 3.1.0"])
@@ -411,14 +410,11 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<tinymce-rails>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<rspec>, ["~> 2.6.0"])
-    s.add_dependency(%q<rspec-rails>, ["~> 2.6.0"])
+    s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
     s.add_dependency(%q<factory_girl>, [">= 0"])
     s.add_dependency(%q<ffaker>, [">= 0"])
     s.add_dependency(%q<ruby-debug19>, [">= 0"])
-    s.add_dependency(%q<cucumber-rails>, [">= 0"])
-    s.add_dependency(%q<capybara>, [">= 0"])
     s.add_dependency(%q<database_cleaner>, [">= 0"])
-    s.add_dependency(%q<akephalos>, [">= 0"])
   end
 end
 
