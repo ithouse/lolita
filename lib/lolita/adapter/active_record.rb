@@ -24,15 +24,26 @@ module Lolita
         end
 
         def key
-          @association.association_foreign_key
+          if @association.macro == :belongs_to 
+            @association.foreign_key
+          else
+            @association.association_foreign_key
+          end 
         end
 
         def polymorphic?
           @association.options[:polymorphic]
         end
 
+        def native_macro
+          @association.macro
+        end
+
         def macro
-          convertator = {:has_many => :many, :has_one => :one, :belongs_to => :one, :has_and_belongs_to_many => :many}
+          convertator = {
+            :has_many => :many, :has_one => :one, :belongs_to => :one, 
+            :has_and_belongs_to_many => :many_to_many
+          }
           convertator[@association.macro]
         end
       end
@@ -77,11 +88,13 @@ module Lolita
         end
 
         def association
-          unless @association
+          unless @association.nil?
             possible_association = @adapter.associations.detect{|name,association|
               [association.key.to_s].include?(@name.to_s)
             }
             @association = possible_association.last if possible_association
+          else
+            @association = false
           end
           @association
         end

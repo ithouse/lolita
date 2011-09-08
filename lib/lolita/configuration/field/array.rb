@@ -1,16 +1,25 @@
 module Lolita
   module Configuration
     module Field
-      
+      # Fields with Array is used to 
+      # * create select for belongs_to association or 
+      # * has_and_belongs_to_many field for selecting all associated objects or
+      # * for polymorphic belongs_to associations
+      # ==Polymorphic builder (:polymorphic)
+      # Create two select boxes one of all related classes and second with related records for that class.
+      # Related classes can have <em>polymorphic_select_name</em> instance method, that is used to populate second
+      # select with visible values by default it calles <em>text_method</em>. It will fallback first content column. Class should respond to one
+      # of these. 
       class Array < Lolita::Configuration::Field::Base
         lolita_accessor :conditions,:text_method,:value_method,:find_options,:association,:include_blank
+        lolita_accessor :related_classes
 
         def initialize dbi,name,*args, &block
-          self.builder="select"
           @include_blank=true
           super
           self.find_dbi_field unless self.dbi_field
-          @association = self.dbi_field ? self.dbi_field.association : nil
+          @association ||= self.dbi_field ? self.dbi_field.association : detect_association
+          self.builder = detect_builder unless @builder
         end
 
         def options_for_select=(value=nil)
@@ -28,50 +37,110 @@ module Lolita
         # by default it it is <code>id</code>. Use <code>conditions</code> or
         # <code>find_options</code> for advanced search. When <code>find_options</code>
         # is used, than <code>conditions</code> is ignored.
-        def association_values() #TODO test
+        def association_values(record = nil) #TODO test
           @association_values=if options_for_select
             options_for_select
+          elsif @association && @association.polymorphic?
+            polymorphic_association_values(record)
           elsif @association
             klass=@association.klass
-            current_text_method=@text_method || default_text_method(klass)
-            current_value_method=@value_method || :id
             options=@find_options || {}
             options[:conditions]||=@conditions
-
-            klass.find(:all,options).map{|r|
-              [r.send(current_text_method),r.send(current_value_method)]
-            }
+            options_array(klass.find(:all,options))
           else
             []
           end
           @association_values
         end
 
-        # used in views for shorter accessing to values
-        def view_values(view)
-          values = association_values
-          if values.respond_to?(:call)
-            values.call(view)
+        # Collect values for polymorphic association, you may pass 
+        # * <tt>:klass</tt> - class that's records are used
+        # * <tt>:record</tt> - record class that has polymorphic association. It is used to call to detect related object class.
+        def polymorphic_association_values(options={})
+          options ||= {}
+          options[:klass] ||= options[:record] && options[:record].send(self.name) ? options[:record].send(self.name).class : nil
+          if options[:klass]
+            options_array(options[:klass].all)
           else
-            association_values
+            []
           end
         end
 
-      private
+        def options_array(collection)
+          klass = collection.last ? collection.last.class : nil
+          collection.map{|r|
+            [r.send(current_text_method(klass)),r.send(current_value_method)]
+          }
+        end
 
-      def default_text_method(klass)
-        assoc_dbi=Lolita::DBI::Base.create(klass)
-        field=assoc_dbi.fields.detect{|f| f.type.to_s=="string"}
-        if field
-          field.name
-        else
-          raise Lolita::FieldTypeError, %^
-          Can't find any content field in #{assoc_dbi.klass}.
-          Use text_method in #{klass} to set one.
-          ^
+        def current_text_method(klass)
+          @text_method || default_text_method(klass)
+        end
+
+        def current_value_method
+          @value_method || :id
+        end
+
+        # used in views for shorter accessing to values
+        def view_values(view)
+          record = view.send(:tab_form).object
+          values = association_values(record)
+          if values.respond_to?(:call)
+            values.call(view)
+          else
+            association_values(record)
+          end
+        end
+
+        def detect_builder
+          if @association
+            if @association.polymorphic?
+              "polymorphic"
+            elsif @association.macro == :many_to_many
+              "habtm"
+            else
+              "select"
+            end
+          else
+            "select"
+          end
+        end
+
+        def detect_association
+          unless @association
+            dbi.associations[self.name.to_sym]
+          else
+            @association
+          end
+        end
+
+        def polymorphic_classes
+          if @related_classes
+            @related_classes.map do |klass|
+              [klass.constantize.model_name.human, klass.to_s]
+            end
+          end
+        end
+
+        private
+
+        def default_text_method(klass)
+          assoc_dbi=Lolita::DBI::Base.create(klass) rescue nil
+          if assoc_dbi
+            field=assoc_dbi.fields.detect{|f| f.type.to_s=="string"}
+            if field
+              field.name
+            else
+              raise Lolita::FieldTypeError, %^
+              Can't find any content field in #{assoc_dbi.klass}.
+              Use text_method in #{klass} to set one.
+              ^
+            end
+          else
+            warn("Not a ORM class (#{klass.inspect})")
+          end
         end
       end
     end
   end
-end
 end

@@ -16,9 +16,13 @@ module Lolita
           name = args[0] || options[:name] || (dbi_field ? dbi_field.name : nil)
           dbi_field ||= dbi.field_by_name(name)
           dbi_field ||= dbi.field_by_association(name)
-          type = args[1] || options[:type] || (dbi_field ? dbi_field.type : nil) || :string
-          options[:dbi_field] = dbi_field
+          association ||= detect_association(dbi,name)
 
+          type = args[1] || options[:type] || 
+            (association ? :array : nil ) ||
+            (dbi_field ? dbi_field.type : nil) || 
+            :string
+          options[:dbi_field] = dbi_field
           if !name || !type
             raise Lolita::FieldTypeError, "type not defined. Set is as second argument or as :dbi_field where value is Adapter::[ORM]::Field object."
           else
@@ -26,6 +30,10 @@ module Lolita
             field_class(type).new(dbi,name,type,options,&block)
           end
 
+        end
+
+        def self.detect_association(dbi,name)
+          dbi.associations[name.to_sym]
         end
 
         def self.field_class(name)

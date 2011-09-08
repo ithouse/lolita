@@ -114,6 +114,18 @@ module Lolita
         def set_default_values
           self.options||={}
           self.html_options ||= {}
+          @html_options[:class] = if @html_options[:class]
+            "#{@html_options[:class]} #{self.type}"
+          else
+            self.type.to_s
+          end
+          recognize_real_name
+        end
+
+        def recognize_real_name
+          if @dbi_field && @dbi_field.association && !@dbi_field.association.polymorphic? && @dbi_field.association.macro == :one
+            self.name = @dbi_field.name
+          end
         end
 
         def validate

@@ -9,4 +9,16 @@ module LolitaHelper
     end
     classes.join(" ")
   end
+
+  def include_application_assets
+    result = ""
+    Lolita.application.assets.each do |asset_name|
+      if attr_name.match(/\.js(\.|$)/)
+        result << javascript_include_tag(asset_name)
+      elsif attr_name.match(/\.css(\.|$)/)
+        result << stylesheet_link_tag(asset_name)
+      end
+    end
+    raw(result)
+  end
 end

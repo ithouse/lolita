@@ -5,6 +5,9 @@
   * Removed specific pagination methods from adapters 
   * Removed Lolita::Configuration::Factory and Lolita::Configuration::Page
   * Range, Float, Symbol, Hash fields are added to support Mongoid ORM
+  * All fields automaticly have html_options[:class] updated with its type
+  * Assets can be passet to lolita through application configuration attribute #assets
+  * Polymorphic association field
 
 * Changes
   * #value, #value=, #record_value removed from Lolita::Configuration::Field

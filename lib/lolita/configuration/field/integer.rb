@@ -3,7 +3,6 @@ module Lolita
     module Field
       class Integer< Lolita::Configuration::Field::Base
         def initialize dbi,name,*args, &block
-          
           super
         end
       end

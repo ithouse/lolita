@@ -1,11 +1,17 @@
 module Lolita
   module SystemConfiguration
+    # This configuration is used in application lolita initializer
+    # For detailed documentation see initializer.
     class Application
 
-      attr_writer :name
+      attr_writer :name, :assets
 
       def name
         @name || default_name
+      end
+
+      def assets
+         @assets ||= []
       end
 
       def default_name

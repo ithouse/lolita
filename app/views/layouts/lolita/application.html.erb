@@ -16,6 +16,7 @@
     <%= yield :style %>
     <%= javascript_include_tag "lolita/application.js" %>
     <%= yield :script %>
+    <%= include_application_assets %>
     <%= raw csrf_meta_tag %>
   </head>
   <body>

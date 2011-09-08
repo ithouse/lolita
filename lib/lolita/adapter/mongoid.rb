@@ -27,10 +27,14 @@ module Lolita
           @association.key
         end
 
+        def native_macro
+          @association.macro
+        end
+
         def macro
           convertator = {
             :references_many => :many, :references_one => :one, :referenced_in => :one, 
-            :references_and_referenced_in_many => :many, :embeds_one => :one, :embeds_many => :many
+            :references_and_referenced_in_many => :many_to_many, :embeds_one => :one, :embeds_many => :many
           }
           convertator[@association.macro]
         end
@@ -76,11 +80,13 @@ module Lolita
         end
 
         def association
-          unless @association
+          unless @association.nil?
             possible_association = @adapter.associations.detect{|name,association|
               [association.key.to_s].include?(@name.to_s)
             }
             @association = possible_association.last if possible_association
+          else
+            @association = false
           end
           @association
         end

@@ -48,6 +48,12 @@ module Lolita
         self<<Lolita::Configuration::Factory::Tab.add(@dbi,*args,&block)
       end
 
+      def fields
+        @tabs.collect{|tab|
+          tab.fields
+        }.flatten
+      end
+
       def by_type(type)
         @tabs.detect{|tab| tab.type==type.to_sym}
       end

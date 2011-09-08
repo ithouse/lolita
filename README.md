@@ -1,6 +1,7 @@
 #Lolita
 
-Great Rails CMS, that turns your business logic into good-looking, fully functional workspace.
+Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. 
+Works with Rails 3.1
 ##Demo
 See the demo page at [Demo](http://lolita-demo.ithouse.lv)
 
