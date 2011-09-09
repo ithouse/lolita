@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "lolita"
-  s.version = "3.2.0.rc2"
+  s.version = "3.2.0.rc.3"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = "2011-09-06"
+  s.date = "2011-09-09"
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/lolita/application.css",
     "app/assets/stylesheets/lolita/default.css.erb",
     "app/assets/stylesheets/lolita/style.css.erb",
+    "app/controllers/lolita/field_data_controller.rb",
     "app/controllers/lolita/info_controller.rb",
     "app/controllers/lolita/rest_controller.rb",
     "app/helpers/components/lolita/configuration/list_component.rb",
@@ -58,6 +59,8 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field/array/_display.html.erb",
     "app/views/components/lolita/configuration/field/array/filter/_display.html.erb",
     "app/views/components/lolita/configuration/field/array/habtm/_display.html.haml",
+    "app/views/components/lolita/configuration/field/array/polymorphic/_display.html.haml",
+    "app/views/components/lolita/configuration/field/array/polymorphic/_options_for_select.html.haml",
     "app/views/components/lolita/configuration/field/array/select/_display.html.erb",
     "app/views/components/lolita/configuration/field/big_decimal/_display.html.erb",
     "app/views/components/lolita/configuration/field/boolean/_display.html.erb",

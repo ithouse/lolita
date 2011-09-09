@@ -101,7 +101,6 @@ module Lolita
 
         def find_dbi_field
           @dbi_field ||= self.dbi.fields.detect{|field|
-            debugger if field.association==false
             field.name.to_s == @name.to_s || (field.association && field.association.name.to_s == @name.to_s)
           }
         end
