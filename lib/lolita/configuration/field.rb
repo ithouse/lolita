@@ -101,7 +101,8 @@ module Lolita
 
         def find_dbi_field
           @dbi_field ||= self.dbi.fields.detect{|field|
-            field.name.to_s == self.name.to_s || (field.association && field.association.name.to_s == self.name.to_s)
+            debugger if field.association==false
+            field.name.to_s == @name.to_s || (field.association && field.association.name.to_s == @name.to_s)
           }
         end
 
@@ -118,13 +119,6 @@ module Lolita
             "#{@html_options[:class]} #{self.type}"
           else
             self.type.to_s
-          end
-          recognize_real_name
-        end
-
-        def recognize_real_name
-          if @dbi_field && @dbi_field.association && !@dbi_field.association.polymorphic? && @dbi_field.association.macro == :one
-            self.name = @dbi_field.name
           end
         end
 

@@ -88,13 +88,15 @@ module Lolita
         end
 
         def association
-          unless @association.nil?
+          if @association.nil?
             possible_association = @adapter.associations.detect{|name,association|
               [association.key.to_s].include?(@name.to_s)
             }
-            @association = possible_association.last if possible_association
-          else
-            @association = false
+            @association = if possible_association
+              possible_association.last 
+            else
+              false
+            end
           end
           @association
         end

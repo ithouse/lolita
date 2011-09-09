@@ -18,8 +18,10 @@ module Lolita
           @include_blank=true
           super
           self.find_dbi_field unless self.dbi_field
+          
           @association ||= self.dbi_field ? self.dbi_field.association : detect_association
           self.builder = detect_builder unless @builder
+          self.name = recognize_real_name
         end
 
         def options_for_select=(value=nil)
@@ -119,6 +121,14 @@ module Lolita
             @related_classes.map do |klass|
               [klass.constantize.model_name.human, klass.to_s]
             end
+          end
+        end
+
+        def recognize_real_name
+          if @association && !@association.polymorphic? && @association.macro == :one
+            self.name = @association.key
+          else
+            @name
           end
         end
 

@@ -1,7 +1,8 @@
-= hidden_field_tag "#{resource_name}[#{field.name.to_s.singularize}_ids][]",""
+- ids_method = field.name.to_s.match(/_ids$/) ? field.name : "#{field.name.to_s.singularize}_ids"
+= hidden_field_tag "#{resource_name}[#{ids_method}][]",""
 - field.view_values(self).each do |value|
-  - editors = resource.send(:"#{field.name.to_s.singularize}_ids")
+  - editors = resource.send(:"#{ids_method}")
   .habtm-container
     = label_tag "#{resource_name}_#{field.name}_#{value.last}",value.first, :class => "habtm-label"
-    = check_box_tag "#{resource_name}[#{field.name.to_s.singularize}_ids][]", value.last, resource.send("#{field.name.to_s.singularize}_ids").include?(value.last), :id => "#{resource_name}_#{field.name}_#{value.last}", :class => "habtm-checkbox"
+    = check_box_tag "#{resource_name}[#{ids_method}][]", value.last, resource.send("#{ids_method}").include?(value.last), :id => "#{resource_name}_#{field.name}_#{value.last}", :class => "habtm-checkbox"
 .clear

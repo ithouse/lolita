@@ -81,7 +81,7 @@ describe Lolita::Configuration::Field do
 
   it "should allow set field that references to (has_many or has_one) any class" do
     field=Lolita::Configuration::Factory::Field.add(@dbi,:comments,:array)
-    field.type.should == "array"
+    field.type.to_s.should == "array"
     field.association.macro.should == :many
   end
 
