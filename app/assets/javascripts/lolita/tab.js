@@ -32,7 +32,7 @@ $(function(){
   })
   // All tabs are closable when clicked on tab title.
   $(".tab .tab-title.grey").live('click',function(){
-		$(this).parent().toggleClass("minimized")
+		$(this).parent().toggleClass("minimized").trigger("tab.toggle")
 	})
   // Integer field validator
   $(".integer").live("keydown",function(event){
