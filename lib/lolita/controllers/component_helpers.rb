@@ -70,7 +70,7 @@ module Lolita
       def output_with_callbacks(partial_name,name,locals)
         @component_locals ||={}
         @component_locals[name] = locals
-        
+ 
         output = Lolita::Hooks.component(name).run(:before,:run_scope => self).to_s
         block_output = Lolita::Hooks.component(name).run(:around, :run_scope => self) do
           render(:partial => partial_name,:locals=>locals)
