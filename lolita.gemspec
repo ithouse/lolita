@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "lolita"
-  s.version = "3.2.0.rc.3"
+  s.version = "3.2.0.rc.4"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = "2011-09-09"
+  s.date = "2011-10-04"
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "app/assets/images/lolita/favicon.ico",
     "app/assets/images/lolita/plus.png",
     "app/assets/javascripts/lolita/application.js",
     "app/assets/javascripts/lolita/base64.js",
