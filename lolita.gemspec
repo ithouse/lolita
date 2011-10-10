@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "lolita"
-  s.version = "3.2.0.rc.4"
+  s.version = "3.2.0.rc.5"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = "2011-10-04"
+  s.date = "2011-10-10"
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
@@ -374,7 +374,7 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rails>, ["~> 3.1.0"])
+      s.add_runtime_dependency(%q<rails>, ["~> 3.1.1"])
       s.add_runtime_dependency(%q<kaminari>, ["~> 0.12.4"])
       s.add_runtime_dependency(%q<abstract>, [">= 0"])
       s.add_runtime_dependency(%q<builder>, ["~> 3.0"])
@@ -389,7 +389,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_development_dependency(%q<database_cleaner>, [">= 0"])
     else
-      s.add_dependency(%q<rails>, ["~> 3.1.0"])
+      s.add_dependency(%q<rails>, ["~> 3.1.1"])
       s.add_dependency(%q<kaminari>, ["~> 0.12.4"])
       s.add_dependency(%q<abstract>, [">= 0"])
       s.add_dependency(%q<builder>, ["~> 3.0"])
@@ -405,7 +405,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<database_cleaner>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rails>, ["~> 3.1.0"])
+    s.add_dependency(%q<rails>, ["~> 3.1.1"])
     s.add_dependency(%q<kaminari>, ["~> 0.12.4"])
     s.add_dependency(%q<abstract>, [">= 0"])
     s.add_dependency(%q<builder>, ["~> 3.0"])
