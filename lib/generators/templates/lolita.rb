@@ -8,10 +8,6 @@ Lolita.setup do |config|
   # Define authentication for Lolita controllers.
   # Call some of your own methods
   # config.authentication=:is_admin?
-  # Or use some customized logic
-  # config.authentication={
-  #  current_user.is_a?(Admin) || current_user.has_role?(:admin)
-  # }
 
   <% if defined?(Devise) %>
     <% default_user_class = Devise.mappings.keys.first %>

@@ -41,6 +41,7 @@ module Lolita
   autoload(:VERSION,'lolita/version')
   autoload(:ObservedArray,'lolita/observed_array')
   autoload(:Builder,'lolita/builder')
+  autoload(:ControllerAddition,'lolita/controller_addition')
   module Builder
     autoload(:Custom, 'lolita/builder')
   end
@@ -134,7 +135,7 @@ module Lolita
     autoload :UserHelpers, 'lolita/controllers/user_helpers'
     autoload :UrlHelpers, 'lolita/controllers/url_helpers'
     autoload :ComponentHelpers, 'lolita/controllers/component_helpers'
-    autoload :ViewUserHelpers, 'lolita/controllers/view_user_helpers'
+    autoload :AuthorizationHelpers, 'lolita/controllers/authorization_helpers'
   end
 
   module Navigation

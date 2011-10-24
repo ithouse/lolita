@@ -1,6 +1,5 @@
 class Lolita::RestController < ApplicationController
-  include Lolita::Controllers::UserHelpers
-  include Lolita::Controllers::InternalHelpers
+  include Lolita::ControllerAddition
 
   include Lolita::Hooks
   add_hook :before_new, :after_new, :before_create,:after_create,:before_edit,:after_edit
@@ -12,12 +11,14 @@ class Lolita::RestController < ApplicationController
   
   def new
     self.run(:before_new)
+    authorize!(:create,self.resource_class)
     build_resource
     show_form
   end
 
   def create
     self.run(:before_create)
+    authorize!(:create,self.resource_class)
     build_resource
     save_and_redirect
   end
@@ -25,12 +26,14 @@ class Lolita::RestController < ApplicationController
   def edit
     self.run(:before_edit)
     get_resource
+    authorize!(:update,self.resource)
     show_form
   end
   
   def update
     self.run(:before_update)
     get_resource
+    authorize!(:update,self.resource)
     if self.resource
       self.resource=resource_with_attributes(self.resource,resource_attributes)
       save_and_redirect
@@ -41,6 +44,7 @@ class Lolita::RestController < ApplicationController
   def destroy
     self.run(:before_destroy)
     get_resource
+    authorize!(:destroy, self.resource)
     if self.resource && self.resource.destroy
       flash[:notice] = ::I18n.t "lolita.shared.destroy_notice"
     else
@@ -52,6 +56,7 @@ class Lolita::RestController < ApplicationController
 
   def index
     self.run(:before_index)
+    authorize!(:read,self.resource_class)
     respond_to do |format|
       format.html do
         build_response_for(:list,:page=>page)

@@ -2,8 +2,9 @@ module Lolita
   module Navigation
     class Branch
 
-      attr_accessor :title,:name,:object
+      attr_accessor :name,:object
       attr_reader :level,:options,:tree,:parent
+      attr_writer :title
 
       def initialize(*args)
         
@@ -11,6 +12,10 @@ module Lolita
         set_object(args||[])
         set_default_values
         assign_attributes_from_options
+      end
+
+      def title
+        @title || self.object.to.model_name.human(:count=>2)
       end
 
       def tree=(new_tree)
@@ -64,6 +69,30 @@ module Lolita
 
       def prepend(*args)
         move_to(:prepend,*args)
+      end
+
+      def active?(view)
+        resource = view.respond_to?(:resource_class) ? view.send(:resource_class) : nil
+        request = view.send(:request)
+        if self.object.is_a?(Lolita::Mapping) && self.object && self.object.to == resource
+          true
+        else
+          self.self_with_children.detect{|branch|
+            if branch.options[:active].respond_to?(:call)
+              branch.options[:active].call(options[:view],self,branch)
+            else
+              branch.options[:url] == request.path
+            end
+          }
+        end
+      end
+
+      def visible?(view)
+        if self.object 
+          view.send(:can?,:read,self.object.to)
+        else
+          true
+        end
       end
 
       def self.get_or_create(*args)

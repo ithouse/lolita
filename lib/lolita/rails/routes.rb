@@ -91,7 +91,7 @@ module ActionDispatch::Routing
        
         tree=Lolita::Navigation::Tree[:"left_side_navigation"]
         unless tree.branches.detect{|b| b.object.is_a?(Lolita::Mapping) && b.object.to==mapping.to}
-          tree.append(mapping,:title=>mapping.to.model_name.human(:count=>2))
+          tree.append(mapping)
         end
       }
       Lolita.common_routes(all_resource_classes).each do |route_name|

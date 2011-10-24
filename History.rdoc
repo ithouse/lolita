@@ -1,5 +1,7 @@
 === Version 3.2.0
 * Enhancements
+  * All modules that need to be included by Lolita controllers is added in one Lolita::ControllerAddition
+  * Basic authorization added, now with CanCan.
   * Created adapter Field and Association classes. Field and association access methods convert data to thoes class objects
   * Factory module created where factory classes are located
   * Removed specific pagination methods from adapters 

@@ -5,28 +5,40 @@ module Lolita
     # Authentication should be defined through Lolita#setup.
     # Method call block or send given method name to current controller
     # or return True when no authentication is defined.
+    # Include this if authentication is neccessary for controller.
     module UserHelpers
       extend ActiveSupport::Concern
       included do
-        helper LolitaHelper
+        helpers = %w(lolita_current_user)
+       
+        helper_method *helpers
       end
-      
+
       private
-    # FIXME what to do when block or method return false, and do not redirect
-    # need some redirect, but how to detect it?
-      def authenticate_lolita_user!
-        if auth=Lolita.authentication
-          if auth.is_a?(Proc)
-            self.instance_eval(&auth)
+
+      def lolita_current_user
+        @lolita_current_user ||= Lolita.user_classes.inject(nil) do |user,user_class|
+          unless user
+            if self.respond_to?(:"current_#{user_class.to_s.downcase}")
+              self.send(:"current_#{user_class.to_s.downcase}")
+            else
+              false
+            end
           else
-            send(auth)
+            user
           end
-        else
-          #TODO warning
-          true
         end
       end
 
+
+      def authenticate_lolita_user!
+        if auth = Lolita.authentication
+          send(auth)
+        else
+          warn("There is no authentication. See initializers/lolita.rb")
+          true
+        end
+      end
     end
   end
 end

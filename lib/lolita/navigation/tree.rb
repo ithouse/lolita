@@ -41,6 +41,16 @@ module Lolita
         !parent
       end
 
+      def visible?(view)
+        self.branches.inject([]){|result,branch| 
+          if branch.visible?(view)
+            result << true
+          else
+            result
+          end
+        }.any?
+      end
+
       def method_missing method_name, *args
         @branches.send(method_name.to_sym,*args)
       end

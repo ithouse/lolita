@@ -18,6 +18,12 @@ module Lolita
         set_default_attributes
       end
 
+      # Define or return pagination method. This method is used by DBI adapters to delegate domain specific
+      # pagination back to model.
+      # ====Example
+      #   list do 
+      #     pagination_method :paginate_with_profiles
+      #   end
       def pagination_method(value = nil)
         if value
           self.pagination_method = value
@@ -29,7 +35,10 @@ module Lolita
         @pagination_method = value
       end
 
-      def paginate(current_page, request)
+      # Return page for list display. Method requires two arguments:
+      # * <tt>current_page</tt> - number of current page
+      # * <tt>request (optional) </tt> - request that is passed to adapter that passes this to model when #pagination_method is defined
+      def paginate(current_page, request = nil)
         dbi.paginate(current_page,@per,:request => request, :pagination_method => @pagination_method)
       end
 

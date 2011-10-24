@@ -2,12 +2,10 @@ require 'lolita/rails/routes'
 require 'haml'
 
 ActiveSupport.on_load(:action_controller) {
-	include Lolita::Controllers::ViewUserHelpers
 	include Lolita::Controllers::UrlHelpers
 	include Lolita::Controllers::ComponentHelpers
 }
 ActiveSupport.on_load(:action_view) {
-	include Lolita::Controllers::ViewUserHelpers
 	include Lolita::Controllers::UrlHelpers
 	include Lolita::Controllers::ComponentHelpers
 }

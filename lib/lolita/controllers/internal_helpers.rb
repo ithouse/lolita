@@ -5,7 +5,7 @@ module Lolita
       included do
         helper LolitaHelper
         #TODO pārnest helperus uz lolitu vai arī uz lolita app nevis likt iekš controllers iekš lolitas
-        helpers = %w(resource resource_name
+        helpers = %w(resource resource_name 
                      resource_class lolita_mapping show_response tab_form tab_form=)
         hide_action *helpers
        
@@ -81,7 +81,7 @@ module Lolita
       end
 
       def get_resource(id=nil)
-        self.resource=resource_class.lolita.dbi.find_by_id(id||params[:id])
+        self.resource = resource_class.lolita.dbi.find_by_id(id || params[:id])
       end
 
       def build_resource(attributes=nil)

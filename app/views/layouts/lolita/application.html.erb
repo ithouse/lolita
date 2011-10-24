@@ -9,9 +9,8 @@
   <head>
     <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>Lolita</title><meta name="description" content=""><meta name="author" content="">
-    <link rel="shortcut icon" href="/lolita/favicon.ico">
-
+    <title><%=Lolita.application.name%></title><meta name="description" content=""><meta name="author" content="">
+    <%= favicon_link_tag "lolita/favicon.ico"%>
     <%= stylesheet_link_tag "lolita/application.css" %>
     <%= yield :style %>
     <%= javascript_include_tag "lolita/application.js" %>
