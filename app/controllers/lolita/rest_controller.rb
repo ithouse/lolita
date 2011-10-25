@@ -1,5 +1,5 @@
 class Lolita::RestController < ApplicationController
-  include Lolita::ControllerAddition
+  include Lolita::ControllerAdditions
 
   include Lolita::Hooks
   add_hook :before_new, :after_new, :before_create,:after_create,:before_edit,:after_edit

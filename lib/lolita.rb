@@ -41,7 +41,7 @@ module Lolita
   autoload(:VERSION,'lolita/version')
   autoload(:ObservedArray,'lolita/observed_array')
   autoload(:Builder,'lolita/builder')
-  autoload(:ControllerAddition,'lolita/controller_addition')
+  autoload(:ControllerAdditions,'lolita/controller_additions')
   module Builder
     autoload(:Custom, 'lolita/builder')
   end
