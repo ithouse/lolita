@@ -18,6 +18,14 @@ module Lolita
         set_default_attributes
       end
 
+      # For details see Lolita::Configuration::Search
+      def search *args, &block
+        if (args && args.any?) || block_given?
+          @search = Lolita::Configuration::Search.new(self.dbi,*args,&block)
+        end
+        @search
+      end
+
       # Define or return pagination method. This method is used by DBI adapters to delegate domain specific
       # pagination back to model.
       # ====Example
@@ -39,7 +47,11 @@ module Lolita
       # * <tt>current_page</tt> - number of current page
       # * <tt>request (optional) </tt> - request that is passed to adapter that passes this to model when #pagination_method is defined
       def paginate(current_page, request = nil)
-        dbi.paginate(current_page,@per,:request => request, :pagination_method => @pagination_method)
+        page_criteria = dbi.paginate(current_page,@per,:request => request, :pagination_method => @pagination_method)
+        if self.search
+          page_criteria = page_criteria.merge(self.search.run(request.params[:q],request))
+        end
+        page_criteria
       end
 
       # Set columns. Allowed classes are Lolita::Configuration::Columns or

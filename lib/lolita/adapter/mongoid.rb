@@ -184,6 +184,56 @@ module Lolita
         end
       end
 
+      def search(query)
+        content_fields = @dbi.fields.reject{|field| field.type!="string" || field.name.match(/^_/)}.slice(0..3)
+        #result = self.map_reduce_search(content_fields,query)
+        #debugger
+        #result
+        where_hash = {}
+        content_fields.each do |field|
+          where_hash[field.name.to_sym] = /#{Regexp.escape(query)}/
+        end
+        klass.where(where_hash)
+      end
+
+      #FIXME
+      def map_reduce_search(content_fields,query)
+        keys = "[" + @dbi.fields.map{|f| 
+          f.primary? || f.name.to_s.match(/^_/)  ? nil : "'#{f.name}'"
+        }.compact.join(",").to_s + "]"
+        content_keys = "[" + content_fields.map{|f| "'#{f.name}'"}.join(",").to_s + "]"
+        result_obj = @dbi.fields.map{|f|
+          f.name.to_s.match(/^_/) ? nil : "'#{f.name}': false"
+        }.compact.join(",")
+        result_obj = "{#{result_obj}}"
+        map = %^
+          function(){
+            var doc = #{result_obj};
+            var do_emit = false;
+            for(var k in #{content_keys}){
+              var c_val = this[k];
+              if(c_val && c_val.match(/#{Regexp.escape(query)}/i)){
+                do_emit = true;
+                break;
+              };
+            };
+            if(true){
+              #{keys}.forEach(function(k){
+                doc[k] = this.name;
+              })
+              emit(this.id,doc);
+            };
+          };
+        ^
+        reduce = %^
+          function(key,values){
+
+            return values[values.length-1];
+          };
+        ^
+        self.collection.map_reduce(map,reduce, {:out => "custom_mr", :query => {}})
+      end
+
       def db
         self.klass.db
       end

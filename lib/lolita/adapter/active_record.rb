@@ -200,6 +200,17 @@ module Lolita
         end
       end
 
+      def search(query)
+        #TODO raise error or warn when there are lot of records and no index on field
+        content_fields = @dbi.fields.reject{|field| field.type!="string"}
+        where_clause = []
+        content_fields.each do |field|
+          where_clause << "`#{dbi.collection_name}`.`#{field.name}` LIKE '%:query%'"
+        end
+        where_clause = "(" + where_clause.join(" OR ").to_s + ")"
+        klass.where(where_clause, :query => query)
+      end
+
       def db
         self.klass.connection
       end

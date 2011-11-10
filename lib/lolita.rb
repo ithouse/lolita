@@ -66,6 +66,7 @@ module Lolita
     autoload :Tabs, 'lolita/configuration/tabs'
     autoload :Filter, 'lolita/configuration/filter'
     autoload :NestedForm, 'lolita/configuration/nested_form'
+    autoload :Search, 'lolita/configuration/search'
 
     # Module contains classes that is used to create specific type class based on given arguments.
     module Factory
@@ -137,6 +138,10 @@ module Lolita
     class Formatter
       autoload :Rails, 'lolita/support/formatter/rails'
     end
+  end
+
+  module Search
+    autoload :Simple, 'lolita/search/simple'
   end
 
   @@scopes={}

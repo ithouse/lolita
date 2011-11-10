@@ -8,6 +8,7 @@ module Lolita
       abstract_method 'method_name,page,per,options', :pagination_scope_from_klass
       abstract_method 'name',:reflect_on_association,:field_by_name,:field_by_association
       abstract_method 'id',:find_by_id
+      abstract_method 'query', :search
     end
   end
 end
