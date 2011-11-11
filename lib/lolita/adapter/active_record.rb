@@ -202,13 +202,18 @@ module Lolita
 
       def search(query)
         #TODO raise error or warn when there are lot of records and no index on field
+        resources = self.klass.arel_table
         content_fields = @dbi.fields.reject{|field| field.type!="string"}
-        where_clause = []
-        content_fields.each do |field|
-          where_clause << "`#{dbi.collection_name}`.`#{field.name}` LIKE '%:query%'"
+        scope = nil
+        content_fields.each_with_index do |field,index|
+          new_scope = resources[field.name].matches("%#{query}%")
+          unless index == 0
+            scope = scope.or(new_scope)
+          else
+            scope = new_scope
+          end
         end
-        where_clause = "(" + where_clause.join(" OR ").to_s + ")"
-        klass.where(where_clause, :query => query)
+        self.klass.where(scope)
       end
 
       def db
