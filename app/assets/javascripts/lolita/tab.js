@@ -1,3 +1,5 @@
+//= require jquery
+//= require jquery-ui-1.8.13.min
 $(function(){
   // Send ajax request with all forms data for given tabs block.
   function save_tab(tabs){
@@ -74,5 +76,32 @@ $(function(){
       }
     })
   })
+
+	$("input[data-autocomplete-url]").live("keyup.autocomplete", function(){
+		$(this).autocomplete({
+			source: function(request, response){
+								$.getJSON(this.element.data("autocomplete-url"), {
+									term: request.term
+								}, response)
+							},
+			focus: function(){
+							return false;
+						 },
+			select: function(event, ui){
+								console.log(ui.item.value);
+								var li = $("<li></li>").appendTo($(this).closest(".autocomplete-container").find("ul"));
+								li.text(ui.item.value);
+								$("<a href=''></a>").text(ui.item.delete_link).appendTo(li);
+								$("<input type='hidden'>").attr("name", ui.item.name).val(ui.item.id).appendTo(li);
+								this.value = "";
+								return false;
+							}
+		});
+	});
+
+	$(".autocomplete-container ul li a").live("click", function(){
+		$(this).closest("li").remove();
+		return false;
+	})
 
 })
