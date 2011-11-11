@@ -188,6 +188,7 @@ Gem::Specification.new do |s|
     "lib/lolita/system_configuration/base.rb",
     "lib/lolita/test/matchers.rb",
     "lolita.gemspec",
+    "lolita.gemspec.orig",
     "spec/adapter_helper.rb",
     "spec/builder_spec.rb",
     "spec/configuration/base_spec.rb",

@@ -36,5 +36,13 @@ describe Lolita::Search::Simple do
       results.should have(1).item
       results.first.should == post
     end
+
+    it "should use only given fields when they are presented" do
+      search = Lolita::Search::Simple.new(dbi,:fields => [:body])
+      Factory.create(:post,:title => "only_in_title")
+      search.run("only_in_title").should have(0).items
+      search2 = Lolita::Search::Simple.new(dbi,:fields => [:title])
+      search2.run("only_in_title").should have(1).item
+    end
   end
 end

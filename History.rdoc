@@ -21,8 +21,8 @@
 * Bug fixes
   * Each hook call runs as new instance of Hooks::Runner 
   * All classes fixed to work with both mongoid and AR
-   
-
+  * String disabled builder fixed to use form object
+  
 === Version 3.1.18 / 
 * Enhancements
   * 

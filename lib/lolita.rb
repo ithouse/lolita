@@ -8,13 +8,16 @@ puts "=> Lolita #{LOLITA_VERSION} starting#{FRAMEWORK}"
 
 require "rubygems"
 require 'abstract'
-unless defined?(ActiveSupport)
-  require 'active_support/core_ext/numeric/time'
-  require 'active_support/core_ext/date_time/conversions'
-  require 'active_support/concern'
-  require 'active_support/callbacks'
-  require 'active_support/dependencies'
-end
+
+require 'active_support'
+require 'active_support/core_ext/numeric/time'
+require 'active_support/core_ext/date_time/conversions'
+require 'active_support/concern'
+require 'active_support/callbacks'
+require 'active_support/dependencies'
+require 'active_support/inflector'
+
+
 require 'lolita/errors'
 require "lolita/hooks"
 # Require all ruby extensions
