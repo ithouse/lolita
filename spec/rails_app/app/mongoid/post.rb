@@ -16,4 +16,8 @@ class Post
   accepts_nested_attributes_for :comments, :reject_if => :all_blank
 
   lolita
+
+  def self.custom_search query,request=nil,dbi=nil
+    self.where(:expire_date.gt => Date.today)
+  end
 end

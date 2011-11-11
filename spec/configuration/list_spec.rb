@@ -1,5 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
+class SearchEngine
+  def run(*args)
+  end
+end
+
 describe Lolita::Configuration::List do
 
   before(:each) do
@@ -55,20 +60,20 @@ describe Lolita::Configuration::List do
     list.columns.size.should == 3
   end
 
-  
-  it "should move columns to right or left" do
-    pending
-#    list = Lolita::Configuration::List.new do
-#      column :name=>"col1"
-#      column :name=>"col2"
-#      column :name=>"col3"
-#    end
-#    list.columns.first.name.should == "col1"
-#    list.move(:col2).before(:col1)
-#    list.columns[:col_index].move_after(:col1)
-#    list.columns.first.name.should == "col2"
-#    list.move(:col2).after(:col1)
-#    list.columns.first.name.should == "col1"
+  describe "search" do
+    let(:list){ Lolita::Configuration::List.new(@dbi,:per => 10) }
+
+    it "should define default search by passing true" do
+      list.search true
+      list.search.class.to_s.should match(/Lolita::Configuration::Search/)
+    end
+
+    it "should define search with block" do
+      list.search do 
+        with SearchEngine.new
+      end
+      list.search.class.to_s.should match(/Lolita::Configuration::Search/)
+    end
   end
 
 end

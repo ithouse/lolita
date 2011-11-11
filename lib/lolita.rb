@@ -6,17 +6,6 @@ FRAMEWORK = if defined?(Rails)
 end
 puts "=> Lolita #{LOLITA_VERSION} starting#{FRAMEWORK}"
 
-# TODO should allow run lolita seperated
-# unless (["-d","--debug"] & ARGV).empty?
-#   require "ruby-debug"
-#   Debugger.settings[:autoeval]=true
-# else
-#   unless self.respond_to?(:debugger)
-#     def debugger
-#       warn "Debugger called at #{caller.first} was ignored, run lolita with -d to attatch debugger."
-#     end
-#   end
-# end
 require "rubygems"
 require 'abstract'
 unless defined?(ActiveSupport)
@@ -77,6 +66,7 @@ module Lolita
     autoload :Tabs, 'lolita/configuration/tabs'
     autoload :Filter, 'lolita/configuration/filter'
     autoload :NestedForm, 'lolita/configuration/nested_form'
+    autoload :Search, 'lolita/configuration/search'
 
     # Module contains classes that is used to create specific type class based on given arguments.
     module Factory
@@ -150,6 +140,10 @@ module Lolita
     end
   end
 
+  module Search
+    autoload :Simple, 'lolita/search/simple'
+  end
+
   @@scopes={}
 
   def self.scope name=nil
@@ -177,6 +171,13 @@ module Lolita
   end
   
   def self.method_missing method_name, *args, &block
+    self.class_eval <<-LOLITA_SETUP,__FILE__,__LINE__+1
+      class << self
+        def #{method_name}(*args,&block)
+          scope.send(:#{method_name},*args,&block)
+        end
+      end
+    LOLITA_SETUP
     scope.send(method_name,*args,&block)
   end
 

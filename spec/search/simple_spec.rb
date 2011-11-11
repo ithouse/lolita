@@ -1,0 +1,40 @@
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+
+describe Lolita::Search::Simple do
+  let(:dbi){Lolita::DBI::Base.create(Post)}
+
+  it "should accept search method" do
+    search = Lolita::Search::Simple.new(dbi,:custom_search)
+    search.search_method.should == :custom_search
+  end
+
+  it "should create new search without search method" do
+    search = Lolita::Search::Simple.new(dbi)
+    search.search_method.should be_nil
+  end
+
+  describe "#run" do
+    let(:search){Lolita::Search::Simple.new(dbi)}
+
+    it "should run default search when no search method is provided" do
+      pending "think that map_reduce should be fixed"
+      Factory.create(:post,:title => "moonwalker")
+      search = Lolita::Search::Simple.new(dbi)
+      search.run("moon").size.should == 1
+    end
+
+    it "should accept custom dbi for search" do
+      Factory.create(:category, :name => "special_text")
+      search.run("special_text").should be_empty
+      search.run("special_text",Object.new,Lolita::DBI::Base.create(Category)).should have(1).item
+    end
+
+    it "should run custom search when search method is provided" do
+      search = Lolita::Search::Simple.new(dbi,:custom_search)
+      post = Factory.create(:post,:expire_date => 2.days.since)
+      results = search.run("")
+      results.should have(1).item
+      results.first.should == post
+    end
+  end
+end
