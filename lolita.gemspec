@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "app/assets/images/lolita/favicon.ico",
     "app/assets/images/lolita/plus.png",
+    "app/assets/images/lolita/search_icon.png",
     "app/assets/javascripts/lolita/application.js",
     "app/assets/javascripts/lolita/base64.js",
     "app/assets/javascripts/lolita/main.js",
@@ -326,60 +327,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.10"
   s.summary = "Great Rails CMS."
-  s.test_files = [
-    "spec/adapter_helper.rb",
-    "spec/builder_spec.rb",
-    "spec/configuration/base_spec.rb",
-    "spec/configuration/column_spec.rb",
-    "spec/configuration/columns_spec.rb",
-    "spec/configuration/field_set_spec.rb",
-    "spec/configuration/field_spec.rb",
-    "spec/configuration/filter_spec.rb",
-    "spec/configuration/list_spec.rb",
-    "spec/configuration/search_spec.rb",
-    "spec/configuration/tab_spec.rb",
-    "spec/configuration/tabs_spec.rb",
-    "spec/controllers/component_helpers_spec.rb",
-    "spec/controllers/internal_helpers_spec.rb",
-    "spec/controllers/lolita_rest_nested_resources_spec.rb",
-    "spec/controllers/lolita_rest_spec.rb",
-    "spec/dbi/base_spec.rb",
-    "spec/hooks_spec.rb",
-    "spec/lolita_spec.rb",
-    "spec/mapping_spec.rb",
-    "spec/navigation/branch_spec.rb",
-    "spec/navigation/tree_spec.rb",
-    "spec/orm/mongoid.rb",
-    "spec/rails_app/app/controllers/application_controller.rb",
-    "spec/rails_app/app/helpers/application_helper.rb",
-    "spec/rails_app/app/mongoid/address.rb",
-    "spec/rails_app/app/mongoid/category.rb",
-    "spec/rails_app/app/mongoid/comment.rb",
-    "spec/rails_app/app/mongoid/post.rb",
-    "spec/rails_app/app/mongoid/preference.rb",
-    "spec/rails_app/app/mongoid/profile.rb",
-    "spec/rails_app/app/mongoid/tag.rb",
-    "spec/rails_app/config/application.rb",
-    "spec/rails_app/config/boot.rb",
-    "spec/rails_app/config/environment.rb",
-    "spec/rails_app/config/environments/development.rb",
-    "spec/rails_app/config/environments/production.rb",
-    "spec/rails_app/config/environments/test.rb",
-    "spec/rails_app/config/initializers/backtrace_silencers.rb",
-    "spec/rails_app/config/initializers/inflections.rb",
-    "spec/rails_app/config/initializers/secret_token.rb",
-    "spec/rails_app/config/routes.rb",
-    "spec/rails_app/db/schema.rb",
-    "spec/rails_app/lib/lolita/configuration/field/my_custom_collection.rb",
-    "spec/routing/routes_spec.rb",
-    "spec/search/simple_spec.rb",
-    "spec/simple_spec_helper.rb",
-    "spec/spec_helper.rb",
-    "spec/support/factories/category.rb",
-    "spec/support/factories/post.rb",
-    "spec/support/factories/tag.rb",
-    "spec/support/formatter_spec.rb"
-  ]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
@@ -392,7 +339,8 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
       s.add_runtime_dependency(%q<jquery-rails>, [">= 0"])
       s.add_runtime_dependency(%q<tinymce-rails>, [">= 0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
+      s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
+      s.add_development_dependency(%q<metric_fu>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_development_dependency(%q<factory_girl>, [">= 0"])
@@ -407,7 +355,8 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<haml>, ["~> 3.1.2"])
       s.add_dependency(%q<jquery-rails>, [">= 0"])
       s.add_dependency(%q<tinymce-rails>, [">= 0"])
-      s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
+      s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
+      s.add_dependency(%q<metric_fu>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_dependency(%q<factory_girl>, [">= 0"])
@@ -423,7 +372,8 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<haml>, ["~> 3.1.2"])
     s.add_dependency(%q<jquery-rails>, [">= 0"])
     s.add_dependency(%q<tinymce-rails>, [">= 0"])
-    s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
+    s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
+    s.add_dependency(%q<metric_fu>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.6.0"])
     s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
     s.add_dependency(%q<factory_girl>, [">= 0"])

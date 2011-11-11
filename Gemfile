@@ -24,8 +24,12 @@ group :assets do
   gem 'uglifier'
 end
 
-gem "jeweler", "~> 1.5.2", :group=>:development
+gem "jeweler", "~> 1.6.4", :group=>:development
 group :test,:development do
+	gem "metric_fu"
+	gem "fattr"
+	gem "arrayfields"
+	gem "map"
 	gem "rspec", "~>2.6.0"
 	gem "rspec-rails","~>2.6.1"
 	gem "factory_girl"

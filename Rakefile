@@ -38,3 +38,10 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+require 'metric_fu'
+MetricFu::Configuration.run do |config|
+  config.rcov[:test_files] = ['spec/**/*_spec.rb']  
+  config.rcov[:rcov_opts] << "-Ispec" # Needed to find spec_helper
+  config.metrics -= [:flog]
+end
