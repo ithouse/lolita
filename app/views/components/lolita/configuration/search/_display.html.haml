@@ -1,2 +1,2 @@
-= form_tag lolita_resources_path(), :method => :get do 
-  %input{:type => "text", :name => "q", :value => params[:q]}
+= form_tag lolita_resources_path(), :method => :get, :class => "search" do 
+  %input{:type => "text", :name => "q", :value => params[:q], :placeholder => t("lolita.search")}

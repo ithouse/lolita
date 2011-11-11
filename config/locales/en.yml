@@ -23,6 +23,7 @@ en:
     filter:
       apply_button: Apply
       include_blank_by_title: " -- Filter by %{title} -- "
+    search: "Search"
   views:
     pagination:
       previous: "&laquo; Previous"

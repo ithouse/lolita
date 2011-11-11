@@ -4,8 +4,12 @@ html,body{
 body {background: #f3f3f3; font-size: 13px;}
 
 a, a:visited, a:active {color: #7ac1ed; text-decoration: none;}
-input[type="button"] {vertical-align: top; padding: 3px 9px;}
 h1 {font-size: 28px; font-weight: normal; letter-spacing: -1px; line-height: 85px;}
+input[type="button"] {vertical-align: top; padding: 3px 9px;}
+.placeholder {color: #aaa;}
+::placeholder {color: #aaa;}
+:-moz-placeholder {color: #aaa;}
+::-webkit-input-placeholder {color: #aaa;}
 
 #container {
   width: 90%;
@@ -332,7 +336,31 @@ a.create {
 
 .list table td a:active {position: relative; top: 1px;}
 
-/* filter */
+/* search in list view */
+
+#main .boxtitle .black .search {
+	position: absolute;
+	right: 15px;
+	top: 25px;
+	background: none;
+	padding: 0;
+}
+#main .boxtitle .black .search input {
+	font-size: 13px;
+	background: #fff url(<%= asset_data_uri "lolita/search_icon.png" %>) no-repeat 5px center;
+	padding: 0 10px 0 18px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	height: 20px;
+	line-height: 20px\9;
+}
+
+/* -------------------------------------------------------------------------------- */
+
+/* filter in list view */
+
 #main form.filter {
   background: #F3F3F3;
   padding: 10px;
@@ -348,6 +376,7 @@ a.create {
 #main form.filter label {
   color: #666;
 }
+
 /* --------------------------------------------- */
 
 /* Pagination */

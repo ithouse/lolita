@@ -23,6 +23,7 @@ lv:
     filter:
       apply_button: Pielietot
       include_blank_by_title: " -- Filtrēt pēc %{title} -- "
+    search: "Meklēt"
   views:
     pagination:
       previous: "&laquo; Iepriekšējā"
