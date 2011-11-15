@@ -1,5 +1,7 @@
 === Version 3.2.0
 * Enhancements
+  * _only_ options added for <b>lolita_for</b>
+  * New options _visible_ added to Lolita::Mapping, now is possible to exclude resource from navigation tree
   * Search functionality added, included in List
   * All modules that need to be included by Lolita controllers is added in one Lolita::ControllerAddition
   * Basic authorization added, now with CanCan.
@@ -13,17 +15,20 @@
   * Polymorphic association field
 
 * Changes
-  * using rails 3.1.x
+  * noew using rails 3.1.x
   * #value, #value=, #record_value removed from Lolita::Configuration::Field
   * Created pagination in list and in adapters; its possible to customize it for model.
   * All fields must have name as well as tabs must have type
+
+* Removed
+  * Lolita::FileHelper from generators removed
   
 * Bug fixes
   * Each hook call runs as new instance of Hooks::Runner 
   * All classes fixed to work with both mongoid and AR
   * String disabled builder fixed to use form object
   
-=== Version 3.1.18 / 
+=== Version 3.1.18 
 * Enhancements
   * 
 * Bug fixes

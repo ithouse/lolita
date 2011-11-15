@@ -11,16 +11,17 @@
     end
   end
 end %>
+<% visible ||= (tree.root? || nil) %>
 <% if tree.visible?(self) %>
-  <ul <%= !tree.root? ? "class='subtree'" : ""%> >
+  <ul <%= !tree.root? ? "class='subtree'" : ""%> style="display:<%=visible ? "block" : "none"%>" >
     <% last_branch=tree.branches.last %>
     <%tree.branches.each do |branch|
       if branch.visible?(self)
         active = branch.active?(self)  %> 
-        <li class="<%=active ? "active" : ""%> <%=branch.children.branches.any? ? "with-subtree" : ""%> <%=!tree.root? && branch==last_branch ? "last-in-subtree" : ""%>">
-          <%= link_to branch.title, branch.options[:url] || "#" %>
-          <% if branch.children.branches.any? %>
-            <%= render_component(:"lolita/navigation",:tree,:tree=>branch.children) %>
+        <li class="<%=active ? "active" : ""%> <%=branch.subtree? ? "with-subtree" : ""%> <%=!tree.root? && branch==last_branch ? "last-in-subtree" : ""%>">
+          <%= link_to branch.title, branch.options[:url] || "#", :onclick => branch.subtree? ? "$(this).next().toggle();return false;" : "" %>
+          <% if branch.subtree? %>
+            <%= render_component(:"lolita/navigation",:tree,:tree=>branch.children, :visible => active) %>
           <% end %>
         </li>
       <% end %>

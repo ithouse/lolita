@@ -14,6 +14,14 @@ module Lolita
         assign_attributes_from_options
       end
 
+      def method_missing method_name, *args
+        if @options.keys.include?(method_name) || @options.keys.include?(method_name.to_s)
+          @options[method_name] || @options[method_name.to_s]
+        else
+          super
+        end
+      end
+
       def title
         @title || self.object.to.model_name.human(:count=>2)
       end
@@ -45,6 +53,10 @@ module Lolita
 
       def index
         self.tree.get_branch_index(self)
+      end
+
+      def subtree?
+        self.children.branches.any?
       end
 
       def siblings
@@ -160,6 +172,8 @@ module Lolita
         @options.each{|key,value|
           if self.respond_to?(:"#{key}=")
             self.send(:"#{key}=",@options.delete(key))
+          else
+            self.options[key] = value
           end
         }
       end

@@ -18,12 +18,15 @@ module Lolita
   # Also eahc request containers information with mapping related to it.
   class Mapping
     attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:controllers,:as
+    attr_reader :visible, :only
     alias :name :singular
     
     
     def initialize(name,options={})
       # TODO how it is when lolita plugin extend default path and there is module is this not break the logic?
       @as=options[:as]
+      @visible = options.keys.include?(:visible) ? options[:visible] : true
+      @only = options[:only] || nil
       @plural=(options[:as] ? options[:as] : name).to_sym
       @singular=(options[:singular] || @plural.to_s.singularize).to_sym
       @class_name=(options[:class_name] || name.to_s.classify).to_s
@@ -49,6 +52,15 @@ module Lolita
 
     def url_name #TODO test what with namespace
       "#{@path}_#{@plural}"
+    end
+
+    def add_to_navigation_tree
+      if self.visible
+        tree = Lolita::Navigation::Tree[:"left_side_navigation"]
+        unless tree.branches.detect{|b| b.object.is_a?(Lolita::Mapping) && b.object.to==self.to}
+          tree.append(self)
+        end
+      end
     end
     
   end
