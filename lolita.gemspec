@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = "2011-11-11"
+  s.date = "2011-11-15"
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
@@ -123,7 +123,6 @@ Gem::Specification.new do |s|
     "features/step_definitions/web_steps.rb",
     "features/support/env.rb",
     "features/support/paths.rb",
-    "lib/generators/helpers/file_helper.rb",
     "lib/generators/lolita/install_generator.rb",
     "lib/generators/templates/lolita.rb",
     "lib/lolita.rb",
@@ -341,6 +340,9 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<tinymce-rails>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<metric_fu>, [">= 0"])
+      s.add_development_dependency(%q<fattr>, [">= 0"])
+      s.add_development_dependency(%q<arrayfields>, [">= 0"])
+      s.add_development_dependency(%q<map>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_development_dependency(%q<factory_girl>, [">= 0"])
@@ -357,6 +359,9 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<tinymce-rails>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<metric_fu>, [">= 0"])
+      s.add_dependency(%q<fattr>, [">= 0"])
+      s.add_dependency(%q<arrayfields>, [">= 0"])
+      s.add_dependency(%q<map>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
       s.add_dependency(%q<factory_girl>, [">= 0"])
@@ -374,6 +379,9 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<tinymce-rails>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<metric_fu>, [">= 0"])
+    s.add_dependency(%q<fattr>, [">= 0"])
+    s.add_dependency(%q<arrayfields>, [">= 0"])
+    s.add_dependency(%q<map>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.6.0"])
     s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
     s.add_dependency(%q<factory_girl>, [">= 0"])
