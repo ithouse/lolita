@@ -55,12 +55,7 @@ You can also add any other authentication method like
     config.authentication = :authenticate_admin
 And than put this method for common use in *ApplicationController* or in some other place that is accessable
 to all controllers.
-###Using newer version of Lolita
 
-If you decide to use some newer version, you most likely should copy new assets to your project. 
-This can be done with
-  
-    rails g lolita:assets
 ###Using hooks
 
 Lolita define hooks for RestController and for components.

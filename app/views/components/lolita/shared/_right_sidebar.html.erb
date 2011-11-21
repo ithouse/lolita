@@ -4,11 +4,6 @@
       <h1><%= t "lolita.tabs.save" %></h1>
       <div class="arrow"></div>
     </div>
-    <div class="save black">
-      <div class="last-save">
-        <%= resource.updated_at.strftime("#{t("lolita.tabs.last_save")}: %m/%d/%Y %H:%M ") if resource.respond_to?(:updated_at) && resource.updated_at %>
-      </div>
-      <button class="save-all"><%=::I18n.t("lolita.tabs.save")%></button>
-    </div>
+    <%= render_component "lolita/shared", :save_button%>
   </div>
 </div>

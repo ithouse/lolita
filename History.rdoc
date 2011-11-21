@@ -21,7 +21,7 @@
   * All fields must have name as well as tabs must have type
 
 * Removed
-  * Lolita::FileHelper from generators removed
+  * Lolita::Generator::FileHelper from generators removed
   
 * Bug fixes
   * Each hook call runs as new instance of Hooks::Runner 
@@ -29,8 +29,6 @@
   * String disabled builder fixed to use form object
   
 === Version 3.1.18 
-* Enhancements
-  * 
 * Bug fixes
   * Polymorphic bug fixed
   * habtm field fixed
