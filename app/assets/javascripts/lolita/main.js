@@ -47,5 +47,6 @@ function add_fields(link, association, content) {
   var new_id = new Date().getTime();
   var regexp = new RegExp("new_" + association, "g")
   var $container = $(link).parent().siblings(".nested-form-fields-container")
-  $container.prepend($(content.replace(regexp, new_id)))
+  $container.append($(content.replace(regexp, new_id)))
+  $container.scrollTop(100000)
 }
