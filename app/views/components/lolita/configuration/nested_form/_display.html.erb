@@ -2,11 +2,13 @@
   <% unless nested_form.field_style == :normal %>
     <%= render_component *nested_form.as_field.build(:name=>"/lolita/configuration/field", :state => :"label") %>
   <% end %>
-	<%= tab_form.fields_for nested_form.name, resource.send(nested_form.build_method) do |form| %>
-		<% tab_form(form) do %>
-				<%= render_component nested_form, :fields %>
-		<% end %>
-	<% end %>
+  <div class="nested-form-fields-container">
+  	<%= tab_form.fields_for nested_form.name, resource.send(nested_form.build_method) do |form| %>
+  		<% tab_form(form) do %>
+  				<%= render_component nested_form, :fields %>
+  		<% end %>
+  	<% end %>
+  </div>
   <% if nested_form.expandable? && !nested_form.update_only? %>
 	 <p><%= link_to_add_fields ::I18n.t("lolita.nested_form.add", :resource_name => nested_form.klass.model_name.human.downcase), tab_form, nested_form %> </p>
   <% end %>
