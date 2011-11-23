@@ -21,7 +21,7 @@ module Lolita
       end
       
       def resource_name
-        lolita_mapping.name
+        lolita_mapping.class_name.underscore.to_sym
       end
       
       def resource_class
