@@ -39,7 +39,7 @@ $(function(){
   // Integer field validator
   $(".integer").live("keydown",function(event){
     // Allow only backspace and delete
-    if ( event.keyCode == 46 || event.keyCode == 8 ) {
+    if ( event.keyCode == 46 || event.keyCode == 8 || event.keycode == 9 || event.keycode == 13) {
       // let it happen, don't do anything
     }
     else {
