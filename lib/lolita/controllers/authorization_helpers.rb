@@ -15,7 +15,7 @@ module Lolita
       # Proxy method for current_abi, it gives control back to superclass when method is called in
       # other controller than Lolita's (it responds to #lolita_mapping) otherwise it creates or return existing ability with #lolita_current_user.
       def current_ability
-        if self.respond_to?(:lolita_mapping) && lolita_current_user
+        if self.respond_to?(:is_lolita_resource?) && self.is_lolita_resource? && lolita_current_user
           if defined?(::CanCan)
             @current_ability||= ::Ability.new(lolita_current_user)
           else

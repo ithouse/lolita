@@ -1,5 +1,5 @@
 //= require jquery
-//= require jquery-ui-1.8.13.min
+//= require jquery-ui
 $(function(){
   // Send ajax request with all forms data for given tabs block.
   function save_tab(tabs){

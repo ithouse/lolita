@@ -62,6 +62,7 @@ module Lolita
 
       def is_lolita_resource?
         raise ActionController::UnknownAction unless lolita_mapping
+        true
       end
 
       def resource=(new_resource)

@@ -23,7 +23,11 @@ module Lolita
       end
 
       def title
-        @title || self.object.to.model_name.human(:count=>2)
+        if @title && @title.respond_to?(:call)
+          @title.call(self)
+        else
+          @title || self.object.to.model_name.human(:count=>2)
+        end
       end
 
       def tree=(new_tree)
@@ -100,7 +104,7 @@ module Lolita
       end
 
       def visible?(view)
-        if self.object && self.object.respond_to?(:to)
+        self_visible = if self.object && self.object.respond_to?(:to)
           view.send(:can?,:read,self.object.to)
         elsif self.options[:visible]
           if self.options[:visible].respond_to?(:call)
@@ -111,6 +115,7 @@ module Lolita
         else
           true
         end
+        self_visible && (self.children.any? && self.children.visible?(view) || self.children.empty?)
       end
 
       def self.get_or_create(*args)

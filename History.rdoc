@@ -1,5 +1,6 @@
 === Version 3.2.0
 * Enhancements
+  * *append_to* option added for #lolita_for, that may append to container resource
   * _only_ options added for <b>lolita_for</b>
   * New options _visible_ added to Lolita::Mapping, now is possible to exclude resource from navigation tree
   * Search functionality added, included in List
@@ -24,6 +25,8 @@
   * Lolita::Generator::FileHelper from generators removed
   
 * Bug fixes
+  * visible? for Navigation::Branch fixed
+  * /lolita redirection fixed
   * Each hook call runs as new instance of Hooks::Runner 
   * All classes fixed to work with both mongoid and AR
   * String disabled builder fixed to use form object

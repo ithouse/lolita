@@ -1,9 +1,16 @@
 class Lolita::InfoController < ApplicationController
   @@properties = []
+  include Lolita::Controllers::UserHelpers
+  include Lolita::Controllers::AuthorizationHelpers
+  before_filter :authenticate_lolita_user!, :only => [:index]
 
   def index
     if Lolita.mappings.any?
-      return redirect_to(lolita_resources_path(Lolita.mappings.values.first))
+      available_mapping = Lolita.mappings.detect{|name,mapping|
+        can?(:read,mapping.to)
+      }
+      available_mapping &&= available_mapping.last
+      return redirect_to(lolita_resources_path(available_mapping)) if available_mapping
     end
     render :layout => false
   end
@@ -14,6 +21,10 @@ class Lolita::InfoController < ApplicationController
     else
       render :text => '<p>For security purposes, this information is only available to local requests.</p>', :status => :forbidden
     end
+  end
+
+  def is_lolita_resource?
+    true
   end
 
   private
