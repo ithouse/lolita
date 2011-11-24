@@ -13,6 +13,7 @@
 end %>
 
 <% visible ||= (tree.root? || nil) %>
+
 <% if tree.visible?(self) %>
   <ul <%= !tree.root? ? "class='subtree'" : ""%> style="display:<%=visible ? "block" : "none"%>" >
     <% last_branch=tree.branches.last %>

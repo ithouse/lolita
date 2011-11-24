@@ -90,17 +90,14 @@ module Lolita
       def active?(view)
         resource = view.respond_to?(:resource_class) ? view.send(:resource_class) : nil rescue nil
         request = view.send(:request)
-        if self.object.is_a?(Lolita::Mapping) && self.object && self.object.to == resource
+        self_active = if self.object.is_a?(Lolita::Mapping) && self.object && self.object.to == resource
           true
-        else
-          self.self_with_children.detect{|branch|
-            if branch.options[:active].respond_to?(:call)
-              branch.options[:active].call(view,self,branch)
-            else
-              branch.options[:url] == request.path
-            end
-          }
+        elsif self.options[:active].respond_to?(:call)
+          self.options[:active].call(view,self)
+        elsif self.options[:url]
+          self.options[:url] == request.path
         end
+        self_active || (self.children.any? && self.children.branches.detect{|c_branch| c_branch.active?(view)})
       end
 
       def visible?(view)
