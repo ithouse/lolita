@@ -120,7 +120,7 @@ module ActionDispatch::Routing
     private
 
     def migrating?
-      File.basename($0).match(/^rake/) && (ARGV.include?("db:migrate"))
+      File.basename($0).match(/^rake/) && (ARGV.detect{|arg| arg.to_s.match(/migrate/)})
     end
 
     def generating_instalation?
