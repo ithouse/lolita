@@ -1,5 +1,5 @@
 //= require jquery
-//= require jquery-ui-1.8.13.min
+//= require jquery-ui
 $(function(){
   // Send ajax request with all forms data for given tabs block.
   function save_tab(tabs){
@@ -39,7 +39,7 @@ $(function(){
   // Integer field validator
   $(".integer").live("keydown",function(event){
     // Allow only backspace and delete
-    if ( event.keyCode == 46 || event.keyCode == 8 ) {
+    if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13) {
       // let it happen, don't do anything
     }
     else {

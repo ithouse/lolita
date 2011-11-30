@@ -1,3 +1,4 @@
+require 'action_controller/railtie'
 require 'lolita/rails/routes'
 require 'haml'
 

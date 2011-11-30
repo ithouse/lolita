@@ -18,7 +18,7 @@ module Lolita
   # Also eahc request containers information with mapping related to it.
   class Mapping
     attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:controllers,:as
-    attr_reader :visible, :only
+    attr_reader :visible, :only, :append_to
     alias :name :singular
     
     
@@ -26,6 +26,7 @@ module Lolita
       # TODO how it is when lolita plugin extend default path and there is module is this not break the logic?
       @as=options[:as]
       @visible = options.keys.include?(:visible) ? options[:visible] : true
+      @append_to = options[:append_to]
       @only = options[:only] || nil
       @plural=(options[:as] ? options[:as] : name).to_sym
       @singular=(options[:singular] || @plural.to_s.singularize).to_sym
@@ -55,8 +56,18 @@ module Lolita
     end
 
     def add_to_navigation_tree
+      tree = Lolita::Navigation::Tree[:"left_side_navigation"]
       if self.visible
-        tree = Lolita::Navigation::Tree[:"left_side_navigation"]
+        if self.append_to
+          parent_branch = tree.branches.detect{|b| b.options[:system_name] == self.append_to}
+          unless parent_branch
+            parent_branch = tree.append(nil,:title => lambda{|branch| 
+              return ::I18n.t("lolita.navigation." + branch.options[:system_name])
+              }, :system_name => self.append_to
+            )
+          end
+          tree = parent_branch.children
+        end
         unless tree.branches.detect{|b| b.object.is_a?(Lolita::Mapping) && b.object.to==self.to}
           tree.append(self)
         end

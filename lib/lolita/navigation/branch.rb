@@ -23,7 +23,11 @@ module Lolita
       end
 
       def title
-        @title || self.object.to.model_name.human(:count=>2)
+        if @title && @title.respond_to?(:call)
+          @title.call(self)
+        else
+          @title || self.object.to.model_name.human(:count=>2)
+        end
       end
 
       def tree=(new_tree)
@@ -86,21 +90,18 @@ module Lolita
       def active?(view)
         resource = view.respond_to?(:resource_class) ? view.send(:resource_class) : nil rescue nil
         request = view.send(:request)
-        if self.object.is_a?(Lolita::Mapping) && self.object && self.object.to == resource
+        self_active = if self.object.is_a?(Lolita::Mapping) && self.object && self.object.to == resource
           true
-        else
-          self.self_with_children.detect{|branch|
-            if branch.options[:active].respond_to?(:call)
-              branch.options[:active].call(view,self,branch)
-            else
-              branch.options[:url] == request.path
-            end
-          }
+        elsif self.options[:active].respond_to?(:call)
+          self.options[:active].call(view,self)
+        elsif self.options[:url]
+          self.options[:url] == request.path
         end
+        self_active || (self.children.any? && self.children.branches.detect{|c_branch| c_branch.active?(view)})
       end
 
       def visible?(view)
-        if self.object && self.object.respond_to?(:to)
+        self_visible = if self.object && self.object.respond_to?(:to)
           view.send(:can?,:read,self.object.to)
         elsif self.options[:visible]
           if self.options[:visible].respond_to?(:call)
@@ -111,6 +112,7 @@ module Lolita
         else
           true
         end
+        self_visible && (self.children.any? && self.children.visible?(view) || self.children.empty?)
       end
 
       def self.get_or_create(*args)

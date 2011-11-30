@@ -56,11 +56,13 @@ module ActionDispatch::Routing
       options[:module]      ||= @scope[:module] if @scope[:module].present?
       options[:path_prefix] ||= @scope[:path]   if @scope[:path].present?
       resources.map!(&:to_sym)
+
       all_resource_classes=[]
       resources.each{|resource|
         mapping=Lolita.add_mapping(resource,options)
         Lolita.resources[mapping.name]=mapping
         target_class=mapping.to
+        
   #TODO refactor all these variables
         all_resource_classes<<target_class
 
