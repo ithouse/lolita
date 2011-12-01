@@ -2,7 +2,7 @@
 
 .autocomplete-container
   = hidden_field_tag "#{resource_name}[#{ids_method}][]",""
-  = text_field_tag :"autocomplete-#{resource_name}", nil, :"data-autocomplete-url" => autocomplete_field_path(:field_class => tab_form.object.class.to_s, :class => field.name)
+  = text_field_tag :"autocomplete-#{resource_name}", nil, :"data-autocomplete-url" => autocomplete_field_path(:field_class => tab_form.object.class.to_s, :field_name => field.name)
   %ul
     - resource.persisted? && resource.send(field.name).each do |element|
       %li

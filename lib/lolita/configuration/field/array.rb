@@ -24,6 +24,18 @@ module Lolita
           self.name = recognize_real_name
         end
 
+        # For details see Lolita::Configuration::Search
+        def search *args, &block
+          if (args && args.any?) || block_given?
+            @search = create_search(*args,&block)
+          end
+          @search
+        end
+
+        def create_search *args, &block
+          Lolita::Configuration::Search.new(Lolita::DBI::Base.create(@association.klass),*args,&block)
+        end
+
         def options_for_select=(value=nil)
           @options_for_select=value
         end
@@ -42,6 +54,8 @@ module Lolita
         def association_values(record = nil) #TODO test
           @association_values=if options_for_select
             options_for_select
+          elsif search
+            search.run("")
           elsif @association && @association.polymorphic?
             polymorphic_association_values(record)
           elsif @association
@@ -99,7 +113,7 @@ module Lolita
             if @association.polymorphic?
               "polymorphic"
             elsif @association.macro == :many_to_many
-              "habtm"
+              "autocomplete"
             else
               "select"
             end

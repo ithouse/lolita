@@ -202,21 +202,25 @@ module Lolita
 
       def search(query, options = {})
         #TODO raise error or warn when there are lot of records and no index on field
-        resources = self.klass.arel_table
-        content_fields = @dbi.fields.map{|field| field.type!="string" ? nil : field.name.to_sym}.compact
-        if options[:fields] && options[:fields].any?
-          content_fields = content_fields & options[:fields]
-        end
-        scope = nil
-        content_fields.each_with_index do |field,index|
-          new_scope = resources[field].matches("%#{query}%")
-          unless index == 0
-            scope = scope.or(new_scope)
-          else
-            scope = new_scope
+        unless query.blank?
+          resources = self.klass.arel_table
+          content_fields = @dbi.fields.map{|field| field.type!="string" ? nil : field.name.to_sym}.compact
+          if options[:fields] && options[:fields].any?
+            content_fields = content_fields & options[:fields]
           end
+          scope = nil
+          content_fields.each_with_index do |field,index|
+            new_scope = resources[field].matches("%#{query}%")
+            unless index == 0
+              scope = scope.or(new_scope)
+            else
+              scope = new_scope
+            end
+          end
+          self.klass.where(scope)
+        else
+          self.klass.where(nil)
         end
-        self.klass.where(scope)
       end
 
       def db

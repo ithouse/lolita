@@ -185,25 +185,29 @@ module Lolita
       end
 
       def search(query, options = {})
-        content_fields = @dbi.fields.map{|field| 
-          if field.type!="string" || field.name.match(/^_/)
-            nil
-          else
-            field.name.to_sym
+        unless query.blank?
+          content_fields = @dbi.fields.map{|field| 
+            if field.type!="string" || field.name.match(/^_/)
+              nil
+            else
+              field.name.to_sym
+            end
+          }.compact
+          if options[:fields] && options[:fields].any?
+            content_fields = content_fields & options[:fields]
           end
-        }.compact
-        if options[:fields] && options[:fields].any?
-          content_fields = content_fields & options[:fields]
+          content_fields = content_fields.slice(0..3)
+          #result = self.map_reduce_search(content_fields,query)
+          #debugger
+          #result
+          where_hash = {}
+          content_fields.each do |field|
+            where_hash[field] = /#{Regexp.escape(query.to_s)}/
+          end
+          klass.where(where_hash)
+        else
+          klass.where(nil)
         end
-        content_fields = content_fields.slice(0..3)
-        #result = self.map_reduce_search(content_fields,query)
-        #debugger
-        #result
-        where_hash = {}
-        content_fields.each do |field|
-          where_hash[field] = /#{Regexp.escape(query.to_s)}/
-        end
-        klass.where(where_hash)
       end
 
       #FIXME

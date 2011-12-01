@@ -19,14 +19,18 @@ class Lolita::FieldDataController < ApplicationController
   end
 
 	def autocomplete_field
-		model = params[:class].singularize.camelize.constantize
-		column = model.lolita.tabs.first.fields.first.name.to_sym
-		data = model.where(model.arel_table[column].matches("%#{params[:term]}%")).map do |record| 
-			{:id => record.id, 
-			 :value => record.send(column), 
-			 :name => "#{params[:field_class].downcase}[#{params[:class].singularize}_ids][]",
-			 :delete_link => I18n.t("lolita.shared.delete")}
-		end
-		render :json => data
+    klass = params[:field_class].camelize.constantize
+    field = klass.lolita.tabs.fields.detect{|field| field.name.to_s == params[:field_name]}
+    data = if field
+      (field.search || field.create_search(true)).run(params[:term],request).map do |record|
+        {
+          :id => record.id,
+          :value => record.send(field.current_text_method(field.association.klass)),
+          :name => "#{params[:field_class].downcase}[#{params[:field_name].singularize}_ids][]",
+          :delete_link => I18n.t("lolita.shared.delete")
+        }
+      end
+    end
+    render :json => data || {}
 	end
 end
