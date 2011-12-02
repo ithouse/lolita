@@ -49,6 +49,7 @@ module Lolita
         @dbi = dbi
         set_attributes(args ? args.extract_options! : {})
         instance_eval(&block) if block_given?
+        @with ||= args[0]
       end
 
       def with(value = nil)
