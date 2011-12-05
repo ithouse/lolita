@@ -15,9 +15,11 @@ module Lolita
 
       attr_reader :dbi,:klass
       @@generators=[:tabs,:list]
+
       class << self
+
         def add_generator(method)
-          @@generators<<method.to_sym
+          @@generators<<method.to_sym 
         end
       end
       # When configuration is defined in class than you don't need to worry about
@@ -38,6 +40,7 @@ module Lolita
       #     Person.lolita=Lolita::Configuration::Base.new(Person)
       #     Person.lolita.klass #=> Person
       def initialize(orm_class,&block)
+        @in_callback_mode = false
         @klass=orm_class
         @dbi=Lolita::DBI::Base.create(orm_class)
         block_given? ? self.instance_eval(&block) : self.generate!
@@ -48,6 +51,10 @@ module Lolita
       # See Lolita::Configuration::List for more information.
       def list &block
         Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List,@dbi,&block)
+      end
+
+      def list=(new_list)
+        @list = new_list if new_list.is_a?(Lolita::Configuration::List)
       end
 
       # Create collection of Lolita::Configuration::Tab, loading lazy.
@@ -69,7 +76,13 @@ module Lolita
           self.send(generator)
         }
       end
-      
+
+      private
+
+      def after_initialize
+        @dbi.klass.run(:after_lolita_loaded, :once => self)
+      end
+
     end
   end
 end

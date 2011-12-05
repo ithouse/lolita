@@ -60,6 +60,7 @@ module Lolita
  
   # Keep all configuration classes and modules, that is used to configure classes with lolita.
   module Configuration
+
     autoload :Base, 'lolita/configuration/base'
     autoload :Column, 'lolita/configuration/column'
     autoload :Columns, 'lolita/configuration/columns'
@@ -98,6 +99,9 @@ module Lolita
     
     def self.included(base)
       base.class_eval do
+        include Lolita::Hooks
+        add_hook :after_lolita_loaded
+
         extend ClassMethods
         def lolita
           self.class.lolita
@@ -109,6 +113,7 @@ module Lolita
       def lolita(&block)
         Lolita::LazyLoader.lazy_load(self,:@lolita,Lolita::Configuration::Base,self,&block)
       end
+      
       def lolita=(value)
         if value.is_a?(Lolita::Configuration::Base)
           @lolita=value

@@ -5,7 +5,7 @@ module Lolita
       included do
         helper LolitaHelper
         #TODO pārnest helperus uz lolitu vai arī uz lolita app nevis likt iekš controllers iekš lolitas
-        helpers = %w(resource resource_name 
+        helpers = %w(resource resource_name use_mapping 
                      resource_class lolita_mapping show_response tab_form tab_form=)
         hide_action *helpers
        
@@ -28,7 +28,7 @@ module Lolita
         lolita_mapping.to
       end
       
-      def lolita_mapping
+      def lolita_mapping(new_mapping = nil)
         @lolita_mapping||=request.env["lolita.mapping"]
       end
 
@@ -44,6 +44,19 @@ module Lolita
           @tab_form = old_form
         end
         @tab_form
+      end
+
+      def use_mapping(new_mapping)
+        if block_given? 
+          begin
+            @old_mapping = lolita_mapping
+            @lolita_mapping = new_mapping
+            yield
+          ensure
+            @lolita_mapping = @old_mapping
+            @old_mapping = nil
+          end
+        end
       end
       
       protected

@@ -60,6 +60,30 @@ module Lolita
   # See Lolita::Hooks::NamedHook for details.
   module Hooks
     class Runner
+
+      class << self
+        def singleton_hook(hook_object,hook_name)
+          class << hook_object
+            def hooks_runned(name=nil)
+              @hooks_runned ||=[]
+              @hooks_runned << name if name
+              @hooks_runned
+            end
+          end
+
+          hook_object.hooks_runned(hook_name)
+        end
+
+        def runned?(hook_object,hook_name)
+          if hook_object.respond_to?(:hooks_runned)
+            hook_object.hooks_runned.include?(hook_name)
+          end
+        end
+
+        def singleton_hooks
+          @singleton_hooks || {}
+        end
+      end
      
       attr_accessor :hooks_run_scope, :given_callback_content
       attr_writer :hooks_scope
@@ -68,6 +92,7 @@ module Lolita
         @hook_class = hook_class
         @hook_name = hook_name
         @options = options
+        @options[:once] = @options[:once] == true ? @hook_class : @options[:once]
       end
 
       # Hooks scope is used to execute callbacks. By default it is class itself.
@@ -76,12 +101,15 @@ module Lolita
       end
 
       def run(&block)
-        result = nil
-        in_hooks_scope(@options[:scope],@options[:run_scope]) do 
-          callback = get_callback(@hook_name)
-          result = run_callback(callback,&block)
+        if !@options[:once] || (@options[:once] && !self.class.runned?(@options[:once],@hook_name))
+          self.class.singleton_hook(@options[:once],@hook_name)
+          result = nil
+          in_hooks_scope(@options[:scope],@options[:run_scope]) do 
+            callback = get_callback(@hook_name)
+            result = run_callback(callback,&block)
+          end
+          result
         end
-        result
       end
 
       # Call callback block inside of run block.

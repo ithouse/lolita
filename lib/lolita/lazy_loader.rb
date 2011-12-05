@@ -36,6 +36,9 @@ module Lolita
           @class_instance=@lazy_class.new(&@eval_block)
         end
       end
+      if @class_instance.respond_to?(:after_initialize,true)
+        @class_instance.send(:after_initialize)
+      end
       @class_instance.__send__(method_name,*args,&block)
     end
 
