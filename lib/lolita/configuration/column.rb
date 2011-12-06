@@ -39,8 +39,31 @@ module Lolita
         @sortable
       end
 
-      def currently_sorting?(params)
-        @sortable && params[:sc].to_s==self.name.to_s
+      def current_sort_state(params)
+        @sortable && sort_pairs(params).detect{|pair| pair[0]==self.name.to_s} || []
+      end
+
+      def sort_params params
+        if @sortable
+          pairs = sort_pairs(params)
+          found_pair = false
+          pairs.each_with_index{|pair,index|
+            if pair[0] == self.name.to_s
+              pairs[index][1] = pair[1] == "asc" ? "desc" : "asc"
+              found_pair = true
+            end
+          }
+          unless found_pair
+            pairs << [self.name.to_s,"asc"]
+          end
+          (pairs.map{|pair| pair.join(",")}).join("|")
+        else
+          ""
+        end
+      end
+
+      def sort_pairs params
+        (params[:s] || "").split("|").map{|pair| pair.split(",")}
       end
 
       # Define format, for details see Lolita::Support::Formatter and Lolita::Support::Formater::Rails

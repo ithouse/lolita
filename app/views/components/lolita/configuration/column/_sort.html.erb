@@ -1,4 +1,7 @@
- <% param_options=params.reject{|k,v| [:controller,:action].include?(k)} %>
- <% options=param_options.merge(column.sort_options(params)) %>
- <% direction_indicator=column.currently_sorting?(params) && options[:sd].to_s=="desc" ? raw('&uArr;') : raw('&dArr;') %>
- <%= link_to raw("#{column.title.to_s.capitalize } #{direction_indicator}"), lolita_resources_path(options) %>
+<% 
+  sort_mapping = {"desc" => '&dArr;', "asc" => '&uArr;'}
+  new_params = params.reject{|k,v| ["controller","action"].include?(k.to_s)}
+  direction_indicator = raw(sort_mapping[column.current_sort_state(new_params)[1]])
+  new_params[:s] = column.sort_params(new_params)
+%>
+<%= link_to raw("#{column.title.to_s.capitalize} #{direction_indicator}"), lolita_resources_path(new_params) %>
