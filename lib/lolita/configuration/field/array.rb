@@ -40,6 +40,7 @@ module Lolita
           @values=value
         end
 
+        # Use this with block if values are dynamicly collected.
         def values value=nil, &block
           @values=value || block if value || block_given?
           @values

@@ -37,19 +37,8 @@ $(function(){
 		$(this).parent().toggleClass("minimized").trigger("tab.toggle")
 	})
   // Integer field validator
-  $(".integer").live("keydown",function(event){
-    // Allow only backspace and delete
-    if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13) {
-      // let it happen, don't do anything
-    }
-    else {
-      // Ensure that it is a number and stop the keypress
-      if (!((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105))) {
-        event.preventDefault(); 
-      }
-    }
-  })
-
+  $(".integer").numeric()
+  
   $("select[data-polymorphic-url]").live("change",function(){
     var url = $(this).attr("data-polymorphic-url")
     var select = $(this)[0]
