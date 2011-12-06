@@ -15,6 +15,7 @@
   * Assets can be passet to lolita through application configuration attribute #assets
   * Polymorphic association field
   * :once options added to hook #run
+  * #use_mapping added in InternalHelpers, switch block to given mapping
 
 * Changes
   * noew using rails 3.1.x

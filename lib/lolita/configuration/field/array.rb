@@ -36,13 +36,13 @@ module Lolita
           Lolita::Configuration::Search.new(Lolita::DBI::Base.create(@association.klass),*args,&block)
         end
 
-        def options_for_select=(value=nil)
-          @options_for_select=value
+        def values=(value=nil)
+          @values=value
         end
 
-        def options_for_select value=nil, &block
-          @options_for_select=value || block if value || block_given?
-          @options_for_select
+        def values value=nil, &block
+          @values=value || block if value || block_given?
+          @values
         end
 
         # Collect values for array type field.
@@ -52,8 +52,8 @@ module Lolita
         # <code>find_options</code> for advanced search. When <code>find_options</code>
         # is used, than <code>conditions</code> is ignored.
         def association_values(record = nil) #TODO test
-          @association_values=if options_for_select
-            options_for_select
+          @association_values=if values
+            values
           elsif search
             search.run("")
           elsif @association && @association.polymorphic?
