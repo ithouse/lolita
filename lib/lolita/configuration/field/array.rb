@@ -11,6 +11,9 @@ module Lolita
       # select with visible values by default it calles <em>text_method</em>. It will fallback first content column. Class should respond to one
       # of these. 
       class Array < Lolita::Configuration::Field::Base
+        include Lolita::Hooks
+        add_hook :after_association_loaded
+
         lolita_accessor :conditions,:text_method,:value_method,:find_options,:association,:include_blank
         lolita_accessor :related_classes
 
@@ -20,6 +23,7 @@ module Lolita
           self.find_dbi_field unless self.dbi_field
           
           @association ||= self.dbi_field ? self.dbi_field.association : detect_association
+          self.run(:after_association_loaded)
           self.builder = detect_builder unless @builder
           self.name = recognize_real_name
         end
@@ -27,7 +31,9 @@ module Lolita
         # For details see Lolita::Configuration::Search
         def search *args, &block
           if (args && args.any?) || block_given?
-            @search = create_search(*args,&block)
+            self.after_association_loaded do
+              @search = create_search(*args,&block)
+            end
           end
           @search
         end
