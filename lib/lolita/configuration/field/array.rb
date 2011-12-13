@@ -13,6 +13,7 @@ module Lolita
       class Array < Lolita::Configuration::Field::Base
         include Lolita::Hooks
         add_hook :after_association_loaded
+        attr_reader :real_name
 
         lolita_accessor :conditions,:text_method,:value_method,:find_options,:association,:include_blank
         lolita_accessor :related_classes
@@ -147,6 +148,7 @@ module Lolita
 
         def recognize_real_name
           if @association && !@association.polymorphic? && @association.macro == :one
+            @real_name = self.name
             self.name = @association.key
           else
             @name

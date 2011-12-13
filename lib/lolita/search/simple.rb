@@ -64,7 +64,6 @@ module Lolita
           arity_limit = search_method_arity > args.size ? args.size : search_method_arity
           @dbi.klass.send(self.search_method.to_sym,*(args.slice(0..(arity_limit-1))))
         end
-        @dbi.klass.send(self.search_method.to_sym,@query,@request)
       end
 
       def run_default_search
