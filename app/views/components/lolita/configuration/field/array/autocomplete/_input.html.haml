@@ -1,0 +1,19 @@
+- # Set variables, f_cached - recod has methods that keeps cached names, f_name - field name or some other name, if there is no 
+- # need to store autocomplete field information, f_url - request url for search, f_value - value for autocomplete input,
+- # f_options - html options for input are used in js.
+
+- f_cached = field.dbi.klass.respond_to?(:"cached_#{field.name}")
+- f_name = f_cached ? "cached_#{field.name}" : "autocomplete-#{resource_name}-#{field.name}"
+- f_url = autocomplete_field_path(:field_class => resource_class.to_s, :field_name => field.name)
+
+- f_value = if local_assigns[:with_value]
+  - tab_form.object.send(field.association.name) && tab_form.object.send(field.association.name).send(field.current_text_method(field.association.klass))
+- else
+  - nil
+
+- f_options = {:"data-autocomplete-url" => f_url, :"data-macro" => field.association.macro, :"data-cached" => f_cached ? "yes" : "no"}
+
+- if f_cached
+  = tab_form.text_field f_name, f_options
+- else
+  = text_field_tag f_name, f_value, f_options

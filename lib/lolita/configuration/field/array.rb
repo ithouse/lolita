@@ -13,7 +13,6 @@ module Lolita
       class Array < Lolita::Configuration::Field::Base
         include Lolita::Hooks
         add_hook :after_association_loaded
-        attr_reader :real_name
 
         lolita_accessor :conditions,:text_method,:value_method,:find_options,:association,:include_blank
         lolita_accessor :related_classes
@@ -160,7 +159,9 @@ module Lolita
         def default_text_method(klass)
           assoc_dbi=Lolita::DBI::Base.create(klass) rescue nil
           if assoc_dbi
-            field=assoc_dbi.fields.detect{|f| f.type.to_s=="string"}
+            field = assoc_dbi.fields.detect{|f| f.name.to_s == "title"}
+            field ||= assoc.dbi.fields.detect{|f| f.name.to_s == "name"}
+            field ||= assoc_dbi.fields.detect{|f| f.type.to_s=="string"}
             if field
               field.name
             else

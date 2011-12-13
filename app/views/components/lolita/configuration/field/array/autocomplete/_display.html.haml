@@ -1,18 +1,14 @@
-
 .autocomplete-container
   - if field.association.macro == :one
     = tab_form.hidden_field field.association.key
-    = text_field_tag :"autocomplete-#{resource_name}-#{field.name}", |
-      resource.send(field.association.name) && resource.send(field.association.name).send(field.current_text_method(field.association.klass)), |
-      :"data-autocomplete-url" => autocomplete_field_path(:field_class => resource_class.to_s, :field_name => field.name), |
-      "data-macro" => field.association.macro
+    = render_component *field.build(:state => "input", :with_value => true)
   - else
     - ids_method = field.name.to_s.match(/_ids$/) ? field.name : "#{field.name.to_s.singularize}_ids"
     = hidden_field_tag "#{resource_name}[#{ids_method}][]",""
-    = text_field_tag :"autocomplete-#{resource_name}-#{field.name}" , nil, :"data-autocomplete-url" => autocomplete_field_path(:field_class => tab_form.object.class.to_s, :field_name => field.name)
+    = render_component *field.build(:state => "input")
     %ul
-      - resource.persisted? && resource.send(field.name).each do |element|
+      - resource.persisted? && resource.send(field.name).each do |record|
         %li
-          = element.send(element.class.lolita.tabs.first.fields.first.name.to_sym)
+          = record.send(field.current_text_method(field.association.klass))
           = link_to I18n.t("lolita.shared.delete").downcase, nil
-          = hidden_field_tag "#{resource_name}[#{ids_method}][]", element.id
+          = hidden_field_tag "#{resource_name}[#{ids_method}][]", record.id

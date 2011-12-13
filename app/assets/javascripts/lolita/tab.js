@@ -67,26 +67,43 @@ $(function(){
   })
 
   $("input[data-autocomplete-url]").live("keyup.autocomplete", function(){
+    var $input = $(this)
     $(this).autocomplete({
       source: function(request, response){
+        var term_arr = request.term.toString().split(",")
+        var term = term_arr[term_arr.length - 1]
+        term = term ? $.trim(term) : ""
+        $input.data("term",term)
         $.getJSON(this.element.data("autocomplete-url"), {
-          term: request.term
+          term: term
         }, response)
       },
-      focus: function(){
-        return false;
+      focus: function(even,ui){
+        if($(this).data("cached")=="yes"){
+          var term = new RegExp($(this).data("term") + "$")
+          var start_val = $(this).val().toString().replace(term,"")
+          $(this).val(start_val+ui.item.value)
+          return false
+        }else{
+          if($(this).data("macro") == "one"){
+            return true
+          }else{
+            return false
+          }
+        }
       },
       select: function(event, ui){
         if($(this).data("macro") == "one"){
-          var $id_holder = $(this).closest(".autocomplete-container").find("input[type=hidden]").eq(0)
+          var $id_holder = $(this).parents(".autocomplete-container").eq(0).find("input[type=hidden]").eq(0)
           $id_holder.val(ui.item.id)
-
         } else {
-          var li = $("<li></li>").appendTo($(this).closest(".autocomplete-container").find("ul"));
+          var li = $("<li></li>").appendTo($(this).parents(".autocomplete-container").eq(0).find("ul"));
           li.text(ui.item.value);
           $("<a href=''></a>").text(ui.item.delete_link).appendTo(li);
           $("<input type='hidden'>").attr("name", ui.item.name).val(ui.item.id).appendTo(li);
-          this.value = "";
+          if($(this).data("cached")=="no"){
+            this.value = "";
+          }
           return false;
         }
       }
