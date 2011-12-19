@@ -4,6 +4,7 @@ module Lolita
     # To change behaviour of field you can use these attributes
     # * <tt>name</tt> - field name, used to set or get value from related ORM object
     # * <tt>type</tt> - can change the way field is shown and how data is formated
+    # * <tt>on</tt> - when to show field on hide, accepts array or symbol. Possible states are :create, :update or proc
     # * <tt>field_set</tt> - define field set that field belongs to. See Lolita::Configuration::FieldSet
     # * <tt>nested_in</tt> - define field for different Lolita::DBI instance, than given. This is used
     #   to create nested fields in one form for related models. Like user and profile, where in user
@@ -29,7 +30,7 @@ module Lolita
         include Lolita::Builder
 
         @@default_type = :string
-        lolita_accessor :name,:title,:field_set, :nested_form,:nested_for,:options, :html_options
+        lolita_accessor :name,:title,:on,:field_set, :nested_form,:nested_for,:options, :html_options
         attr_reader :dbi,:nested_in
         attr_accessor :dbi_field
         
@@ -66,6 +67,28 @@ module Lolita
 
         def name=(value)
           @name= value ? value.to_sym : nil
+        end
+
+        def match_state_of?(record)
+          if @on
+            if @on.respond_to?(:call)
+              @on.call(record)
+            elsif @on.respond_to?(:detect)
+              !!@on.detect{|state| record_state_matches_with(record,state)}
+            else
+              record_state_matches_with(record,@on)
+            end
+          else
+            true
+          end
+        end
+
+        def record_state_matches_with(record,state)
+          if record.new_record?
+            state == :create
+          else
+            state == :update
+          end
         end
 
         def nested_in=(dbi)

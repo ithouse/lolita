@@ -85,5 +85,22 @@ describe Lolita::Configuration::Field do
     field.association.macro.should == :many
   end
 
+  it "should use detect field state matches record state" do
+    field = Lolita::Configuration::Factory::Field.add(@dbi, :title, :string, :on => :create)
+    field2 = Lolita::Configuration::Factory::Field.add(@dbi, :title, :string, :on => [:update])
+    field3 = Lolita::Configuration::Factory::Field.add(@dbi, :title, :string)
+    field4 = Lolita::Configuration::Factory::Field.add(@dbi, :title, :string, :on => Proc.new{|rec| rec.title == "title"})
+    record = @dbi.klass.new
+    field.match_state_of?(record).should be_true
+    field2.match_state_of?(record).should_not be_true
+    field3.match_state_of?(record).should be_true
+    field4.match_state_of?(record).should_not be_true
+    record2 = @dbi.klass.create!(:title => "title")
+    field.match_state_of?(record2).should_not be_true
+    field2.match_state_of?(record2).should be_true
+    field3.match_state_of?(record2).should be_true
+    field4.match_state_of?(record2).should be_true
+  end
+
 end
 

@@ -16,6 +16,7 @@
   * Polymorphic association field
   * :once options added to hook #run
   * #use_mapping added in InternalHelpers, switch block to given mapping
+  * :on option added to fields, that allow to determine when to show field
 
 * Changes
   * noew using rails 3.1.x
@@ -32,6 +33,7 @@
   * Each hook call runs as new instance of Hooks::Runner 
   * All classes fixed to work with both mongoid and AR
   * String disabled builder fixed to use form object
+  * Error msg list is visible in all tabs even there is no field that failed validation (fixed)
   
 === Version 3.1.18 
 * Bug fixes

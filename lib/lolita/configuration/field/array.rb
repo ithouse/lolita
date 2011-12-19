@@ -160,7 +160,7 @@ module Lolita
           assoc_dbi=Lolita::DBI::Base.create(klass) rescue nil
           if assoc_dbi
             field = assoc_dbi.fields.detect{|f| f.name.to_s == "title"}
-            field ||= assoc.dbi.fields.detect{|f| f.name.to_s == "name"}
+            field ||= assoc_dbi.fields.detect{|f| f.name.to_s == "name"}
             field ||= assoc_dbi.fields.detect{|f| f.type.to_s=="string"}
             if field
               field.name
