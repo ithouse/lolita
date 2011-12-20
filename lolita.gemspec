@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = "2011-11-20"
+  s.date = "2011-12-20"
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
@@ -27,8 +27,23 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "app/assets/images/lolita/favicon.ico",
+    "app/assets/images/lolita/jquery-ui/images/ui-bg_flat_0_aaaaaa_40x100.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-bg_flat_55_fbec88_40x100.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-bg_glass_95_fef1ec_1x400.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-bg_highlight-soft_45_676767_1x100.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-bg_highlight-soft_75_e3e3e3_1x100.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-bg_highlight-soft_85_f3f3f3_1x100.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-bg_inset-hard_100_d7d7d7_1x100.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-bg_inset-hard_100_fcfdfd_1x100.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-icons_7ac1ed_256x240.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-icons_a1a1a1_256x240.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-icons_cd0a0a_256x240.png",
+    "app/assets/images/lolita/jquery-ui/images/ui-icons_d8e7f3_256x240.png",
+    "app/assets/images/lolita/large-ajax-loader.gif",
     "app/assets/images/lolita/plus.png",
     "app/assets/images/lolita/search_icon.png",
+    "app/assets/images/lolita/small-ajax-loader.gif",
+    "app/assets/images/lolita/trash-small.png",
     "app/assets/javascripts/lolita/application.js",
     "app/assets/javascripts/lolita/base64.js",
     "app/assets/javascripts/lolita/main.js",
@@ -37,6 +52,7 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/lolita/PIE.htc",
     "app/assets/stylesheets/lolita/application.css",
     "app/assets/stylesheets/lolita/default.css.erb",
+    "app/assets/stylesheets/lolita/jquery-ui-1.8.16.lolita.css.erb",
     "app/assets/stylesheets/lolita/style.css.erb",
     "app/controllers/lolita/field_data_controller.rb",
     "app/controllers/lolita/info_controller.rb",
@@ -59,9 +75,10 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field/_label.html.erb",
     "app/views/components/lolita/configuration/field/_object.html.erb",
     "app/views/components/lolita/configuration/field/array/_display.html.erb",
+    "app/views/components/lolita/configuration/field/array/autocomplete/_display.html.haml",
+    "app/views/components/lolita/configuration/field/array/autocomplete/_input.html.haml",
+    "app/views/components/lolita/configuration/field/array/checkbox/_display.html.haml",
     "app/views/components/lolita/configuration/field/array/filter/_display.html.erb",
-    "app/views/components/lolita/configuration/field/array/habtm/_display.html.haml",
-    "app/views/components/lolita/configuration/field/array/habtm_autocomplete/_display.html.haml",
     "app/views/components/lolita/configuration/field/array/polymorphic/_display.html.haml",
     "app/views/components/lolita/configuration/field/array/polymorphic/_options_for_select.html.haml",
     "app/views/components/lolita/configuration/field/array/select/_display.html.erb",
@@ -101,6 +118,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/shared/_flash.html.erb",
     "app/views/components/lolita/shared/_header.html.erb",
     "app/views/components/lolita/shared/_right_sidebar.html.erb",
+    "app/views/components/lolita/shared/_save_button.html.erb",
     "app/views/kaminari/lolita/_first_page.html.erb",
     "app/views/kaminari/lolita/_gap.html.erb",
     "app/views/kaminari/lolita/_last_page.html.erb",
@@ -188,7 +206,6 @@ Gem::Specification.new do |s|
     "lib/lolita/system_configuration/base.rb",
     "lib/lolita/test/matchers.rb",
     "lolita.gemspec",
-    "lolita.gemspec.orig",
     "spec/adapter_helper.rb",
     "spec/builder_spec.rb",
     "spec/configuration/base_spec.rb",
@@ -301,7 +318,7 @@ Gem::Specification.new do |s|
     "spec/support/factories/tag.rb",
     "spec/support/formatter_spec.rb",
     "vendor/assets/javascripts/application_vendor_lolita.js",
-    "vendor/assets/javascripts/jquery-ui-1.8.13.min.js",
+    "vendor/assets/javascripts/jquery-numeric.js",
     "vendor/assets/javascripts/modernizr_1_7_min.js",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/content.css",
     "vendor/assets/javascripts/tinymce/themes/advanced/skins/cirkuit/dialog.css",
