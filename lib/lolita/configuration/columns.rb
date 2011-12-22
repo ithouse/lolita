@@ -47,7 +47,7 @@ module Lolita
         @columns.clear
         @dbi.fields.each_with_index{|field,index|
           unless field.technical?
-            @columns << Lolita::Configuration::Column.new(@dbi,field)
+            column(field)
           end
         }
       end

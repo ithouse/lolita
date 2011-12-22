@@ -64,16 +64,16 @@ module Lolita
       end
 
       def populate_url(view)
-        self.options[:url] ||= calculate_url(view)
+        self.options[:url] = calculate_url(view)
       end
 
       def calculate_url(view)
-        if self.options[:url]
+        if self.options[:url].respond_to?(:call)
+          self.options[:url].call(view,self)
+        elsif self.options[:url]
           self.options[:url]
         elsif self.object.is_a?(Lolita::Mapping)
-          view.send(:lolita_resources_path, self.object)
-        elsif self.options[:url].respond_to?(:call)
-          self.options[:url].call(view,self)
+          view.send(:lolita_resources_path, self.object) 
         end
       end
 

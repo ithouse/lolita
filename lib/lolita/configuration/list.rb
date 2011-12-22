@@ -26,7 +26,7 @@ module Lolita
             association = dbi.associations[association_name.to_s.to_sym]
             association_dbi = association && Lolita::DBI::Base.create(association.klass)
           end
-          raise Lolita::UnknownDBIError.new("No DBI specified for list #{list} sublist") unless association_dbi
+          raise Lolita::UnknownDBIError.new("No DBI specified for list sublist") unless association_dbi
           Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List,association_dbi,&block)
         else
           Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List)
@@ -78,7 +78,7 @@ module Lolita
       # Array.
       def columns=(value)
         if value.is_a?(Lolita::Configuration::Columns)
-          column(value)
+          @columns = value
         elsif value.respond_to?(:each)
           value.each{|possible_column| 
             column(possible_column)
@@ -111,6 +111,10 @@ module Lolita
           object = object.parent
         end
         results
+      end
+
+      def depth
+        self.parents.size + 1
       end
 
       # checks if filter defined

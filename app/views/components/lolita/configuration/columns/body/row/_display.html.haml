@@ -1,0 +1,4 @@
+%tr{:class => index%2 == 0 ? "even" : "odd"}
+  -columns.each do |column|
+    = render_component column, :record => record
+  = render_component "lolita/configuration/column", :last, :record => record

@@ -49,5 +49,14 @@ describe Lolita::RestController do
 
   it "should use field.title instead of field.name when displaying all error messages at top of form"
 
+  describe "nested lists" do
+
+    it "should have nested lists for columns"
+
+    it "should have nested lists for whole row"
+
+    it "should have nested list for nested lists"
+  end
+
 end
 

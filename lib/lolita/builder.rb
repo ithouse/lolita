@@ -217,11 +217,11 @@ module Lolita
 
     def build *values
       result = builder.with(*values).build
-      result[result.size-1].merge!(default_options)
+      result[result.size-1].merge!(builder_default_options)
       result
     end
 
-    def default_options
+    def builder_default_options
       {builder_local_variable_name => self}
     end
 

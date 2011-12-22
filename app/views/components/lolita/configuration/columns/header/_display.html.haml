@@ -1,0 +1,5 @@
+%thead
+  %tr
+    - columns.each do |column|
+      = render_component *column.build("header")
+    = render_component "lolita/configuration/column/header", :last

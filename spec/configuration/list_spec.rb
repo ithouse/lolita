@@ -77,6 +77,13 @@ describe Lolita::Configuration::List do
     list.parents.should == []
   end
 
+  it "should return depth of list" do
+    list = list_class.new(@dbi)
+    list2= list_class.new(@dbi,:parent => list)
+    list.depth.should == 1
+    list2.depth.should == 2
+  end
+
   describe "search" do
     let(:list){ list_class.new(@dbi,:per => 10) }
 

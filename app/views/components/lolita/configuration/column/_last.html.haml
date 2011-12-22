@@ -1,0 +1,6 @@
+%td{:class => "tool-cell"}
+  - if can?(:edit,record)
+    = link_to ::I18n.t("lolita.shared.edit"),edit_lolita_resource_path(:id=>record.id)
+  - if can?(:destroy, record)
+    = link_to ::I18n.t("lolita.shared.delete"), lolita_resource_path(:id=>record.id),:method=>:delete,:confirm=>I18n.t("lolita.list.confirm")
+

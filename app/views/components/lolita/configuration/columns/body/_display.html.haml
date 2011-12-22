@@ -1,0 +1,3 @@
+%tbody
+  - page.each_with_index do |record,index|
+    = render_component *columns.build("body/row", :record => record, :index => index)

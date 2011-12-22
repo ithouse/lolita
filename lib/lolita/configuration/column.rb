@@ -46,6 +46,10 @@ module Lolita
         end
       end
 
+      def formatted_value(record,view)
+        self.formatter.with(self.value(record),record,self)
+      end
+
       # Set/Get title. Getter return title what was set or ask for human_attribute_name to model.
       def title(value=nil)
         @title=value if value
