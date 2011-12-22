@@ -1,9 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Lolita::Configuration::Base do
-#    before(:each) do
-#      @base = Lolita::Configuration::Base.new
-#    end
 
   it "should define configuration without block" do
     Post.lolita.should_not be_nil
@@ -19,26 +16,28 @@ describe Lolita::Configuration::Base do
   end
 
   it "should return real object when calling it" do
-    define_config do
-      list
+    Post.class_eval do
+      lolita do
+        list
+      end
     end
     Post.lolita.list.class.to_s.should == "Lolita::Configuration::List"
   end
 
   it "should return tabs" do
-    define_config
-    Post.lolita.tabs.class.should == Lolita::Configuration::Tabs
+    base_config = Lolita::Configuration::Base.new(Post)
+    base_config.tabs.class.should == Lolita::Configuration::Tabs
   end
 
   it "should allow add tabs" do
-    define_config do
-      tab(:content)
+    Post.class_eval do
+      lolita do
+        tab(:content)
+      end
     end
+    
     Post.lolita.tabs.size.should == 1
   end
-  
-  def define_config &block
-    Post.lolita=Lolita::Configuration::Base.new(Post,&block)
-  end
+
 end
 

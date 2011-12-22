@@ -3,6 +3,7 @@ module Lolita
     class Mongoid
 
       include Lolita::Adapter::AbstractAdapter
+      include Lolita::Adapter::CommonHelper
       
       attr_reader :dbi, :klass
       def initialize(dbi)

@@ -84,11 +84,7 @@ module Lolita
         end
 
         def record_state_matches_with(record,state)
-          if record.new_record?
-            state == :create
-          else
-            state == :update
-          end
+          @dbi.switch_record_mode(record).mode == state
         end
 
         def nested_in=(dbi)

@@ -6,7 +6,7 @@ FRAMEWORK = if defined?(Rails)
 end
 puts "=> Lolita #{LOLITA_VERSION} starting#{FRAMEWORK}"
 
-require "rubygems"
+#require "rubygems"
 require 'abstract'
 
 require 'active_support'
@@ -17,140 +17,18 @@ require 'active_support/callbacks'
 require 'active_support/dependencies'
 require 'active_support/inflector'
 
-
-require 'lolita/errors'
-require "lolita/hooks"
 # Require all ruby extensions
 Dir["#{File.dirname(__FILE__)}/lolita/ruby_ext/**/*.*"].each do |path|
   require path
 end
 
+require 'lolita/errors'
+# Hooks
+require 'lolita/hooks'
+
 module Lolita
   include Lolita::Hooks
   add_hook :before_setup, :after_setup, :after_routes_loaded,:before_routes_loaded
-  
-  autoload(:LazyLoader,'lolita/lazy_loader')
-  autoload(:VERSION,'lolita/version')
-  autoload(:ObservedArray,'lolita/observed_array')
-  autoload(:Builder,'lolita/builder')
-  autoload(:ControllerAdditions,'lolita/controller_additions')
-  module Builder
-    autoload(:Custom, 'lolita/builder')
-  end
-
-  module SystemConfiguration
-    autoload :Base, 'lolita/system_configuration/base'
-    autoload :Application, 'lolita/system_configuration/application'
-  end
-
-  module Adapter
-    autoload :FieldHelper, 'lolita/adapter/field_helper'
-    autoload :AbstractAdapter, 'lolita/adapter/abstract_adapter'
-    autoload :ActiveRecord, 'lolita/adapter/active_record'
-    autoload :Mongoid, 'lolita/adapter/mongoid'
-  end
-
-  module DBI
-    autoload :Base, 'lolita/dbi/base'
-  end
-  
-  module Hooks
-    autoload :NamedHook, "lolita/hooks/named_hook"
-  end
- 
-  # Keep all configuration classes and modules, that is used to configure classes with lolita.
-  module Configuration
-
-    autoload :Base, 'lolita/configuration/base'
-    autoload :Column, 'lolita/configuration/column'
-    autoload :Columns, 'lolita/configuration/columns'
-    autoload :Fields, 'lolita/configuration/fields'
-    autoload :FieldSet, 'lolita/configuration/field_set'
-    autoload :List, 'lolita/configuration/list'
-    autoload :Tabs, 'lolita/configuration/tabs'
-    autoload :Filter, 'lolita/configuration/filter'
-    autoload :NestedForm, 'lolita/configuration/nested_form'
-    autoload :Search, 'lolita/configuration/search'
-
-    # Module contains classes that is used to create specific type class based on given arguments.
-    module Factory
-      autoload :Field, "lolita/configuration/factory/field"
-      autoload :Tab, "lolita/configuration/factory/tab"
-    end
-
-    # Contains all supported field types. Class name is Lolita::Configuration::Field::[FieldType]
-    module Field
-      autoload :Base,'lolita/configuration/field'
-      Dir["#{File.dirname(__FILE__)}/lolita/configuration/field/**/*.*"].each do |path|
-        base_name=File.basename(path,".rb")
-        autoload :"#{base_name.camelize}", "lolita/configuration/field/#{base_name}"
-      end
-    end
-
-    module Tab
-      autoload :Base, 'lolita/configuration/tab'
-      ["tab"].each do |type|
-        Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
-          base_name=File.basename(path,".rb")
-          autoload :"#{base_name.camelize}", "lolita/configuration/#{type}/#{base_name}"
-        end
-      end
-    end
-    
-    def self.included(base)
-      base.class_eval do
-        include Lolita::Hooks
-        add_hook :after_lolita_loaded
-
-        extend ClassMethods
-        def lolita
-          self.class.lolita
-        end
-      end
-    end
-
-    module ClassMethods
-      def lolita(&block)
-        Lolita::LazyLoader.lazy_load(self,:@lolita,Lolita::Configuration::Base,self,&block)
-      end
-      
-      def lolita=(value)
-        if value.is_a?(Lolita::Configuration::Base)
-          @lolita=value
-        else
-          raise ArgumentError.new("Only Lolita::Configuration::Base is acceptable.")
-        end
-      end
-    end
-  end
-
-  module Test
-    autoload :Matchers, 'lolita/test/matchers'
-  end
-  
-  module Controllers
-    autoload :InternalHelpers, 'lolita/controllers/internal_helpers'
-    autoload :UserHelpers, 'lolita/controllers/user_helpers'
-    autoload :UrlHelpers, 'lolita/controllers/url_helpers'
-    autoload :ComponentHelpers, 'lolita/controllers/component_helpers'
-    autoload :AuthorizationHelpers, 'lolita/controllers/authorization_helpers'
-  end
-
-  module Navigation
-    autoload :Tree, "lolita/navigation/tree"
-    autoload :Branch, "lolita/navigation/branch"
-  end
-
-  module Support
-    autoload :Formatter, 'lolita/support/formatter'
-    class Formatter
-      autoload :Rails, 'lolita/support/formatter/rails'
-    end
-  end
-
-  module Search
-    autoload :Simple, 'lolita/search/simple'
-  end
 
   @@scopes={}
 
@@ -189,15 +67,85 @@ module Lolita
     scope.send(method_name,*args,&block)
   end
 
+  def self.version
+    @version ||= Lolita::Support::Version.new
+  end
+
   def self.rails3?
     defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
   end
-
-  module Generators
-    autoload :FileHelper, File.join(Lolita.root,"lib","generators","helpers","file_helper")
-  end
   
 end
+
+require 'lolita/hooks/named_hook'
+
+# Require base
+require 'lolita/lazy_loader'
+require 'lolita/observed_array'
+require 'lolita/builder'
+require 'lolita/controller_additions'
+
+# System configuration
+require 'lolita/system_configuration/base'
+require 'lolita/system_configuration/application'
+
+# Adapters
+require 'lolita/adapter/field_helper'
+require 'lolita/adapter/common_helper'
+require 'lolita/adapter/abstract_adapter'
+require 'lolita/adapter/active_record'
+require 'lolita/adapter/mongoid'
+
+# DBI
+require 'lolita/dbi/base'
+
+# Configuration base
+require 'lolita/configuration/base'
+require 'lolita/configuration/list'
+require 'lolita/configuration/tabs'
+require 'lolita/configuration/tab'
+require 'lolita/configuration/columns'
+require 'lolita/configuration/column'
+require 'lolita/configuration/fields'
+require 'lolita/configuration/field'
+require 'lolita/configuration/field_set'
+require 'lolita/configuration/nested_form'
+require 'lolita/configuration/search'
+require 'lolita/configuration/filter'
+
+# Configuration factories
+require 'lolita/configuration/factory/field'
+require 'lolita/configuration/factory/tab'
+
+# Configuration for fields and tabs
+["field","tab"].each do |type|
+  Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
+    base_name=File.basename(path,".rb")
+    require "lolita/configuration/#{type}/#{base_name}"
+  end
+end
+
+# Controllers and views
+require 'lolita/controllers/internal_helpers'
+require 'lolita/controllers/user_helpers'
+require 'lolita/controllers/url_helpers'
+require 'lolita/controllers/component_helpers'
+require 'lolita/controllers/authorization_helpers'
+
+# Test
+require 'lolita/test/matchers'
+
+# Navigation
+require 'lolita/navigation/tree'
+require 'lolita/navigation/branch'
+
+# Support
+require 'lolita/support/version'
+require 'lolita/support/formatter'
+require 'lolita/support/formatter/rails'
+
+#Search
+require 'lolita/search/simple'
 
 if Lolita.rails3?
   require "base64"

@@ -56,7 +56,7 @@ module Lolita
     end
 
     def add_to_navigation_tree
-      tree = Lolita::Navigation::Tree[:"left_side_navigation"]
+      tree = Lolita.navigation
       if self.visible
         if self.append_to
           parent_branch = tree.branches.detect{|b| b.options[:system_name] == self.append_to}

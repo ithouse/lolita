@@ -1,15 +1,5 @@
-<% if tree.root? 
-  tree.each do |branch|
-    if branch.object.is_a?(Lolita::Mapping)
-      branch.options[:url]||=lolita_resources_path(branch.object)
-    else
-      branch.options[:url]=if branch.options[:url].respond_to?(:call)
-        branch.options[:url].call(self,branch)
-      else
-        branch.options[:url]
-      end
-    end
-  end
+<% if tree.root?  
+  tree.populate_urls_in_branches(self)
 end %>
 
 <% visible ||= (tree.root? || nil) %>

@@ -51,6 +51,12 @@ module Lolita
         }.any?
       end
 
+      def populate_urls_in_branches(view)
+        self.each do |branch|
+          branch.populate_url(view)
+        end
+      end
+
       def method_missing method_name, *args
         @branches.send(method_name.to_sym,*args)
       end

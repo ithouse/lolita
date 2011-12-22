@@ -5,6 +5,7 @@ module Lolita
     class Application
 
       attr_writer :name, :assets
+      attr_accessor :per_page
 
       def name
         @name || default_name

@@ -4,18 +4,33 @@ module Lolita
       include Lolita::Builder
        
       attr_reader :dbi,:initialized_attributes
+      attr_accessor :parent
+
       lolita_accessor :per, :pagination_method
       
       def initialize(*args,&block)
         if args && args[0].class.to_s.match(/Lolita::Adapter/) || args[0].is_a?(Lolita::DBI::Base)
-          @dbi=args.shift
-        end
-        @columns=Lolita::Configuration::Columns.new(self)
-        @set_attributes=[]
+          @dbi = args.shift
+        end 
         set_attributes(*args)
         self.instance_eval(&block) if block_given?
-        self.generate!()
         set_default_attributes
+      end
+
+      def list(*args, &block)
+        if args && args.any? || block_given?
+          association_name = args[0]
+          if args[0].to_s.match(/Lolita::Adapter/)
+            association_dbi = args[0]
+          else
+            association = dbi.associations[association_name.to_s.to_sym]
+            association_dbi = association && Lolita::DBI::Base.create(association.klass)
+          end
+          raise Lolita::UnknownDBIError.new("No DBI specified for list #{list} sublist") unless association_dbi
+          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List,association_dbi,&block)
+        else
+          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List)
+        end
       end
 
       # For details see Lolita::Configuration::Search
@@ -49,7 +64,12 @@ module Lolita
       def paginate(current_page, request = nil)
         page_criteria = dbi.paginate(current_page,@per,:request => request, :pagination_method => @pagination_method)
         if self.search
-          page_criteria = page_criteria.merge(self.search.run(request.params[:q],request))
+          search_criteria = self.search.run(request.params[:q],request)
+          page_criteria = if search_criteria.respond_to?(:where) 
+            page_criteria.merge(search_criteria)
+          else
+            search_criteria
+          end
         end
         page_criteria
       end
@@ -57,28 +77,40 @@ module Lolita
       # Set columns. Allowed classes are Lolita::Configuration::Columns or
       # Array.
       def columns=(value)
-        set_attribute(:columns)
         if value.is_a?(Lolita::Configuration::Columns)
-          @columns=value
-        elsif value.is_a?(Array)
-          value.each{|el| @columns<<el}
+          column(value)
+        elsif value.respond_to?(:each)
+          value.each{|possible_column| 
+            column(possible_column)
+          }
         else
           raise ArgumentError.new("Columns must bet Array or Lolita::Configuration::Columns.")
         end
       end
 
-      # Get list columns (also block setter)
-      def columns(*args)
-        if args && !args.empty?
-          self.columns=args
+      # Define columns for list
+      def columns(*args,&block)
+        if args  && args.any? || block_given?
+          @columns = Lolita::Configuration::Columns.new(dbi,*args,&block)
+        else
+          @columns ||= Lolita::Configuration::Columns.new(dbi)
         end
-        self.generate!
         @columns
       end
 
-      # Generate uninitialized attributes
-      def generate!()
-        @columns.generate! unless is_set?(:columns)
+       # Block setter for columns
+      def column(*args,&block)
+        columns.column(*args, &block)
+      end
+
+      def parents
+        results = []
+        object = self
+        while object.respond_to?(:parent) && object.parent
+          results << object.parent
+          object = object.parent
+        end
+        results
       end
 
       # checks if filter defined
@@ -93,19 +125,9 @@ module Lolita
       def filter(*args,&block)
         @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
       end
-      
-      # Block setter for columns
-      def column(*args,&block)
-        set_attribute(:columns)
-        if block_given?
-          @columns<<block
-        else
-          @columns.add(Lolita::Configuration::Column.new(@dbi,*args))
-        end
-      end
 
       def set_default_attributes
-        @per ||= 10
+        @per ||= Lolita.application.per_page || 10
       end
 
       private
@@ -121,16 +143,6 @@ module Lolita
             raise ArgumentError.new("Lolita::Configuration::List arguments must be Hash instead of #{args[0].class}")
           end
         end
-      end
-      
-      # Mark attribute as set.
-      def set_attribute(var)
-        @set_attributes<<var unless is_set?(var)
-      end
-
-      # Determine if attribute is set and don't need to generate it.
-      def is_set?(var)
-        @set_attributes.include?(var)
       end
 
     end

@@ -33,6 +33,7 @@ module Lolita
   module ObservedArray
 
     def method_missing(method,*args,&block)
+      generate_collection_elements! if self.respond_to?(:generate_collection_elements!)
       collection_variable.__send__(method,*args,&block)
     end
     

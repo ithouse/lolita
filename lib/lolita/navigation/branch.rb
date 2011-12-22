@@ -63,6 +63,29 @@ module Lolita
         self.children.branches.any?
       end
 
+      def populate_url(view)
+        self.options[:url] ||= calculate_url(view)
+      end
+
+      def calculate_url(view)
+        if self.options[:url]
+          self.options[:url]
+        elsif self.object.is_a?(Lolita::Mapping)
+          view.send(:lolita_resources_path, self.object)
+        elsif self.options[:url].respond_to?(:call)
+          self.options[:url].call(view,self)
+        end
+      end
+
+      def first_url_in_subtree(view)
+        if self.subtree?
+          subtree_branch = self.subtree.branches.detect{|branch|
+            branch.visible?(view)
+          }
+          subtree_branch.calculate_url(view) if subtree_branch
+        end
+      end
+
       def siblings
         index=self.index
         {

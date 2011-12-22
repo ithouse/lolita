@@ -25,8 +25,11 @@ module Lolita
       end
 
       def navigation
-        @navigation||=Lolita::Navigation::Base.new()
-        @navigation
+        unless Lolita::Navigation::Tree[:"left_side_navigation"]
+          tree = Lolita::Navigation::Tree.new(:"left_side_navigation")
+          Lolita::Navigation::Tree.remember(tree)
+        end
+        Lolita::Navigation::Tree[:"left_side_navigation"]
       end
 
       def locales=(value)

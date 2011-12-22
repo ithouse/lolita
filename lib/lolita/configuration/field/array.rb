@@ -14,7 +14,7 @@ module Lolita
         include Lolita::Hooks
         add_hook :after_association_loaded
 
-        lolita_accessor :conditions,:text_method,:value_method,:find_options,:association,:include_blank
+        lolita_accessor :text_method,:value_method,:association,:include_blank
         lolita_accessor :related_classes
 
         def initialize dbi,name,*args, &block
@@ -55,9 +55,7 @@ module Lolita
         # Collect values for array type field.
         # Uses <code>text_method</code> for content. By default it search for
         # first _String_ type field in DB. Uses <code>value_method</code> for value,
-        # by default it it is <code>id</code>. Use <code>conditions</code> or
-        # <code>find_options</code> for advanced search. When <code>find_options</code>
-        # is used, than <code>conditions</code> is ignored.
+        # by default it it is <code>id</code>.
         def association_values(record = nil) #TODO test
           @association_values=if values
             values
@@ -67,9 +65,7 @@ module Lolita
             polymorphic_association_values(record)
           elsif @association
             klass=@association.klass
-            options=@find_options || {}
-            options[:conditions]||=@conditions
-            options_array(klass.find(:all,options))
+            options_array(klass.all)
           else
             []
           end

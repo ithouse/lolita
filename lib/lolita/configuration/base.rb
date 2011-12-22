@@ -4,6 +4,32 @@
 # object. You may want to do that to change configuration or for testing purpose.
 module Lolita
   module Configuration
+
+    def self.included(base)
+      base.class_eval do
+        include Lolita::Hooks
+        add_hook :after_lolita_loaded
+
+        extend ClassMethods
+        def lolita
+          self.class.lolita
+        end
+      end
+    end
+
+    module ClassMethods
+      def lolita(&block)
+        Lolita::LazyLoader.lazy_load(self,:@lolita,Lolita::Configuration::Base,self,&block)
+      end
+      
+      def lolita=(value)
+        if value.is_a?(Lolita::Configuration::Base)
+          @lolita = value
+        else
+          raise ArgumentError.new("Only Lolita::Configuration::Base is acceptable.")
+        end
+      end
+    end
     # Lolita could be defined inside of any class that is supported by Lolita::Adapter, for now that is
     # * ActiveRecord::Base
     # * Mongoid::Document
@@ -67,7 +93,7 @@ module Lolita
       # Tabs should not be defined in lolita block to create onew or more Lolita::Configuration::Tab
       # See Lolita::Configuration::Tab for details of defination.
       def tab *args, &block
-        self.tabs<<Lolita::Configuration::Factory::Tab.add(@dbi,*args,&block)
+        self.tabs << Lolita::Configuration::Factory::Tab.add(@dbi,*args,&block)
       end
       
       # Call all supported instance metods to set needed variables and initialize object with them.

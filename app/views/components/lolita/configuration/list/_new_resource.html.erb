@@ -1,6 +1,0 @@
-<% if can?(:create,resource_class)
-  <a href="<%= new_lolita_resource_path%>" class="create">
-    <%= ::I18n.t("lolita.list.add_new",:name=>resource_class.model_name.human.downcase) %>
-    <%= image_tag "lolita/plus.png", :alt=>"+" %>
-  </a>
-<% end %>

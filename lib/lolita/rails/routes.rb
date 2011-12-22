@@ -6,10 +6,6 @@ module ActionDispatch::Routing
     # It creates :left_side_navigation tree and call callbacks
     # Lolita#before_routes_loaded and Lolita#after_routes_loaded
     def draw_with_lolita  *args,&block
-      unless Lolita::Navigation::Tree[:"left_side_navigation"]
-        tree=Lolita::Navigation::Tree.new(:"left_side_navigation")
-        Lolita::Navigation::Tree.remember(tree)
-      end
       Lolita.run(:before_routes_loaded)
       draw_without_lolita *args,&block
       Lolita.run(:after_routes_loaded)
