@@ -17,9 +17,11 @@
   * :once options added to hook #run
   * #use_mapping added in InternalHelpers, switch block to given mapping
   * :on option added to fields, that allow to determine when to show field
+  * Sublists for columns and list itself
+  * Version class added in Support
 
 * Changes
-  * noew using rails 3.1.x
+  * using rails 3.1.x
   * #value, #value=, #record_value removed from Lolita::Configuration::Field
   * Created pagination in list and in adapters; its possible to customize it for model.
   * All fields must have name as well as tabs must have type
