@@ -19,7 +19,6 @@ That will create initializer and copy all assets.
 Also it will call *install* on all added modules to lolita. 
 So if you in Gemfile have following
 ```ruby  
-
     gem "lolita"
     gem "lolita-file-upload"
 ```
