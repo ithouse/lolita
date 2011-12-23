@@ -20,8 +20,8 @@ Also it will call *install* on all added modules to lolita.
 So if you in Gemfile have following
 
 ```ruby  
-  gem "lolita"
-  gem "lolita-file-upload"
+gem "lolita"
+gem "lolita-file-upload"
 ```
 
 It will also call *lolita_file_upload:install*.
@@ -30,10 +30,10 @@ It will also call *lolita_file_upload:install*.
 To make your model use Lolita do like this
 
 ```ruby
-  class Post < ActiveRecord::Base
-    include Lolita::Configuration
-    lolita
-  end
+class Post < ActiveRecord::Base
+  include Lolita::Configuration
+  lolita
+end
 ```
 
 Then in routes.rb file make resources accessable for lolita with  
@@ -53,8 +53,8 @@ Easiest way to add authentication is with Devise. First install Devise as gem, t
 Make Devise model, lets say, *User*. After that add these lines in */config/initializers/lolita.rb*
 
 ```ruby
-  config.user_classes << User
-  config.authentication = :authenticate_user!
+config.user_classes << User
+config.authentication = :authenticate_user!
 ```
 
 This will make before each Lolita requests call before filter, that than will call *authenticate_user!*
@@ -62,7 +62,7 @@ that is Devise method for authenticating user. Without it Lolita will be acessab
 You can also add any other authentication method like
 
 ```ruby
-  config.authentication = :authenticate_admin
+config.authentication = :authenticate_admin
 ```
 
 And than put this method for common use in *ApplicationController* or in some other place that is accessable
@@ -78,24 +78,24 @@ Define callbacks for those hooks outside of controller. This will call User#log_
 action is requested.
 
 ```ruby
-  Lolita::RestController.before_destroy do
-    User.log_action("Going to delete #{params[:id]}") 
-  end
+Lolita::RestController.before_destroy do
+  User.log_action("Going to delete #{params[:id]}") 
+end
 ```
 
 Also you can define callbacks in your controllers that extend Lolita::RestController. This will call #set\_default\_params
 each time #new action is requested.
 
 ```ruby
-  class PostController < Lolita::RestController
-    before_new :set_default_params
+class PostController < Lolita::RestController
+  before_new :set_default_params
 
-    private
+  private
 
-    def set_default_params
-      params[:post][:title]="-Your title goes here-"
-    end
+  def set_default_params
+    params[:post][:title]="-Your title goes here-"
   end
+end
 ```
 
 ####Component hooks
@@ -105,18 +105,18 @@ Component hooks are different from controller hooks with names. Each component h
 call component, like
 
 ```ruby
-  render_component :"lolita/configuration/list/display"
-  #same as
-  render_component :"lolita/configuration/list", :display
+render_component :"lolita/configuration/list/display"
+#same as
+render_component :"lolita/configuration/list", :display
 ```
 
 and this name is used to add callback for component. As components is not related to specific class, then there
 are only one way to define callback for them.
 
 ```ruby
-  Lolita::Hooks.component(:"/lolita/configuration/list/display").before do
-    "<div>My Custom text</div>"
-  end
+Lolita::Hooks.component(:"/lolita/configuration/list/display").before do
+  "<div>My Custom text</div>"
+end
 ```
 
 That what are inside of blocks depends on place where you define callback if it is in _.rb_ file, than you
@@ -126,9 +126,9 @@ For _around_ callback if you pass block, then original content will be replaced 
 to let original content inside of your block content than it is done like this with #let_content method.
 
 ```ruby
-  Lolita::Hooks.component(:"/lolita/configuration/list/display").around do
-    "<div style='color:red'>#{let_content}</div>"
-  end
+Lolita::Hooks.component(:"/lolita/configuration/list/display").around do
+  "<div style='color:red'>#{let_content}</div>"
+end
 ```
 
 ##License
