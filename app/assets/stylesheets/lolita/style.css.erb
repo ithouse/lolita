@@ -346,6 +346,19 @@ a.create {
 
 .list table td a:active {position: relative; top: 1px;}
 
+/*nested list*/
+.nested-list .list table thead tr:hover,
+.list table tbody tr.nested-list:hover{
+  background: transparent;
+  box-shadow: none;
+}
+tr.nested-list td{
+  padding: 0 0 0 20px;
+}
+#main .box.nested-list{
+  border: none;
+}
+
 /* search in list view */
 
 #main .boxtitle .black .search {

@@ -111,14 +111,13 @@ module Lolita
       end
 
       def by_path(path)
-        debugger
         object = self
         while path.any?
           part = path.pop.match(/(l|c)_(\w+)/)
-          if part[1] == "l"
-            object = object.list
+          object = if part[1] == "l"
+            object.list
           else
-            object = object.columns.by_name(part[2]).list
+            object.columns.by_name(part[2]).list
           end
         end
         object
