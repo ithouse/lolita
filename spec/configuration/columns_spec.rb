@@ -2,9 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Lolita::Configuration::Columns do
 
-  before(:each) do
-    @list=Lolita::Configuration::List.new(@dbi)
-  end
   let(:dbi){Lolita::DBI::Base.create(Post)}
 
   it "should create columns" do

@@ -15,7 +15,15 @@ class Post
   default_scope order_by([:title, :asc])
   accepts_nested_attributes_for :comments, :reject_if => :all_blank
 
-  lolita
+  lolita do
+    list do
+      column :comments do
+        list do
+          column :body
+        end
+      end
+    end
+  end
 
   def self.custom_search query,request=nil,dbi=nil
     self.where(:expire_date.gt => Date.today)

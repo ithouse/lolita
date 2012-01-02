@@ -1,1 +1,2 @@
-%td= column.formatted_value(record,self)
+- nested_list_options = column.list && {:"data-nested-list-url" => lolita_resources_path(column.list.mapping, column.list.nested_options_for(record))}  || {}
+%td{{:class => column.list && "with-nested-list"}.merge(nested_list_options)}= column.formatted_value(record,self)

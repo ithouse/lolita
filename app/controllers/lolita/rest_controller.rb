@@ -59,11 +59,11 @@ class Lolita::RestController < ApplicationController
     authorize!(:read,self.resource_class)
     respond_to do |format|
       format.html do
-        build_response_for(:list,:page=>page)
-        show_index
+        build_index_response
+        show_index(request.xhr? ? false : true)
       end
       format.json do
-        render :json=>page
+        render :json => page
       end
     end
     self.run(:after_index)
@@ -80,9 +80,17 @@ class Lolita::RestController < ApplicationController
       render "/lolita/rest/form"
     end
   end
+
+  def build_index_response
+    if params[:nested]
+      build_response_for(:list, :page => page, :name => "nested")
+    else
+      build_response_for(:list,:page => page)
+    end
+  end
   
-  def show_index
-    render "/lolita/rest/index"
+  def show_index(layout = true)
+    render "/lolita/rest/index", :layout => layout
   end
   
   def save_and_redirect

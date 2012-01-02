@@ -109,7 +109,11 @@ module Lolita
         # FIXME when asked for some resources that always create new object, there may
         # not be any args, like lolita.report on something like that
         @component_options = options
-        @component_object = resource_class.lolita.send(conf_part.to_sym)
+        if params[:nested]
+          @component_object = params[:nested][:parent].constantize.lolita.send(conf_part.to_sym).by_path(params[:nested][:path])
+        else
+          @component_object = resource_class.lolita.send(conf_part.to_sym)
+        end
         @component_builder = @component_object.build(@component_options)
       end
       

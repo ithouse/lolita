@@ -3,7 +3,6 @@ module Lolita
     class ActiveRecord
 
       include Lolita::Adapter::AbstractAdapter
-      include Lolita::Adapter::CommonHelper
       
       attr_reader :dbi, :klass
       def initialize(dbi)
@@ -25,11 +24,19 @@ module Lolita
         end
 
         def key
-          if @association.macro == :belongs_to 
+          if @association.macro == :belongs_to || through?
             @association.foreign_key
           else
             @association.association_foreign_key
           end 
+        end
+
+        def through
+          @association.options[:through]
+        end
+
+        def through?
+          @association.options.has_key?(:through)
         end
 
         def polymorphic?
@@ -60,20 +67,6 @@ module Lolita
           }
         end
         @associations
-      end
-
-      # Return all association class names
-      def associations_class_names
-        self.associations.map{|name,association|
-          association.class_name
-        }
-      end
-
-      # Detect if class reflect on association by name
-      def reflect_on_association(name)
-        if orm_association = klass.reflect_on_association(name)
-          Association.new(orm_association,self)
-        end
       end
 
       # Each field from ORM is changed to this class instance.
@@ -142,6 +135,8 @@ module Lolita
         end
       end # end of field
 
+      include Lolita::Adapter::CommonHelper
+
       def fields
         @fields||=self.klass.columns.collect{|column|
           Field.new(column,self)
@@ -161,43 +156,6 @@ module Lolita
         }
         if possible_association
           self.field_by_name(possible_association.last.key)
-        end
-      end
-
-      def find_by_id(id)
-        self.klass.unscoped.find_by_id(id)
-      end
-
-      # This method is used to paginate, main reason is for list and for index action. 
-      # Method accepts three arguments
-      # <tt>page</tt> - page that should be shown (integer)
-      # <tt>per</tt> - how many records there should be in page
-      # <tt>options</tt> - Hash with optional information. 
-      # By default, Lolita::Configuration::List passes request, with current request information.
-      # Also it passes <i>:pagination_method</i> that is used to detect if there is special method(-s) in model
-      # that should be used for creating page.
-      def paginate(page,per,options ={})
-        scope = nil
-        if options[:pagination_method]
-          if options[:pagination_method].respond_to?(:each)
-            options[:pagination_method].each do |method_name|
-              options[:previous_scope] = scope
-              if new_scope = pagination_scope_from_klass(method_name,page,per,options)
-                scope = scope ? scope.merge(new_scope) : new_scope
-              end
-            end
-          else
-            scope = pagination_scope_from_klass(options[:pagination_method],page,per,options)
-          end
-          scope
-        else
-          klass.unscoped.page(page).per(per)
-        end
-      end
-
-      def pagination_scope_from_klass(method_name,page,per,options)
-        if klass.respond_to?(method_name)
-          klass.send(method_name,page,per,options)
         end
       end
 

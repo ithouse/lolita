@@ -71,7 +71,9 @@ module ActionDispatch::Routing
             if !target_class.respond_to?(:lolita) && !Lolita::routes[mapping.name]
                raise Lolita::NotFound, "Lolita not found in #{target_class}. Include Lolita::Configuration"
             elsif target_class.respond_to?(:lolita) && target_class.instance_variable_get(:@lolita).nil?
-               raise Lolita::NotInitialized, "Call lolita method in #{target_class}."
+              warn("Lolita is not initialized, call `lolita` in #{target_class}")
+              route = Lolita.routes[mapping.name] || Lolita.default_route
+              #raise Lolita::NotInitialized, "Call lolita method in #{target_class}."
             else
               route=Lolita.routes[mapping.name] || Lolita.default_route
             end
@@ -118,7 +120,7 @@ module ActionDispatch::Routing
     private
 
     def migrating?
-      File.basename($0).match(/^rake/) && (ARGV.detect{|arg| arg.to_s.match(/migrate/)})
+      File.basename($0).match(/^rake/) && (ARGV.detect{|arg| arg.to_s.match(/apartment/) || arg.to_s.match(/migrate/)})
     end
 
     def generating_instalation?

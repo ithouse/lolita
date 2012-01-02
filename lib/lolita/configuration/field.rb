@@ -84,7 +84,7 @@ module Lolita
         end
 
         def record_state_matches_with(record,state)
-          @dbi.switch_record_mode(record).mode == state
+          @dbi.switch_record_state(record).state == state
         end
 
         def nested_in=(dbi)

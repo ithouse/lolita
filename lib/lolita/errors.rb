@@ -11,4 +11,5 @@ module Lolita
   class AssociationError < ArgumentError; end
   class HookNotFound < ArgumentError;end
   class UnknownDBIError < ArgumentError; end
+  class NotInitialized < ArgumentError; end
 end

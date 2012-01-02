@@ -26,15 +26,17 @@ end
 
 gem "jeweler", "~> 1.6.4", :group=>:development
 group :test,:development do
+	gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
+  gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
+  gem 'ruby-debug19'
 	gem "metric_fu"
 	gem "fattr"
 	gem "arrayfields"
 	gem "map"
-	gem "rspec", "~>2.6.0"
-	gem "rspec-rails","~>2.6.1"
+	gem "rspec", "~>2.7.0"
+	gem "rspec-rails","~>2.7.0"
 	gem "factory_girl"
 	gem 'ffaker'
-	gem "ruby-debug19"
 	# gem "cucumber-rails"
 	# gem "capybara"
 	gem "database_cleaner"

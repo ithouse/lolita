@@ -4,7 +4,7 @@ describe Lolita::RestController do
   render_views
   
   before(:each) do
-    @controller.request.env["lolita.mapping"]=Lolita.mappings[:post]
+    @request.env["lolita.mapping"]=Lolita.mappings[:post]
   end
 
   describe "hooks" do
@@ -51,11 +51,31 @@ describe Lolita::RestController do
 
   describe "nested lists" do
 
-    it "should have nested lists for columns"
+    it "should have nested lists for columns" do
+      pending "Need to fix this"
+      get :index
+      response.body.should match(/tr.*class\s*=.*with-nested-list.*data-nested-list-url/)
+    end
 
-    it "should have nested lists for whole row"
+    it "should have nested lists for whole row" do
+      pending "Need to fix this"
+      @request.env["lolita.mapping"]=Lolita.mappings[:category]
+      get :index
+      response.body.should match(/tr.*class.*with-nested-list.*data-nested-list-url/)
+    end
 
-    it "should have nested list for nested lists"
+    it "should have nested list for nested lists" do
+      pending "Need to fix this"
+      categories = (1..5).to_a.map{|i|
+        Factory.create(:category)
+      }
+      2.times{Factory.create(:post, :category => categories.first)}
+      get :index, {:nested => {"category_id" => categories.last}}
+      response.body.should_not match(/tr/)
+      get :index, {:nested => {"category_id" => categories.first}}
+      response.body.scan(/<tr>/).should have(2).items
+      response.body.should match(/td.*class.*with-nested-list/)
+    end
   end
 
 end

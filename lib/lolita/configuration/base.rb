@@ -23,7 +23,7 @@ module Lolita
       end
       
       def lolita=(value)
-        if value.is_a?(Lolita::Configuration::Base)
+        if value.is_a?(Lolita::Configuration::Base) || value.nil?
           @lolita = value
         else
           raise ArgumentError.new("Only Lolita::Configuration::Base is acceptable.")

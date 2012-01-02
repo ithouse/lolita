@@ -3,7 +3,6 @@ module Lolita
     class Mongoid
 
       include Lolita::Adapter::AbstractAdapter
-      include Lolita::Adapter::CommonHelper
       
       attr_reader :dbi, :klass
       def initialize(dbi)
@@ -26,6 +25,14 @@ module Lolita
 
         def key
           @association.foreign_key
+        end
+
+        def through?
+          false
+        end
+
+        def through
+          nil
         end
 
         def native_macro
@@ -52,20 +59,6 @@ module Lolita
           }
         end
         @associations
-      end
-
-      # Return all association class names
-      def associations_class_names
-        self.associations.map{|name,association|
-          association.class_name
-        }
-      end
-
-      # Detect if class reflect on association by name
-      def reflect_on_association(name)
-        if orm_association = klass.reflect_on_association(name)
-          Association.new(orm_association,self)
-        end
       end
 
       # Each field from ORM is changed to this class instance.
@@ -125,6 +118,8 @@ module Lolita
 
       end # end of field
 
+      include Lolita::Adapter::CommonHelper
+
       def fields
         @fields||=self.klass.fields.collect{|name,field|
           Field.new(field,self)
@@ -144,44 +139,6 @@ module Lolita
         }
         if possible_association
           self.field_by_name(possible_association.last.key)
-        end
-      end
-
-      def find_by_id(id)
-        self.klass.unscoped.where(:_id => id).first
-      end
-
-      # This method is used to paginate, main reason is for list and for index action. 
-      # Method accepts three arguments
-      # <tt>page</tt> - page that should be shown (integer)
-      # <tt>per</tt> - how many records there should be in page
-      # <tt>options</tt> - Hash with optional information. 
-      # By default, Lolita::Configuration::List passes request, with current request information.
-      # Also it passes <i>:pagination_method</i> that is used to detect if there is special method(-s) in model
-      # that should be used for creating page.
-      def paginate(page,per,options ={})
-        scope = nil
-        if options[:pagination_method]
-          if options[:pagination_method].respond_to?(:each)
-            options[:pagination_method].each do |method_name|
-              options[:previous_scope] = scope
-              if new_scope = pagination_scope_from_klass(method_name,page,per,options)
-                scope = scope ? scope.merge(new_scope) : new_scope
-              end
-            end
-          else
-            scope = pagination_scope_from_klass(options[:pagination_method],page,per,options)
-          end
-          raise ArgumentError, "Didn't generate any scope from #{options} page:{page} per:#{per}" unless scope
-          scope
-        else
-          klass.unscoped.page(page).per(per)
-        end
-      end
-
-      def pagination_scope_from_klass(method_name,page,per,options)
-        if klass.respond_to?(method_name)
-          klass.send(method_name,page,per,options)
         end
       end
 

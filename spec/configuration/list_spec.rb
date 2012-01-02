@@ -102,13 +102,9 @@ describe Lolita::Configuration::List do
 
   describe "sublist" do
 
-    it "should allow to define sublist with association name or adapter" do
+    it "should allow to define sublist with association name" do
       list_class.new(@dbi) do
         list(:comments){}
-      end
-
-      list_class.new(@dbi) do
-        list(Lolita::DBI::Base.create(Comment))
       end
     end
 
@@ -126,6 +122,13 @@ describe Lolita::Configuration::List do
       }.to raise_error(Lolita::UnknownDBIError)
     end
 
+    it "should have list association name" do
+      main_list = list_class.new(@dbi) do
+        list(:comments){}
+      end
+      main_list.list.association_name.should == :comments
+    end
+
     it "should allow to define sublist in any depth" do
       dbi = Lolita::DBI::Base.create(Category)
 
@@ -139,6 +142,24 @@ describe Lolita::Configuration::List do
       end
 
       new_list.list.list.columns.should have(1).item
+    end
+
+    it "should create options for nested lists" do
+      dbi = Lolita::DBI::Base.create(Category)
+
+      new_list = list_class.new(dbi) do
+        list(:posts) do
+          column :title
+          list(:comments) do
+            column :body
+          end
+        end
+      end
+
+      record = Factory.create(:category)
+      post = Factory.create(:post)
+      new_list.list.nested_options_for(record)[:nested].keys.should == ["category_id",:parent,:path]
+      new_list.list.list.nested_options_for(post)[:nested].keys.should == ["post_id",:parent,:path]
     end
 
   end

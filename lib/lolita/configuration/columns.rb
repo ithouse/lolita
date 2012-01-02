@@ -7,6 +7,7 @@ module Lolita
       include Lolita::Builder
 
       attr_reader :dbi
+      attr_accessor :parent
       
       def initialize(dbi, *args, &block)
         @dbi=dbi

@@ -5,7 +5,7 @@ module Lolita
       include Lolita::Builder
       
       MAX_TEXT_SIZE=20
-      attr_reader :dbi
+      attr_reader :dbi, :list_association_name
       lolita_accessor :name,:title,:type,:options,:sortable, :association
       
       def initialize(dbi,*args,&block)
@@ -23,23 +23,24 @@ module Lolita
           list_association = args[0] && @dbi.associations[args[0].to_s.to_sym] || self.association
           list_dbi = list_association && Lolita::DBI::Base.create(list_association.klass)
           raise Lolita::UnknownDBIError.new("DBI is not specified for list in column #{self}") unless list_dbi
-          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List, list_dbi, :parent => self, &block)
+          @list_association_name = list_association.name
+          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List, list_dbi, :parent => self, :association_name => list_association.name, &block)
         else
-          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List)
+          @list
+          #Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List)
         end
       end
 
       # Return value of column from given record. When record matches foreign key patter, then foreign key is used.
       # In other cases it just ask for attribute with same name as column.
       def value(record)
-        if self.name.to_s.match(/_id$/) && record.respond_to?(self.name.to_s.gsub(/_id$/,"").to_sym)
-          remote_record = record.send(self.name.to_s.gsub(/_id$/,"").to_sym)
-          if remote_record.respond_to?(:title)
-            remote_record.send(:title)
-          elsif remote_record.respond_to?(:name)
-            remote_record.send(:name)
+        if self.association
+          if self.association.macro == :one
+            dbi.record(record.send(association.name)).title
+          elsif dbi.klass.respond_to?(:human_attribute_name)
+            "#{dbi.klass.human_attribute_name(association.name)} (#{record.send(association.name).count})"
           else
-            record.send(self.name)
+            "#{association.name} (#{record.send(association.name).count})"
           end
         else
           record.send(self.name)

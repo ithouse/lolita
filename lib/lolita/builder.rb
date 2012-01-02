@@ -143,7 +143,7 @@ module Lolita
       end
 
       def compare(pattern,predicate)
-        result = true
+        result = pattern.has_key?(:name) ? true : pattern[:name].to_s == build_attributes[:name].to_s
         pattern.each do |key,value|
           result &&= ((value.to_sym == self.send(key)) == predicate)
         end

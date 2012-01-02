@@ -108,7 +108,7 @@ describe Lolita::Configuration::Field do
     field2 = factory_class.add(@dbi,:title,:string, :on => :read)
     field3 = factory_class.add(@dbi,:title,:string)
     record = @dbi.klass.new
-    @dbi.switch_record_mode(record,:read)
+    @dbi.switch_record_state(record,:read)
     field.match_state_of?(record).should_not be_true
     field2.match_state_of?(record).should be_true
     field3.match_state_of?(record).should be_true

@@ -17,7 +17,7 @@
   * :once options added to hook #run
   * #use_mapping added in InternalHelpers, switch block to given mapping
   * :on option added to fields, that allow to determine when to show field
-  * Sublists for columns and list itself
+  * Sublists for columns and list itself for 1-to-many, many-to-many and 1-to-many throught for AR
   * Version class added in Support
 
 * Changes

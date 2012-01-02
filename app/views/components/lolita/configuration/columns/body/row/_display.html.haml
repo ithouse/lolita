@@ -1,4 +1,5 @@
-%tr{:class => index%2 == 0 ? "even" : "odd"}
+- nested_list_options = columns.parent.list && {:"data-nested-list-url" => lolita_resources_path(columns.parent.list.mapping, columns.parent.list.nested_options_for(record))}  || {}
+%tr{{:class => "#{index%2 == 0 ? "even" : "odd"} #{columns.parent && columns.parent.list && "with-nested-list"}" }.merge(nested_list_options)}
   -columns.each do |column|
     = render_component column, :record => record
   = render_component "lolita/configuration/column", :last, :record => record

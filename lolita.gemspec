@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "lolita"
-  s.version = "3.2.0.rc.7"
+  s.version = "3.2.0.rc.8"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = "2011-12-20"
+  s.date = "2011-12-28"
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
@@ -60,17 +60,17 @@ Gem::Specification.new do |s|
     "app/helpers/components/lolita/configuration/list_component.rb",
     "app/helpers/components/lolita/configuration_component.rb",
     "app/helpers/lolita_helper.rb",
-    "app/views/components/lolita/configuration/column/_display.html.erb",
-    "app/views/components/lolita/configuration/column/_header.html.erb",
-    "app/views/components/lolita/configuration/column/_sort.html.erb",
-    "app/views/components/lolita/configuration/columns/_body.html.erb",
-    "app/views/components/lolita/configuration/columns/_display.html.erb",
-    "app/views/components/lolita/configuration/columns/_first.html.erb",
-    "app/views/components/lolita/configuration/columns/_first_column_header.html.erb",
-    "app/views/components/lolita/configuration/columns/_header.html.erb",
-    "app/views/components/lolita/configuration/columns/_last.html.erb",
-    "app/views/components/lolita/configuration/columns/_last_column_header.html.erb",
-    "app/views/components/lolita/configuration/columns/_row.html.erb",
+    "app/views/components/lolita/configuration/column/_display.html.haml",
+    "app/views/components/lolita/configuration/column/_first.html.haml",
+    "app/views/components/lolita/configuration/column/_last.html.haml",
+    "app/views/components/lolita/configuration/column/header/_display.html.haml",
+    "app/views/components/lolita/configuration/column/header/_first.html.haml",
+    "app/views/components/lolita/configuration/column/header/_last.html.haml",
+    "app/views/components/lolita/configuration/column/header/_sort.html.haml",
+    "app/views/components/lolita/configuration/columns/_display.html.haml",
+    "app/views/components/lolita/configuration/columns/body/_display.html.haml",
+    "app/views/components/lolita/configuration/columns/body/row/_display.html.haml",
+    "app/views/components/lolita/configuration/columns/header/_display.html.haml",
     "app/views/components/lolita/configuration/field/_display.html.erb",
     "app/views/components/lolita/configuration/field/_label.html.erb",
     "app/views/components/lolita/configuration/field/_object.html.erb",
@@ -100,7 +100,7 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field_set/_display.html.erb",
     "app/views/components/lolita/configuration/list/_display.html.erb",
     "app/views/components/lolita/configuration/list/_filter.html.erb",
-    "app/views/components/lolita/configuration/list/_new_resource.html.erb",
+    "app/views/components/lolita/configuration/list/_new_resource.html.haml",
     "app/views/components/lolita/configuration/list/_paginator.html.erb",
     "app/views/components/lolita/configuration/list/_title.html.erb",
     "app/views/components/lolita/configuration/nested_form/_display.html.erb",
@@ -146,6 +146,7 @@ Gem::Specification.new do |s|
     "lib/lolita.rb",
     "lib/lolita/adapter/abstract_adapter.rb",
     "lib/lolita/adapter/active_record.rb",
+    "lib/lolita/adapter/common_helper.rb",
     "lib/lolita/adapter/field_helper.rb",
     "lib/lolita/adapter/mongoid.rb",
     "lib/lolita/builder.rb",
@@ -202,6 +203,7 @@ Gem::Specification.new do |s|
     "lib/lolita/search/simple.rb",
     "lib/lolita/support/formatter.rb",
     "lib/lolita/support/formatter/rails.rb",
+    "lib/lolita/support/version.rb",
     "lib/lolita/system_configuration/application.rb",
     "lib/lolita/system_configuration/base.rb",
     "lib/lolita/test/matchers.rb",
