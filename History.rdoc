@@ -19,6 +19,7 @@
   * :on option added to fields, that allow to determine when to show field
   * Sublists for columns and list itself for 1-to-many, many-to-many and 1-to-many throught for AR
   * Version class added in Support
+  * #skip_routes added for Lolita.application, that allow to add specific behaviour for application when rake or rails or other commands is called
 
 * Changes
   * using rails 3.1.x
@@ -36,6 +37,7 @@
   * All classes fixed to work with both mongoid and AR
   * String disabled builder fixed to use form object
   * Error msg list is visible in all tabs even there is no field that failed validation (fixed)
+  * only run #lolita_for when <em>rails console</em> or <em>rails server</em> is running
   
 === Version 3.1.18 
 * Bug fixes

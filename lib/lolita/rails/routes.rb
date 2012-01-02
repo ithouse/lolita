@@ -1,3 +1,4 @@
+require 'ruby-debug'
 module ActionDispatch::Routing
   
   class RouteSet
@@ -35,9 +36,8 @@ module ActionDispatch::Routing
     #     # lolita_for try to call :lolita_gallery in Mapper class
     def lolita_for *resources
   
-      return if migrating? || generating_instalation?
+      return if migrating? || generating?
       options = resources.extract_options!
-
       # if as = options.delete(:as)
       #   ActiveSupport::Deprecation.warn ":as is deprecated, please use :path instead."
       #   options[:path] ||= as
@@ -55,9 +55,9 @@ module ActionDispatch::Routing
 
       all_resource_classes=[]
       resources.each{|resource|
-        mapping=Lolita.add_mapping(resource,options)
-        Lolita.resources[mapping.name]=mapping
-        target_class=mapping.to
+        mapping = Lolita.add_mapping(resource,options)
+        Lolita.resources[mapping.name] = mapping
+        target_class = mapping.to
         
   #TODO refactor all these variables
         all_resource_classes<<target_class
@@ -120,11 +120,19 @@ module ActionDispatch::Routing
     private
 
     def migrating?
-      File.basename($0).match(/^rake/) && (ARGV.detect{|arg| arg.to_s.match(/apartment/) || arg.to_s.match(/migrate/)})
+      if Lolita.application.skip_routes.respond_to?(:call)
+        Lolita.application.skip_routes.call
+      else
+        File.basename($0).match(/^rake/) && (ARGV.detect{|arg| arg.to_s.match(/db|apartment/)})
+      end
     end
 
-    def generating_instalation?
-      File.basename($0).match(/^rails/) && (ARGV.detect{|arg| arg.to_s.match(/lolita[^:]*:.*/)})
+    def generating?
+      if Lolita.application.skip_routes.respond_to?(:call)
+        Lolita.application.skip_routes.call
+      else
+        Lolita.application.skip_routes || File.basename($0).match(/^rails/) && !caller.detect{|line| line.match(/commands\/(server|console)\.rb/)}
+      end
     end
   end
 end

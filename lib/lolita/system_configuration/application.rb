@@ -5,7 +5,7 @@ module Lolita
     class Application
 
       attr_writer :name, :assets
-      attr_accessor :per_page
+      attr_accessor :per_page, :skip_routes
 
       def name
         @name || default_name

@@ -60,7 +60,7 @@ class Lolita::RestController < ApplicationController
     respond_to do |format|
       format.html do
         build_index_response
-        show_index(request.xhr? ? false : true)
+        show_index(!request.xhr?)
       end
       format.json do
         render :json => page
