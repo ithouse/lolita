@@ -16,7 +16,7 @@ module Lolita
           elsif content_field = @adapter.fields.detect{|f| f.type.to_s=="string"}
             @record.send(content_field.name)
           else
-            @record.id
+            "#{@record.class.respond_to?(:model_name) ? @record.class.model_name.human : @record.class} #{@record.id}"
           end
         end
       end

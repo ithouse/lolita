@@ -4,6 +4,8 @@ nbproject/
 _public/_gsdata
 .DS_Store
 _public/_gsdata_/*
+.rvmrc
+.document
 *~
 doc/
 rdoc/

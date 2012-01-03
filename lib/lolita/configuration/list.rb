@@ -6,7 +6,7 @@ module Lolita
       attr_reader :dbi,:initialized_attributes
       attr_accessor :parent,:association_name
 
-      lolita_accessor :per, :pagination_method
+      lolita_accessor :per_page, :pagination_method
       
       def initialize(dbi,*args,&block)
         @dbi = dbi
