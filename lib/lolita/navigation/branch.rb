@@ -74,12 +74,14 @@ module Lolita
           self.options[:url]
         elsif self.object.is_a?(Lolita::Mapping)
           view.send(:lolita_resources_path, self.object) 
+        else
+          self.first_url_in_subtree(view)
         end
       end
 
       def first_url_in_subtree(view)
         if self.subtree?
-          subtree_branch = self.subtree.branches.detect{|branch|
+          subtree_branch = self.children.branches.detect{|branch|
             branch.visible?(view)
           }
           subtree_branch.calculate_url(view) if subtree_branch

@@ -1,0 +1,14 @@
+- if tree.root?
+  - tree.populate_urls_in_branches(self)
+- visible ||= tree.root?
+- if tree.visible?(self)
+  %ul{:class => !tree.root? && "subtree", :style => "display:#{visible ? "block" : "none"}"}
+    - last_branch = tree.branches.last
+    - tree.branches.each do |branch|
+      - if branch.visible?(self)
+        - active = branch.active?(self)
+        - classes = [] << (active && "active") << (branch.subtree? && "with-subtree") << (!tree.root? && branch == last_branch && "last-in-subtree")
+        %li{:class => classes.reject{|e| !e}.join(" ")}
+          = link_to branch.title, branch.options[:url] || "#"
+          - if branch.subtree?
+            = render_component(:"lolita/navigation", :tree, :tree => branch.children, :visible => active)

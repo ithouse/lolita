@@ -56,7 +56,7 @@ module Lolita
       # * <tt>current_page</tt> - number of current page
       # * <tt>request (optional) </tt> - request that is passed to adapter that passes this to model when #pagination_method is defined
       def paginate(current_page, request = nil)
-        page_criteria = page_dbi(request).paginate(current_page,@per,:request => request, :pagination_method => @pagination_method)
+        page_criteria = page_dbi(request).paginate(current_page,@per_page,:request => request, :pagination_method => @pagination_method)
         if self.search
           search_criteria = self.search.run(request && request.params[:q] || "",request)
           page_criteria = if search_criteria.respond_to?(:where) 

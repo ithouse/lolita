@@ -26,6 +26,7 @@
   * #value, #value=, #record_value removed from Lolita::Configuration::Field
   * Created pagination in list and in adapters; its possible to customize it for model.
   * All fields must have name as well as tabs must have type
+  * List #per renamed to #per_page
 
 * Removed
   * Lolita::Generator::FileHelper from generators removed

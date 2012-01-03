@@ -51,7 +51,7 @@ describe Lolita::Configuration::List do
 
   it "should get records for list page" do
     1.upto(5) { Factory.create(:post)}
-    list=list_class.new(@dbi,:per => 1)
+    list=list_class.new(@dbi,:per_page => 1)
     list.paginate(1,Object.new).to_a.size.should == 1
   end
 
@@ -85,7 +85,7 @@ describe Lolita::Configuration::List do
   end
 
   describe "search" do
-    let(:list){ list_class.new(@dbi,:per => 10) }
+    let(:list){ list_class.new(@dbi,:per_page => 10) }
 
     it "should define default search by passing true" do
       list.search true
