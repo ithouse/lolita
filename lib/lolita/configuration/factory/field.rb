@@ -2,6 +2,7 @@ module Lolita
   module Configuration
     module Factory
       class Field
+        class << self
         # There are three ways to add field.
         # *<tt>first</tt> - Pass name and type
         #   Field.add(dbi,"name","type")
@@ -9,7 +10,7 @@ module Lolita
         #   Field.add(dbi,:name => "name", :type => "type")
         # *<tt>third</tt> - Pass dbi_field
         #   Field.add(dbi,:dbi_field => dbi.fields.first)
-        def self.add(dbi,*args,&block)
+        def create(dbi,*args,&block)
           
           options = args ? args.extract_options! : {}
           dbi_field = options[:dbi_field]
@@ -32,13 +33,17 @@ module Lolita
 
         end
 
-        def self.detect_association(dbi,name)
+        alias :add :create
+
+        def detect_association(dbi,name)
           dbi.associations[name.to_sym]
         end
 
-        def self.field_class(name)
+        def field_class(name)
           ("Lolita::Configuration::Field::"+name.to_s.camelize).constantize
         end
+      end 
+      
       end
     end
   end

@@ -91,7 +91,7 @@ module Lolita
           else
             criteria = pagination_scope_for_klass(options[:pagination_method],page,per,options)
           end
-          raise ArgumentError, "Didn't generate any scope from #{options} page:{page} per:#{per}" unless scope
+          raise ArgumentError, "Didn't generate any scope from #{options} page:{page} per:#{per}" unless criteria
           criteria
         else
           scope.merge(criteria).page(page).per(per)
