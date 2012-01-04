@@ -8,6 +8,7 @@ describe Lolita do
         config.class.should == Lolita::SystemConfiguration::Base
       end
     end
+
   end
 end
 
