@@ -19,7 +19,7 @@ module Lolita
     #    # For example you have text field "status" with values opened,closed,rejected
     #    list do
     #      filter do
-    #        field :status, :array, :options_for_select => %w(open closed rejected)
+    #        field :status, :array, :values => %w(open closed rejected)
     #        field :is_deleted, :title => "Deleted"
     #      end
     #    end
@@ -36,7 +36,7 @@ module Lolita
       end
 
       def field *args, &block
-        field=Lolita::Configuration::Field.add(self.dbi,*args,&block)
+        field=Lolita::Configuration::Factory::Field.add(self.dbi,*args,&block)
         field
         @fields<<field
         field
@@ -88,7 +88,7 @@ module Lolita
       end
 
       def options_for_select field
-        if field.options_for_select
+        if field.respond_to?(:options_for_select)
           field.options_for_select
         else
           if field.association_values.respond_to?(:call)
