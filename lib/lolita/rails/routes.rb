@@ -1,4 +1,3 @@
-require 'ruby-debug'
 module ActionDispatch::Routing
   
   class RouteSet
