@@ -7,7 +7,11 @@ $(function(){
       $tr = $(this)
     }
     $.get(url,function(data){
-      $tr.after(data)
+      if($tr.next().hasClass("nested-list")){
+        $tr.next().replaceWith(data)
+      }else{
+        $tr.after(data) 
+      }
     })
   })
 })
