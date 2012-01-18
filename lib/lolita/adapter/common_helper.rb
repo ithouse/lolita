@@ -38,6 +38,10 @@ module Lolita
         }.values.first
       end
 
+      def filter attributes={}
+        klass.where(attributes.reject{|k,v| v.blank? })
+      end
+
       # Detect if class reflect on association by name
       def reflect_on_association(name)
         if orm_association = klass.reflect_on_association(name)

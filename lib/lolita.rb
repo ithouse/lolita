@@ -1,4 +1,3 @@
-
 $:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
 LOLITA_VERSION=File.read(File.expand_path("../../VERSION",__FILE__)).gsub(/[^.\w]/,"")
 FRAMEWORK = if defined?(Rails)
@@ -8,7 +7,8 @@ puts "=> Lolita #{LOLITA_VERSION} starting#{FRAMEWORK}"
 
 #require "rubygems"
 require 'abstract'
-
+require 'observer'
+require 'ostruct'
 require 'active_support'
 require 'active_support/core_ext/numeric/time'
 require 'active_support/core_ext/date_time/conversions'

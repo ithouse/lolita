@@ -19,7 +19,7 @@ module Lolita
     #    # For example you have text field "status" with values opened,closed,rejected
     #    list do
     #      filter do
-    #        field :status, :array, :options_for_select => %w(open closed rejected)
+    #        field :status, :array, :values=> %w(open closed rejected)
     #        field :is_deleted, :title => "Deleted"
     #      end
     #    end
@@ -36,7 +36,7 @@ module Lolita
       end
 
       def field *args, &block
-        field=Lolita::Configuration::Field.add(self.dbi,*args,&block)
+        field=Lolita::Configuration::Factory::Field.create(self.dbi,*args,&block)
         field
         @fields<<field
         field
@@ -83,27 +83,37 @@ module Lolita
         end
       end
 
-      def field_name field
-        "f_#{field.name}"
-      end
-
-      def options_for_select field
-        if field.options_for_select
-          field.options_for_select
-        else
-          if field.association_values.respond_to?(:call)
-           field.association_values.call(self)
-          else
-            field.association_values
-          end
-        end
-      end
-
       def html_option_for_select field
         {
           :include_blank => ::I18n.t('lolita.filter.include_blank_by_title', :title => field.title)
         }
       end
+
+      def update method_name, list, request
+        filter_params = request && request.params && request.params[:filter]
+        page_criteria = if method_name == :paginate && self.search && filter_params
+          search_criteria = self.search.run(nil,request)
+          page_criteria = if search_criteria.respond_to?(:where)
+            list.page_criteria.merge(search_criteria)
+          elsif search_criteria.nil?
+            list.page_criteria
+          else
+            search_criteria
+          end
+        else
+          list.page_criteria.merge(self.dbi.filter(filter_params || {}))
+        end
+        list.instance_variable_set(:@page_criteria,page_criteria)
+      end
+
+      def search *args, &block
+        if args && args.any? || block_given?
+          @search = Lolita::Configuration::Search.new(self.dbi,*args, &block)
+        else
+          @search
+        end
+      end
+      
     end
   end
 end

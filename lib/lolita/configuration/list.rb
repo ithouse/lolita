@@ -1,9 +1,10 @@
 module Lolita
   module Configuration
     class List
+      include Observable
       include Lolita::Builder
        
-      attr_reader :dbi,:initialized_attributes
+      attr_reader :dbi,:initialized_attributes,:page_criteria
       attr_accessor :parent,:association_name
 
       lolita_accessor :per_page, :pagination_method
@@ -31,6 +32,7 @@ module Lolita
       def search *args, &block
         if (args && args.any?) || block_given?
           @search = Lolita::Configuration::Search.new(self.dbi,*args,&block)
+          add_observer(@search)
         end
         @search
       end
@@ -56,18 +58,10 @@ module Lolita
       # * <tt>current_page</tt> - number of current page
       # * <tt>request (optional) </tt> - request that is passed to adapter that passes this to model when #pagination_method is defined
       def paginate(current_page, request = nil)
-        page_criteria = page_dbi(request).paginate(current_page,@per_page,:request => request, :pagination_method => @pagination_method)
-        if self.search
-          search_criteria = self.search.run(request && request.params[:q] || "",request)
-          page_criteria = if search_criteria.respond_to?(:where) 
-            page_criteria.merge(search_criteria)
-          elsif search_criteria.nil?
-            page_criteria
-          else
-            search_criteria
-          end
-        end
-        page_criteria
+        changed
+        @page_criteria = page_dbi(request).paginate(current_page,@per_page,:request => request, :pagination_method => @pagination_method)
+        notify_observers(:paginate,self,request)
+        @page_criteria
       end
 
       # Set columns. Allowed classes are Lolita::Configuration::Columns or
@@ -174,11 +168,16 @@ module Lolita
       # - boolean
       #
       def filter(*args,&block)
-        @filter ||= Lolita::Configuration::Filter.new(self.dbi,*args,&block)
+        if args && args.any? || block_given?
+          @filter = Lolita::Configuration::Filter.new(dbi,*args,&block)
+          add_observer(@filter)
+        else
+          @filter
+        end
       end
 
       def set_default_attributes
-        @per ||= Lolita.application.per_page || 10
+        @per_page ||= Lolita.application.per_page || 10
       end
 
       private

@@ -49,6 +49,14 @@ Benchmark.bm do |x|
     if LOLITA_ORM==:active_record
       #config.fixture_path = "#{::Rails.root}/spec/fixtures"
       config.use_transactional_fixtures = true
+    elsif LOLITA_ORM==:mongoid
+      config.after(:each) do 
+        Mongoid.database.collections.each do |collection|
+          unless collection.name =~ /^system\./
+            collection.remove
+          end
+        end
+      end
     end
   end
 end
