@@ -58,14 +58,11 @@ module Lolita
       end
 
       def fields(*args, &block)
-        unless args.empty?
+        if args && args.any? || block_given?
           args.each do |field_name|
             f = field(field_name)
             f.instance_eval(&block) if block_given?
           end
-        end
-        if @fields.empty?
-          field :search
         end
         @fields
       end
