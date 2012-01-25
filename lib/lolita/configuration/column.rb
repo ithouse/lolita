@@ -35,8 +35,9 @@ module Lolita
       # In other cases it just ask for attribute with same name as column.
       def value(record)
         if self.association
-          if self.association.macro == :one
-            dbi.record(record.send(association.name)).title
+          if self.association.macro == :one &&  dbi.klass.respond_to?(:human_attribute_name)
+            dbi.klass.human_attribute_name(association.name)
+            # dbi.record(record.send(association.name)).title
           elsif dbi.klass.respond_to?(:human_attribute_name)
             "#{dbi.klass.human_attribute_name(association.name)} (#{record.send(association.name).count})"
           else

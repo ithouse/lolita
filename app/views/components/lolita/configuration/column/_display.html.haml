@@ -1,2 +1,3 @@
 - nested_list_options = column.list && {:"data-nested-list-url" => lolita_resources_path(column.list.mapping, column.list.nested_options_for(record))}  || {}
-%td{{:class => column.list && "with-nested-list"}.merge(nested_list_options)}= column.formatted_value(record,self)
+- content_text = column.formatted_value(record,self)
+%td{{:class => column.list && "with-nested-list"}.merge(nested_list_options)}= column.list ? link_to(content_text,"#") : content_text

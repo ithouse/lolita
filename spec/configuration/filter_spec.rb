@@ -18,13 +18,6 @@ describe Lolita::Configuration::Filter do
     list.filter :name, :is_public
     list.filter.fields.size.should == 2
   end
-  
-  it "should add default search field if none is given" do
-    filter=Lolita::Configuration::Filter.new(dbi)
-    filter.fields.size.should == 1
-    filter=Lolita::Configuration::Filter.new(dbi){}
-    filter.fields.size.should == 1
-  end
 
   it "should add some fields" do
     filter=Lolita::Configuration::Filter.new(dbi) do

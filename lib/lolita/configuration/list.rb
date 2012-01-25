@@ -96,10 +96,19 @@ module Lolita
         columns.column(*args, &block)
       end
 
+      def association
+        self.parent && self.parent.dbi.reflect_on_association(self.association_name)
+      end
+
       # Return mapping that class matches dbi klass.
       def mapping
         if @mapping.nil?
-          @mapping = (Lolita.mappings.detect{|name,mapping| mapping.to == dbi.klass} || []).last || false
+          mapping_class = if self.association && self.association.macro == :one
+            self.parent.dbi.klass
+          else
+            dbi.klass
+          end 
+          @mapping = (Lolita.mappings.detect{|name,mapping| mapping.to == mapping_class} || []).last || false
         end
         @mapping
       end
@@ -137,8 +146,8 @@ module Lolita
       # Return Hash with key <em>:nested</em> thas is Hash with one key that is foreign key that links parent with this list.
       def nested_options_for(record)
         if self.parent
-          association = self.parent.dbi.reflect_on_association(self.association_name)
-          attr_name = association.macro == :many_to_many ? :id : association.key
+          association = self.association
+          attr_name = [:one,:many_to_many].include?(association.macro) ? :id : association.key
           base_options = {
             attr_name => association.through? ? record.send(association.through).id : record.id,
             :parent => self.root.dbi.klass.to_s,
