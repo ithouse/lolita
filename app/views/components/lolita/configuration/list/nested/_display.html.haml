@@ -3,5 +3,5 @@
     .box.nested-list
       .list
         %table
-          = render_component list.columns, :page => page
+          = render_component list.columns, :page => page, :nested => true
       = render_component list, :paginator, :page => page

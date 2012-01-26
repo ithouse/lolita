@@ -108,7 +108,7 @@ module Lolita
           else
             dbi.klass
           end 
-          @mapping = (Lolita.mappings.detect{|name,mapping| mapping.to == mapping_class} || []).last || false
+          @mapping = Lolita::Mapping.new(:"#{mapping_class.to_s.downcase.pluralize}") || false
         end
         @mapping
       end
