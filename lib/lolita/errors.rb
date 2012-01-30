@@ -7,6 +7,7 @@ module Lolita
   class FieldTypeError < ArgumentError; end
   class ModuleNotFound < ArgumentError; end
   class NotFound < ArgumentError; end
+  class RecordNotFound < ArgumentError; end
   class ConfigurationClassNotFound < NameError; end
   class AssociationError < ArgumentError; end
   class HookNotFound < ArgumentError;end

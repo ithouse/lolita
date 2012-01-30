@@ -96,6 +96,7 @@ module Lolita
 
       def get_resource(id=nil)
         self.resource = resource_class.lolita.dbi.find_by_id(id || params[:id])
+        raise Lolita::RecordNotFound unless self.resource
       end
 
       def build_resource(attributes=nil)
