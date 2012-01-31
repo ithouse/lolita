@@ -5,16 +5,21 @@ module Lolita
       include Lolita::Builder
        
       attr_reader :dbi,:initialized_attributes,:page_criteria
-      attr_accessor :parent,:association_name
+      attr_accessor :parent,:association_name, :actions
 
       lolita_accessor :per_page, :pagination_method
       
       def initialize(dbi,*args,&block)
         @dbi = dbi
+        @actions = []
         raise Lolita::UnknownDBIError.new("No DBI specified for list") unless @dbi
         set_attributes(*args)
         self.instance_eval(&block) if block_given?
         set_default_attributes
+      end
+
+      def action name, options = {}
+        @actions << Lolita::Configuration::Action.new(@dbi,name,options)
       end
 
       def list(*args, &block)

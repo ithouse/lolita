@@ -8,9 +8,7 @@ module Lolita
         helpers = %w(current_ability can? cannot? authorize!)
        
         helper_method *helpers
-      end
-
-      private 
+      end 
 
       # Proxy method for current_abi, it gives control back to superclass when method is called in
       # other controller than Lolita's (it responds to #lolita_mapping) otherwise it creates or return existing ability with #lolita_current_user.

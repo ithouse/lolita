@@ -14,8 +14,6 @@ module Lolita
         helper_method *helpers
       end
 
-      private
-
       def lolita_current_user
         @lolita_current_user ||= Lolita.user_classes.inject(nil) do |user,user_class|
           unless user

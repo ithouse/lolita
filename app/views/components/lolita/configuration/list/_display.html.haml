@@ -4,5 +4,5 @@
   = render_component list.filter if list.filter
   .list
     %table
-      = render_component list.columns,:page=>page
+      = render_component list.columns,:page=>page, :list => list
   = render_component list,:paginator,:page=>page

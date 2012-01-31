@@ -112,6 +112,7 @@ require 'lolita/configuration/field_set'
 require 'lolita/configuration/nested_form'
 require 'lolita/configuration/search'
 require 'lolita/configuration/filter'
+require 'lolita/configuration/action'
 
 # Configuration factories
 require 'lolita/configuration/factory/field'

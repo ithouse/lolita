@@ -3,4 +3,7 @@
     = link_to ::I18n.t("lolita.shared.edit"),edit_lolita_resource_path(:id=>record.id)
   - if can?(:destroy, record)
     = link_to ::I18n.t("lolita.shared.delete"), lolita_resource_path(:id=>record.id),:method=>:delete,:confirm=>I18n.t("lolita.list.confirm")
+  - list.actions.each do |action|
+    - if can?(action.name,record)
+      = render_component action, :record => record
 

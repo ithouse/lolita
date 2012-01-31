@@ -2,4 +2,4 @@
 %tr{{:class => "#{index%2 == 0 ? "even" : "odd"} #{columns.parent && columns.parent.list && "with-nested-list"}" }.merge(nested_list_options)}
   -columns.each do |column|
     = render_component column, :record => record
-  = render_component "lolita/configuration/column", :last, :record => record
+  = render_component "lolita/configuration/column", :last, :record => record, :list => list
