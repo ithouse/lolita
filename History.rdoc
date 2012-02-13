@@ -20,6 +20,7 @@
   * Sublists for columns and list itself for 1-to-many, many-to-many and 1-to-many throught for AR
   * Version class added in Support
   * #skip_routes added for Lolita.application, that allow to add specific behaviour for application when rake or rails or other commands is called
+  * #action added to list 
 
 * Changes
   * using rails 3.1.x

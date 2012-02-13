@@ -81,6 +81,7 @@ module Lolita
       # Also it passes <i>:pagination_method</i> that is used to detect if there is special method(-s) in model
       # that should be used for creating page.
       def paginate(page,per,options ={})
+        
         criteria = options[:request].respond_to?(:params) && nested_scope_from_hash(options[:request].params) || {}
         scope = options[:request].respond_to?(:params) && scope_from_hash(options[:request].params) || klass.unscoped
        
@@ -93,7 +94,8 @@ module Lolita
               end
             end
           else
-            criteria = pagination_scope_for_klass(options[:pagination_method],page,per,options)
+            new_criteria = pagination_scope_for_klass(options[:pagination_method],page,per,options)
+            criteria = criteria && criteria.merge(new_criteria) || new_criteria
           end
           raise ArgumentError, "Didn't generate any scope from #{options} page:{page} per:#{per}" unless criteria
           criteria
