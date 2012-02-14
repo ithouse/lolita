@@ -153,8 +153,9 @@ module Lolita
         if self.parent
           association = self.association
           attr_name = [:one,:many_to_many].include?(association.macro) ? :id : association.key
+          attr_value = (association.through? && record.send(association.through) && record.send(association.through).id)  || record.id
           base_options = {
-            attr_name => association.through? ? record.send(association.through).id : record.id,
+            attr_name => attr_value,
             :parent => self.root.dbi.klass.to_s,
             :path => self.parents.map{|parent| parent.is_a?(Lolita::Configuration::List) ? "l_" : "c_#{parent.name}"}
           }
