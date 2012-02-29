@@ -26,7 +26,7 @@ module Lolita
         if @title && @title.respond_to?(:call)
           @title.call(self)
         else
-          @title || self.object.to.model_name.human(:count=>2)
+          @title || (self.object.to && self.object.to.model_name.human(:count=>2))
         end
       end
 

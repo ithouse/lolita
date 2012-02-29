@@ -43,7 +43,7 @@ module Lolita
   
     # Return class that is related with mapping.
     def to
-      @ref.constantize
+      @ref.constantize rescue nil
     end
     
     # full path of current mapping

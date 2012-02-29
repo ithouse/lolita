@@ -14,7 +14,7 @@ module Lolita
       end
 
       def clear
-        @fields=[]
+        @fields.clear
       end
       
       def by_name(name)

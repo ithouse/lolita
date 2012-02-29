@@ -1,7 +1,8 @@
 source "http://rubygems.org"
+source 'https://gems.gemfury.com/8n1rdTK8pezvcsyVmmgJ/' 
 
 # Thing how to seperate gems for Rails Engine from those that are only for lolita
-gem "rails", "~>3.1.1"
+gem "rails", "~>3.2.0"
 gem "kaminari", "~>0.12.4"
 gem "abstract"
 
@@ -27,10 +28,13 @@ end
 gem "jeweler", "~> 1.6.4", :group=>:development
 
 group :test,:development do
-	gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
-  gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
-  gem 'ruby-debug19'
-	gem "metric_fu"
+#	gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
+#  gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
+	gem 'linecache19',       '>= 0.5.13'
+gem 'ruby-debug-base19', '>= 0.11.26'
+
+        gem 'ruby-debug19'
+	#gem "metric_fu"
 	gem "fattr"
 	gem "arrayfields"
 	gem "map"
