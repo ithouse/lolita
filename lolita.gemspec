@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["ITHouse (Latvia) and Arturs Meisters"]
-  s.date = "2011-12-28"
+  s.date = "2012-02-29"
   s.description = "Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. "
   s.email = "support@ithouse.lv"
   s.extra_rdoc_files = [
@@ -17,9 +17,7 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
-    ".document",
     ".rspec",
-    "GUIDELINES.rdoc",
     "Gemfile",
     "History.rdoc",
     "LICENSE.txt",
@@ -46,6 +44,7 @@ Gem::Specification.new do |s|
     "app/assets/images/lolita/trash-small.png",
     "app/assets/javascripts/lolita/application.js",
     "app/assets/javascripts/lolita/base64.js",
+    "app/assets/javascripts/lolita/list.js",
     "app/assets/javascripts/lolita/main.js",
     "app/assets/javascripts/lolita/tab.js",
     "app/assets/stylesheets/lolita/PIE-custom.htc",
@@ -60,6 +59,7 @@ Gem::Specification.new do |s|
     "app/helpers/components/lolita/configuration/list_component.rb",
     "app/helpers/components/lolita/configuration_component.rb",
     "app/helpers/lolita_helper.rb",
+    "app/views/components/lolita/configuration/action/_display.html.haml",
     "app/views/components/lolita/configuration/column/_display.html.haml",
     "app/views/components/lolita/configuration/column/_first.html.haml",
     "app/views/components/lolita/configuration/column/_last.html.haml",
@@ -78,13 +78,11 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field/array/autocomplete/_display.html.haml",
     "app/views/components/lolita/configuration/field/array/autocomplete/_input.html.haml",
     "app/views/components/lolita/configuration/field/array/checkbox/_display.html.haml",
-    "app/views/components/lolita/configuration/field/array/filter/_display.html.erb",
     "app/views/components/lolita/configuration/field/array/polymorphic/_display.html.haml",
     "app/views/components/lolita/configuration/field/array/polymorphic/_options_for_select.html.haml",
     "app/views/components/lolita/configuration/field/array/select/_display.html.erb",
     "app/views/components/lolita/configuration/field/big_decimal/_display.html.erb",
     "app/views/components/lolita/configuration/field/boolean/_display.html.erb",
-    "app/views/components/lolita/configuration/field/boolean/filter/_display.html.erb",
     "app/views/components/lolita/configuration/field/date/_display.html.erb",
     "app/views/components/lolita/configuration/field/date_time/_display.html.erb",
     "app/views/components/lolita/configuration/field/date_time/date/_display.html.erb",
@@ -98,11 +96,12 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/field/string/text/_display.html.erb",
     "app/views/components/lolita/configuration/field/time/_display.html.erb",
     "app/views/components/lolita/configuration/field_set/_display.html.erb",
-    "app/views/components/lolita/configuration/list/_display.html.erb",
-    "app/views/components/lolita/configuration/list/_filter.html.erb",
+    "app/views/components/lolita/configuration/filter/_display.html.haml",
+    "app/views/components/lolita/configuration/list/_display.html.haml",
     "app/views/components/lolita/configuration/list/_new_resource.html.haml",
     "app/views/components/lolita/configuration/list/_paginator.html.erb",
     "app/views/components/lolita/configuration/list/_title.html.erb",
+    "app/views/components/lolita/configuration/list/nested/_display.html.haml",
     "app/views/components/lolita/configuration/nested_form/_display.html.erb",
     "app/views/components/lolita/configuration/nested_form/_fields.html.erb",
     "app/views/components/lolita/configuration/search/_display.html.haml",
@@ -113,8 +112,8 @@ Gem::Specification.new do |s|
     "app/views/components/lolita/configuration/tab/content/_display.html.erb",
     "app/views/components/lolita/configuration/tab/default/_display.html.erb",
     "app/views/components/lolita/configuration/tabs/_display.html.erb",
-    "app/views/components/lolita/navigation/_display.html.erb",
-    "app/views/components/lolita/navigation/_tree.html.erb",
+    "app/views/components/lolita/navigation/_display.html.haml",
+    "app/views/components/lolita/navigation/_tree.html.haml",
     "app/views/components/lolita/shared/_flash.html.erb",
     "app/views/components/lolita/shared/_header.html.erb",
     "app/views/components/lolita/shared/_right_sidebar.html.erb",
@@ -131,16 +130,10 @@ Gem::Specification.new do |s|
     "app/views/lolita/rest/form.html.erb",
     "app/views/lolita/rest/index.html.erb",
     "author",
-    "config/locales/default/lv.yml",
     "config/locales/en.yml",
     "config/locales/lv.yml",
     "config/routes.rb",
     "db/seed.rb",
-    "features/create_page.feature",
-    "features/step_definitions/lolita_steps.rb",
-    "features/step_definitions/web_steps.rb",
-    "features/support/env.rb",
-    "features/support/paths.rb",
     "lib/generators/lolita/install_generator.rb",
     "lib/generators/templates/lolita.rb",
     "lib/lolita.rb",
@@ -150,6 +143,7 @@ Gem::Specification.new do |s|
     "lib/lolita/adapter/field_helper.rb",
     "lib/lolita/adapter/mongoid.rb",
     "lib/lolita/builder.rb",
+    "lib/lolita/configuration/action.rb",
     "lib/lolita/configuration/base.rb",
     "lib/lolita/configuration/column.rb",
     "lib/lolita/configuration/columns.rb",
@@ -221,6 +215,7 @@ Gem::Specification.new do |s|
     "spec/configuration/tab_spec.rb",
     "spec/configuration/tabs_spec.rb",
     "spec/controllers/component_helpers_spec.rb",
+    "spec/controllers/configuration_spec.rb",
     "spec/controllers/internal_helpers_spec.rb",
     "spec/controllers/lolita_rest_nested_resources_spec.rb",
     "spec/controllers/lolita_rest_spec.rb",
@@ -350,62 +345,56 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rails>, ["~> 3.1.1"])
-      s.add_runtime_dependency(%q<kaminari>, ["~> 0.12.4"])
+      s.add_runtime_dependency(%q<rails>, ["~> 3.2.0"])
+      s.add_runtime_dependency(%q<kaminari>, ["~> 0.13.0"])
       s.add_runtime_dependency(%q<abstract>, [">= 0"])
       s.add_runtime_dependency(%q<builder>, ["~> 3.0"])
       s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
       s.add_runtime_dependency(%q<jquery-rails>, [">= 0"])
       s.add_runtime_dependency(%q<tinymce-rails>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
-      s.add_development_dependency(%q<metric_fu>, [">= 0"])
-      s.add_development_dependency(%q<fattr>, [">= 0"])
-      s.add_development_dependency(%q<arrayfields>, [">= 0"])
-      s.add_development_dependency(%q<map>, [">= 0"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
-      s.add_development_dependency(%q<rspec-rails>, ["~> 2.6.1"])
+      s.add_development_dependency(%q<linecache19>, [">= 0.5.13"])
+      s.add_development_dependency(%q<ruby-debug-base19>, [">= 0.11.26"])
+      s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_development_dependency(%q<rspec-rails>, ["~> 2.8.0"])
       s.add_development_dependency(%q<factory_girl>, [">= 0"])
       s.add_development_dependency(%q<ffaker>, [">= 0"])
-      s.add_development_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_development_dependency(%q<database_cleaner>, [">= 0"])
     else
-      s.add_dependency(%q<rails>, ["~> 3.1.1"])
-      s.add_dependency(%q<kaminari>, ["~> 0.12.4"])
+      s.add_dependency(%q<rails>, ["~> 3.2.0"])
+      s.add_dependency(%q<kaminari>, ["~> 0.13.0"])
       s.add_dependency(%q<abstract>, [">= 0"])
       s.add_dependency(%q<builder>, ["~> 3.0"])
       s.add_dependency(%q<haml>, ["~> 3.1.2"])
       s.add_dependency(%q<jquery-rails>, [">= 0"])
       s.add_dependency(%q<tinymce-rails>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
-      s.add_dependency(%q<metric_fu>, [">= 0"])
-      s.add_dependency(%q<fattr>, [">= 0"])
-      s.add_dependency(%q<arrayfields>, [">= 0"])
-      s.add_dependency(%q<map>, [">= 0"])
-      s.add_dependency(%q<rspec>, ["~> 2.6.0"])
-      s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
+      s.add_dependency(%q<linecache19>, [">= 0.5.13"])
+      s.add_dependency(%q<ruby-debug-base19>, [">= 0.11.26"])
+      s.add_dependency(%q<ruby-debug19>, [">= 0"])
+      s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_dependency(%q<rspec-rails>, ["~> 2.8.0"])
       s.add_dependency(%q<factory_girl>, [">= 0"])
       s.add_dependency(%q<ffaker>, [">= 0"])
-      s.add_dependency(%q<ruby-debug19>, [">= 0"])
       s.add_dependency(%q<database_cleaner>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rails>, ["~> 3.1.1"])
-    s.add_dependency(%q<kaminari>, ["~> 0.12.4"])
+    s.add_dependency(%q<rails>, ["~> 3.2.0"])
+    s.add_dependency(%q<kaminari>, ["~> 0.13.0"])
     s.add_dependency(%q<abstract>, [">= 0"])
     s.add_dependency(%q<builder>, ["~> 3.0"])
     s.add_dependency(%q<haml>, ["~> 3.1.2"])
     s.add_dependency(%q<jquery-rails>, [">= 0"])
     s.add_dependency(%q<tinymce-rails>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
-    s.add_dependency(%q<metric_fu>, [">= 0"])
-    s.add_dependency(%q<fattr>, [">= 0"])
-    s.add_dependency(%q<arrayfields>, [">= 0"])
-    s.add_dependency(%q<map>, [">= 0"])
-    s.add_dependency(%q<rspec>, ["~> 2.6.0"])
-    s.add_dependency(%q<rspec-rails>, ["~> 2.6.1"])
+    s.add_dependency(%q<linecache19>, [">= 0.5.13"])
+    s.add_dependency(%q<ruby-debug-base19>, [">= 0.11.26"])
+    s.add_dependency(%q<ruby-debug19>, [">= 0"])
+    s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+    s.add_dependency(%q<rspec-rails>, ["~> 2.8.0"])
     s.add_dependency(%q<factory_girl>, [">= 0"])
     s.add_dependency(%q<ffaker>, [">= 0"])
-    s.add_dependency(%q<ruby-debug19>, [">= 0"])
     s.add_dependency(%q<database_cleaner>, [">= 0"])
   end
 end

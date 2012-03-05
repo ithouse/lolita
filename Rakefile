@@ -29,19 +29,19 @@ Jeweler::RubygemsDotOrgTasks.new
 
 task :default => :test
 
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+# require 'rake/rdoctask'
+# Rake::RDocTask.new do |rdoc|
+#   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "lolita #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+#   rdoc.rdoc_dir = 'rdoc'
+#   rdoc.title = "lolita #{version}"
+#   rdoc.rdoc_files.include('README*')
+#   rdoc.rdoc_files.include('lib/**/*.rb')
+# end
 
-require 'metric_fu'
-MetricFu::Configuration.run do |config|
-  config.rcov[:test_files] = ['spec/**/*_spec.rb']  
-  config.rcov[:rcov_opts] << "-Ispec" # Needed to find spec_helper
-  config.metrics -= [:flog]
-end
+# require 'metric_fu'
+# MetricFu::Configuration.run do |config|
+#   config.rcov[:test_files] = ['spec/**/*_spec.rb']  
+#   config.rcov[:rcov_opts] << "-Ispec" # Needed to find spec_helper
+#   config.metrics -= [:flog]
+# end
