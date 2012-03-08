@@ -1,0 +1,7 @@
+%header
+  %h1= Lolita.application.name
+  - if lolita_current_user
+    %nav
+      = render_component "lolita/shared", "languages"
+      %a{:href => send(:"edit_#{lolita_current_user.class.to_s.downcase}_password_path"), :class => "username"}= lolita_current_user.email
+      = link_to ::I18n.t("lolita.shared.log_out"), send(:"destroy_#{lolita_current_user.class.to_s.downcase}_session_path"), :class => "button grey", :method => Devise.sign_out_via

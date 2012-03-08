@@ -31,7 +31,7 @@ module Lolita
         format=options.delete(:format)
         raise "Can't render component without name!" unless name
         will_use_component name
-        component_name=File.join(name.to_s,state ? state.to_s : nil)
+        component_name=File.join(name.to_s,state.to_s ? state.to_s : nil)
         partial_name=File.join("/components",component_name)
 
         @rendering_components.push(component_name)
