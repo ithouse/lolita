@@ -1,7 +1,6 @@
 class Lolita::FieldDataController < ApplicationController
-  include Lolita::Controllers::UserHelpers
+  include Lolita::Controllers::AuthenticationHelpers
 
-  before_filter :authenticate_lolita_user!
   before_filter :find_field, :except => [:autocomplete_field]
 
   def array_polymorphic

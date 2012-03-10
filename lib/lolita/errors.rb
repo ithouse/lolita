@@ -13,4 +13,5 @@ module Lolita
   class HookNotFound < ArgumentError;end
   class UnknownDBIError < ArgumentError; end
   class NotInitialized < ArgumentError; end
+  class NoAuthenticationDefinedError < ArgumentError; end
 end

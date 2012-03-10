@@ -155,6 +155,8 @@ module Lolita
         yield
         ::I18n.locale = old_locale
       end
+
     end
+
   end
 end

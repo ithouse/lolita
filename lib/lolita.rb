@@ -99,6 +99,9 @@ require 'lolita/adapter/mongoid'
 # DBI
 require 'lolita/dbi/base'
 
+# Extensions
+require 'lolita/extensions/extensions'
+
 # Configuration base
 require 'lolita/configuration/base'
 require 'lolita/configuration/list'
@@ -128,10 +131,10 @@ end
 
 # Controllers and views
 require 'lolita/controllers/internal_helpers'
-require 'lolita/controllers/user_helpers'
 require 'lolita/controllers/url_helpers'
 require 'lolita/controllers/component_helpers'
 require 'lolita/controllers/authorization_helpers'
+require 'lolita/controllers/authentication_helpers'
 
 # Test
 require 'lolita/test/matchers'

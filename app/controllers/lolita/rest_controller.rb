@@ -6,7 +6,7 @@ class Lolita::RestController < ApplicationController
   add_hook :before_update,:after_update,:before_destroy,:after_destroy,:before_index,:after_index
   add_hook :before_build_resource, :after_build_resource
   
-  before_filter :authenticate_lolita_user!
+
   layout "lolita/application"
   
   def new

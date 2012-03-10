@@ -1,8 +1,7 @@
 class Lolita::InfoController < ApplicationController
   @@properties = []
-  include Lolita::Controllers::UserHelpers
   include Lolita::Controllers::AuthorizationHelpers
-  before_filter :authenticate_lolita_user!, :only => [:index]
+  include Lolita::Controllers::AuthenticationHelpers
 
   def index
     if Lolita.mappings.any?

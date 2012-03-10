@@ -4,9 +4,9 @@ module Lolita
     
     def self.included(base_class)
       base_class.class_eval do 
-        include Lolita::Controllers::UserHelpers
         include Lolita::Controllers::InternalHelpers
         include Lolita::Controllers::AuthorizationHelpers
+        include Lolita::Controllers::AuthenticationHelpers
         include LolitaHelper
       end
     end

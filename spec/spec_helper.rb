@@ -22,7 +22,7 @@
 require 'rubygems'
 require "bundler/setup"
 require 'benchmark'
-require 'ruby-debug'
+#require 'ruby-debug'
 Benchmark.bm do |x|
   x.report("Loading ORM: ") do
     LOLITA_ORM=:mongoid
