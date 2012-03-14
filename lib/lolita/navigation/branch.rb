@@ -129,7 +129,7 @@ module Lolita
 
       def visible?(view)
         self_visible = if self.object && self.object.respond_to?(:to)
-          view.send(:can?,:read,self.object.to)
+          view.send(:authorization_proxy).send(:can?,:read,self.object.to)
         elsif self.options[:visible]
           if self.options[:visible].respond_to?(:call)
             self.options[:visible].call(view,self,branch)

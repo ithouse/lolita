@@ -2,8 +2,8 @@ module Lolita
   module SystemConfiguration
     class Base
       attr_reader :scope, :modules, :routes, :controllers,:resources
-      attr_accessor :mappings,:default_route,:user_classes,:authentication
-      attr_writer :default_locale
+      attr_accessor :mappings,:default_route,:user_classes,:authentication,:authorization
+      attr_writer :default_locale, :ability_class
 
       def initialize(scope)
         @scope=scope
@@ -30,6 +30,10 @@ module Lolita
           Lolita::Navigation::Tree.remember(tree)
         end
         Lolita::Navigation::Tree[:"left_side_navigation"]
+      end
+      
+      def ability_class
+        @ability_class || Ability
       end
 
       def locales=(value)
@@ -158,7 +162,7 @@ module Lolita
         end
     
       end
-
+      
     end
   end
 end

@@ -44,5 +44,12 @@ describe Lolita::Extensions::Authentication::Proxy do
         proxy.adapter.should be_a(Lolita::Extensions::Authentication::DefaultAdapter)
       end
     end
+    context 'devise adapter' do
+      it "should create when Lolita.authentication is specified" do
+        Lolita.authentication = :test
+        proxy.adapter.should be_a(Lolita::Extensions::Authentication::DeviseAdapter)
+        Lolita.authentication = nil
+      end
+    end
   end
 end

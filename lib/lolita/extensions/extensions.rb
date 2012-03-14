@@ -26,7 +26,15 @@ module Lolita
     end
     
     def load_extension_proxy type,context=self,options={}
-      __extensions_proxies[type] = "Lolita::Extensions::#{type.to_s.camelize}::Proxy".constantize.new(context,options)
+      proxy_class = "Lolita::Extensions::#{type.to_s.camelize}::Proxy".constantize
+      initialize_arity = proxy_class.instance_method(:initialize).arity
+      __extensions_proxies[type] = if initialize_arity < 0 || initialize_arity > 1
+        proxy_class.new(context,options)
+      elsif initialize_arity == 0
+        proxy_class.new
+      else
+        proxy_class.new(context)
+      end
     end
 
     def self.add type

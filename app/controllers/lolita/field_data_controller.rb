@@ -5,20 +5,16 @@ class Lolita::FieldDataController < ApplicationController
 
   def array_polymorphic
     klass = params[:class].camelize.constantize
+    authorization_proxy.authorize!(:read,klass)
     data_collection = @field.polymorphic_association_values(:klass => klass)
     @id = params[:id].to_s.to_i
     @collection = [[]]+data_collection
     render_component(*@field.build(:state => :options_for_select, :collection => @collection, :id => @id))
   end
 
-  def find_field
-    @field = params[:field_class].camelize.constantize.lolita.tabs.fields.detect{|field|
-      field.name.to_s == params[:name].to_s
-    }
-  end
-
 	def autocomplete_field
     klass = params[:field_class].camelize.constantize
+    authorization_proxy.authorize!(:read,klass)
     field = klass.lolita.tabs.fields.detect{|field| field.name.to_s == params[:field_name]}
     data = if field
       (field.search || field.create_search(true)).run(params[:term],request).map do |record|
@@ -32,4 +28,13 @@ class Lolita::FieldDataController < ApplicationController
     end
     render :json => data || {}
 	end
+
+  private
+
+  def find_field
+    @field = params[:field_class].camelize.constantize.lolita.tabs.fields.detect{|field|
+      field.name.to_s == params[:name].to_s
+    }
+  end
+
 end

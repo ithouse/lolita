@@ -4,7 +4,7 @@ describe Lolita::Extensions::Authentication::DefaultAdapter do
   let(:klass){ Lolita::Extensions::Authentication::DefaultAdapter }
   let(:adapter){ klass.new(Object.new,{}) }
 
-  it "should createnew DefaultAdapter" do
+  it "should create new DefaultAdapter" do
     expect do
       klass.new(Object.new,{})
     end.not_to raise_error

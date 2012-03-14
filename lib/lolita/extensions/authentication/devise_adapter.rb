@@ -21,10 +21,8 @@ module Lolita
           !!current_user
         end
 
-        def authenticate_user!
-          if @context.is_a?(::ActionController::Base)
-            @context.send(Lolita.authentication)
-          end
+        def authenticate_user! *args
+          @context.send(Lolita.authentication)
         end
 
         def sign_out_via

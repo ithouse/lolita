@@ -2,9 +2,11 @@ require "#{File.dirname(__FILE__)}/default_adapter"
 require "#{File.dirname(__FILE__)}/devise_adapter"
 
 module Lolita
+  class NoAuthenticationDefinedError < ArgumentError; end
+  
   module Extensions
     module Authentication
-
+    
       class Proxy
         attr_accessor :adapter
 

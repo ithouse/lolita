@@ -4,7 +4,7 @@ module Lolita
       extend ActiveSupport::Concern
       included do
         helper LolitaHelper
-        #TODO pārnest helperus uz lolitu vai arī uz lolita app nevis likt iekš controllers iekš lolitas
+        
         helpers = %w(resource resource_name use_mapping 
                      resource_class lolita_mapping show_response tab_form tab_form=)
         hide_action *helpers

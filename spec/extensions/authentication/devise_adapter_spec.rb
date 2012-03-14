@@ -1,8 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../simple_spec_helper')
 
-module ActionController
+module TestActionController
   class Base
-
+  
     def current_user
       "user_1"
     end
@@ -40,13 +40,20 @@ describe Lolita::Extensions::Authentication::DeviseAdapter do
     Lolita.user_classes = []
   }
   let(:klass){ Lolita::Extensions::Authentication::DeviseAdapter }
-  let(:controller){ActionController::Base.new}
+  let(:controller){TestActionController::Base.new}
   let(:adapter){ klass.new(controller,{}) }
 
-  it "should create new DeviseAdapter" do
+  it "should create new" do
     expect do
-      klass.new(ActionController::Base,{})
+      klass.new(TestActionController::Base,{})
     end.not_to raise_error
+  end
+  
+  it "should raise error without authentication" do
+    expect do
+      Lolita.authentication = nil
+      klass.new(TestActionController::Base,{})
+    end.to raise_error(Lolita::NoAuthenticationDefinedError)
   end
 
   it "should not have current user" do
@@ -73,7 +80,7 @@ describe Lolita::Extensions::Authentication::DeviseAdapter do
   it "should have sign out path" do 
     adapter.sign_out_path.should == "/destroy_admin"
   end
-
+  
 
   describe 'Integration with proxy' do
     let(:proxy){ Lolita::Extensions::Authentication::Proxy.new(controller,{}) }

@@ -6,6 +6,8 @@ end
 
 module Lolita::Extensions::Test
   class Proxy
+    def initialize *args
+    end
   end
 end
 
