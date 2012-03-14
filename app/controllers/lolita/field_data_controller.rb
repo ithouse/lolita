@@ -25,7 +25,7 @@ class Lolita::FieldDataController < ApplicationController
         {
           :id => record.id,
           :value => record.send(field.current_text_method(field.association.klass)),
-          :name => "#{params[:field_class].downcase}[#{params[:field_name].singularize}_ids][]",
+          :name => "#{params[:field_class].underscore}[#{params[:field_name].singularize}_ids][]",
           :delete_link => I18n.t("lolita.shared.delete").to_s.downcase
         }
       end
