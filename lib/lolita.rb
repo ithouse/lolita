@@ -80,6 +80,7 @@ end
 require 'lolita/hooks/named_hook'
 
 # Require base
+require 'lolita/register'
 require 'lolita/lazy_loader'
 require 'lolita/observed_array'
 require 'lolita/builder'
