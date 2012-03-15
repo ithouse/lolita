@@ -7,13 +7,13 @@
 - f_url = autocomplete_field_path(:field_class => resource_class.to_s, :field_name => field.name)
 
 - f_value = if local_assigns[:with_value]
-  - tab_form.object.send(field.association.name) && tab_form.object.send(field.association.name).send(field.current_text_method(field.association.klass))
+  - current_form.object.send(field.association.name) && current_form.object.send(field.association.name).send(field.current_text_method(field.association.klass))
 - else
   - nil
 
 - f_options = {:"data-autocomplete-url" => f_url, :"data-macro" => field.association.macro, :"data-cached" => f_cached ? "yes" : "no"}
 
 - if f_cached
-  = tab_form.text_field f_name, f_options
+  = current_form.text_field f_name, f_options
 - else
   = text_field_tag f_name, f_value, f_options

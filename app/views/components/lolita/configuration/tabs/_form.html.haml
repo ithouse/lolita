@@ -1,0 +1,7 @@
+= form_for resource, :url => resource.new_record? ? lolita_resources_path : lolita_resource_path(:id=>resource.id), :method => resource.new_record? ? :post : :put, :html => {:multipart => true, :class => "associated"} do |form|
+  - self.current_form = form
+  - tabs.associated.each_with_index do |tab,index|
+    = render_component :"lolita/configuration/tab", :display, :tab => tab, :active => index == 0
+- self.current_form = nil
+- tabs.dissociated.each_with_index do |tab,index|
+  = render_component :"lolita/configuration/tab", :display, :tab => tab, :active => index == 0

@@ -1,6 +1,6 @@
-- record = tab_form.object
+- record = current_form.object
 - type_name = field.association.name.to_s + "_type"
 - id_name = field.association.name.to_s + "_id"
 
-= tab_form.select(type_name,field.polymorphic_classes, {:include_blank => true},{:"data-polymorphic-url" => array_field_data_collector_path(:name => field.name, :field_class => record.class.to_s, :class => "klass", :id =>record.send(id_name) || 0) })
-= tab_form.select(id_name, field.polymorphic_association_values(:record => record))
+= current_form.select(type_name,field.polymorphic_classes, {:include_blank => true},{:"data-polymorphic-url" => array_field_data_collector_path(:name => field.name, :field_class => record.class.to_s, :class => "klass", :id =>record.send(id_name) || 0) })
+= current_form.select(id_name, field.polymorphic_association_values(:record => record))

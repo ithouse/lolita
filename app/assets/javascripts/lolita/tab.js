@@ -1,41 +1,46 @@
 //= require jquery
 //= require jquery-ui
 $(function(){
-  // Send ajax request with all forms data for given tabs block.
-  function save_tab(tabs){
-    var data=""
-    tabs.find("form").each(function(){
-      data=data+"&"+$(this).serialize()
-    })
-    //alert(data)
-    $.ajax({
-      url:tabs.attr("data-tabs-url"),
-      dataType:"html",
-      type:tabs.attr("data-method"),
-      data:data,
-      success:function(data){
-        $("#content").html(data);
-      },
-      error:function(xhr, textStatus, errorThrown){
-        f = $("#flash");
-        f.html("<span style='color:red'>An Error occured, please contact support personel</span>");
-        f.slideDown("fast")
-      }
-    })
-  }
-  function save_all(){
-    var tab = $("#content").children("div[data-tabs-url]")
-    save_tab(tab)
-  }
+  // // Send ajax request with all forms data for given tabs block.
+  // function save_tab(tabs){
+  //   var data=""
+  //   tabs.find("form").each(function(){
+  //     data=data+"&"+$(this).serialize()
+  //   })
+  //   //alert(data)
+  //   $.ajax({
+  //     url:tabs.attr("data-tabs-url"),
+  //     dataType:"html",
+  //     type:tabs.attr("data-method"),
+  //     data:data,
+  //     success:function(data){
+  //       $("#content").html(data);
+  //     },
+  //     error:function(xhr, textStatus, errorThrown){
+  //       f = $("#flash");
+  //       f.html("<span style='color:red'>An Error occured, please contact support personel</span>");
+  //       f.slideDown("fast")
+  //     }
+  //   })
+  // }
+  // function save_all(){
+  //   var tab = $("#content").children("div[data-tabs-url]")
+  //   save_tab(tab)
+  // }
   // Submit all forms through Ajax when Save All button clicked.
   $("button.save-all").live('click',function(){
-    //var tab=$(this).parents("div[data-tabs-url]")
-    save_all()
+    $form = $(".tabs form.associated")
+    $form.append("<input type='hidden' name='button_pressed' value='"+$(this).data("type")+"' />")
+    $form.submit()
   })
-  // All tabs are closable when clicked on tab title.
-  $(".tab .tab-title.grey").live('click',function(){
-		$(this).parent().toggleClass("minimized").trigger("tab.toggle")
-	})
+
+  $(".tabs .tab-title h2").live("click",function(){
+    $(this).parents(".tab-title").find("h2").removeClass("active light").addClass("semi-dark");
+    $(this).removeClass("semi-dark").addClass("active light");
+    $(".tabs .tab.active").removeClass("active")
+    $("#"+$(this).data("tab")).addClass("active")
+    resize_all_tinymce_editors()
+  })
   // Integer field validator
   $(".integer").numeric()
   

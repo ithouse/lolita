@@ -7,7 +7,7 @@
     <% end %>
   <% end %>
   <% if nested_form.expandable? && nested_form.allow_destroy? %>
-    <%= link_to_remove_fields I18n.t("lolita.shared.delete").downcase, tab_form %>
+    <%= link_to_remove_fields I18n.t("lolita.shared.delete").downcase, current_form %>
   <% end %>
 </div>
   

@@ -90,6 +90,14 @@ module Lolita
       def names
         @tabs.map(&:name)
       end
+
+      def associated
+        @tabs.select{|tab| !tab.dissociate}
+      end
+
+      def dissociated
+        @tabs.select{|tab| tab.dissociate}
+      end
       
       def set_attributes *args
         if args

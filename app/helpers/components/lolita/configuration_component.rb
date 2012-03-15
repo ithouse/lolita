@@ -9,7 +9,7 @@ module Components
         new_object = nested_form.klass.new
         fields_content = ""
         fields = f.fields_for(nested_form.name, new_object, :child_index => "new_#{nested_form.name}") do |builder|
-          self.tab_form(builder) do
+          self.current_form(builder) do
             fields_content = render_component(nested_form, :"fields")
           end
         end

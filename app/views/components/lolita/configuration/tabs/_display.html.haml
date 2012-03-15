@@ -1,0 +1,10 @@
+#content.with-secondary
+  = render_component :"lolita/shared", :right_sidebar
+  %div{:id => "tabs-#{resource_name}", :class => "tabs box" }
+    .tab-title.boxtitle.black
+      - tabs.each_with_index do |tab,index|
+        = render_component :"lolita/configuration/tab", :title, :tab => tab, :active => index == 0
+      .clear
+    = render_component tabs, :form
+
+

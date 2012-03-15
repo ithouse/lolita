@@ -2,7 +2,7 @@
   #This partial is useful for hooks. You don't need to hook in each tab, but you can hook here, that is common to all tabs
 %>
 <%= form_for resource, :url => "#",:html => {:onsubmit => "return false;",:multipart=>true, :id=>"tab-form-#{tab.__id__}",:method => resource.new_record? ? :post : :put} do |form| %>
-  <% self.tab_form = form %>
+  <% self.current_form = form %>
   <%= render_component *tab.build %>
 <% end %>
-<% self.tab_form = nil %>
+<% self.current_form = nil %>

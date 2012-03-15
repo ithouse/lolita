@@ -1,6 +1,6 @@
 .autocomplete-container
   - if field.association.macro == :one
-    = tab_form.hidden_field field.association.key
+    = self.current_form.hidden_field field.association.key
     = render_component *field.build(:state => "input", :with_value => true)
   - else
     - ids_method = field.name.to_s.match(/_ids$/) ? field.name : "#{field.name.to_s.singularize}_ids"

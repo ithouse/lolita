@@ -10,10 +10,12 @@ lv:
       powered: Tiek darbināta ar Lolita (2010-%{year})
     nested_form:
       add: "Pievienot %{resource_name}"
+    buttons:
+      "save": "Saglabāt"
+      "save&close": "Saglabāt un aizvērt"
+      "save&new": "Saglabāt un veidot jaunu"
     tabs:
       last_save: Pēdējā saglabāšana
-      save: Saglabāt
-      save_all: Saglabāt visu
       titles:
         default: "Noklusētais"
         content: "Saturs"

@@ -23,6 +23,17 @@ input[type="button"] {vertical-align: top; padding: 3px 9px;}
   margin-top:-999em;
 }
 
+/* colors */
+.semi-dark{
+  color: #737373;
+}
+.light-dark{
+   color:#d5d5d5;
+}
+.light{
+  color:#F1F1F1
+}
+
 /* same button styles for links and both types of html buttons */
 button, a.button, input[type="button"] {
   padding: 4px 10px; 
@@ -170,11 +181,18 @@ header nav .username {margin-right: 15px;}
 #main .box .save {padding: 20px 10px;}
 #main .box .last-save {color: #808080; margin-bottom: 5px;}
 #main .box .save button {
-  width: 100%; 
-  padding: 10px 0; 
-  font-size: 24px; 
-  background: #ab8def; 
-  color: #ffd;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 24px;
+  background: #AB8DEF;
+  color: #FFD;
+  margin-bottom: 10px;
+  line-height: 24px;
+}
+#main .box .save button.small {
+  font-size: 16px;
+  line-height: 20px;
+  padding: 5px 0;
 }
 #main .box .save button:active {position: relative; top: 1px;}
 
@@ -247,18 +265,31 @@ footer {
 } 
 
 .boxtitle {position: relative; z-index: 2} 
+.boxtitle h1 {padding: 35px 25px 15px; line-height: 1; cursor: pointer;}
+.boxtitle h2.title {position:relative;font-weight: normal;font-size: 28px;float: left;padding: 35px 25px 15px; line-height: 1; cursor: pointer;} /* h1 contains bgcolor, color and text position because arrow needs different bg and it follows after */
+.boxtitle h2.title .arrow{ display:none; }
+.boxtitle h2.title.active .arrow{ display:block;}
 
-.boxtitle h1 {padding: 35px 25px 15px; line-height: 1; cursor: pointer;} /* h1 contains bgcolor, color and text position because arrow needs different bg and it follows after */
 .boxtitle .arrow {
   position: absolute;
   left: 50%;
   border-color: #2f2f2f transparent transparent;
   border-style: solid;
   border-width: 10px 10px 0;
+  margin-left: -10px;
 }
+.boxtitle .title .arrow{
+  left: 50%;
+  margin-left: -10px;
+  bottom: -10px;
+}
+
 .boxtitle.grey .arrow {
   border-color: #e2e2e2 transparent transparent;
 }
+
+#main .tabs .tab {display: none;}
+#main .tabs .tab.active {display: block;}
 
 #main .tab.box.default {border: none;} /* styles for not-on-top grey boxes */
 #main .tab.box.default .boxtitle {

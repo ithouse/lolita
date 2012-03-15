@@ -24,7 +24,7 @@ module Lolita
         # For different types there are different builders(cells)
         @@available_types=[:content]
      
-        lolita_accessor :title,:name,:type
+        lolita_accessor :title,:name,:type, :dissociate
         attr_accessor :dbi,:current_fieldset, :current_nested_form,:current_dbi
         attr_reader :field_sets,:nested_forms
 

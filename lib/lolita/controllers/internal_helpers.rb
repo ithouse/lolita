@@ -6,7 +6,7 @@ module Lolita
         helper LolitaHelper
         
         helpers = %w(resource resource_name use_mapping 
-                     resource_class lolita_mapping show_response tab_form tab_form=)
+                     resource_class lolita_mapping show_response current_form current_form=)
         hide_action *helpers
        
         helper_method *helpers
@@ -32,18 +32,18 @@ module Lolita
         @lolita_mapping||=request.env["lolita.mapping"]
       end
 
-      def tab_form=(form)
-        @tab_form = form
+      def current_form=(form)
+        @current_form = form
       end
 
-      def tab_form(temp_form = nil)
+      def current_form(temp_form = nil)
         if block_given?
-          old_form = @tab_form
-          @tab_form = temp_form
+          old_form = @current_form
+          @current_form = temp_form
           content = yield
-          @tab_form = old_form
+          @current_form = old_form
         end
-        @tab_form
+        @current_form
       end
 
       def use_mapping(new_mapping)

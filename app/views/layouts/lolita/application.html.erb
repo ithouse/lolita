@@ -24,9 +24,7 @@
       <%= render_component :"lolita/shared", :header %>
       <div id="main" role="main">
         <%= render_component :"lolita/navigation",:display,:tree=>Lolita::Navigation::Tree[:"left_side_navigation"] %>
-        <div id="content" class="<%= content_classes %>">
-          <%= yield %>
-        </div>
+        <%= yield %>
       </div>
       <div class="push"></div>
     </div>

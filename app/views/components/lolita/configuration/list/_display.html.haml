@@ -1,8 +1,9 @@
-.box
-  = render_component list, :title
-  = render_component list, :new_resource
-  = render_component list.filter if list.filter
-  .list
-    %table
-      = render_component list.columns,:page=>page, :list => list
-  = render_component list,:paginator,:page=>page
+#content
+  .box
+    = render_component list, :title
+    = render_component list, :new_resource
+    = render_component list.filter if list.filter
+    .list
+      %table
+        = render_component list.columns,:page=>page, :list => list
+    = render_component list,:paginator,:page=>page

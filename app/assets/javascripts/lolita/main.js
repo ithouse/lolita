@@ -29,6 +29,17 @@ $(function(){
   })
 })
 
+function resize_all_tinymce_editors(){
+  $("textarea").each(function(item,index){
+    var $textarea = $("#"+$(this).tinymce().editorId)
+    var $parent = $textarea.parent()
+    var h = $textarea.height();
+    $parent.find('.mceEditor').css('width','100%').css('minHeight',h + "px");
+    $parent.find('.mceLayout').css('width','100%').css('minHeight',h + "px");
+    $parent.find('.mceIframeContainer').css('width','100%').css('minHeight',h + "px");
+    $parent.find("iframe").css("width","100%").css("minHeight",h + "px") 
+  })
+}
 function show_flash(html){
   var flash=$("#flash")
   flash.stop(true)

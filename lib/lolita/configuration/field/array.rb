@@ -102,7 +102,7 @@ module Lolita
 
         # used in views for shorter accessing to values
         def view_values(view)
-          record = view.send(:tab_form).object
+          record = view.send(:current_form).object
           values = association_values(record)
           if values.respond_to?(:call)
             values.call(view)

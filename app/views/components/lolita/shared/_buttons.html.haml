@@ -1,0 +1,6 @@
+.save.black
+  .last-save
+    = "#{t("lolita.tabs.last_save")}: #{l(resource.updated_at, :format => :short)}" if resource.respond_to?(:updated_at) && resource.updated_at
+  = render_component "lolita/shared", :save_button, :type => "save&close"
+  = render_component "lolita/shared", :save_button, :type => "save&new", :class_name => "small"
+  = render_component "lolita/shared", :save_button, :type => "save", :class_name => "small"
