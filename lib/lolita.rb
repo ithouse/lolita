@@ -105,7 +105,9 @@ require 'lolita/extensions/extensions'
 
 # Configuration base
 require 'lolita/configuration/base'
+require 'lolita/configuration/core'
 require 'lolita/configuration/list'
+require 'lolita/configuration/nested_list'
 require 'lolita/configuration/tabs'
 require 'lolita/configuration/tab'
 require 'lolita/configuration/columns'

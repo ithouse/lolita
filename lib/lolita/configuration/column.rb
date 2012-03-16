@@ -1,11 +1,9 @@
 module Lolita
   module Configuration
-    class Column 
-
-      include Lolita::Builder
+    class Column < Lolita::Configuration::Base
       
       MAX_TEXT_SIZE=20
-      attr_reader :dbi, :list_association_name
+      attr_reader :list_association_name
       lolita_accessor :name,:title,:type,:options,:sortable, :association
       
       def initialize(dbi,*args,&block)
@@ -24,10 +22,9 @@ module Lolita
           list_dbi = list_association && Lolita::DBI::Base.create(list_association.klass)
           raise Lolita::UnknownDBIError.new("DBI is not specified for list in column #{self}") unless list_dbi
           @list_association_name = list_association.name
-          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List, list_dbi, :parent => self, :association_name => list_association.name, &block)
+          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::NestedList, list_dbi, self, :association_name => list_association.name, &block)
         else
           @list
-          #Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List)
         end
       end
 
@@ -140,6 +137,7 @@ module Lolita
       end
 
       def validate
+        raise Lolita::UnknownDBIError.new("DBI is not specified for column #{self}") unless self.dbi
         raise ArgumentError.new("Column must have name.") unless self.name
       end
     end

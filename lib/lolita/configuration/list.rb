@@ -1,11 +1,11 @@
 module Lolita
   module Configuration
-    class List
+    class List < Lolita::Configuration::Base
       include Observable
       include Lolita::Builder
        
-      attr_reader :dbi,:initialized_attributes,:page_criteria
-      attr_accessor :parent,:association_name, :actions
+      attr_reader :initialized_attributes,:page_criteria
+      attr_accessor :actions
 
       lolita_accessor :per_page, :pagination_method
       
@@ -27,7 +27,7 @@ module Lolita
           association = dbi.associations[args[0].to_s.to_sym]
           association_dbi = association && Lolita::DBI::Base.create(association.klass)
           raise Lolita::UnknownDBIError.new("No DBI specified for list sublist") unless association_dbi
-          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List,association_dbi, :parent => self, :association_name => association.name,&block)
+          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::NestedList,association_dbi, self, :association_name => association.name,&block)
         else
           @list
         end
@@ -84,23 +84,6 @@ module Lolita
         columns.column(*args, &block)
       end
 
-      def association
-        self.parent && self.parent.dbi.reflect_on_association(self.association_name)
-      end
-
-      # Return mapping that class matches dbi klass.
-      def mapping
-        if @mapping.nil?
-          mapping_class = if self.association && self.association.macro == :one
-            self.parent.dbi.klass
-          else
-            dbi.klass
-          end 
-          @mapping = Lolita::Mapping.new(:"#{mapping_class.to_s.downcase.pluralize}") || false
-        end
-        @mapping
-      end
-
       def by_path(path)
         object = self
         while path.any?
@@ -112,48 +95,6 @@ module Lolita
           end
         end
         object
-      end
-
-      # Nested list method. Return all parent object where first is self.parent and last is root list or column.
-      def parents
-        unless @parents
-          @parents = []
-          object = self
-          while object.respond_to?(:parent) && object.parent
-            @parents << object.parent
-            object = object.parent
-          end
-        end
-        @parents
-      end
-
-      def root
-        parents.last
-      end
-
-      # Return Hash with key <em>:nested</em> thas is Hash with one key that is foreign key that links parent with this list.
-      def nested_options_for(record)
-        if self.parent
-          association = self.association
-          attr_name = [:one,:many_to_many].include?(association.macro) ? :id : association.key
-          attr_value = (association.through? && record.send(association.through) && record.send(association.through).id)  || record.id
-          base_options = {
-            attr_name => attr_value,
-            :parent => self.root.dbi.klass.to_s,
-            :path => self.parents.map{|parent| parent.is_a?(Lolita::Configuration::List) ? "l_" : "c_#{parent.name}"}
-          }
-          if association.macro == :many_to_many
-            base_options.merge({
-              :association => association.name
-            })
-          end
-          {:nested => base_options}
-        end
-      end
-
-      # Return how deep is this list, starging with 1.
-      def depth
-        self.parents.size + 1
       end
 
       # checks if filter defined
@@ -179,19 +120,6 @@ module Lolita
       end
 
       private
-
-      # Used to set attributes if block not given.
-      def set_attributes(*args)
-        if args && args[0]
-          if args[0].is_a?(Hash)
-            args[0].each{|m,value|
-              self.send("#{m}=".to_sym,value)
-            }
-          else
-            raise ArgumentError.new("Lolita::Configuration::List arguments must be Hash instead of #{args[0].class}")
-          end
-        end
-      end
 
       def page_dbi(request)
         # if request && request.respond_to?(:params) && request.params[:nested]

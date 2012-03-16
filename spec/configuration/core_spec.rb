@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe Lolita::Configuration::Base do
+describe Lolita::Configuration::Core do
 
   it "should define configuration without block" do
     Post.lolita.should_not be_nil
@@ -25,7 +25,7 @@ describe Lolita::Configuration::Base do
   end
 
   it "should return tabs" do
-    base_config = Lolita::Configuration::Base.new(Post)
+    base_config = Lolita::Configuration::Core.new(Post)
     base_config.tabs.class.should == Lolita::Configuration::Tabs
   end
 
