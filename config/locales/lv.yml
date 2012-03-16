@@ -11,7 +11,7 @@ lv:
     nested_form:
       add: "Pievienot %{resource_name}"
     buttons:
-      "save": "Saglabāt"
+      "save": "Saglabāt un palikt"
       "save&close": "Saglabāt un aizvērt"
       "save&new": "Saglabāt un veidot jaunu"
     tabs:
