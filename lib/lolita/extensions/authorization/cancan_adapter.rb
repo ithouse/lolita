@@ -21,7 +21,11 @@ module Lolita
         end
 
         def current_ability *args
-          @current_ability ||= Lolita.ability_class.new(@options[:current_user])
+          unless @current_ability 
+            @current_ability = Lolita.ability_class.new(@options[:current_user])
+            @context && @context.instance_variable_set(:"@current_ability",@current_ability)
+          end
+          @current_ability
         end
 
         def authorize! *args

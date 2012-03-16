@@ -155,9 +155,7 @@ module Lolita
             content_fields = content_fields & options[:fields]
           end
           content_fields = content_fields.slice(0..3)
-          #result = self.map_reduce_search(content_fields,query)
-          #debugger
-          #result
+       
           where_hash = {}
           content_fields.each do |field|
             where_hash[field] = /#{Regexp.escape(query.to_s)}/

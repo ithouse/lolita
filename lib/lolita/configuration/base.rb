@@ -40,6 +40,11 @@ module Lolita
 
       private
 
+      def set_and_validate_dbi(dbi)
+        @dbi = dbi
+        raise Lolita::UnknownDBIError.new("No DBI specified for #{self.class.to_s.split("::").last}") unless @dbi
+      end
+
       # Used to set attributes if block not given.
       def set_attributes(*args)
         options = args && args.extract_options! || {}

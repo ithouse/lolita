@@ -106,12 +106,20 @@ module Lolita
         self.run(:after_build_resource)
       end
 
+      def nested_list?
+        params[:nested] && params[:nested][:path]
+      end
+
+      def nested_resource_class conf_part
+        @nested_resource_class ||= params[:nested][:parent].constantize.lolita.send(conf_part.to_sym).by_path(params[:nested][:path])
+      end
+
       def build_response_for(conf_part,options={})
         # FIXME when asked for some resources that always create new object, there may
         # not be any args, like lolita.report on something like that
         @component_options = options
-        if params[:nested]
-          @component_object = params[:nested][:parent].constantize.lolita.send(conf_part.to_sym).by_path(params[:nested][:path])
+        if nested_list?
+          @component_object = nested_resource_class(conf_part.to_sym)
         else
           @component_object = resource_class.lolita.send(conf_part.to_sym)
         end

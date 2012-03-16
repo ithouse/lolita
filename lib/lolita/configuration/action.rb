@@ -3,7 +3,7 @@ module Lolita
     class Action
 
       include Lolita::Builder
-      lolita_accessor :url
+      lolita_accessor :url, :html
       attr_writer :title
       attr_reader :name
 

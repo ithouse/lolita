@@ -5,21 +5,19 @@ module Lolita
       include Lolita::Builder
        
       attr_reader :initialized_attributes,:page_criteria
-      attr_accessor :actions
 
-      lolita_accessor :per_page, :pagination_method
+      lolita_accessor :per_page, :pagination_method, :actions
       
       def initialize(dbi,*args,&block)
-        @dbi = dbi
-        @actions = []
-        raise Lolita::UnknownDBIError.new("No DBI specified for list") unless @dbi
+        set_and_validate_dbi(dbi)
+        set_list_attributes
         set_attributes(*args)
         self.instance_eval(&block) if block_given?
         set_default_attributes
       end
 
-      def action name, options = {}
-        @actions << Lolita::Configuration::Action.new(@dbi,name,options)
+      def action name, options = {}, &block
+        @actions << Lolita::Configuration::Action.new(@dbi,name,options,&block)
       end
 
       def list(*args, &block)
@@ -47,7 +45,7 @@ module Lolita
       # * <tt>request (optional) </tt> - request that is passed to adapter that passes this to model when #pagination_method is defined
       def paginate(current_page, request = nil)
         changed
-        @page_criteria = page_dbi(request).paginate(current_page,@per_page,:request => request, :pagination_method => @pagination_method)
+        @page_criteria = dbi.paginate(current_page,@per_page,:request => request, :pagination_method => @pagination_method)
         notify_observers(:paginate,self,request)
         @page_criteria
       end
@@ -84,19 +82,6 @@ module Lolita
         columns.column(*args, &block)
       end
 
-      def by_path(path)
-        object = self
-        while path.any?
-          part = path.pop.match(/(l|c)_(\w+)/)
-          object = if part[1] == "l"
-            object.list
-          else
-            object.columns.by_name(part[2]).list
-          end
-        end
-        object
-      end
-
       # checks if filter defined
       def filter?
         @filter.is_a?(Lolita::Configuration::Filter)
@@ -119,25 +104,32 @@ module Lolita
         @per_page ||= Lolita.application.per_page || 10
       end
 
-      private
-
-      def page_dbi(request)
-        # if request && request.respond_to?(:params) && request.params[:nested]
-        #   nested_page_dbi(request)
-        # else
-          dbi
-       # end
+      def by_path(path)
+        path = path.dup
+        object = self
+        while path.any?
+          part = path.pop.match(/(l|c)_(\w+)/)
+          object = if part[1] == "l"
+            object.list
+          else
+            object.columns.by_name(part[2]).list
+          end
+        end
+        object
       end
 
-      def nested_page_dbi(request)
-        if request.params[:nested] && request.params[:nested][:path]
-          if n_list = self.by_path(request.params[:nested][:path])
-            n_list.dbi
-          else
-            raise Lolita::UnknownDBIError.new("Request asked for nested list for list, but none is found! Please specify list in list for #{dbi.klass}")
-          end
-        else
-          raise Lolita::UnknownDBIError.new("Request asked nested list '#{request.params[:nested]}', but :path was wrong.")
+      private
+
+      def set_list_attributes
+        @actions = []
+        action :edit do 
+          title ::I18n.t("lolita.shared.edit")
+          url Proc.new{|view,record| view.send(:edit_lolita_resource_path, :id => record.id)}
+        end
+        action :destroy do 
+          title ::I18n.t("lolita.shared.delete")
+          url Proc.new{|view,record| view.send(:lolita_resource_path,:id => record.id)}
+          html :method => :delete, :confirm => ::I18n.t("lolita.list.confirm")
         end
       end
 

@@ -7,7 +7,9 @@ module Lolita
       attr_accessor :parent,:association_name
 
       def initialize dbi,parent,options={},&block
-        @dbi = dbi
+        set_and_validate_dbi(dbi)
+        set_list_attributes
+        
         @parent = parent
         set_attributes(options)
         self.instance_eval(&block) if block_given?
@@ -54,7 +56,13 @@ module Lolita
         if self.parent
           association = self.association
           attr_name = [:one,:many_to_many].include?(association.macro) ? :id : association.key
-          attr_value = (association.through? && record.send(association.through) && record.send(association.through).id)  || record.id
+          attr_value = if association.through? && record.send(association.through)
+            record.send(association.through).id
+          elsif association.macro == :one
+            record.send(association.name).id
+          else
+            record.id
+          end
           base_options = {
             attr_name => attr_value,
             :parent => self.root.dbi.klass.to_s,

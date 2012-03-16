@@ -1,0 +1,2 @@
+- params[:html_container] = params[:nested].to_a.flatten.sort.join("_")
+= render_component :"lolita/configuration/list", :paginator, :page => page, :extra_params => {:remote => true}

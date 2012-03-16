@@ -1,7 +1,0 @@
-%tr{:class => "nested-list"}
-  %td{:colspan => 100}
-    .box.nested-list
-      .list
-        %table
-          = render_component list.columns, :page => page, :nested => true, :list => list
-      = render_component list, :paginator, :page => page

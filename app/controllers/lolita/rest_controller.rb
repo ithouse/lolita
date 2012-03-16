@@ -57,15 +57,7 @@ class Lolita::RestController < ApplicationController
   def index
     self.run(:before_index)
     authorization_proxy.authorize!(:read,self.resource_class)
-    respond_to do |format|
-      format.html do
-        build_index_response
-        show_index(!request.xhr?)
-      end
-      format.json do
-        render :json => page
-      end
-    end
+    show_index
     self.run(:after_index)
   end
 
@@ -82,15 +74,23 @@ class Lolita::RestController < ApplicationController
   end
 
   def build_index_response
-    if params[:nested]
-      build_response_for(:list, :page => page, :name => "nested")
-    else
-      build_response_for(:list,:page => page)
-    end
+    build_response_for(:list,:page => page)
   end
   
-  def show_index(layout = true)
-    render "/lolita/rest/index", :layout => layout
+  def show_index()
+    respond_to do |format|
+      format.html do
+        build_index_response
+        render "/lolita/rest/index", :layout => !request.xhr?
+      end
+      format.js do 
+        build_index_response
+        render "/lolita/rest/index", :layout => false
+      end
+      format.json do
+        render :json => page
+      end
+    end
   end
   
   def save_and_redirect
@@ -156,6 +156,10 @@ class Lolita::RestController < ApplicationController
   end
 
   def page
-    resource_class.lolita.list.paginate(params[:page],request)
+    if nested_list?
+      nested_resource_class(:list).paginate(params[:page],request)
+    else
+      resource_class.lolita.list.paginate(params[:page],request)
+    end
   end
 end

@@ -1,9 +1,5 @@
 %td{:class => "tool-cell"}
-  - if authorization_proxy.can?(:edit,record)
-    = link_to ::I18n.t("lolita.shared.edit"),edit_lolita_resource_path(:id=>record.id)
-  - if authorization_proxy.can?(:destroy, record)
-    = link_to ::I18n.t("lolita.shared.delete"), lolita_resource_path(:id=>record.id),:method=>:delete,:confirm=>I18n.t("lolita.list.confirm")
-  - list.actions.each do |action|
+  - list.actions.respond_to?(:each) && list.actions.each do |action|
     - if authorization_proxy.can?(action.name,record)
       = render_component action, :record => record
 

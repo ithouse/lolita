@@ -7,7 +7,7 @@ module Lolita
       lolita_accessor :name,:title,:type,:options,:sortable, :association
       
       def initialize(dbi,*args,&block)
-        @dbi = dbi
+        set_and_validate_dbi(dbi)
         self.set_attributes(*args)
         self.instance_eval(&block) if block_given?
         validate
