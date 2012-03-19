@@ -56,7 +56,6 @@ class Lolita::RestController < ApplicationController
 
   def index
     self.run(:before_index)
-    debugger
     authorization_proxy.authorize!(:read,self.resource_class)
     show_index
     self.run(:after_index)
