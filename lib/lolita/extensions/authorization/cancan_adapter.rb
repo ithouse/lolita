@@ -29,7 +29,7 @@ module Lolita
         end
 
         def authorize! *args
-          @context && @context.authorize!(*args) || current_ability.authorize!(*args)
+          current_ability && @context && @context.authorize!(*args) || current_ability.authorize!(*args)
         end
         
         private
