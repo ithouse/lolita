@@ -10,6 +10,7 @@ module Lolita
           @context = context
           @options = options
           set_default_options
+          current_ability
         end
 
         def can? *args
