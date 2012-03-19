@@ -10,10 +10,11 @@ module Lolita
       
       def initialize(dbi,*args,&block)
         set_and_validate_dbi(dbi)
-        set_list_attributes
+        init_list_attributes()
         set_attributes(*args)
         self.instance_eval(&block) if block_given?
         set_default_attributes
+        set_list_attributes
       end
 
       def action name, options = {}, &block
@@ -120,17 +121,21 @@ module Lolita
 
       private
 
-      def set_list_attributes
+      def init_list_attributes
         @actions = []
+      end
+
+      def set_list_attributes
         action :edit do 
           title ::I18n.t("lolita.shared.edit")
           url Proc.new{|view,record| view.send(:edit_lolita_resource_path, :id => record.id)}
-        end
+        end unless actions.detect{|existing_action| existing_action.name == :edit}
+
         action :destroy do 
           title ::I18n.t("lolita.shared.delete")
           url Proc.new{|view,record| view.send(:lolita_resource_path,:id => record.id)}
           html :method => :delete, :confirm => ::I18n.t("lolita.list.confirm"), :remote => true
-        end
+        end unless actions.detect{|existing_action| existing_action.name == :destroy}
       end
 
     end

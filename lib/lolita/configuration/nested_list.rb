@@ -8,11 +8,9 @@ module Lolita
 
       def initialize dbi,parent,options={},&block
         set_and_validate_dbi(dbi)
-        set_list_attributes
-        
-        @parent = parent
         set_attributes(options)
         self.instance_eval(&block) if block_given?
+        set_nested_list_attributes
         validate
       end
 
@@ -83,6 +81,11 @@ module Lolita
       end
 
       private
+      
+      def set_nested_list_attributes
+        @parent = parent
+        set_list_attributes
+      end
 
       def validate
         msg = "#{parent.class} must be kind of Lolita::Configuration::List or Lolita::Configuration::Column"
