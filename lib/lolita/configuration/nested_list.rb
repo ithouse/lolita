@@ -55,13 +55,14 @@ module Lolita
         if self.parent
           association = self.association
           attr_name = [:one,:many_to_many].include?(association.macro) ? :id : association.key
-          attr_value = if association.through? && record.send(association.through)
-            record.send(association.through).id
+          association_record = if association.through? && record.send(association.through)
+            record.send(association.through)
           elsif association.macro == :one
-            record.send(association.name).id
+            record.send(association.name)
           else
-            record.id
+            record
           end
+          attr_value = association_record && association_record.id
           base_options = {
             attr_name => attr_value,
             :parent => self.root.dbi.klass.to_s,
