@@ -107,22 +107,21 @@ class Lolita::RestController < ApplicationController
   end
   
   def respond_html_200
-    response.headers["Validation"] = 'true'
-    notice(::I18n.t "lolita.shared.save_notice")
-    
+    notice_hsh = notice(::I18n.t("lolita.shared.save_notice"), :return => true)
+
     if next_action == "index"
-      redirect_to lolita_resources_path
+      redirect_to lolita_resources_path, :flash => {:lolita_notice => notice_hsh["Lolita-Notice"]}
     elsif next_action == "edit"
-      redirect_to edit_lolita_resource_path(:id => resource.id)
+      redirect_to edit_lolita_resource_path(:id => resource.id), :flash => {:lolita_notice => notice_hsh["Lolita-Notice"]}
     elsif next_action == "new"
-      redirect_to new_lolita_resource_path
+      redirect_to new_lolita_resource_path, :flash => {:lolita_notice => notice_hsh["Lolita-Notice"]}
     end
   end
 
   def respond_html_400
     build_response_for(:tabs)
-    response.headers["Validation"] = 'false'
-    alert(::I18n.t "lolita.shared.save_alert")
+    alert_hsh = alert(::I18n.t("lolita.shared.save_alert"),:return => true)
+    flash.now[:lolita_alert] = alert_hsh["Lolita-Alert"]
     show_form
   end
 

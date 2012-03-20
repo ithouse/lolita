@@ -12,22 +12,27 @@ $(function(){
   })
 
   $("#flash").ajaxComplete(function(e,request){
-    var notice=request.getResponseHeader("Lolita-Notice");
-    var error=request.getResponseHeader("Lolita-Error");
-    var alert_msg=request.getResponseHeader("Lolita-Alert");
-    if(notice){
-      show_flash("<span style='color:green'>"+Base64.decode(notice)+"</span>");
-    }else{
-      if(error){
-        show_flash("<span style='color:red'>"+Base64.decode(error)+"</span>");
-      }else{
-        if(alert_msg){
-          show_flash("<span style='color:#ea7c15'>"+Base64.decode(alert_msg)+"</span>");
-        }
-      }
-    }
+    show_lolita_messages(request)
   })
 })
+
+function show_lolita_messages(request){
+  var notice=request.getResponseHeader("Lolita-Notice");
+  var error=request.getResponseHeader("Lolita-Error");
+  var alert_msg=request.getResponseHeader("Lolita-Alert");
+  if(notice){
+    show_notice_msg(Base64.decode(notice))
+  }else{
+    if(error){
+      show_error_msg(Base64.decode(error))
+    }else{
+      if(alert_msg){
+        show_alert_msg(Base64.decode(alert_msg))
+      }
+    }
+  }
+}
+
 
 function resize_all_tinymce_editors(){
   $("textarea").each(function(item,index){
@@ -40,6 +45,23 @@ function resize_all_tinymce_editors(){
     $parent.find("iframe").css("width","100%").css("minHeight",h + "px") 
   })
 }
+
+function show_notice_msg(msg){
+  show_msg("green",msg)
+}
+
+function show_error_msg(msg){
+  show_msg("red",msg)
+}
+
+function show_alert_msg(msg){
+  show_msg("#ea7c15",msg)
+}
+
+function show_msg(color,msg){
+  show_flash("<span style='color:"+color+"'>"+msg+"</span>");
+}
+
 function show_flash(html){
   var flash=$("#flash")
   flash.stop(true)

@@ -61,16 +61,24 @@ module Lolita
       
       protected
 
-      def notice(msg)
-        response.headers["Lolita-Notice"] = Base64.encode64(msg)
+      def notice(msg, options = {})
+        lolita_head_msg(msg,"Lolita-Notice",options)
       end
 
-      def alert(msg)
-        response.headers["Lolita-Alert"] = Base64.encode64(msg)
+      def alert(msg,options = {})
+        lolita_head_msg(msg,"Lolita-Alert",options)
       end
 
-      def error(msg)
-        response.headers["Lolita-Error"] = Base64.encode64(msg)
+      def error(msg, options = {})
+        lolita_head_msg(msg,"Lolita-Error",options)
+      end
+
+      def lolita_head_msg(msg,key,options ={})
+        msg = Base64.encode64(msg).gsub("\n","")
+        response.headers[key] = msg
+        if options[:return]
+          {key => msg}
+        end
       end
 
       def is_lolita_resource?

@@ -17,6 +17,15 @@
     <%= yield :script %>
     <%= include_application_assets %>
     <%= raw csrf_meta_tag %>
+    <script type="text/javascript">
+      $(function(){
+        <% if flash[:lolita_notice] %>
+          show_notice_msg(Base64.decode('<%=flash[:lolita_notice]%>'));
+        <% elsif flash[:lolita_alert] %>
+          show_alert_msg(Base64.decode('<%=flash[:lolita_alert]%>'));
+        <% end %>
+      })
+    </script>
   </head>
   <body>
     <%= render_component :"lolita/shared", :flash%>
