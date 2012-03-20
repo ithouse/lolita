@@ -7,6 +7,7 @@ module Lolita
       attr_accessor :parent,:association_name
 
       def initialize dbi,parent,options={},&block
+        init_nested_list_attributes(parent)
         set_and_validate_dbi(dbi)
         set_attributes(options)
         self.instance_eval(&block) if block_given?
@@ -81,9 +82,13 @@ module Lolita
       end
 
       private
+
+      def init_nested_list_attributes parent
+        @parent = parent
+        init_list_attributes
+      end
       
       def set_nested_list_attributes
-        @parent = parent
         set_list_attributes
       end
 

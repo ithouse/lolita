@@ -1,8 +1,18 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../simple_spec_helper')
 
+class TestAbility
+  def initialize(*args)
+  end
+end
+
 describe Lolita::Extensions::Authorization::Proxy do 
   let(:klass){ Lolita::Extensions::Authorization::Proxy }
   let(:proxy){ klass.new(Object.new,{}) }
+  around(:each) do |example|
+    Lolita.ability_class = TestAbility
+    example.run
+    Lolita.ability_class = nil
+  end
   
   it "should create new proxy" do
     expect do
@@ -43,6 +53,7 @@ describe Lolita::Extensions::Authorization::Proxy do
       it "should create when Lolita.authentication is specified" do
         Lolita.authorization = 'CanCan'
         proxy.adapter.should be_a(Lolita::Extensions::Authorization::CanCanAdapter)
+        Lolita.authorization = nil
       end
     end
   end

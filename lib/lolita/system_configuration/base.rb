@@ -33,7 +33,7 @@ module Lolita
       end
       
       def ability_class
-        @ability_class || Ability
+        @ability_class || defined?(Ability) && Ability || raise("No ability class found.")
       end
 
       def locales=(value)
