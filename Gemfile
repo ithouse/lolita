@@ -10,7 +10,7 @@ gem 'builder', '~> 3.0'
 
 gem 'haml', '~> 3.1.2'
 gem 'jquery-rails'
-gem 'tinymce-rails', :require => 'tinymce-rails'
+gem 'tinymce-rails','~>3.4.8' :require => 'tinymce-rails'
 
 group :mongoid do
 	gem 'mongo', '~> 1.4.0'
