@@ -1,4 +1,5 @@
 module Lolita
+  # This module provides functionality for extension machinery in Lolita. It loads proxies on demand.
   module Extensions
     EXTENSIONS = []
     

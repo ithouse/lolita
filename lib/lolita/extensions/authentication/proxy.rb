@@ -33,12 +33,10 @@ module Lolita
         end
         
         def edit_path
-          # send(:"edit_#{authentication_proxy.current_user.class.to_s.downcase}_password_path")
           @adapter.edit_path unless default_adapter?
         end
 
         def sign_out_path
-          # send(:"destroy_#{authentication_proxy.current_user.class.to_s.downcase}_session_path")
           @adapter.sign_out_path unless default_adapter?
         end
 

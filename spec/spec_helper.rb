@@ -35,15 +35,11 @@ Benchmark.bm do |x|
   x.report("Loading test stuff: ") do
     require 'rspec/rails'
     require 'ffaker'
-    require 'factory_girl'
   end
   x.report("Loading factories") do
-    Dir["#{File.dirname(__FILE__)}/support/factories/**/*.rb"].each {|f| require f}
+    Dir["#{File.dirname(__FILE__)}/fabricators/**/*_fabricator.rb"].each {|f| require f}
   end
   RSpec.configure do |config|
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
     config.mock_with :rspec
 
     if LOLITA_ORM==:active_record
@@ -60,7 +56,3 @@ Benchmark.bm do |x|
     end
   end
 end
-
-#CoverMe.complete!
-#require 'simplecov'
-#SimpleCov.start 'rails'

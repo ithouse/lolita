@@ -1,5 +1,7 @@
 module Lolita
   module Configuration
+
+    # This is class of lolita instance.
     # Main block can hold these methods:
     # <tt>list</tt> - List definition, see Lolitia::Configuration::List
     # <tt>tab</tt> - Tab definition, see Lolita::Configuration::Tab
@@ -32,9 +34,8 @@ module Lolita
       #     Person.lolita=Lolita::Configuration::Base.new(Person)
       #     Person.lolita.klass #=> Person
       def initialize(orm_class,&block)
-        @in_callback_mode = false
-        @klass=orm_class
-        @dbi=Lolita::DBI::Base.create(orm_class)
+        @klass = orm_class
+        @dbp = Lolita::DBI::Base.create(orm_class)
         block_given? ? self.instance_eval(&block) : self.generate!
       end
 
@@ -42,7 +43,7 @@ module Lolita
       # Create list variable for ::Base class and create lazy object of Lolita::LazyLoader.
       # See Lolita::Configuration::List for more information.
       def list &block
-        Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List,@dbi,&block)
+        Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::List,@dbp,&block)
       end
 
       def list=(new_list)
@@ -52,14 +53,14 @@ module Lolita
       # Create collection of Lolita::Configuration::Tab, loading lazy.
       # See Lolita::Configuration::Tabs for details.
       def tabs &block
-        Lolita::LazyLoader.lazy_load(self, :@tabs,Lolita::Configuration::Tabs,@dbi,&block)
+        Lolita::LazyLoader.lazy_load(self, :@tabs,Lolita::Configuration::Tabs,@dbp,&block)
       end
 
       # Shortcut for Lolita::Configuration::Tabs <<.
       # Tabs should not be defined in lolita block to create onew or more Lolita::Configuration::Tab
       # See Lolita::Configuration::Tab for details of defination.
       def tab *args, &block
-        self.tabs << Lolita::Configuration::Factory::Tab.add(@dbi,*args,&block)
+        self.tabs << Lolita::Configuration::Factory::Tab.add(@dbp,*args,&block)
       end
       
       # Call all supported instance metods to set needed variables and initialize object with them.
@@ -72,7 +73,7 @@ module Lolita
       private
 
       def after_initialize
-        @dbi.klass.run(:after_lolita_loaded, :once => self)
+        @dbp.klass.run(:after_lolita_loaded, :once => self)
       end
 
     end

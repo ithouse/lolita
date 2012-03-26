@@ -36,7 +36,7 @@ describe Lolita::Configuration::Search do
   describe "#run" do
 
     it "should run search on custom class" do
-      Factory.create(:post, :title => "my_title")
+      Fabricate(:post, :title => "my_title")
       search = Lolita::Configuration::Search.new(dbi, :with => CustomSearch)
       search.run("my_title",Object.new).size.should == 1
     end

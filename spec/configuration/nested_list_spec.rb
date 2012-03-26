@@ -103,8 +103,8 @@ describe Lolita::Configuration::NestedList do
       end
     end
 
-    record = Factory.create(:category)
-    post = Factory.create(:post)
+    record = Fabricate(:category)
+    post = Fabricate(:post)
     new_list.list.nested_options_for(record)[:nested].keys.should == ["category_id",:parent,:path]
     new_list.list.list.nested_options_for(post)[:nested].keys.should == ["post_id",:parent,:path]
   end

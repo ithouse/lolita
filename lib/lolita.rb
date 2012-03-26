@@ -1,9 +1,10 @@
 $:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
-LOLITA_VERSION=File.read(File.expand_path("../../VERSION",__FILE__)).gsub(/[^.\w]/,"")
 FRAMEWORK = if defined?(Rails)
   " with Rails #{::Rails::VERSION::STRING}"
 end
-puts "=> Lolita #{LOLITA_VERSION} starting#{FRAMEWORK}"
+
+require 'lolita/version'
+puts "=> Lolita #{Lolita::Version::STRING} starting#{FRAMEWORK}"
 
 #require "rubygems"
 require 'abstract'
@@ -68,7 +69,7 @@ module Lolita
   end
 
   def self.version
-    @version ||= Lolita::Support::Version.new
+    Lolita::Version::STRING
   end
 
   def self.rails3?
@@ -104,6 +105,7 @@ require 'lolita/dbi/base'
 require 'lolita/extensions/extensions'
 
 # Configuration base
+require 'lolita/configuration'
 require 'lolita/configuration/base'
 require 'lolita/configuration/core'
 require 'lolita/configuration/list'
@@ -146,7 +148,6 @@ require 'lolita/navigation/tree'
 require 'lolita/navigation/branch'
 
 # Support
-require 'lolita/support/version'
 require 'lolita/support/formatter'
 require 'lolita/support/formatter/rails'
 

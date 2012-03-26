@@ -48,26 +48,10 @@ describe Lolita::Configuration::Filter do
     filter.fields[2].type.should == "time"
   end
 
-  # it "should return right values" do
-  #   Category.delete_all
-  #   3.times{ Factory.create(:category)}
-  #   filter=Lolita::Configuration::Filter.new(dbi) do
-  #     field :category
-  #     field :some_type, :array, :values => %w(a b c)
-  #   end
-  #   options = filter.options_for_select(filter.fields.first)
-  #   options.size.should == 3
-  #   options.first.first.should be_an(String)
-  #   options.first.last.should be_an(BSON::ObjectId)
-  #   options = filter.options_for_select(filter.fields.last)
-  #   options.size.should == 3
-  #   options.should == %w(a b c)
-  # end
-
   it "should filter results for boolean" do
-    Factory.create(:post, :is_public => true)
-    Factory.create(:post, :is_public => true)
-    Factory.create(:post, :is_public => false)
+    Fabricate(:post, :is_public => true)
+    Fabricate(:post, :is_public => true)
+    Fabricate(:post, :is_public => false)
 
     filter=Lolita::Configuration::Filter.new(dbi) do
       field :is_public
@@ -78,11 +62,11 @@ describe Lolita::Configuration::Filter do
   end
 
   it "should filter results for belongs_to" do
-    c1 = Factory.create(:category, :name => "Linux")
-    c2 = Factory.create(:category, :name => "Android")
-    p1=Factory.create(:post, :category => c1)
-    p2=Factory.create(:post, :category => c1)
-    p3=Factory.create(:post, :category => c2)
+    c1 = Fabricate(:category, :name => "Linux")
+    c2 = Fabricate(:category, :name => "Android")
+    p1=Fabricate(:post, :category => c1)
+    p2=Fabricate(:post, :category => c1)
+    p3=Fabricate(:post, :category => c2)
 
     filter=Lolita::Configuration::Filter.new(dbi) do
       field :tags
@@ -92,11 +76,11 @@ describe Lolita::Configuration::Filter do
   end
 
   it "should filter results for has_and_belongs_to_many" do
-    tag1 = Factory.create(:tag, :name => "Linux")
-    tag2 = Factory.create(:tag, :name => "Android")
-    p1=Factory.create(:post, :tags => [tag1,tag2])
-    p2=Factory.create(:post, :tags => [tag1,tag2])
-    p3=Factory.create(:post, :tags => [tag1])
+    tag1 = Fabricate(:tag, :name => "Linux")
+    tag2 = Fabricate(:tag, :name => "Android")
+    p1=Fabricate(:post, :tags => [tag1,tag2])
+    p2=Fabricate(:post, :tags => [tag1,tag2])
+    p3=Fabricate(:post, :tags => [tag1])
 
     filter=Lolita::Configuration::Filter.new(dbi) do
       field :tags
@@ -109,8 +93,8 @@ describe Lolita::Configuration::Filter do
     let(:list){ Lolita::Configuration::List}
 
     it "should filter with default filters" do
-      tags = %w(Android Linux Windows).map{|name| Factory.create(:tag, :name => name )}
-      3.times {|i| Factory.create(:post,:tags => [tags[i]])}
+      tags = %w(Android Linux Windows).map{|name| Fabricate(:tag, :name => name )}
+      3.times {|i| Fabricate(:post,:tags => [tags[i]])}
 
       list_conf = list.new(dbi) do
         filter do
@@ -128,8 +112,8 @@ describe Lolita::Configuration::Filter do
     end
     
     it "should filter with custom search" do
-      tags = %w(Android Linux Windows).map{|name| Factory.create(:tag, :name => name )}
-      3.times {|i| Factory.create(:post,:tags => [tags[i]])}
+      tags = %w(Android Linux Windows).map{|name| Fabricate(:tag, :name => name )}
+      3.times {|i| Fabricate(:post,:tags => [tags[i]])}
       Post.class_eval do
         def self.custom_filter query,request
           where(:tag_ids.in => Tag.where(:name.in => ['Android','Linux']).map(&:id))

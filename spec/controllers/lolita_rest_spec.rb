@@ -25,7 +25,7 @@ describe Lolita::RestController do
 
   it "should overwrite list component body_cell" do
     pending "Need to be seperated from whole project"
-    Factory.create(:post)
+    Fabricate(:post)
     get :index
     response.body.should =~/overwritten cell/
   end
@@ -67,9 +67,9 @@ describe Lolita::RestController do
     it "should have nested list for nested lists" do
       pending "Need to fix this"
       categories = (1..5).to_a.map{|i|
-        Factory.create(:category)
+        Fabricate(:category)
       }
-      2.times{Factory.create(:post, :category => categories.first)}
+      2.times{Fabricate(:post, :category => categories.first)}
       get :index, {:nested => {"category_id" => categories.last}}
       response.body.should_not match(/tr/)
       get :index, {:nested => {"category_id" => categories.first}}

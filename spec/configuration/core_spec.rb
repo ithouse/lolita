@@ -1,43 +1,78 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../simple_spec_helper')
 
 describe Lolita::Configuration::Core do
+  let(:klass){Lolita::Configuration::Core}
+  let(:dbp_klass){Lolita::DBI::Base}
+  let(:dbp){Object.new}
+  let(:conf){klass.new(Object)}
 
-  it "should define configuration without block" do
-    Post.lolita.should_not be_nil
+  before(:each) do 
+    dbp_klass.stub(:create).and_return(dbp)
   end
 
-  it "should define configuration with block" do
-    Profile.lolita.should_not be_nil
+  it "should create new instance without block" do 
+    expect{
+      klass.new(Object)
+    }.not_to raise_error
   end
 
-  it "should not initialize instance methods for configuration without calling them" do
-    Profile.lolita.list.to_s.should match(/Lolita::LazyLoader/)
-    #Post.lolita.list.to_s.should match(/Lolita::LazyLoader/)
+  it "should create new instance with block" do 
+    expect{
+      klass.new(Object){}
+    }.not_to raise_error
   end
 
-  it "should return real object when calling it" do
-    Post.class_eval do
-      lolita do
-        list
-      end
+  it "should call #generate! when no block is given" do 
+    klass.any_instance.should_receive(:generate!).once
+    klass.new(Object)
+  end
+
+  it "should eval block on instance when block is given" do 
+    proc = Proc.new{ "result" }
+    klass.any_instance.should_receive(:instance_eval).with(&proc).once
+    klass.new(Object,&proc)
+  end
+
+  it "should create new list with same DB proxy" do 
+    Lolita::Configuration::List.should_receive(:new).with(dbp)
+    conf.list.class
+  end
+
+  it "should create new list with block" do 
+    block = Proc.new{}
+    Lolita::Configuration::List.should_receive(:new).with(dbp,&block)
+    conf.list(&block).class
+  end
+
+  it "should create tabs with same DB proxy" do 
+    Lolita::Configuration::Tabs.should_receive(:new).with(dbp)
+    conf.tabs.class
+  end
+
+  it "should create tabs with block" do 
+    block = Proc.new{}
+    Lolita::Configuration::Tabs.should_receive(:new).with(dbp,&block)
+    conf.tabs(&block).class
+  end
+
+  it "should create tab with any arguments and add to #tabs" do 
+    Lolita::Configuration::Tabs.any_instance.should_receive(:<<).once.and_return(true)
+    Lolita::Configuration::Factory::Tab.should_receive(:add).with(dbp,1).and_return(Object.new)
+    conf.tab(1)
+  end
+
+  it "shoud create tab with any arguments and block" do 
+    block = Proc.new{}
+    Lolita::Configuration::Tabs.any_instance.should_receive(:<<).once
+    Lolita::Configuration::Factory::Tab.should_receive(:add).with(dbp,1,&block)
+    conf.tab(1,&block)
+  end
+
+  it "should call generator methods when #generate! is called" do 
+    klass.class_variable_get(:@@generators).each do |gen_name|
+      klass.any_instance.should_receive(gen_name).once
     end
-    Post.lolita.list.class.to_s.should == "Lolita::Configuration::List"
+    conf
   end
-
-  it "should return tabs" do
-    base_config = Lolita::Configuration::Core.new(Post)
-    base_config.tabs.class.should == Lolita::Configuration::Tabs
-  end
-
-  it "should allow add tabs" do
-    Post.class_eval do
-      lolita do
-        tab(:content)
-      end
-    end
-    
-    Post.lolita.tabs.size.should == 1
-  end
-
 end
 

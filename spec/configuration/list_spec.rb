@@ -50,7 +50,7 @@ describe Lolita::Configuration::List do
   end
 
   it "should get records for list page" do
-    1.upto(5) { Factory.create(:post)}
+    1.upto(5) { Fabricate(:post)}
     list=list_class.new(@dbi,:per_page => 1)
     list.paginate(1,Object.new).to_a.size.should == 1
   end
