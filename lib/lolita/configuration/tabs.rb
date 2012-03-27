@@ -70,7 +70,7 @@ module Lolita
       end
       
       def validate(tab)
-        tab.respond_to?(:validate) && tab.send(:validate, @tabs)
+        tab.respond_to?(:validate) && tab.send(:validate, :tabs => @tabs)
       end
 
       def collection_variable

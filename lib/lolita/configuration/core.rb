@@ -36,6 +36,7 @@ module Lolita
       def initialize(orm_class,&block)
         @klass = orm_class
         @dbp = Lolita::DBI::Base.create(orm_class)
+        @dbi = @dbp
         block_given? ? self.instance_eval(&block) : self.generate!
       end
 

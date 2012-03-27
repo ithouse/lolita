@@ -48,6 +48,6 @@ class Lolita::InfoController < ApplicationController
     end
   end
     
-  property 'Lolita version', "#{LOLITA_VERSION}"
+  property 'Lolita version', "#{Lolita::Version}"
 
 end

@@ -5,6 +5,7 @@ module Lolita
 
         def initialize *args,&block
           super
+          validate
         end
 
         private
@@ -13,8 +14,7 @@ module Lolita
           warn("Default fields are not set for DefaultTab.")
         end
 
-        def validate
-          super
+        def validate options = {}
           if fields.empty?
             raise Lolita::NoFieldsGivenError, "At least one field must be specified for default tab."
           end

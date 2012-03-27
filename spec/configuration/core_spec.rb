@@ -22,6 +22,11 @@ describe Lolita::Configuration::Core do
     }.not_to raise_error
   end
 
+  it "should create dbp instance for received class" do 
+    conf = klass.new(Object)
+    conf.dbi.should eq(dbp)
+  end
+
   it "should call #generate! when no block is given" do 
     klass.any_instance.should_receive(:generate!).once
     klass.new(Object)
