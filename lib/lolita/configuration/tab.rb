@@ -41,7 +41,7 @@ module Lolita
           self.current_dbi=dbi
           self.set_attributes(*args)
           self.instance_eval(&block) if block_given?
-          validate
+          set_default_attributes
         end
 
       
@@ -198,10 +198,6 @@ module Lolita
           end
         end
         
-        def validate
-          set_default_attributes
-        end
-
         def builder_local_variable_name
           :tab
         end

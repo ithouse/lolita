@@ -13,6 +13,12 @@ module Lolita
         def set_default_fields
           default_fields if @fields.empty? 
         end
+
+        def validate(tab, existing_tabs)
+          if @tabs.detect{|existing_tab| existing_tab.type == :content}
+            raise Lolita::SameTabTypeError, "Same type tabs was detected (#{tab.type})."
+          end
+        end
         
     	end
     end

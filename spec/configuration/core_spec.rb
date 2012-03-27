@@ -7,7 +7,7 @@ describe Lolita::Configuration::Core do
   let(:conf){klass.new(Object)}
 
   before(:each) do 
-    dbp_klass.stub(:create).and_return(dbp)
+    dbp_klass.stub(:create).with(kind_of(Class)).and_return(dbp)
   end
 
   it "should create new instance without block" do 

@@ -62,7 +62,6 @@ module Lolita
       collection_variable.each{|collection_element| yield collection_element}
     end
 
-
     private
 
     def collection_variable

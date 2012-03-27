@@ -3,88 +3,43 @@ module Lolita
     # Lolita::Configuration::Tabs is container class that holds all
     # tabs for each lolita instance. 
     # Also it has some useful methods.
-    class Tabs
+    class Tabs < Lolita::Configuration::Base
       include Enumerable
       include Lolita::ObservedArray
-      include Lolita::Builder
 
-      attr_reader :dbi,:excluded
+      attr_reader :excluded
       attr_accessor :tab_types
 
       def initialize dbi,*args,&block
-        @dbi=dbi
-        @tabs=[]
-        @excluded=[]
-        @tab_types = [:content]
-        self.set_attributes(*args)
+        set_and_validate_dbi(dbi)
+        set_default_attributes
+        set_attributes(*args)
         self.instance_eval(&block) if block_given?
       end
 
       def each
-        if @tabs.empty?
-          create_content_tab
-        end
-        
-        @tabs.each{|tab|
-          yield tab
-        }
+        create_content_tab if @tabs.empty?
+        @tabs.each{|tab| yield tab }
       end
 
-      def clear
-        @tabs=[]
-      end
-      
       def tabs=(values)
         if values.respond_to?(:each)
-          values.each{|tab|
-            self<<tab
-          }
+          values.each{|tab| self << tab}
         else
-          raise ArgumentError, "#{values.class} did not responded to :each."
+          raise ArgumentError, "#{values} must respond to each"
         end
       end
 
       def tab *args,&block
-        self<<Lolita::Configuration::Factory::Tab.add(@dbi,*args,&block)
+        self << build_element(args && args[0],&block)
       end
 
       def fields
-        @tabs.collect{|tab|
-          tab.fields
-        }.flatten
+        @tabs.map(&:fields).flatten
       end
 
       def by_type(type)
-        @tabs.detect{|tab| tab.type==type.to_sym}
-      end
-
-      def exclude=(values)
-        exclude(values)
-      end
-
-      def default=(values)
-        default(values)
-      end
-      
-      def default *args
-        tab_types=if args
-          args
-        else
-          @tab_types
-        end
-        tab_types.each{|type|
-          self<<Lolita::Configuration::Factory::Tab.add(@dbi,type.to_sym)
-        }
-      end
-
-      def exclude *args
-        @excluded=if args && args.include?(:all)
-          tab_types
-        elsif args.is_a?(Array)
-          args
-        else
-          []
-        end
+        @tabs.detect{|tab| tab.type == type.to_sym }
       end
 
       def names
@@ -99,48 +54,38 @@ module Lolita
         @tabs.select{|tab| tab.dissociate}
       end
       
-      def set_attributes *args
-        if args
-          attributes=args.extract_options!
-          attributes.each{|attribute,values|
-            self.send(:"#{attribute}=",values)
-          }
-        end
+      def default
+        tab_types.each{|type| tab(type.to_sym)}
       end
 
       private
+
+      def set_default_attributes()
+        @tabs=[]
+        @tab_types = [:content]
+      end
 
       def create_content_tab
         tab(:content)
       end
       
-      def validate_type(tab)
-        if tab && ![:default,:files].include?(tab.type)
-          if @tabs.detect{|c_tab| c_tab.type==tab.type}
-            raise Lolita::SameTabTypeError, "Same type tabs was detected (#{tab.type})."
-          end
-        end
-      end
-
-      def set_tab_attributes(tab)
-        if tab
-          tab.name="tab_#{@tabs.size}" unless tab.name
-        end
+      def validate(tab)
+        tab.respond_to?(:validate) && tab.send(:validate, @tabs)
       end
 
       def collection_variable
         @tabs
       end
 
-      def build_element(element,&block)
-        current_tab=if element.is_a?(Hash) || element.is_a?(Symbol)
-          Lolita::Configuration::Factory::Tab.add(@dbi,element,&block)
+      def build_element(possible_tab,&block)
+        possible_tab = possible_tab.nil? && :default || possible_tab
+        new_tab = if possible_tab.is_a?(Hash) || possible_tab.is_a?(Symbol)
+          Lolita::Configuration::Factory::Tab.add(dbi,possible_tab,&block)
         else
-          element
+          possible_tab
         end
-        set_tab_attributes(current_tab)
-        validate_type(current_tab)
-        current_tab
+        validate(new_tab)
+        new_tab
       end
     end
   end
