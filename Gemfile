@@ -23,6 +23,7 @@ group :assets do
 end
 
 gem 'jeweler', '~> 1.8.3', :group=>:development
+gem 'cover_me', '~>1.2.0', :group => :test
 
 group :test,:development do
 	gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'

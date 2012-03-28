@@ -10,12 +10,6 @@ module Lolita
       attr_reader :dbi,:klass
       @@generators=[:tabs,:list]
 
-      class << self
-
-        def add_generator(method)
-          @@generators<<method.to_sym 
-        end
-      end
       # When configuration is defined in class than you don't need to worry about
       # creating new object, because Lolita itself create it for that class.
       # New object is created like when you define it in class, but <i>parent_class</i>
@@ -66,12 +60,16 @@ module Lolita
       
       # Call all supported instance metods to set needed variables and initialize object with them.
       def generate!
-        @@generators.each{|generator|
+        generators.each{|generator|
           self.send(generator)
         }
       end
 
       private
+
+      def generators
+        @@generators
+      end
 
       def after_initialize
         @dbp.klass.run(:after_lolita_loaded, :once => self)

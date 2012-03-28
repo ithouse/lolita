@@ -20,7 +20,7 @@ module Lolita
           detect_association
           list_association = args[0] && @dbi.associations[args[0].to_s.to_sym] || self.association
           list_dbi = list_association && Lolita::DBI::Base.create(list_association.klass)
-          raise Lolita::UnknownDBIError.new("DBI is not specified for list in column #{self}") unless list_dbi
+          raise Lolita::UnknownDBPError.new("DBI is not specified for list in column #{self}") unless list_dbi
           @list_association_name = list_association.name
           Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::NestedList, list_dbi, self, :association_name => list_association.name, &block)
         else

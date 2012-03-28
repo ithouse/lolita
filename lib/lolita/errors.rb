@@ -11,6 +11,6 @@ module Lolita
   class ConfigurationClassNotFound < NameError; end
   class AssociationError < ArgumentError; end
   class HookNotFound < ArgumentError;end
-  class UnknownDBIError < ArgumentError; end
+  class UnknownDBPError < ArgumentError; end
   class NotInitialized < ArgumentError; end
 end

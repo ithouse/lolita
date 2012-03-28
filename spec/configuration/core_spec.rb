@@ -49,6 +49,12 @@ describe Lolita::Configuration::Core do
     conf.list(&block).class
   end
 
+  it "should assign new list to @list when instance class is kind of Lolita::Configuration::List" do 
+    list = double("list")
+    list.stub(:is_a?).with(Lolita::Configuration::List).and_return(true)
+    conf.list = list
+  end
+
   it "should create tabs with same DB proxy" do 
     Lolita::Configuration::Tabs.should_receive(:new).with(dbp)
     conf.tabs.class

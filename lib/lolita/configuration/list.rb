@@ -8,24 +8,24 @@ module Lolita
 
       lolita_accessor :per_page, :pagination_method, :actions
       
-      def initialize(dbi,*args,&block)
-        set_and_validate_dbi(dbi)
-        init_list_attributes()
-        set_attributes(*args)
-        self.instance_eval(&block) if block_given?
-        set_default_attributes
-        set_list_attributes
+      def initialize(dbp,*args,&block)
+        set_and_validate_dbp(dbp)
+        set_list_attributes do 
+          set_attributes(*args)
+          self.instance_eval(&block) if block_given?
+        end
       end
 
       def action name, options = {}, &block
         @actions << Lolita::Configuration::Action.new(@dbi,name,options,&block)
       end
 
+      # Allow to crate nested list for list
       def list(*args, &block)
         if args && args.any? || block_given?
           association = dbi.associations[args[0].to_s.to_sym]
           association_dbi = association && Lolita::DBI::Base.create(association.klass)
-          raise Lolita::UnknownDBIError.new("No DBI specified for list sublist") unless association_dbi
+          raise Lolita::UnknownDBPError.new("No DBI specified for list sublist") unless association_dbi
           Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::NestedList,association_dbi, self, :association_name => association.name,&block)
         else
           @list
@@ -53,27 +53,23 @@ module Lolita
 
       # Set columns. Allowed classes are Lolita::Configuration::Columns or
       # Array.
-      def columns=(value)
-        if value.is_a?(Lolita::Configuration::Columns)
-          @columns = value
+      def columns=(possible_columns)
+        if possible_columns.is_a?(Lolita::Configuration::Columns)
+          @columns = possible_columns
           @columns.parent = self
-        elsif value.respond_to?(:each)
-          value.each{|possible_column| 
+        elsif possible_columns.respond_to?(:each)
+          possible_columns.each{|possible_column| 
             column(possible_column)
           }
         else
-          raise ArgumentError.new("Columns must bet Array or Lolita::Configuration::Columns.")
+          raise ArgumentError.new("Accepts only Enumerable or Lolita::Configuration::Columns.")
         end
       end
 
-      # Define columns for list
+      # Define columns for list. On first read if there is no columns they will be created.
       def columns(*args,&block)
-        if args  && args.any? || block_given?
-          @columns = Lolita::Configuration::Columns.new(dbi,*args,&block)
-          @columns.parent = self
-        elsif !@columns
-          @columns = Lolita::Configuration::Columns.new(dbi)
-          @columns.parent = self
+        if (args && args.any?) || block_given? || !@columns
+          self.columns = Lolita::Configuration::Columns.new(dbi,*args,&block)
         end
         @columns
       end
@@ -88,21 +84,13 @@ module Lolita
         @filter.is_a?(Lolita::Configuration::Filter)
       end
 
-      # Filter by now works only for these field types:
-      # - belongs_to
-      # - boolean
-      #
+      # Create or return filter
       def filter(*args,&block)
         if args && args.any? || block_given?
           @filter = Lolita::Configuration::Filter.new(dbi,*args,&block)
           add_observer(@filter)
-        else
-          @filter
         end
-      end
-
-      def set_default_attributes
-        @per_page ||= Lolita.application.per_page || 10
+        @filter
       end
 
       def by_path(path)
@@ -121,12 +109,19 @@ module Lolita
 
       private
 
-      def init_list_attributes
+      def set_list_attributes
+        init_default_attributes
+        yield if block_given?
+        create_default_actions
+      end
+      
+      def init_default_attributes
         @actions = []
+        @per_page = Lolita.application.per_page || 10
       end
 
-      def set_list_attributes
-        if actions.respond_to?(:each)
+      def create_default_actions
+        if actions.respond_to?(:each) && (actions.empty? || actions.include?(:default))
           action :edit do 
             title ::I18n.t("lolita.shared.edit")
             url Proc.new{|view,record| view.send(:edit_lolita_resource_path, :id => record.id)}

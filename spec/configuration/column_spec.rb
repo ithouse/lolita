@@ -113,7 +113,7 @@ describe Lolita::Configuration::Column do
         column_class.new(dbi, :title) do
           list{}
         end
-      }.to raise_error(Lolita::UnknownDBIError)
+      }.to raise_error(Lolita::UnknownDBPError)
     end
 
     it "should accept sublist in any depth" do

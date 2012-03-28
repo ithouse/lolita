@@ -1,27 +1,8 @@
-#require 'cover_me'
-#CoverMe.config do |c|
-#  # where is your project's root:
-#  c.project.root="c:/a_work/ruby_docs/lolita3" # => "Rails.root" (default)
-#
-#  # what files are you interested in coverage for:
-#  #c.file_pattern # => /(#{CoverMe.config.project.root}\/app\/.+\.rb|#{CoverMe.config.project.root}\/lib\/.+\.rb)/i (default)
-#
-#  # where do you want the HTML generated:
-#  c.html_formatter.output_path # => File.join(CoverMe.config.project.root, 'coverage') (default)
-#
-#  # what do you want to happen when it finishes:
-#  c.at_exit # => Proc.new {
-#  if CoverMe.config.formatter == CoverMe::HtmlFormatter
-#    index = File.join(CoverMe.config.html_formatter.output_path, 'index.html')
-#    if File.exists?(index)
-#      `open #{index}`
-#    end
-#  end
-#
-#end
+
 require 'rubygems'
 require "bundler/setup"
 require 'benchmark'
+require 'coverage_helper'
 #require 'ruby-debug'
 Benchmark.bm do |x|
   x.report("Loading ORM: ") do

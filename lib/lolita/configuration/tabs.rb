@@ -10,8 +10,8 @@ module Lolita
       attr_reader :excluded
       attr_accessor :tab_types
 
-      def initialize dbi,*args,&block
-        set_and_validate_dbi(dbi)
+      def initialize dbp,*args,&block
+        set_and_validate_dbp(dbp)
         set_default_attributes
         set_attributes(*args)
         self.instance_eval(&block) if block_given?
@@ -80,7 +80,7 @@ module Lolita
       def build_element(possible_tab,&block)
         possible_tab = possible_tab.nil? && :default || possible_tab
         new_tab = if possible_tab.is_a?(Hash) || possible_tab.is_a?(Symbol)
-          Lolita::Configuration::Factory::Tab.add(dbi,possible_tab,&block)
+          Lolita::Configuration::Factory::Tab.add(dbp,possible_tab,&block)
         else
           possible_tab
         end

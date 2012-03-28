@@ -90,7 +90,7 @@ describe Lolita::Configuration::Tabs do
   end
 
   it "should populate self with default tabs" do 
-    tabs.should_receive(:build_element).any_number_of_times.and_return(stub())
+    tabs.stub(:build_element).and_return(stub())
     tabs.default
     tabs.should have(1).item
   end
@@ -104,14 +104,14 @@ describe Lolita::Configuration::Tabs do
 
     it "should call factory when tab is Hash" do 
       tab = stub()
-      Lolita::Configuration::Factory::Tab.should_receive(:add).and_return(tab)
+      Lolita::Configuration::Factory::Tab.stub(:add).and_return(tab)
       tabs.tab({})
       tabs.first.should == tab
     end
 
     it "should call factory when tab is Symbol" do 
       tab = stub()
-      Lolita::Configuration::Factory::Tab.should_receive(:add).and_return(tab)
+      Lolita::Configuration::Factory::Tab.stub(:add).and_return(tab)
       tabs.tab(:image)
       tabs.first.should == tab
     end
