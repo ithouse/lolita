@@ -50,10 +50,11 @@ module Lolita
       end
 
       # Set/Get title. Getter return title what was set or ask for human_attribute_name to model.
-      def title(value=nil)
-        @title=value if value
-        @title||=@dbi.klass.human_attribute_name(@name.to_s)
-        @title
+      def title(new_title=nil)
+        if new_title
+          @title = new_title
+        end
+        @title.respond_to?(:call) ? @title.call : (@title || @dbi.klass.human_attribute_name(@name))
       end
 
       def sortable?

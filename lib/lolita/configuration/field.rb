@@ -50,10 +50,11 @@ module Lolita
           validate
         end
         
-        def title(value=nil)
-          @title=value if value
-          @title||=@dbi.klass.human_attribute_name(@name)
-          @title
+        def title(new_title = nil)
+          if new_title
+            @title = new_title
+          end
+          @title.respond_to?(:call) ? @title.call : (@title || @dbi.klass.human_attribute_name(@name))
         end
 
         def type value=nil
