@@ -136,7 +136,7 @@ module Lolita
         def polymorphic_classes
           if @related_classes
             @related_classes.map do |klass|
-              [klass.constantize.model_name.human, klass.to_s]
+              [klass.constantize.lolita_model_name.human, klass.to_s]
             end
           end
         end

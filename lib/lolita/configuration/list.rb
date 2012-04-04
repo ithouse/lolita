@@ -121,7 +121,8 @@ module Lolita
       end
 
       def create_default_actions
-        if actions.respond_to?(:each) && (actions.empty? || actions.include?(:default))
+        if actions.to_s.to_sym != :none && ((actions.respond_to?(:each) && actions.empty?) || actions.to_s.to_sym == :default)
+          @actions = [] unless @actions.respond_to?(:each)
           action :edit do 
             title Proc.new{::I18n.t("lolita.shared.edit")}
             url Proc.new{|view,record| view.send(:edit_lolita_resource_path, :id => record.id)}

@@ -10,6 +10,6 @@
   	<% end %>
   </div>
   <% if nested_form.expandable? && !nested_form.update_only? %>
-	 <p><%= link_to_add_fields ::I18n.t("lolita.nested_form.add", :resource_name => nested_form.klass.model_name.human.downcase), current_form, nested_form %> </p>
+	 <p><%= link_to_add_fields ::I18n.t("lolita.nested_form.add", :resource_name => nested_form.klass.lolita_model_name.human.downcase), current_form, nested_form %> </p>
   <% end %>
 </div>

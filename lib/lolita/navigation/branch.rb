@@ -27,7 +27,7 @@ module Lolita
           @title.call(self)
         else
           @title || 
-          (self.object.to && (object.to.respond_to?(:model_name) && self.object.to.model_name.human(:count=>2)) || self.object.to.to_s) ||
+          (self.object.to && (self.object.to.lolita_model_name.human(:count=>2)) || self.object.to.to_s) ||
           ::I18n.t("lolita.navigation.#{object.name}")
         end
       end

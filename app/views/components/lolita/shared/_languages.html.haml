@@ -1,8 +1,8 @@
 - if Lolita.locales.size > 1
   - Lolita.locales.each do |locale|
     - unless ::I18n.locale.to_sym == locale
-      - link_with_locale = if request.fullpath[/locale=/]
-        - request.fullpath.gsub(/locale=[^&]+/,"locale=#{locale}")
+      - link_with_locale = if request.fullpath[/(\?|&)locale=/]
+        - request.fullpath.gsub(/(\?|&)locale=[^&]+/,"\\1locale=#{locale}")
       - else
         - request.fullpath[/\?/] ? request.fullpath+"&locale=#{locale}" : request.fullpath+"?locale=#{locale}"
       = link_to locale, link_with_locale

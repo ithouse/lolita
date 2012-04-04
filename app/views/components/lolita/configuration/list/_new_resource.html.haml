@@ -1,4 +1,4 @@
 - if authorization_proxy.can?(:create, resource_class)
   %a{:class => "create", :href =>  new_lolita_resource_path }
-    = ::I18n.t("lolita.list.add_new", :name => resource_class.model_name.human.downcase)
+    = ::I18n.t("lolita.list.add_new", :name => resource_class.lolita_model_name.human.downcase)
     = image_tag "lolita/plus.png", :alt => "+"
