@@ -4,11 +4,16 @@ module Lolita
     class Base
       include Lolita::Builder
       attr_reader :dbi
+      attr_writer :component
       alias :dbp :dbi
 
       def initialize(dbp, *args)
         set_and_validate_dbp dbp
         set_attributes *args
+      end
+
+      def component
+        @component ||= "Lolita::Components::#{self.class.to_s.sub("Lolita::","")}Component".constantize.new(self)
       end
 
       private

@@ -154,6 +154,10 @@ require 'lolita/support/formatter/rails'
 #Search
 require 'lolita/search/simple'
 
+#Components
+require 'lolita/components/base'
+require 'lolita/components/configuration/column_component'
+
 if Lolita.rails3?
   require "base64"
   require 'kaminari'

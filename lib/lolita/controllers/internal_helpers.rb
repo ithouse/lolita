@@ -160,16 +160,19 @@ module Lolita
       end
 
       def switch_locale
-        if params[:locale]
-          old_locale =::I18n.locale
-          Lolita.locale = params[:locale]
-          session[:lolita_locale] = Lolita.locale
-        elsif Lolita.locales.include?(session[:lolita_locale])
-          Lolita.locale = session[:lolita_locale]
+        begin
+          old_locale = ::I18n.locale
+          if params[:locale]
+            Lolita.locale = params[:locale].to_sym
+            session[:lolita_locale] = Lolita.locale
+          elsif Lolita.locales.include?(session[:lolita_locale])
+            Lolita.locale = session[:lolita_locale]
+          end
+          ::I18n.locale = Lolita.locale
+          yield
+        ensure
+          ::I18n.locale = old_locale
         end
-        ::I18n.locale = Lolita.locale
-        yield
-        ::I18n.locale = old_locale
       end
 
     end

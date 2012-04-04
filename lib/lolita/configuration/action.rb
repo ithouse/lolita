@@ -3,8 +3,8 @@ module Lolita
     class Action
 
       include Lolita::Builder
-      lolita_accessor :url, :html
-      attr_writer :title
+      lolita_accessor :url
+      attr_writer :title,:html
       attr_reader :name
 
       def initialize(dbi,name, options ={}, &block)
@@ -16,11 +16,27 @@ module Lolita
         instance_eval(&block) if block_given?
       end
 
+      def html attributes = nil
+        if attributes
+          @html = attributes
+        else
+          result = {}
+          (@html || {}).each{|k,v|
+            result[k] = v.respond_to?(:call) ? v.call : v
+          }
+          result
+        end
+      end
+
       def title value=nil
         if value
           @title = value
         else
-          @title || ::I18n.t("#{@dbi.klass.to_s.underscore}.actions.#{@name}")
+          if @title
+            @title.respond_to?(:call) ? @title.call : @title
+          else
+            ::I18n.t("#{@dbi.klass.to_s.underscore}.actions.#{@name}")
+          end
         end
       end
 

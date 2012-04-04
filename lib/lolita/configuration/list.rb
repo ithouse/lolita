@@ -123,14 +123,14 @@ module Lolita
       def create_default_actions
         if actions.respond_to?(:each) && (actions.empty? || actions.include?(:default))
           action :edit do 
-            title ::I18n.t("lolita.shared.edit")
+            title Proc.new{::I18n.t("lolita.shared.edit")}
             url Proc.new{|view,record| view.send(:edit_lolita_resource_path, :id => record.id)}
           end unless actions.detect{|existing_action| existing_action.name == :edit}
 
           action :destroy do 
-            title ::I18n.t("lolita.shared.delete")
+            title Proc.new{::I18n.t("lolita.shared.delete")}
             url Proc.new{|view,record| view.send(:lolita_resource_path,:id => record.id)}
-            html :method => :delete, :confirm => ::I18n.t("lolita.list.confirm")
+            html :method => :delete, :confirm => Proc.new{::I18n.t("lolita.list.confirm")}
           end unless actions.detect{|existing_action| existing_action.name == :destroy}
         end
       end
