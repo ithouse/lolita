@@ -1,0 +1,9 @@
+= current_form.text_area field.name, :rows=>(field.rows || 20), :"data-simple"=>field.simple 
+- if @textarea_component_include_tinymce_once.nil? 
+  :javascript
+    $(document).ready(
+     $(function(){
+        load_tinymce();
+      })
+    )
+- @textarea_component_include_tinymce_once = "done" 

@@ -1,3 +1,4 @@
+Bundler.setup(:mongoid)
 require 'mongoid'
 
 Mongoid.configure do |config|

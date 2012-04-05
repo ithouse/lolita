@@ -7,10 +7,6 @@ require "sprockets/railtie"
 
 Bundler.require(:default, LOLITA_ORM, Rails.env) if defined?(Bundler)
 
-require 'lolita'
-require "lolita/rails/all"
-require 'kaminari'
-
 module RailsApp
 	class Application < Rails::Application
 		# Add additional load paths for your own custom dirs

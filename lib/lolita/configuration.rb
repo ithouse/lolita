@@ -32,3 +32,30 @@ module Lolita
     end
   end
 end
+
+require 'lolita/configuration/base'
+require 'lolita/configuration/core'
+require 'lolita/configuration/list'
+require 'lolita/configuration/nested_list'
+require 'lolita/configuration/tabs'
+require 'lolita/configuration/tab'
+require 'lolita/configuration/columns'
+require 'lolita/configuration/column'
+require 'lolita/configuration/fields'
+require 'lolita/configuration/field'
+require 'lolita/configuration/field_set'
+require 'lolita/configuration/nested_form'
+require 'lolita/configuration/search'
+require 'lolita/configuration/filter'
+require 'lolita/configuration/action'
+
+require 'lolita/configuration/factory/field'
+require 'lolita/configuration/factory/tab'
+
+# Configuration for fields and tabs
+["field","tab"].each do |type|
+  Dir["#{File.dirname(__FILE__)}/configuration/#{type}/**/*.*"].each do |path|
+    base_name=File.basename(path,".rb")
+    require "lolita/configuration/#{type}/#{base_name}"
+  end
+end

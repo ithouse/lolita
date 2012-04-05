@@ -1,20 +1,26 @@
 
 require 'rubygems'
 require "bundler/setup"
+ENV["lolita-env"] = "rails"
+#Bundler.setup(:default,:rails,:test,:development)
 require 'benchmark'
 require 'coverage_helper'
-#require 'ruby-debug'
+require 'ruby-debug'
 Benchmark.bm do |x|
   x.report("Loading ORM: ") do
     LOLITA_ORM=:mongoid
     require "orm/#{LOLITA_ORM}"
   end
-  x.report("Loading rails: ") do
-    require "rails"
-    require "rails_app/config/environment"
+  if ENV["lolita-env"] == "rails"
+    x.report("Loading rails: ") do
+      require 'rails'
+      require 'lolita'
+      require "rails_app/config/environment"
+      require 'rspec/rails'
+    end
   end
+
   x.report("Loading test stuff: ") do
-    require 'rspec/rails'
     require 'ffaker'
   end
   x.report("Loading factories") do

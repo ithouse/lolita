@@ -1,0 +1,4 @@
+= form_for resource, :url => "#",:html => {:onsubmit => "return false;",:multipart=>true, :id=>"tab-form-#{tab.__id__}",:method => resource.new_record? ? :post : :put} do |form| 
+  - self.current_form = form 
+  = render_component *tab.build 
+- self.current_form = nil 

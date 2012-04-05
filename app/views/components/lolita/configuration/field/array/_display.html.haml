@@ -1,0 +1,5 @@
+- if field.association && field.association.macro == :one 
+  = render_component :"lolita/configuration/field/array/select", :display, :field=>field 
+- else 
+  = render_component :"lolita/configuration/field/array/autocomplete", :display, :field=>field 
+ 

@@ -17,32 +17,34 @@ module Lolita
   # what controller to use, what model is related with it and so on. This is used to generate urls and paths.
   # Also eahc request containers information with mapping related to it.
   class Mapping
-    attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:controllers,:as
+    attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:as
     attr_reader :visible, :only, :append_to, :title
     alias :name :singular
     
     
     def initialize(name,options={})
       # TODO how it is when lolita plugin extend default path and there is module is this not break the logic?
-      @as=options[:as]
-      @title = options[:title]
-      @to = options[:to].is_a?(String) ? options[:to].constantize : options[:to]
-      @visible = options.keys.include?(:visible) ? options[:visible] : true
-      @append_to = options[:append_to]
-      @only = options[:only] || nil
-      @plural=(options[:as] ? options[:as] : name).to_sym
-      @singular=(options[:singular] || @plural.to_s.singularize).to_sym
-      @class_name=(options[:class_name] || name.to_s.classify).to_s
-      @ref = @class_name.to_s.camelize
-      @path_prefix=options[:path_prefix]
-      @path=(options[:path] || "lolita").to_s
-      @module=options[:module] 
-      mod=@module ? nil :  "lolita/"
-      @controllers=Hash.new{|h,k|
-        h[k]=options[:controller] || "#{mod}#{k}" 
-      }
+      @as           = options[:as]
+      @title        = options[:title]
+      @to           = options[:to].is_a?(String) ? options[:to].constantize : options[:to]
+      @visible      = options.keys.include?(:visible) ? options[:visible] : true
+      @append_to    = options[:append_to]
+      @only         = options[:only] || nil
+      @plural       = (options[:as] ? options[:as] : name).to_sym
+      @singular     = (options[:singular] || @plural.to_s.singularize).to_sym
+      @class_name   = (options[:class_name] || name.to_s.classify).to_s
+      @ref          = @class_name.to_s.camelize
+      @path_prefix  = options[:path_prefix]
+      @path         = (options[:path] || "lolita").to_s
+      @module       = options[:module] 
+      @default_mod  = @module || "lolita"
+      
     end
   
+    def controller
+      "#{@default_mod}#{@default_mod && "/"}#{@plural}"
+    end
+
     # Return class that is related with mapping.
     def to
       @to || (@ref.constantize rescue nil)

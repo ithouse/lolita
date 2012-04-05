@@ -1,0 +1,5 @@
+require 'lolita/register'
+require 'lolita/lazy_loader'
+require 'lolita/observed_array'
+require 'lolita/builder'
+require 'lolita/controller_additions'

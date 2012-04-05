@@ -1,0 +1,9 @@
+%div{:class => "nested_form #{nested_form.field_style}", :id => "nested_form_#{nested_form.__id__}"}
+  - unless nested_form.field_style == :normal
+    = render_component *nested_form.as_field.build(:name=>"/lolita/configuration/field", :state => :"label")
+  .nested-form-fields-container
+    = current_form.fields_for nested_form.name, resource.send(nested_form.build_method) do |form|
+      = render_component nested_form, :fields 
+  - if nested_form.expandable? && !nested_form.update_only?
+    %p
+      =link_to_add_fields ::I18n.t("lolita.nested_form.add", :resource_name => nested_form.klass.lolita_model_name.human.downcase), current_form, nested_form 

@@ -1,52 +1,21 @@
-$:<<File.dirname(__FILE__) unless $:.include?(File.dirname(__FILE__))
-FRAMEWORK = if defined?(Rails)
-  " with Rails #{::Rails::VERSION::STRING}"
-end
 
 require 'lolita/version'
-puts "=> Lolita #{Lolita::Version::STRING} starting#{FRAMEWORK}"
-
-#require "rubygems"
-require 'abstract'
-require 'observer'
-require 'ostruct'
-require 'active_support'
-require 'active_support/core_ext/numeric/time'
-require 'active_support/core_ext/date_time/conversions'
-require 'active_support/concern'
-require 'active_support/callbacks'
-require 'active_support/dependencies'
-require 'active_support/inflector'
-
-# Require all ruby extensions
-Dir["#{File.dirname(__FILE__)}/lolita/ruby_ext/**/*.*"].each do |path|
-  require path
-end
-
-require 'lolita/errors'
-# Hooks
-require 'lolita/hooks'
 
 module Lolita
-  include Lolita::Hooks
-  add_hook :before_setup, :after_setup, :after_routes_loaded,:before_routes_loaded
 
-  @@scopes={}
+  CONFIGURATIONS = {}
+  DEFAULT_CONFIGURATION_NAME = :default
 
-  def self.scope name=nil
-    name||=scope_name
-    @@scopes[name]||=Lolita::SystemConfiguration::Base.new(name)
-    @@scopes[name]
+  def self.configuration name = nil
+    name ||= DEFAULT_CONFIGURATION_NAME
+    CONFIGURATIONS[name] ||= Lolita::SystemConfiguration::Base.new(name)
+    CONFIGURATIONS[name]
   end
 
   def self.setup
     self.run(:before_setup)
-    yield scope
+    yield configuration
     self.run(:after_setup)
-  end
-
-  def self.scope_name
-    :default
   end
   
   def self.root
@@ -61,107 +30,126 @@ module Lolita
     self.class_eval <<-LOLITA_SETUP,__FILE__,__LINE__+1
       class << self
         def #{method_name}(*args,&block)
-          scope.send(:#{method_name},*args,&block)
+          configuration.send(:#{method_name},*args,&block)
         end
       end
     LOLITA_SETUP
-    scope.send(method_name,*args,&block)
+    configuration.send(method_name,*args,&block)
+  end
+
+  def self.load!
+    load_frameworks!
+    load_dependencies!
+    load_base!
+
+    self.send(:include, Lolita::Hooks)
+    self.send(:add_hook, :before_setup, :after_setup, :after_routes_loaded,:before_routes_loaded)
+
+    if rails?
+      load_rails!
+    elsif sinatra?
+      load_sinatra!
+    end
+
+    load_modules!
+  end
+
+  def self.load_frameworks!
+    frameworks.each do |framework|
+      begin
+        require framework 
+        puts " => Loading Lolita #{version} with #{framework}"
+      rescue Execption => e
+        raise "Can't load #{framework}. Check you Gemfile."
+      end
+    end
+    if frameworks.any?
+      require 'kaminari'
+    end
+  end
+
+  def self.frameworks
+    frameworks = []
+    if rails?
+      frameworks << "rails"
+    elsif sinatra?
+      frameworks << "sinatra/base"
+    end
+    frameworks
+  end
+
+  def self.load_dependencies!
+    require 'abstract'
+    require 'observer'
+    require 'ostruct'
+    require "base64"
+    require 'active_support'
+    require 'active_support/core_ext/numeric/time'
+    require 'active_support/core_ext/date_time/conversions'
+    require 'active_support/concern'
+    require 'active_support/callbacks'
+    require 'active_support/dependencies'
+    require 'active_support/inflector'
+  end
+
+  def self.load_base!
+    Dir["#{File.dirname(__FILE__)}/lolita/ruby_ext/**/*.*"].each do |path|
+      require path
+    end
+    require 'lolita/errors'
+    require 'lolita/hooks'
+    require 'lolita/mapping'
+    require 'lolita/hooks/named_hook'
+    require 'lolita/system_configuration/base'
+    require 'lolita/system_configuration/application'
+  end
+
+  def self.load_modules!
+    require 'lolita/base'
+    require 'lolita/orm'
+    require 'lolita/extensions/extensions'
+    require 'lolita/configuration'
+    require 'lolita/controllers'
+    require 'lolita/navigation/tree'
+    require 'lolita/navigation/branch'
+
+    require 'lolita/test/matchers'
+    require 'lolita/support/formatter'
+    require 'lolita/support/formatter/rails'
+
+    require 'lolita/search/simple'
+    require 'lolita/components/base'
+    require 'lolita/components/configuration/column_component'
+  end
+
+  def self.load_rails!
+    require 'tinymce-rails'
+    require 'jquery-rails'
+    require 'lolita/rails/railtie'
+    require 'lolita/rails/engine'
+  end
+
+  def self.load_sinatra!
+    require 'lolita/sinatra/base'
   end
 
   def self.version
     Lolita::Version::STRING
   end
 
+  def self.rails?
+    defined?(::Rails)
+  end
+
   def self.rails3?
     defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
+  end
+
+  def self.sinatra?
+    defined?(::Sinatra)
   end
   
 end
 
-require 'lolita/hooks/named_hook'
 
-# Require base
-require 'lolita/register'
-require 'lolita/lazy_loader'
-require 'lolita/observed_array'
-require 'lolita/builder'
-require 'lolita/controller_additions'
-
-# System configuration
-require 'lolita/system_configuration/base'
-require 'lolita/system_configuration/application'
-
-# Adapters
-require 'lolita/adapter/field_helper'
-require 'lolita/adapter/common_helper'
-require 'lolita/adapter/abstract_adapter'
-require 'lolita/adapter/active_record'
-require 'lolita/adapter/mongoid'
-
-# DBI
-require 'lolita/dbi/base'
-
-# Extensions
-require 'lolita/extensions/extensions'
-
-# Configuration base
-require 'lolita/configuration'
-require 'lolita/configuration/base'
-require 'lolita/configuration/core'
-require 'lolita/configuration/list'
-require 'lolita/configuration/nested_list'
-require 'lolita/configuration/tabs'
-require 'lolita/configuration/tab'
-require 'lolita/configuration/columns'
-require 'lolita/configuration/column'
-require 'lolita/configuration/fields'
-require 'lolita/configuration/field'
-require 'lolita/configuration/field_set'
-require 'lolita/configuration/nested_form'
-require 'lolita/configuration/search'
-require 'lolita/configuration/filter'
-require 'lolita/configuration/action'
-
-# Configuration factories
-require 'lolita/configuration/factory/field'
-require 'lolita/configuration/factory/tab'
-
-# Configuration for fields and tabs
-["field","tab"].each do |type|
-  Dir["#{File.dirname(__FILE__)}/lolita/configuration/#{type}/**/*.*"].each do |path|
-    base_name=File.basename(path,".rb")
-    require "lolita/configuration/#{type}/#{base_name}"
-  end
-end
-
-# Controllers and views
-require 'lolita/controllers/internal_helpers'
-require 'lolita/controllers/url_helpers'
-require 'lolita/controllers/component_helpers'
-require 'lolita/controllers/authentication_helpers'
-
-# Test
-require 'lolita/test/matchers'
-
-# Navigation
-require 'lolita/navigation/tree'
-require 'lolita/navigation/branch'
-
-# Support
-require 'lolita/support/formatter'
-require 'lolita/support/formatter/rails'
-
-#Search
-require 'lolita/search/simple'
-
-#Components
-require 'lolita/components/base'
-require 'lolita/components/configuration/column_component'
-
-if Lolita.rails3?
-  require "base64"
-  require 'kaminari'
-  require 'tinymce-rails'
-  require 'jquery-rails'
-  require 'lolita/rails/all'
-end
+Lolita.load!

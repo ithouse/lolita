@@ -1,0 +1,6 @@
+.boxtitle
+  %h1.black
+    = resource_class.lolita_model_name.human(:count=>2) 
+    - if list.search
+      = render_component list.search, :display 
+  .arrow

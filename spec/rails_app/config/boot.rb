@@ -5,8 +5,7 @@ LOLITA_ORM=:mongoid unless defined?(LOLITA_ORM)
 gemfile = File.expand_path('../../Gemfile', __FILE__)
 begin
   ENV['BUNDLE_GEMFILE'] = gemfile
-  require 'bundler'
-  Bundler.setup(:default,Rails.env,LOLITA_ORM)
+  Bundler.setup(Rails.env)
 rescue Bundler::GemNotFound => e
   STDERR.puts e.message
   STDERR.puts "Try running `bundle install`."
