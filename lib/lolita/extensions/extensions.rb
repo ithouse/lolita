@@ -45,9 +45,9 @@ module Lolita
     private
 
     def __proxy_options_from_context
-      if defined?(::ActionController) && self.is_a?(::ActionController::Base)
+      if defined?(::ActionController::Base) && self.is_a?(::ActionController::Base)
         {:controller => self, :request => request}
-      elsif defined?(::ActionView) && self.is_a?(::ActionView::Base)
+      elsif defined?(::ActionView::Base) && self.is_a?(::ActionView::Base)
         {:request => request}
       end
     end

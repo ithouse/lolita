@@ -1,8 +1,8 @@
-%div{:class => nested_for.field_style == :normal && "" || "fields"}
+%div{:class => nested_form.field_style == :normal && "" || "fields"}
   - nested_form.fields.each do |field|
     - if nested_form.field_style == :normal
       = render_component "lolita/configuration/field", :display, :field => field 
     - else
       = render_component field
     - if nested_form.expandable? && nested_form.allow_destroy? 
-      = = link_to_remove_fields I18n.t("lolita.shared.delete").downcase, current_form
+      = link_to_remove_fields I18n.t("lolita.shared.delete").downcase, current_form

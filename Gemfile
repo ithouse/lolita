@@ -10,6 +10,7 @@ end
 
 group :sinatra do 
   gem "sinatra"
+  gem "padrino-helpers"
 end
 
 group :rails do 
@@ -19,6 +20,8 @@ group :rails do
   gem "tinymce-rails", "~>3.4.8"
 end
 
+
+  
 group :mongoid do
 	gem 'mongo', '~> 1.4.0'
 	gem 'mongoid', '~> 2.3.0'

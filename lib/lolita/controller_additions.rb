@@ -6,7 +6,9 @@ module Lolita
       base_class.class_eval do 
         include Lolita::Controllers::InternalHelpers
         include Lolita::Controllers::AuthenticationHelpers
-        include LolitaHelper
+        if Lolita.rails?
+          include Lolita::Controllers::RailsHelpers 
+        end
       end
     end
 

@@ -6,6 +6,7 @@ ActiveSupport.on_load(:action_controller) {
 ActiveSupport.on_load(:action_view) {
   include Lolita::Controllers::UrlHelpers
   include Lolita::Controllers::ComponentHelpers
+  include Lolita::Controllers::RailsHelpers 
   include Lolita::Extensions
 }
 

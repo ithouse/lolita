@@ -1,35 +1,43 @@
+module Lolita
+  module Sinatra
+    class Routes
 
-def lolita_for *resources
-  options = resources.extract_options!
+      def self.add_to(klass,mapping)
+        klass.class_eval do 
+     
+          get "/#{mapping.controller}" do 
+            self.lolita_mapping = mapping
+            processor = Lolita::Processors::RequestProcessor.respond_to(mapping,self,:index)
+          end
 
-  resources.each do |resource|
-    resource = resource.to_sym
+          get "/#{mapping.controller}/new" do 
+            lolita_mapping = mapping
+            "#{mapping.controller} new"
+          end
 
-    mapping = Lolita.add_mapping(resource,options)
-    Lolita.resources[mapping.name] = mapping
- 
-    get "/#{mapping.controller}" do 
-      "#{mapping.controller} index"
-    end
+          get "/#{mapping.controller}/:id/edit" do 
+            lolita_mapping = mapping
+            "#{mapping.controller} edit"
+          end
 
-    get "/#{mapping.controller}/new" do 
-      "#{mapping.controller} new"
-    end
+          post "/#{mapping.controller}" do
+            lolita_mapping = mapping
+            "#{mapping.controller} create"
+          end
 
-    get "/#{mapping.controller}/:id/edit" do 
-      "#{mapping.controller} edit"
-    end
+          patch "/#{mapping.controller}/:id" do 
+            lolita_mapping = mapping
+            "#{mapping.controller} update"
+          end
 
-    post "/#{mapping.controller}" do
-      "#{mapping.controller} create"
-    end
+          delete "/#{mapping.controller}/:id" do 
+            lolita_mapping = mapping
+            "#{mapping.controller} delete"
+          end 
+        end
+        mapping.add_to_navigation_tree
+      end
 
-    patch "/#{mapping.controller}/:id" do 
-      "#{mapping.controller} update"
-    end
-
-    delete "/#{mapping.controller}/:id" do 
-      "#{mapping.controller} delete"
     end
   end
 end

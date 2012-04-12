@@ -45,13 +45,15 @@ module Lolita
     self.send(:include, Lolita::Hooks)
     self.send(:add_hook, :before_setup, :after_setup, :after_routes_loaded,:before_routes_loaded)
 
+  
     if rails?
       load_rails!
     elsif sinatra?
       load_sinatra!
     end
-
     load_modules!
+
+    load_sinatra_app! if sinatra?
   end
 
   def self.load_frameworks!
@@ -62,9 +64,6 @@ module Lolita
       rescue Execption => e
         raise "Can't load #{framework}. Check you Gemfile."
       end
-    end
-    if frameworks.any?
-      require 'kaminari'
     end
   end
 
@@ -110,6 +109,8 @@ module Lolita
     require 'lolita/extensions/extensions'
     require 'lolita/configuration'
     require 'lolita/controllers'
+    require 'lolita/helpers'
+    require 'lolita/processors/request_processor'
     require 'lolita/navigation/tree'
     require 'lolita/navigation/branch'
 
@@ -123,6 +124,7 @@ module Lolita
   end
 
   def self.load_rails!
+    require 'kaminari'
     require 'tinymce-rails'
     require 'jquery-rails'
     require 'lolita/rails/railtie'
@@ -130,7 +132,15 @@ module Lolita
   end
 
   def self.load_sinatra!
+    require 'kaminari/sinatra'
     require 'lolita/sinatra/base'
+    require 'padrino-helpers'
+  end
+
+  def self.load_sinatra_app!
+    Dir[File.join(Lolita.root,"sinatra_app","**","*.rb")].each do |file_name|
+      require file_name
+    end
   end
 
   def self.version

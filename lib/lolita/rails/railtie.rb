@@ -5,12 +5,6 @@ Lolita.default_route = :rest
 
 require 'lolita/rails/routes'
 
-
-Lolita::Hooks::NamedHook.add(:components)
-Lolita::Hooks.components.class_eval{
-  add_hook :before,:after,:around
-}
-
 module ActionDispatch::Routing
   class Mapper
     protected

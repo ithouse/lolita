@@ -1,4 +1,5 @@
 coverage.data
+sinatra-test.rb
 tmp/
 diagramm.rb
 log/

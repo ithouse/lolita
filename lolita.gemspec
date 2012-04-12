@@ -22,6 +22,9 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<abstract>, ["~> 1"])
   s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
   s.add_runtime_dependency(%q<activesupport>,["~>3.2.0"])
+  s.add_runtime_dependency(%q<jquery-rails>, [">=0"])
+  s.add_runtime_dependency(%q<tinymce-rails>,["~>3.4.8"])
+
   s.add_development_dependency(%q<fabrication>, ["~> 1.3.2"])
   s.add_development_dependency(%q<cover_me>, ["~> 1.2.0"])
   s.add_development_dependency(%q<rspec>, ["~> 2.9.0"])

@@ -17,7 +17,7 @@ module Lolita
   # what controller to use, what model is related with it and so on. This is used to generate urls and paths.
   # Also eahc request containers information with mapping related to it.
   class Mapping
-    attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:as
+    attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:as,:controllers
     attr_reader :visible, :only, :append_to, :title
     alias :name :singular
     
@@ -38,7 +38,9 @@ module Lolita
       @path         = (options[:path] || "lolita").to_s
       @module       = options[:module] 
       @default_mod  = @module || "lolita"
-      
+      @controllers  = Hash.new{|h,k|
+        h[k]=options[:controller] || "#{!@module && "lolita/"}#{k}" 
+      }
     end
   
     def controller

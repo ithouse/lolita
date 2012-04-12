@@ -1,0 +1,36 @@
+!!! 5
+%html.no-js{:lang => "en", :style => "height:100%"}
+
+  %head
+    %meta{:charset => "utf-8"}
+      %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"}
+        %title= Lolita.application.name
+        %meta{:content => "", :name => "description"}
+          %meta{:content => "", :name => "author"}
+            = favicon_link_tag "lolita/favicon.ico" rescue ""
+            = stylesheet_link_tag "lolita/application.css"
+            = yield :style
+            = javascript_include_tag "lolita/application.js"
+            = yield :script
+            = include_application_assets
+            = raw csrf_meta_tag
+            - if flash[:lolita_notice]
+              :javascript
+                $(function(){
+                  show_notice_msg(Base64.decode('#{flash[:lolita_notice]}'));
+                })
+            - elsif flash[:lolita_alert]
+              :javascript
+                $(function(){
+                  show_alert_msg(Base64.decode('#{flash[:lolita_alert]}'));
+                })
+      %body
+    = render_component :"lolita/shared", :flash
+    #container
+      = render_component :"lolita/shared", :header
+      #main{:role => "main"}
+        = render_component :"lolita/navigation",:display,:tree => Lolita::Navigation::Tree[:"left_side_navigation"]
+        = yield
+      .push
+    %footer
+      #powered= ::I18n.t("lolita.shared.powered", :year => Date.today.year)
