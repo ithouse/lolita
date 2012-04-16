@@ -46,6 +46,21 @@ function resize_all_tinymce_editors(){
   })
 }
 
+function params(name,new_value){
+  var value = (location.search.match(RegExp(name+"=([^&]*)(&|$)")) || [])
+  if(new_value){
+    if(value[0]){
+      replace_value = !new_value ? "" : (name + "=" + new_value + value[2])
+      location.href = window.location.href.replace(RegExp(name+"=([^&]*)(&|$)"),replace_value)
+    }else{
+      location.href = window.location.href + ("&"+name+"="+new_value)
+    }
+  }else{
+    location.href =  window.location.href.replace(RegExp("(&?)"+name+"=([^&]*)(&|$)"),"")
+  }
+  return decodeURI(value[1])
+}
+
 function show_notice_msg(msg){
   show_msg("green",msg)
 }
