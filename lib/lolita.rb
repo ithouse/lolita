@@ -106,7 +106,6 @@ module Lolita
   def self.load_modules!
     require 'lolita/base'
     require 'lolita/orm'
-    require 'lolita/extensions/extensions'
     require 'lolita/configuration'
     require 'lolita/helpers'
     require 'lolita/processors/request_processor'
