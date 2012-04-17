@@ -53,7 +53,8 @@ function params(name,new_value){
       replace_value = !new_value ? "" : (name + "=" + new_value + value[2])
       location.href = window.location.href.replace(RegExp(name+"=([^&]*)(&|$)"),replace_value)
     }else{
-      location.href = window.location.href + ("&"+name+"="+new_value)
+      start_sym = window.location.href.match(/\?/) ? "&" : "?"
+      location.href = window.location.href + (start_sym+name+"="+new_value)
     }
   }else{
     location.href =  window.location.href.replace(RegExp("(&?)"+name+"=([^&]*)(&|$)"),"")
