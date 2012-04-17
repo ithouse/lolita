@@ -108,7 +108,6 @@ module Lolita
     require 'lolita/orm'
     require 'lolita/extensions/extensions'
     require 'lolita/configuration'
-    require 'lolita/controllers'
     require 'lolita/helpers'
     require 'lolita/processors/request_processor'
     require 'lolita/navigation/tree'

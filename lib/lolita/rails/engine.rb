@@ -1,3 +1,5 @@
+require 'lolita/controllers'
+
 ActiveSupport.on_load(:action_controller) {
   include Lolita::Controllers::UrlHelpers
   include Lolita::Controllers::ComponentHelpers
