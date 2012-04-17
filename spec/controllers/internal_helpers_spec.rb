@@ -4,7 +4,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 class MyController < ApplicationController
-  include Lolita::Controllers::InternalHelpers
+  include Lolita::Controllers::RailsHelpers
   include Lolita::Hooks
   add_hook :before_build_resource,:after_build_resource
   add_hook :before_index
