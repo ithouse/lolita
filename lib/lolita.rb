@@ -96,11 +96,13 @@ module Lolita
       require path
     end
     require 'lolita/errors'
+    require 'lolita/utils'
     require 'lolita/hooks'
     require 'lolita/mapping'
     require 'lolita/hooks/named_hook'
     require 'lolita/system_configuration/base'
     require 'lolita/system_configuration/application'
+    require 'lolita/extensions/extensions'
   end
 
   def self.load_modules!

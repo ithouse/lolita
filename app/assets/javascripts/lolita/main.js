@@ -46,20 +46,33 @@ function resize_all_tinymce_editors(){
   })
 }
 
-function params(name,new_value){
-  var value = (location.search.match(RegExp(name+"=([^&]*)(&|$)")) || [])
+function params(object_or_name,new_value){
+  var url = window.location.href
+  if(typeof(object_or_name) && object_or_name.constructor.toString().match(/Object/)){
+    for(var name in object_or_name){
+      var value = object_or_name[name]
+      url = apply_param_to_url(name,value,url)
+    }
+  }else{
+    url = apply_param_to_url(object_or_name,new_value,url)
+  }
+  window.location.href = url.replace(/&{2,}/,"&")
+}
+
+function apply_param_to_url(name,new_value,url){
+  var value = (url.match(RegExp(name+"=([^&]*)(&|$)")) || [])
   if(new_value){
     if(value[0]){
       replace_value = !new_value ? "" : (name + "=" + new_value + value[2])
-      location.href = window.location.href.replace(RegExp(name+"=([^&]*)(&|$)"),replace_value)
+      url = url.replace(RegExp(name+"=([^&]*)(&|$)"),replace_value)
     }else{
-      start_sym = window.location.href.match(/\?/) ? "&" : "?"
-      location.href = window.location.href + (start_sym+name+"="+new_value)
+      start_sym = url.match(/\?/) ? "&" : "?"
+      url = url + (start_sym+name+"="+new_value)
     }
   }else{
-    location.href =  window.location.href.replace(RegExp("(&?)"+name+"=([^&]*)(&|$)"),"")
+    url =  url.replace(RegExp(name+"=([^&]*)(&|$)"),"")
   }
-  return decodeURI(value[1])
+  return encodeURI(url)
 }
 
 function show_notice_msg(msg){

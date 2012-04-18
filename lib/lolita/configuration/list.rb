@@ -5,6 +5,7 @@ module Lolita
       include Lolita::Builder
        
       attr_reader :initialized_attributes,:page_criteria
+      attr_writer :title
 
       lolita_accessor :per_page, :pagination_method, :actions
       
@@ -14,6 +15,13 @@ module Lolita
           set_attributes(*args)
           self.instance_eval(&block) if block_given?
         end
+      end
+
+      def title(new_title = nil)
+        if new_title
+          @title = new_title
+        end
+        Lolita::Utils.dynamic_string(@title, :default => dbp.klass.lolita_model_name.human(:count => 2))
       end
 
       def action name, options = {}, &block

@@ -9,7 +9,7 @@ module Lolita
       name = if defined?(ActiveRecord::Base) && @klass.ancestors.include?(ActiveRecord::Base)
         "activerecord.models.#{@class_name.underscore}"
       else
-        "lolita.models.#{@class_name.underscore}"
+        "lolita.models.#{@class_name.underscore.gsub("/",".")}"
       end
       ::I18n.t("#{name}.#{prefix(options)}")
     end
