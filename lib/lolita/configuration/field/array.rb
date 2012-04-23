@@ -138,6 +138,8 @@ module Lolita
             @related_classes.map do |klass|
               [klass.constantize.lolita_model_name.human, klass.to_s]
             end
+          else
+            []
           end
         end
 

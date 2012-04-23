@@ -89,7 +89,7 @@ module Lolita
         end
 
         def nested_in=(dbi)
-          unless self.dbi.associations_class_names.include?(dbi.klass.to_s)
+          if !self.dbi.associations_class_names.include?(dbi.klass.to_s) && !dbi.associations_class_names.include?(self.dbi.klass.to_s) 
             raise Lolita::ReferenceError, "There is no association between #{self.dbi.klass} and #{dbi.klass}"
           end
           if !dbi.is_a?(Lolita::DBI::Base) && !dbi.class.to_s.match(/Lolita::Adapter/)

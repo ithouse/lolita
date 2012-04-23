@@ -4,5 +4,5 @@
       = render_component "lolita/configuration/field", :display, :field => field 
     - else
       = render_component field
-    - if nested_form.expandable? && nested_form.allow_destroy? 
-      = link_to_remove_fields I18n.t("lolita.shared.delete").downcase, current_form
+  - if nested_form.expandable? && nested_form.allow_destroy? 
+    = link_to_remove_fields I18n.t("lolita.shared.delete").downcase, current_form
