@@ -1,6 +1,6 @@
 - if field.match_state_of?(resource) 
   %div{:class => "field_#{field.type}", :id => "field_#{field.__id__}"}
-    - unless field.type == "hidden"
+    - unless field.type.to_sym == :string && field.builder.name.to_s.match(/\/hidden/)
       = render_component *field.build(:name=>"/lolita/configuration/field", :state => :"label") 
     .field-value{:id => "field_#{field.__id__}_value"}= render_component *field.build 
     - unless resource.errors[field.name.to_s.gsub(/_id$/,"").to_sym].empty?

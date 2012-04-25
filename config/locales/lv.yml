@@ -16,6 +16,7 @@ lv:
       "save&new": "Saglabāt un veidot jaunu"
     tabs:
       last_save: Pēdējā saglabāšana
+      save: "Saglabāšana"
       titles:
         default: "Noklusētais"
         content: "Saturs"
