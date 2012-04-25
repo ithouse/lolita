@@ -171,6 +171,13 @@ module Lolita
           
         end
 
+        def title new_title = nil
+          if new_title
+            @title = new_title
+          end
+          Lolita::Utils.dynamic_string(@title, :default => @type.to_s.humanize)
+        end
+
         private
 
         def my_type
@@ -178,13 +185,14 @@ module Lolita
         end
 
         def set_default_attributes
-          @name="tab_#{self.__id__}" unless @name
-          @title=set_default_title unless @title
+          @name = "tab_#{self.__id__}" unless @name
+          @title = set_default_title unless @title
         end
         
         def set_default_title
           if defined?(::I18n)
-            ::I18n.translate("lolita.tabs.titles.#{@type}")
+            translation_str = "lolita.tabs.titles.#{@type}"
+            Proc.new{ ::I18n.t(translation_str) }
           else
             @type.to_s.humanize
           end
