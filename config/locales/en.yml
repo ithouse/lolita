@@ -10,6 +10,10 @@ en:
       powered: Powered by Lolita (2010-%{year})
     nested_form:
       add: "Add %{resource_name}"
+    buttons:
+      "save": "Save"
+      "save&close": "Save and Close"
+      "save&new": "Save and New"
     tabs:
       last_save: Last saved
       save: Save
