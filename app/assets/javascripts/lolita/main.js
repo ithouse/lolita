@@ -36,13 +36,20 @@ function show_lolita_messages(request){
 
 function resize_all_tinymce_editors(){
   $("textarea").each(function(item,index){
-    var $textarea = $("#"+$(this).tinymce().editorId)
-    var $parent = $textarea.parent()
-    var h = $textarea.height();
-    $parent.find('.mceEditor').css('width','100%').css('minHeight',h + "px");
-    $parent.find('.mceLayout').css('width','100%').css('minHeight',h + "px");
-    $parent.find('.mceIframeContainer').css('width','100%').css('minHeight',h + "px");
-    $parent.find("iframe").css("width","100%").css("minHeight",h + "px") 
+    try{
+      tinymce_id = $(this).tinymce().editorId
+    }catch(err){
+      tinymce_id = false
+    }
+    if(tinymce_id){
+      var $textarea = $("#"+tinymce_id)
+      var $parent = $textarea.parent()
+      var h = $textarea.height();
+      $parent.find('.mceEditor').css('width','100%').css('minHeight',h + "px");
+      $parent.find('.mceLayout').css('width','100%').css('minHeight',h + "px");
+      $parent.find('.mceIframeContainer').css('width','100%').css('minHeight',h + "px");
+      $parent.find("iframe").css("width","100%").css("minHeight",h + "px") 
+    }
   })
 }
 

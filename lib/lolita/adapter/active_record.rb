@@ -24,11 +24,15 @@ module Lolita
         end
 
         def key
-          if @association.macro == :belongs_to || through?
-            @association.foreign_key
+          if @association.macro == :has_and_belongs_to_many || through?
+            association_key
           else
-            @association.association_foreign_key
+            @association.foreign_key
           end 
+        end
+
+        def association_key
+          @association.association_foreign_key
         end
 
         def through

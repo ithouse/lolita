@@ -54,7 +54,7 @@ module Lolita
         if new_title
           @title = new_title
         end
-        Lolita::Utils.dynamic_string(@title, :default => @dbi.klass.human_attribute_name(@name))
+        Lolita::Utils.dynamic_string(@title, :default => @name && @dbi.klass.human_attribute_name(@name))
       end
 
       def sortable?
