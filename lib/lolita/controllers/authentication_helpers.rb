@@ -4,7 +4,7 @@ module Lolita
       
       extend ActiveSupport::Concern
       included do
-        unless Lolita.sinatra?
+        if Lolita.rails?
           before_filter :authenticate_lolita_user!
         end
       end

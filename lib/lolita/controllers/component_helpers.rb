@@ -31,7 +31,7 @@ module Lolita
         format=options.delete(:format)
         raise "Can't render component without name!" unless name
         will_use_component name
-        component_name=File.join(name.to_s,state ? "#{Lolita.sinatra? && "_"}#{state}" : "")
+        component_name=File.join(name.to_s,state ? "#{!Lolita.rails? && "_" || ""}#{state}" : "")
         partial_name=File.join("/components",component_name)
 
         @rendering_components.push(component_name)
@@ -72,10 +72,10 @@ module Lolita
         @component_locals[name] = locals
         output = Lolita::Hooks.component(name).run(:before,:run_scope => self).to_s
         block_output = Lolita::Hooks.component(name).run(:around, :run_scope => self) do
-          if Lolita.sinatra?
-            haml :"#{partial_name}.html", :locals => locals
-          else
+          if Lolita.rails?
             render(:partial => partial_name, :locals => locals)
+          else
+            haml :"#{partial_name}.html", :locals => locals
           end
         end
         #FIXME does block_output raises error?

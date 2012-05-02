@@ -48,12 +48,8 @@ module Lolita
   
     if rails?
       load_rails!
-    elsif sinatra?
-      load_sinatra!
     end
     load_modules!
-
-    load_sinatra_app! if sinatra?
   end
 
   def self.load_frameworks!
@@ -71,8 +67,6 @@ module Lolita
     frameworks = []
     if rails?
       frameworks << "rails"
-    elsif sinatra?
-      frameworks << "sinatra/base"
     end
     frameworks
   end
@@ -131,18 +125,6 @@ module Lolita
     require 'lolita/rails/engine'
   end
 
-  def self.load_sinatra!
-    require 'kaminari/sinatra'
-    require 'lolita/sinatra/base'
-    require 'padrino-helpers'
-  end
-
-  def self.load_sinatra_app!
-    Dir[File.join(Lolita.root,"sinatra_app","**","*.rb")].each do |file_name|
-      require file_name
-    end
-  end
-
   def self.version
     Lolita::Version::STRING
   end
@@ -154,11 +136,6 @@ module Lolita
   def self.rails3?
     defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
   end
-
-  def self.sinatra?
-    defined?(::Sinatra)
-  end
-  
 end
 
 
