@@ -1,5 +1,5 @@
-function load_tinymce(){
-	$("textarea[data-simple!=true]").tinymce({
+function load_tinymce(options){
+	var settings = {
 		theme: "advanced",
 		skin: "cirkuit",
 		mode: "textareas",
@@ -10,5 +10,7 @@ function load_tinymce(){
 		theme_advanced_toolbar_align: "left",
 		// theme_advanced_statusbar_location : "bottom",
 		theme_advanced_resizing: true
-	});
+	};
+	$.extend(true, settings, options);
+    $("textarea[data-simple!=true]").tinymce(settings);
 }
