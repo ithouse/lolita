@@ -1,5 +1,5 @@
 %th
   - if column.sortable?
-    = render_component column.build("header",:sort)
+    = render_component *column.build("header",:sort)
   - else
     = column.title.to_s.capitalize
