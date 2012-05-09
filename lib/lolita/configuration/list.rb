@@ -25,7 +25,8 @@ module Lolita
       end
 
       def action name, options = {}, &block
-        @actions << Lolita::Configuration::Action.new(@dbi,name,options,&block)
+        @actions << decide_and_create_action(name, options, &block)
+        @actions.flatten!
       end
 
       # Allow to crate nested list for list
@@ -124,24 +125,75 @@ module Lolita
       end
       
       def init_default_attributes
-        @actions = []
+        initialize_actions
         @per_page = Lolita.application.per_page || 10
       end
 
       def create_default_actions
-        if actions.to_s.to_sym != :none && ((actions.respond_to?(:each) && actions.empty?) || actions.to_s.to_sym == :default)
-          @actions = [] unless @actions.respond_to?(:each)
-          action :edit do 
-            title Proc.new{::I18n.t("lolita.shared.edit")}
-            url Proc.new{|view,record| view.send(:edit_lolita_resource_path, :id => record.id)}
-          end unless actions.detect{|existing_action| existing_action.name == :edit}
-
-          action :destroy do 
-            title Proc.new{::I18n.t("lolita.shared.delete")}
-            url Proc.new{|view,record| view.send(:lolita_resource_path,:id => record.id)}
-            html :method => :delete, :confirm => Proc.new{::I18n.t("lolita.list.confirm")}
-          end unless actions.detect{|existing_action| existing_action.name == :destroy}
+        if !skip_actions? && ( default_actions? || actions_empty?)
+          initialize_actions
+          @actions << add_edit_action
+          @actions << add_destroy_action
         end
+      end
+
+      def initialize_actions
+        @actions = [] unless @actions.respond_to?(:each)
+      end
+
+      def default_actions?
+        actions.to_s.to_sym == :default
+      end
+
+      def included_default_actions?
+        actions.include?(:default)
+      end
+
+      def actions_empty?
+        (@actions.respond_to?(:each) && @actions.empty?)
+      end
+
+      def skip_actions?
+        actions.to_s.to_sym == :none
+      end
+
+      def decide_and_create_action(name, options ={}, &block)
+        if name.to_s == 'default'
+          [add_edit_action,add_destroy_action]
+        else
+          create_action(name,options,&block)
+        end
+      end
+
+      def create_action name, options = {}, &block 
+        Lolita::Configuration::Action.new(@dbi,name,options,&block)
+      end
+
+      def add_edit_action
+        unless actions.detect{|existing_action| existing_action.name == :edit}
+          create_action(:edit, &edit_action_block)
+        end
+      end
+
+      def add_destroy_action
+        unless actions.detect{|existing_action| existing_action.name == :destroy}
+          create_action(:destroy, &destroy_action_block)
+        end
+      end
+
+      def edit_action_block
+        Proc.new do 
+          title Proc.new{::I18n.t("lolita.shared.edit")}
+          url Proc.new{|view,record| view.send(:edit_lolita_resource_path, :id => record.id)}
+        end 
+      end
+
+      def destroy_action_block
+        Proc.new do 
+          title Proc.new{::I18n.t("lolita.shared.delete")}
+          url Proc.new{|view,record| view.send(:lolita_resource_path,:id => record.id)}
+          html :method => :delete, :confirm => Proc.new{::I18n.t("lolita.list.confirm")}
+        end 
       end
 
     end
