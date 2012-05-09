@@ -55,7 +55,7 @@ module Lolita
       def nested_options_for(record)
         if self.parent
           association = self.association
-          attr_name = [:one,:many_to_many].include?(association.macro) ? :id : association.key
+          attr_name = [:one,:many_to_many].include?(association.macro) ? :id : association.foreign_key
           association_record = if association.through? && record.send(association.through)
             record.send(association.through)
           elsif association.macro == :one

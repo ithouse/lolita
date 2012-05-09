@@ -23,7 +23,7 @@ module Lolita
           @association.send(method,*args,&block)
         end
 
-        def key
+        def key # maybe this isn't neccessery any more
           if @association.macro == :has_and_belongs_to_many || through?
             association_key
           else
@@ -33,6 +33,10 @@ module Lolita
 
         def association_key
           @association.association_foreign_key
+        end
+
+        def foreign_key
+          @association.foreign_key
         end
 
         def through
