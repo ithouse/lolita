@@ -9,7 +9,7 @@ module Lolita
     # * <tt>nested_in</tt> - define field for different Lolita::DBI instance, than given. This is used
     #   to create nested fields in one form for related models. Like user and profile, where in user
     #   form there are fields from profile that can be manipulated when user is changed or created.
-    # * <tt>optinos</tt> - specific options for different type of fields, see Lolita::Configuration::FieldExtensions for details
+    # * <tt>options</tt> - specific options for different type of fields, see Lolita::Configuration::FieldExtensions for details
     # * <tt>html_options</tt> - used to change field HTML output,like class or style etc.
     # 
     # To define field in ORM class through lolita configuration block
