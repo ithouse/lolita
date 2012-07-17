@@ -6,7 +6,15 @@ module Lolita
         def initialize dbi,name,*args, &block
           
           super
+          override_order
         end
+
+        private
+
+        def override_order
+          @options[:order] = ::I18n.t("date.order", :default => []).map(&:to_sym)
+        end
+
       end
     end
   end
