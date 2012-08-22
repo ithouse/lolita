@@ -27,7 +27,6 @@ module Lolita
           if !name || !type
             raise Lolita::FieldTypeError, "type not defined. Set is as second argument or as :dbi_field where value is Adapter::[ORM]::Field object."
           else
-             
             field_class(type).new(dbi,name,type,options,&block)
           end
 

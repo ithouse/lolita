@@ -92,7 +92,7 @@ module Lolita
         end
 
         def primary?
-          !!self.options[:primary]
+          !!self.options[:primary] || @field.type.to_s =~ /ObjectId/
         end
 
         private

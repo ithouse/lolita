@@ -11,7 +11,7 @@ Lolita.setup do |config|
 
   <% if defined?(Devise) %>
     <% default_user_class = Devise.mappings.keys.first %>
-    config.user_classes << <%= default_user.to_s.camelize %>
+    config.user_classes << <%= default_user_class.to_s.camelize %>
     config.authentication=:authenticate_<%= default_user_class %>!
   <% end %>
 end
