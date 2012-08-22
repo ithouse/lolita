@@ -200,6 +200,9 @@ module Lolita
 
         def get_class(association_name)
           if association_name.is_a?(Symbol) && assoc = self.current_dbi.reflect_on_association(association_name)
+            if dbi.klass.nested_attributes_options[association_name].nil?
+              raise ArgumentError, "#{dbi.klass} association named `#{association_name}` called nested_fields_XXX without accepts_nested_attributes_for :#{association_name}"
+            end
             assoc.klass
           else
             raise ArgumentError, "Association named `#{association_name}` not found for #{self.current_dbi.klass}."
