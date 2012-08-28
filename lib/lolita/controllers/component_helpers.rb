@@ -131,7 +131,7 @@ module Lolita
       # 
       #    component_helper_path :"lolita/list" #=> [path_to_lolita]/app/helpers/components/lolita/list_component.rb
       def component_helper_path component_name
-         @helper_paths||=$:.reject{|p| !p.match(/\/helpers$/)}
+         @helper_paths||=$:.reject{|p| !p.match(/\/helpers$/) rescue nil}
          get_path=lambda{|paths|
           extra_path=component_name.to_s.split("/")
           component=extra_path.pop
