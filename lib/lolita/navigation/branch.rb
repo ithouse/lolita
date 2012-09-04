@@ -66,7 +66,7 @@ module Lolita
       end
 
       def populate_url(view)
-        self.options[:url] = calculate_url(view)
+        self.options[:calculated_url] = calculate_url(view)
       end
 
       def calculate_url(view)

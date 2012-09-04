@@ -9,6 +9,6 @@
         - active = branch.active?(self)
         - classes = [] << (active && "active") << (branch.subtree? && "with-subtree") << (!tree.root? && branch == last_branch && "last-in-subtree")
         %li{:class => classes.reject{|e| !e}.join(" ")}
-          = link_to branch.title, branch.options[:url] || "#"
+          = link_to branch.title, branch.options[:calculated_url] || "#"
           - if branch.subtree?
             = render_component(:"lolita/navigation", :tree, :tree => branch.children, :visible => active)
