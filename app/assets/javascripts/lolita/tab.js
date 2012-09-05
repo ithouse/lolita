@@ -99,8 +99,10 @@ $(function(){
       },
       select: function(event, ui){
         if($(this).data("macro") == "one"){
-          var $id_holder = $(this).parents(".autocomplete-container").eq(0).find("input[type=hidden]").eq(0)
-          $id_holder.val(ui.item.id)
+          var $id_holder = $(this).parents(".autocomplete-container").eq(0).find("input[type=hidden]").eq(0);
+          if($id_holder){
+            $id_holder.val(ui.item.id);
+          }
         } else {
           var li = $("<li></li>").appendTo($(this).parents(".autocomplete-container").eq(0).find("ul"));
           li.text(ui.item.value);
