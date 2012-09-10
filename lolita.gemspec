@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency(%q<kaminari>, ["~> 0.13.0"])
   s.add_runtime_dependency(%q<abstract>, ["~> 1"])
-  s.add_runtime_dependency(%q<rack>, [">=0"])
   s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
   s.add_runtime_dependency(%q<activesupport>,["~>3.2.0"])
   s.add_runtime_dependency(%q<jquery-rails>, [">=0"])
