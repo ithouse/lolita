@@ -1,3 +1,3 @@
 - url = field.options[:url].respond_to?(:call) ? field.options[:url].call(self) : field.options[:url]
-- f_options = {:"data-autocomplete-url" => url, :"data-macro" => "one", :"data-cached" => "no"}
+- f_options = {:autocomplete => "off", :"data-autocomplete-url" => url, :"data-macro" => "one", :"data-cached" => "no"}
 = current_form.text_field field.name, f_options.merge(field.html_options)

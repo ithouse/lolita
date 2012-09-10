@@ -11,7 +11,7 @@
 - else
   - nil
 
-- f_options = {:"data-autocomplete-url" => f_url, :"data-macro" => field.association.macro, :"data-cached" => f_cached ? "yes" : "no"}
+- f_options = {:autocomplete => "off", :"data-autocomplete-url" => f_url, :"data-macro" => field.association.macro, :"data-cached" => f_cached ? "yes" : "no"}
 
 - if f_cached
   = current_form.text_field f_name, f_options

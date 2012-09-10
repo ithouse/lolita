@@ -56,7 +56,7 @@ module Lolita
     frameworks.each do |framework|
       begin
         require framework 
-        puts " => Loading Lolita #{version} with #{framework}"
+        puts "=> Loading Lolita #{version} with #{framework}"
       rescue Execption => e
         raise "Can't load #{framework}. Check you Gemfile."
       end
