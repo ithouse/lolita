@@ -1,4 +1,3 @@
-
 require 'lolita/version'
 
 module Lolita
@@ -119,8 +118,8 @@ module Lolita
 
   def self.load_rails!
     require 'kaminari'
-    require 'tinymce-rails'
     require 'jquery-rails'
+    require 'tinymce-rails-config-manager'
     require 'lolita/rails/railtie'
     require 'lolita/rails/engine'
   end

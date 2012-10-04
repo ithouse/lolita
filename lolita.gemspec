@@ -18,12 +18,12 @@ Gem::Specification.new do |s|
   ]
   s.licenses = ["MIT"]
 
-  s.add_runtime_dependency(%q<kaminari>, ["~> 0.13.0"])
+  s.add_dependency(%q<kaminari>, ["~> 0.13.0"])
   s.add_runtime_dependency(%q<abstract>, ["~> 1"])
   s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
   s.add_runtime_dependency(%q<activesupport>,["~>3.2.0"])
-  s.add_runtime_dependency(%q<jquery-rails>, [">=0"])
-  s.add_runtime_dependency(%q<tinymce-rails>,["~>3.4.8"])
+  s.add_dependency(%q<jquery-rails>, [">=2"])
+  s.add_dependency(%q<tinymce-rails-config-manager>,[">=0"])
 
   s.add_development_dependency(%q<fabrication>, ["~> 1.3.2"])
   s.add_development_dependency(%q<cover_me>, ["~> 1.2.0"])
@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<capybara-webkit>, ["~> 0.11.0"])
   s.add_development_dependency(%q<ffaker>, ["~> 1"])
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.md"]
+  s.test_files    = Dir["{spec}/**/*"]
   s.require_paths = ["lib"]
 end

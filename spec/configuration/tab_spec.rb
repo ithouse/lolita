@@ -113,45 +113,39 @@ describe Lolita::Configuration::Tab do
     tab.fields.size.should > 0
   end
 
-  it "should add nested fields" do
-    tab=default_tab do
-      default_fields
-      nested_fields_for(:comments) do
-        default_fields
-      end
-    end
-    dbi2=Lolita::DBI::Base.new(Comment)
-    tab.fields.size.should == @dbi.fields.reject{|f| f.technical?}.size+dbi2.fields.reject{|f| f.technical?}.size
-  end
+  describe "nested field operations" do 
 
-  it "should detect that field is nested" do
-    tab=default_tab do
-      default_fields
-      nested_fields_for(:comments) do
+    it "should add nested fields" do
+      tab=default_tab do
         default_fields
+        nested_fields_for(:comments) do
+          default_fields
+        end
       end
+      dbi2=Lolita::DBI::Base.new(Comment)
+      tab.fields.size.should == @dbi.fields.reject{|f| f.technical?}.size+dbi2.fields.reject{|f| f.technical?}.size
     end
-    tab.fields.last.nested?.should be_true
-  end
+
+    it "should detect that field is nested" do
+      tab=default_tab do
+        default_fields
+        nested_fields_for(:comments) do
+          default_fields
+        end
+      end
+      tab.fields.last.nested?.should be_true
+    end
   
-  it "should return nested fields for specified class" do
-    tab=default_tab do
-      default_fields
-      nested_fields_for(:comments) do
+    it "should return nested fields for specified class" do
+      tab=default_tab do
         default_fields
+        nested_fields_for(:comments) do
+          default_fields
+        end
       end
+      tab.nested_fields_of(:comments).size.should > 0
     end
-    tab.nested_fields_of(:comments).size.should > 0
-  end
 
-  it "should return field with given name" do
-    tab=default_tab do
-      default_fields
-    end
-    tab.fields.by_name(:title).name.should == :title
-  end
-
-  context "nested fields" do
     it "should have nested forms" do
       tab = default_tab do
         default_fields
@@ -179,6 +173,14 @@ describe Lolita::Configuration::Tab do
       tab.fields_in_groups.size.should == 5
       tab.fields_in_groups[3].first.dbi == Profile
     end
+
+  end
+
+  it "should return field with given name" do
+    tab=default_tab do
+      default_fields
+    end
+    tab.fields.by_name(:title).name.should == :title
   end
 
 end

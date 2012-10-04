@@ -232,6 +232,10 @@ module Lolita
         db.collection_names
       end
 
+      def nested_attributes_options
+        self.klass.relations
+      end
+
     end
   end
 end

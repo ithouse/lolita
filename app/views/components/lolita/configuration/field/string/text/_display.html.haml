@@ -2,6 +2,6 @@
 - if @textarea_component_include_tinymce_once.nil? 
   :javascript
     $(function(){
-      load_tinymce();
+      TinyMCEConfigManager.get().load();
     })
 - @textarea_component_include_tinymce_once = "done" 

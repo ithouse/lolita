@@ -218,6 +218,10 @@ module Lolita
         self.klass.connection.select_all("show tables from #{db_name}").map{|r| r.values.first}
       end
 
+      def nested_attributes_options
+        self.klass.nested_attributes_options
+      end
+
     end
   end
 end

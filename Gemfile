@@ -10,7 +10,7 @@ group :rails do
   gem "rails" , "~> 3.2.0"
   gem "rspec-rails", "~> 2.9.0"
   gem "jquery-rails"
-  gem "tinymce-rails", "~>3.4.8"
+  gem "tinymce-rails-config-manager"
 end
   
 group :mongoid do

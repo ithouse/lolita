@@ -10,6 +10,7 @@ module Lolita
       abstract_method 'id',:find_by_id
       abstract_method 'query', :search
       abstract_method 'access_modes_for', :record
+      abstract_method '', :nested_attributes_options
     end
   end
 end
