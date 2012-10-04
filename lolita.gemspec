@@ -18,12 +18,13 @@ Gem::Specification.new do |s|
   ]
   s.licenses = ["MIT"]
 
-  s.add_dependency(%q<kaminari>, ["~> 0.13.0"])
+  s.add_runtime_dependency(%q<kaminari>, ["~> 0.13.0"])
   s.add_runtime_dependency(%q<abstract>, ["~> 1"])
   s.add_runtime_dependency(%q<haml>, ["~> 3.1.2"])
   s.add_runtime_dependency(%q<activesupport>,["~>3.2.0"])
-  s.add_dependency(%q<jquery-rails>, [">=2"])
-  s.add_dependency(%q<tinymce-rails-config-manager>,[">=0"])
+  s.add_runtime_dependency(%q<jquery-rails>, [">=2"])
+  s.add_runtime_dependency(%q<tinymce-rails>, [">=3"])
+  s.add_runtime_dependency(%q<tinymce-rails-config-manager>,[">=0"])
 
   s.add_development_dependency(%q<fabrication>, ["~> 1.3.2"])
   s.add_development_dependency(%q<cover_me>, ["~> 1.2.0"])
