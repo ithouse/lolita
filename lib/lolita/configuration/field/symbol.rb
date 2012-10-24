@@ -1,7 +1,7 @@
 module Lolita
   module Configuration
     module Field
-      class Symbol
+      class Symbol < Lolita::Configuration::Field::Base
 
       end
     end

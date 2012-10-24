@@ -1,7 +1,7 @@
 module Lolita
   module Configuration
     module Field
-      class Float
+      class Float < Lolita::Configuration::Field::Base
 
       end
     end

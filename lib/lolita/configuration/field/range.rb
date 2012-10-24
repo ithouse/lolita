@@ -1,7 +1,7 @@
 module Lolita
   module Configuration
     module Field
-      class Range
+      class Range < Lolita::Configuration::Field::Base
 
       end
     end

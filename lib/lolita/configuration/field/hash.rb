@@ -1,7 +1,7 @@
 module Lolita
   module Configuration
     module Field
-      class Hash
+      class Hash < Lolita::Configuration::Field::Base
 
       end
     end

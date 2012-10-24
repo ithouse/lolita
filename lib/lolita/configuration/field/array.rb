@@ -12,6 +12,8 @@ module Lolita
       # of these. 
       class Array < Lolita::Configuration::Field::Base
         include Lolita::Hooks
+        MAX_RECORD_COUNT = 100
+        
         add_hook :after_association_loaded
 
         lolita_accessor :text_method,:value_method,:association,:include_blank
@@ -65,7 +67,7 @@ module Lolita
             polymorphic_association_values(record)
           elsif @association
             klass=@association.klass
-            options_array(klass.all)
+            options_array(collect_records_for(klass))
           else
             []
           end
@@ -79,7 +81,7 @@ module Lolita
           options ||= {}
           options[:klass] ||= options[:record] && options[:record].send(self.name) ? options[:record].send(self.name).class : nil
           if options[:klass]
-            options_array(options[:klass].all)
+            options_array(collect_records_for(options[:klass]))
           else
             []
           end
@@ -170,6 +172,14 @@ module Lolita
             end
           else
             warn("Not a ORM class (#{klass.inspect})")
+          end
+        end
+
+        def collect_records_for(klass)
+          if klass.count > MAX_RECORD_COUNT
+            raise ArgumentError.new("#{@dbi.klass} field #{@name} association has too many records(#{klass.count})")
+          else
+            klass.all
           end
         end
       end
