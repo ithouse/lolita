@@ -4,7 +4,14 @@ gemspec
 
 group :test, :development do 
   gem "debugger"
+  gem "fabrication", "~> 1.3.2"
+  gem "rspec", "~> 2"
+  gem "capybara", "~> 1"
+  gem "capybara-webkit", ">= 0"
+  gem "ffaker", "~> 1"
 end
+
+gem "simplecov", :require => false, :group => :test
 
 group :rails do 
   gem "rails" , "~> 3.2.0"
@@ -18,4 +25,3 @@ group :mongoid do
 	gem 'mongoid', '~> 2.3.0'
 	gem 'bson_ext', '~> 1.4.0'
 end
-

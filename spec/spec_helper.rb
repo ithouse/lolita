@@ -1,11 +1,13 @@
-
 require 'rubygems'
 require "bundler/setup"
+# require 'simplecov'
+# SimpleCov.start do
+
+end
 ENV["lolita-env"] = "rails"
+
 #Bundler.setup(:default,:rails,:test,:development)
 require 'benchmark'
-require 'coverage_helper'
-require 'ruby-debug'
 Benchmark.bm do |x|
   x.report("Loading ORM: ") do
     LOLITA_ORM=:mongoid
