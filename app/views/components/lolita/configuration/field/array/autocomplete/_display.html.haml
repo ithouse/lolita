@@ -7,7 +7,7 @@
     = hidden_field_tag "#{resource_name}[#{ids_method}][]",""
     = render_component *field.build(:state => "input")
     %ul
-      - resource.persisted? && resource.send(field.name).each do |record|
+      - resource && resource.persisted? && resource.send(field.name).each do |record|
         %li
           = record.send(field.current_text_method(field.association.klass))
           = link_to I18n.t("lolita.shared.delete").downcase, nil

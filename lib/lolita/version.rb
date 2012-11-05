@@ -3,7 +3,7 @@ module Lolita
     MAJOR = 3
     MINOR = 2
     PATCH = 0
-    BUILD = 'rc.16'
+    BUILD = 'rc.17'
 
     STRING = [MAJOR, MINOR, PATCH, BUILD].compact.join('.')
 
