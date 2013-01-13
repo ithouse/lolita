@@ -7,9 +7,9 @@ See the demo page at [Demo](http://lolita-demo.ithouse.lv)
 
 ##Installation
 
-First install Lolita gem
+First add Lolita gem to your Gemfile
   
-    sudo gem install lolita
+    gem 'lolita', '~> 3.2.0.rc.17'
 
 Then go to your rails project and 
   
