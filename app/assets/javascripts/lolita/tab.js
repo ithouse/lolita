@@ -2,13 +2,13 @@
 //= require jquery-ui
 $(function(){
   // Submit all forms through Ajax when Save All button clicked.
-  $("button.save-all").live('click',function(){
+  $(document).on('click',"button.save-all",function(){
     $form = $(".tabs form.associated")
     $form.append("<input type='hidden' name='button_pressed' value='"+$(this).data("type")+"' />")
     $form.submit()
   })
 
-  $(".tabs .tab-title h2").live("click",function(){
+  $(document).on("click",".tabs .tab-title h2",function(){
     $(this).parents(".tab-title").find("h2").removeClass("active light").addClass("semi-dark");
     $(this).removeClass("semi-dark").addClass("active light");
     $(".tabs .tab.active").removeClass("active")
@@ -17,8 +17,8 @@ $(function(){
   })
   // Integer field validator
   $(".integer").numeric()
-  
-  $("select[data-polymorphic-url]").live("change",function(){
+
+  $(document).on("change","select[data-polymorphic-url]",function(){
     var url = $(this).attr("data-polymorphic-url")
     var select = $(this)[0]
     var jselect = $(this)
@@ -40,12 +40,12 @@ $(function(){
         }else{
           $("#"+id).html("")
         }
-        
+
       }
     })
   })
 
-  $("input[data-autocomplete-url]").live("keyup.autocomplete", function(){
+  $(document).on("keyup.autocomplete","input[data-autocomplete-url]",function(){
     var $input = $(this)
     $(this).autocomplete({
       source: function(request, response){
@@ -91,7 +91,7 @@ $(function(){
     });
   });
 
-	$(".autocomplete-container ul li a").live("click", function(){
+	$(document).on("click",".autocomplete-container ul li a",function(){
 		$(this).closest("li").remove();
 		return false;
 	})
