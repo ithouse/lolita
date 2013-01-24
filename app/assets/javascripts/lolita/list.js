@@ -1,5 +1,5 @@
 $(function(){
-  $("td.with-nested-list a, tr.with-nested-list").live("click",function(event){
+  $(document).on("click","td.with-nested-list a, tr.with-nested-list",function(event){
     event.preventDefault()
     var was_active = $(this).data("active")
     $("td.with-nested-list a, tr.with-nested-list").data("active",false)
@@ -20,7 +20,7 @@ $(function(){
         if($tr.next().hasClass("nested-list")){
           $tr.next().replaceWith(data)
         }else{
-          $tr.after(data) 
+          $tr.after(data)
         }
       })
     }

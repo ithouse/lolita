@@ -7,7 +7,7 @@ $(function(){
     }
   })
   //$("#flash").slideUp("fast");
-  $("#flash").live("click", function(){
+  $(document).on("click","#flash",function(){
     $(this).slideUp("fast");
   })
 
@@ -48,7 +48,7 @@ function resize_all_tinymce_editors(){
       $parent.find('.mceEditor').css('width','100%').css('minHeight',h + "px");
       $parent.find('.mceLayout').css('width','100%').css('minHeight',h + "px");
       $parent.find('.mceIframeContainer').css('width','100%').css('minHeight',h + "px");
-      $parent.find("iframe").css("width","100%").css("minHeight",h + "px") 
+      $parent.find("iframe").css("width","100%").css("minHeight",h + "px")
     }
   })
 }
