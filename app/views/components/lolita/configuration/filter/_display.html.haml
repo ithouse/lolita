@@ -1,9 +1,9 @@
 - if filter
-  = form_for OpenStruct.new(params[:filter]), :as => :filter, :html => {:class => "filter"}, :method => :get, :url => request.path do |f|
+  = form_for filter.resource(params), :as => :filter, :html => {:class => "filter"}, :method => :get, :url => request.path do |f|
     - current_form(f) do 
       - filter.fields.each do |field|
         .field
           = render_component "lolita/configuration/field", :label, :field => field
-          = render_component field
+          = render_component *field.build(:resource => current_form.object)
 
     %button{:type => "submit"}= ::I18n.t "lolita.filter.apply_button"

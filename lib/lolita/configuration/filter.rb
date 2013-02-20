@@ -110,6 +110,12 @@ module Lolita
           @search
         end
       end
+
+      def resource(params)
+	if klass = fields.any? ? fields.first.dbi.klass : nil
+	  klass.new(params[klass.to_s.underscore.to_sym]).extend(Module.new{def persisted?; true; end})
+	end
+      end
       
     end
   end

@@ -3,7 +3,7 @@ require "bundler/setup"
 # require 'simplecov'
 # SimpleCov.start do
 
-end
+#end
 ENV["lolita-env"] = "rails"
 
 #Bundler.setup(:default,:rails,:test,:development)
