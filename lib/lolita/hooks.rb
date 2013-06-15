@@ -3,7 +3,7 @@ module Lolita
   # Next step is hook definition. This may be done using Lolita::Hooks#add_hook method.
   # Hooks are stored in class <i>@hooks</i> variable, that is Hash and each key is hook name
   # and each hook also is Hash that have <em>:methods</em> and <em>:blocks</em>
-  # keys. Both of those are Array, and each time you call callback method, like <i>before_save</i> and so on, block 
+  # keys. Both of those are Array, and each time you call callback method, like <i>before_save</i> and so on, block
   # and/or methods is stored. <b>Each time</b> #run is called all blocks and methods will be executed.
   # It may look like this.
   #    class MyClass
@@ -28,10 +28,10 @@ module Lolita
   #    my_object.before_save do
   #      puts "instance callback"
   #    end
-  #    
-  #    MyClass.run(:before_save) #=> 
+  #
+  #    MyClass.run(:before_save) #=>
   #      class_callback
-  #    
+  #
   #    my_object.run(:before_save) #=>
   #      class_callback
   #      instance_callback
@@ -46,7 +46,7 @@ module Lolita
   #      puts "replaced text"
   #    end
   #    # will produce #=> replaced text
-  #    
+  #
   #    MyClass.run(:before_save) do
   #      puts "before callback"
   #      let_content
@@ -84,7 +84,7 @@ module Lolita
           @singleton_hooks || {}
         end
       end
-     
+
       attr_accessor :hooks_run_scope, :given_callback_content
       attr_writer :hooks_scope
 
@@ -104,7 +104,7 @@ module Lolita
         if !@options[:once] || (@options[:once] && !self.class.runned?(@options[:once],@hook_name))
           self.class.singleton_hook(@options[:once],@hook_name)
           result = nil
-          in_hooks_scope(@options[:scope],@options[:run_scope]) do 
+          in_hooks_scope(@options[:scope],@options[:run_scope]) do
             callback = get_callback(@hook_name)
             result = run_callback(callback,&block)
           end
@@ -114,7 +114,7 @@ module Lolita
 
       # Call callback block inside of run block.
       # ====Example
-      #     MyClass.run(:before_save) do 
+      #     MyClass.run(:before_save) do
       #        do_stuff
       #        let_content # execute callback block(-s) in same scope as run is executed.
       #     end
@@ -155,7 +155,7 @@ module Lolita
       # class callbacks always will be called before scope callbacks.
       def get_callback(name)
         scope_callbacks = hooks_scope.callbacks[name.to_sym] || {}
-  
+
         @hook_class.superclasses.each do |const_name|
           scope_callbacks = @hook_class.collect_callbacks_from(name,const_name,scope_callbacks)
         end
@@ -199,7 +199,7 @@ module Lolita
         result
       end
 
-      # Run block in scope. 
+      # Run block in scope.
       def run_block block, &given_block
         hooks_run_scope.instance_eval(&block)
       end
@@ -220,14 +220,14 @@ module Lolita
     def self.method_missing method_name,*args, &block
       if named_hook=(Lolita::Hooks::NamedHook.by_name(method_name))
         named_hook[:_class]
-      else 
+      else
         super
       end
     end
 
     # Shared methods between class and instance.
     module CommonMethods
-      
+
       # All callbacks for class or instance.
       def callbacks
         var=self.instance_variable_get(:@callbacks)
@@ -245,7 +245,7 @@ module Lolita
         @hooks_scope = value
       end
 
-      def hooks_scope 
+      def hooks_scope
         @hooks_scope || self
       end
       # All hooks for class. This is Array of hook names.
@@ -279,7 +279,7 @@ module Lolita
       # ====Example
       #     add_hook :before_save
       #     MyClass.add_hooks :after_save, :around_save
-      def add_hook(*names) 
+      def add_hook(*names)
         (names||[]).each{|hook_name|
           self.class_eval <<-HOOK,__FILE__,__LINE__+1
             def self.#{hook_name}(*methods,&block)
@@ -325,8 +325,8 @@ module Lolita
         self.all_hooks.include?(name.to_sym)
       end
 
-      # Try to recognize named run methods like 
-      #    MyClass.run_after_save # will call MyClass.run(:after_save) 
+      # Try to recognize named run methods like
+      #    MyClass.run_after_save # will call MyClass.run(:after_save)
       def method_missing(*args, &block)
         unless self.recognize_hook_methods(*args,&block)
           super

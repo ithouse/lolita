@@ -2,7 +2,7 @@ module Lolita
   module Controllers
   	# Helper that add #render_component method. That is shortstand for render :partial for lolita
   	# partial files. Also it provide view hooks for Lolita.
-	  # For any component there may be helper module. Modules are include in current view or 
+	  # For any component there may be helper module. Modules are include in current view or
     # controller instance when component is rendered.
     # All components ar placed in "app/helpers/components/[your component path]".
     # Component should have fallowing module structure Components::[NameSpace]::[Component name]Component
@@ -41,10 +41,10 @@ module Lolita
         @current_component_name = @rendering_components.last
         self.respond_to?(:raw) ? raw(output) : output
       end
-      
+
       def get_render_options *args
         options=args.extract_options!
-        if args.first.respond_to?(:build) 
+        if args.first.respond_to?(:build)
           name,state,options=args[0].build("",args[1],options)
         elsif args.first.class.ancestors.include?(Lolita::Configuration)
           raise ArgumentError, "Include Lolita::Builder in #{args.first.class}"
@@ -107,7 +107,7 @@ module Lolita
               class_name=possible_component_name.to_s.camelize
               helper_module = "Components::#{class_name}Component".constantize rescue nil
               if helper_module
-                self.extend(helper_module) 
+                self.extend(helper_module)
               end
             end
             @used_component_helpers[possible_component_name] = helper_module
@@ -118,7 +118,7 @@ module Lolita
           end
         end
       end
-      
+
       def helpers_for_component component_name
         names=component_name.to_s.gsub(/^\//,"").split("/")
         start_index=1 # first is lolita
@@ -128,7 +128,7 @@ module Lolita
       end
 
       # Find path for given component.
-      # 
+      #
       #    component_helper_path :"lolita/list" #=> [path_to_lolita]/app/helpers/components/lolita/list_component.rb
       def component_helper_path component_name
          @helper_paths||=$:.reject{|p| !p.match(/\/helpers$/) rescue nil}
@@ -137,10 +137,10 @@ module Lolita
           component=extra_path.pop
           paths.each do |path|
             new_path=File.join(path,"components",*extra_path,"#{component}_component.rb")
-               if File.exist?(new_path) 
+               if File.exist?(new_path)
                  return new_path
                end
-            end  
+            end
           nil
         }
         path=get_path.call(@helper_paths)
@@ -151,7 +151,7 @@ module Lolita
       def component_locals
         @component_locals[@current_component_name]
       end
-      
+
     end
   end
 end

@@ -1,5 +1,5 @@
 require 'rubygems'
-require "bundler/setup"
+require 'bundler/setup'
 # require 'simplecov'
 # SimpleCov.start do
 
@@ -17,7 +17,7 @@ Benchmark.bm do |x|
     x.report("Loading rails: ") do
       require 'rails'
       require 'lolita'
-      require "rails_app/config/environment"
+      require 'rails_app/config/environment'
       require 'rspec/rails'
     end
   end
@@ -30,7 +30,7 @@ Benchmark.bm do |x|
   end
   RSpec.configure do |config|
     config.mock_with :rspec
-
+    config.order = 'rand:3455'
     if LOLITA_ORM==:active_record
       #config.fixture_path = "#{::Rails.root}/spec/fixtures"
       config.use_transactional_fixtures = true

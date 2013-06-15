@@ -3,7 +3,7 @@ module Lolita
     module CommonHelper
 
       class Record
-        def initialize(adapter,orm_record)
+        def initialize(adapter, orm_record)
           @adapter = adapter
           @record = orm_record
         end
@@ -45,6 +45,12 @@ module Lolita
           end
         end
 
+        def set_ability_criteria
+          if @adapter.klass.respond_to?(:accessible_by)
+            @ability_criteria = @adapter.klass.accessible_by(current_ability)
+          end
+        end
+
         def set_relation
           @relation = if params[:nested] && params[:nested][:association]
             @adapter.find_by_id(hsh[:nested][:id]).send(hsh[:nested][:association])
@@ -76,23 +82,29 @@ module Lolita
         end
 
         def create_page
+          set_ability_criteria
           set_nested_criteria
           set_relation
           set_custom_criteria
 
-          page_criteria = if @nested_criteria
-            @relation.merge(@nested_criteria)
-          else
-            @relation
-          end
-          if @custom_criteria
-            page_criteria = @custom_criteria.merge(page_criteria)
-          end
+          page_criteria = @relation
+          page_criteria.merge!(@nested_criteria) if @nested_criteria
+          page_criteria.merge!(@ability_criteria) if @ability_criteria
+          page_criteria.merge!(@custom_criteria) if @custom_criteria
+
           unless page_criteria.respond_to?(:current_page)
             page_criteria = page_criteria.page(@page).per(@per)
           end
           page_criteria
         end
+
+        def current_ability
+          controller = request.headers["action_controller.instance"]
+          if controller && controller.respond_to?(:current_ability)
+            controller.current_ability
+          end
+        end
+
       end
 
       def record(orm_record)
@@ -131,76 +143,35 @@ module Lolita
         self.klass.unscoped.merge(by_id(id)).first
       end
 
-      # def nested_scope_from_hash(hsh)
-      #   nested_hsh ||= (hsh[:nested] || {})
-      #   unless nested_hsh[:association]
-      #     nested_hsh = nested_hsh.reject{|k,v| [:parent,:path].include?(k.to_sym)}
-      #     criteria = klass.where(nested_hsh)
-      #     criteria
-      #   end
-      # end
-
-      # def scope_from_hash(hsh)
-      #   if hsh[:nested] && hsh[:nested][:association]
-      #     klass.find_by_id(hsh[:nested][:id]).send(hsh[:nested][:association])
-      #   end
-      # end
-
-      # This method is used to paginate, main reason is for list and for index action. 
+      # This method is used to paginate, main reason is for list and for index action.
       # Method accepts three arguments
       # <tt>page</tt> - page that should be shown (integer)
       # <tt>per</tt> - how many records there should be in page
-      # <tt>options</tt> - Hash with optional information. 
+      # <tt>options</tt> - Hash with optional information.
       # By default, Lolita::Configuration::List passes request, with current request information.
       # Also it passes <i>:pagination_method</i> that is used to detect if there is special method(-s) in model
       # that should be used for creating page.
       def paginate(page,per,options ={})
-
         pagination_builder = PaginationBuilder.new(self,page,per,options)
         pagination_builder.create_page
-        
-        # criteria = options[:request].respond_to?(:params) && nested_scope_from_hash(options[:request].params) || {}
-        # scope = options[:request].respond_to?(:params) && scope_from_hash(options[:request].params) || klass.unscoped
-       
-        # if options[:pagination_method]
-        #   if options[:pagination_method].respond_to?(:each)
-        #     options[:pagination_method].each do |method_name|
-        #       options[:previous_scope] = scope
-        #       if new_criteria = pagination_criteria_for_klass(method_name,page,per,options)
-        #         criteria = criteria ? criteria.merge(new_criteria) : new_criteria
-        #       end
-        #     end
-        #   else
-        #     new_criteria = pagination_scope_for_klass(options[:pagination_method],page,per,options)
-        #     criteria = if new_criteria.respond_to?(:current_page) #already have per and page
-        #       new_criteria
-        #     else
-        #       criteria && criteria.merge(new_criteria) || new_criteria
-        #     end
-        #   end
-        #   raise ArgumentError, "Didn't generate any scope from #{options} page:{page} per:#{per}" unless criteria
-        #   criteria
-        # else
-        #   scope.merge(criteria).page(page).per(per)
-        # end
       end
 
-     
+
 
       def switch_record_state(record, state = nil)
         set_state_for(record)
         if state
-          record.send(:"#{state}_state!") 
+          record.send(:"#{state}_state!")
         elsif !record.have_state?
           if record.new_record?
             record.create_state!
-          else 
+          else
             record.update_state!
           end
         end
         record
       end
-      
+
       def set_state_for(record)
         unless record.respond_to?(:read_state!)
           class << record

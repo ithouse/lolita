@@ -8,10 +8,10 @@ module Lolita
     	  	set_default_fields
     	  end
 
-    	  private 
+    	  private
 
         def set_default_fields
-          default_fields if @fields.empty? 
+          default_fields if @fields.empty?
         end
 
         def validate(tab, options={})
@@ -19,7 +19,7 @@ module Lolita
             raise Lolita::SameTabTypeError, "Same type tabs was detected (#{tab.type})."
           end
         end
-        
+
     	end
     end
   end

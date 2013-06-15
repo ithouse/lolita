@@ -1,5 +1,5 @@
 module ActionDispatch::Routing
-  
+
   class RouteSet
 
     # Each time when #draw method is called this is called as well.
@@ -34,7 +34,7 @@ module ActionDispatch::Routing
     #     lolita_for :galleries
     #     # lolita_for try to call :lolita_gallery in Mapper class
     def lolita_for *resources
-  
+
       return if migrating? || generating?
       options = resources.extract_options!
 
@@ -47,7 +47,7 @@ module ActionDispatch::Routing
         mapping = Lolita.add_mapping(resource,options)
         Lolita.resources[mapping.name] = mapping
         target_class = mapping.to
-        
+
   #TODO refactor all these variables
         all_resource_classes<<target_class
 
@@ -55,9 +55,9 @@ module ActionDispatch::Routing
           yield if block_given?
 
           with_lolita_exclusive_scope mapping.fullpath,mapping.path do
-            
+
             # if not defined lolita default configuration in model, than can't use :rest
-            
+
             # if !target_class.respond_to?(:lolita) && !Lolita::routes[mapping.name]
             #    raise Lolita::NotFound, "Lolita not found in #{target_class}. Include Lolita::Configuration"
             # elsif target_class.respond_to?(:lolita) && target_class.instance_variable_get(:@lolita).nil?
@@ -72,14 +72,14 @@ module ActionDispatch::Routing
               raise Lolita::ModuleNotFound, "Module #{mapping.name.to_s.capitalize} not found!"
             end
             send(:"lolita_#{route}_route",mapping,mapping.controllers)
-            
+
             Lolita.conditional_routes(target_class).each do |route_name|
               send(:"lolita_#{route_name}_route",mapping,mapping.controllers)
             end
           end
 
         end
-       
+
         mapping.add_to_navigation_tree
       }
       Lolita.common_routes(all_resource_classes).each do |route_name|
@@ -88,7 +88,7 @@ module ActionDispatch::Routing
     end
 
     protected
-    
+
     def lolita_scope scope
       constraint = lambda do |request|
         request.env["lolita.mapping"] = Lolita.mappings[scope]
@@ -99,7 +99,7 @@ module ActionDispatch::Routing
         yield
       end
     end
-    
+
     def with_lolita_exclusive_scope new_path,new_as
       old_as, old_path, old_module = @scope[:as], @scope[:path], @scope[:module]
       @scope[:as], @scope[:path], @scope[:module] = new_as, new_path, nil

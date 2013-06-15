@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe Lolita::Configuration::NestedList do
   let(:dbi){ Lolita::DBI::Base.create(Post) }

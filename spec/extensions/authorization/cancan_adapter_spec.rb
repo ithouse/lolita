@@ -59,7 +59,7 @@ describe Lolita::Extensions::Authorization::CanCanAdapter do
       adapter.can?(:create,"HiddenText".class).should be_false
     end
 
-    it "can ONLY ado ctions from abilities" do
+    it "can ONLY do actions from abilities" do
       adapter.cannot?(:read,"HiddenText".class).should be_false
       adapter.cannot?(:create,"HiddenText".class).should be_true
     end
@@ -67,7 +67,7 @@ describe Lolita::Extensions::Authorization::CanCanAdapter do
     it "should have current ability" do
       adapter.current_ability.should be_a(Lolita.ability_class)
     end
-    
+
     it "should authorize resource" do
       adapter2 = klass.new(nil)
       expect do
@@ -78,10 +78,10 @@ describe Lolita::Extensions::Authorization::CanCanAdapter do
   end
 
   describe 'Integration with proxy' do
-    let(:proxy){ 
+    let(:proxy){
       mock_class = Object.new
       mock_class.class_eval{include Lolita::Extensions}
-      Lolita::Extensions::Authorization::Proxy.new(mock_class,{}) 
+      Lolita::Extensions::Authorization::Proxy.new(mock_class,{})
     }
     it "should have the same method results for adapter and proxy" do
       proxy.adapter = adapter

@@ -1,9 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe Lolita::DBI::Base do
-#  before(:each) do
-#    @base = Base.new
-#  end
 
   it "should raise error when not ORM class is given" do
     lambda{

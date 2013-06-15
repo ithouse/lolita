@@ -19,7 +19,7 @@ describe Lolita::Mapping do
 			mapping=Lolita::Mapping.new(:posts)
 			mapping.url_name.should=="lolita_posts"
 		end
-		
+
 		it "should start with given path" do
 			mapping=Lolita::Mapping.new(:posts,:path=>"my_admin")
 			mapping.url_name.should == "my_admin_posts"

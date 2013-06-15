@@ -7,7 +7,6 @@ if ADAPTER=='mongoid'
     config.slaves = [
       Mongo::Connection.new(host, 27017, :slave_ok => true).db(name)
     ]
-    #config.use_object_ids = true
     config.persist_in_safe_mode = false
   end
 else
@@ -24,7 +23,7 @@ else
       t.string :name
     end
   end
-  
+
   class Comment < ActiveRecord::Base
     belongs_to :test_class1, :class_name=>"Post"
   end
@@ -32,13 +31,13 @@ else
   class Post < ActiveRecord::Base
     has_many :pages
     include Lolita::Configuration
-    lolita 
+    lolita
   end
 
   class Profile < ActiveRecord::Base
     include Lolita::Configuration
     lolita do
-      
+
     end
   end
 end

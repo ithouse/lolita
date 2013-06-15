@@ -3,15 +3,15 @@ module Lolita
     class List < Lolita::Configuration::Base
       include Observable
       include Lolita::Builder
-       
+
       attr_reader :initialized_attributes,:page_criteria
       attr_writer :title
 
       lolita_accessor :per_page, :pagination_method, :actions
-      
+
       def initialize(dbp,*args,&block)
         set_and_validate_dbp(dbp)
-        set_list_attributes do 
+        set_list_attributes do
           set_attributes(*args)
           self.instance_eval(&block) if block_given?
         end
@@ -67,7 +67,7 @@ module Lolita
           @columns = possible_columns
           @columns.parent = self
         elsif possible_columns.respond_to?(:each)
-          possible_columns.each{|possible_column| 
+          possible_columns.each{|possible_column|
             column(possible_column)
           }
         else
@@ -123,7 +123,7 @@ module Lolita
         yield if block_given?
         create_default_actions
       end
-      
+
       def init_default_attributes
         initialize_actions
         @per_page = Lolita.application.per_page || 10
@@ -165,7 +165,7 @@ module Lolita
         end
       end
 
-      def create_action name, options = {}, &block 
+      def create_action name, options = {}, &block
         Lolita::Configuration::Action.new(@dbi,name,options,&block)
       end
 
@@ -182,18 +182,18 @@ module Lolita
       end
 
       def edit_action_block
-        Proc.new do 
+        Proc.new do
           title Proc.new{::I18n.t("lolita.shared.edit")}
           url Proc.new{|view,record| view.send(:edit_lolita_resource_path, :id => record.id)}
-        end 
+        end
       end
 
       def destroy_action_block
-        Proc.new do 
+        Proc.new do
           title Proc.new{::I18n.t("lolita.shared.delete")}
           url Proc.new{|view,record| view.send(:lolita_resource_path,:id => record.id)}
           html :method => :delete, :confirm => Proc.new{::I18n.t("lolita.list.confirm")}
-        end 
+        end
       end
 
     end

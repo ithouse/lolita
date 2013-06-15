@@ -29,3 +29,5 @@ pkg
 .pivotalrc
 .project
 *.swp
+.tags
+.gemtags

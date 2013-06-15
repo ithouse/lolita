@@ -1,3 +1,3 @@
-Rails.application.routes.draw do
+RailsApp::Application.routes.draw do
   lolita_for :posts
 end

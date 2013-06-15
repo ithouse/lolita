@@ -16,7 +16,7 @@ module Lolita
     yield configuration
     self.run(:after_setup)
   end
-  
+
   def self.root
     @@root||=File.expand_path("#{__FILE__}/../..")
   end
@@ -24,7 +24,7 @@ module Lolita
   def self.app_root
     @@app_root||=File.join(File.expand_path("#{__FILE__}/../.."),"app")
   end
-  
+
   def self.method_missing method_name, *args, &block
     self.class_eval <<-LOLITA_SETUP,__FILE__,__LINE__+1
       class << self
@@ -44,7 +44,7 @@ module Lolita
     self.send(:include, Lolita::Hooks)
     self.send(:add_hook, :before_setup, :after_setup, :after_routes_loaded,:before_routes_loaded)
 
-  
+
     if rails?
       load_rails!
     end
@@ -54,7 +54,7 @@ module Lolita
   def self.load_frameworks!
     frameworks.each do |framework|
       begin
-        require framework 
+        require framework
         puts "=> Loading Lolita #{version} with #{framework}"
       rescue Execption => e
         raise "Can't load #{framework}. Check you Gemfile."
@@ -137,6 +137,5 @@ module Lolita
     defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
   end
 end
-
 
 Lolita.load!

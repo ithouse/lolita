@@ -3,7 +3,7 @@ module Lolita
     class ActiveRecord
 
       include Lolita::Adapter::AbstractAdapter
-      
+
       attr_reader :dbi, :klass
       def initialize(dbi)
         @dbi=dbi
@@ -28,7 +28,7 @@ module Lolita
             association_key
           else
             @association.foreign_key
-          end 
+          end
         end
 
         def association_key
@@ -57,7 +57,7 @@ module Lolita
 
         def macro
           convertator = {
-            :has_many => :many, :has_one => :one, :belongs_to => :one, 
+            :has_many => :many, :has_one => :one, :belongs_to => :one,
             :has_and_belongs_to_many => :many_to_many
           }
           convertator[@association.macro]
@@ -95,7 +95,7 @@ module Lolita
               [association.key.to_s].include?(@name.to_s)
             }
             @association = if possible_association
-              possible_association.last 
+              possible_association.last
             else
               false
             end

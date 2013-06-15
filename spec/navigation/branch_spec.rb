@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../simple_spec_helper')
+require 'simple_spec_helper'
 
 describe Lolita::Navigation::Branch do
   let(:tree){Lolita::Navigation::Tree.new("test tree")}

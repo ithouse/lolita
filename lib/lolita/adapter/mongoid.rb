@@ -3,7 +3,7 @@ module Lolita
     class Mongoid
 
       include Lolita::Adapter::AbstractAdapter
-      
+
       attr_reader :dbi, :klass
       def initialize(dbi)
         @dbi=dbi
@@ -41,7 +41,7 @@ module Lolita
 
         def macro
           convertator = {
-            :references_many => :many, :references_one => :one, :referenced_in => :one, 
+            :references_many => :many, :references_one => :one, :referenced_in => :one,
             :references_and_referenced_in_many => :many_to_many, :embeds_one => :one, :embeds_many => :many
           }
           convertator[@association.macro]
@@ -79,7 +79,7 @@ module Lolita
               [association.key.to_s].include?(@name.to_s)
             }
             @association = if possible_association
-              possible_association.last 
+              possible_association.last
             else
               false
             end
@@ -99,8 +99,8 @@ module Lolita
 
         def type_cast(type)
           if type.to_s=="Object" || type.to_s.split("::").last == "Object"
-            "string" 
-          elsif type.to_s.match(/::/) 
+            "string"
+          elsif type.to_s.match(/::/)
             type.to_s.split("::").last
           else
             type.to_s.underscore
@@ -144,7 +144,7 @@ module Lolita
 
       def search(query, options = {})
         unless query.blank?
-          content_fields = @dbi.fields.map{|field| 
+          content_fields = @dbi.fields.map{|field|
             if field.type!="string" || field.name.match(/^_/)
               nil
             else
@@ -155,7 +155,7 @@ module Lolita
             content_fields = content_fields & options[:fields]
           end
           content_fields = content_fields.slice(0..3)
-       
+
           where_hash = {}
           content_fields.each do |field|
             where_hash[field] = /#{Regexp.escape(query.to_s)}/
@@ -168,7 +168,7 @@ module Lolita
 
       #FIXME
       def map_reduce_search(content_fields,query)
-        keys = "[" + @dbi.fields.map{|f| 
+        keys = "[" + @dbi.fields.map{|f|
           f.primary? || f.name.to_s.match(/^_/)  ? nil : "'#{f.name}'"
         }.compact.join(",").to_s + "]"
         content_keys = "[" + content_fields.map{|f| "'#{f.name}'"}.join(",").to_s + "]"

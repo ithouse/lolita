@@ -5,10 +5,10 @@ module Lolita
       include Lolita::Controllers::InternalHelpers
       included do
         if self.ancestors.include?(ActionController::Base)
-          helpers = %w(resource resource_name use_mapping 
+          helpers = %w(resource resource_name use_mapping
                        resource_class lolita_mapping show_response current_form current_form=)
           hide_action *helpers
-         
+
           helper_method *helpers
           prepend_before_filter :is_lolita_resource?
           prepend_around_filter :switch_locale
@@ -17,8 +17,8 @@ module Lolita
 
       # Return instance variable named as resource
       # For 'posts' instance variable will be @posts
-      
-      
+
+
       protected
 
       def notice(msg, options = {})
@@ -84,7 +84,7 @@ module Lolita
         end
         @component_builder = @component_object.build(@component_options)
       end
-      
+
 
       private
 

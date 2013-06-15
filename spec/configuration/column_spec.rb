@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 describe Lolita::Configuration::Column do
   let(:dbi){Lolita::DBI::Base.create(Post)}

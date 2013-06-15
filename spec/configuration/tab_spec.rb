@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
+require 'spec_helper'
 
 # temp class for extending tabs
 class Lolita::Configuration::Tab::My < Lolita::Configuration::Tab::Base

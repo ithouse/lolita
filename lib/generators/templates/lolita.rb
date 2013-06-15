@@ -1,17 +1,15 @@
-
 Lolita.setup do |config|
-  # ==> User and authentication configuration
-  # Add one or more of your user classes to Lolita
-  # config.user_classes << MyUser
-  # config.authentication = :authenticate_user!
-  
-  # Define authentication for Lolita controllers.
-  # Call some of your own methods
-  # config.authentication=:is_admin?
+  #= More info about setup - https://github.com/ithouse/lolita/wiki/Lolita-setup
+  #= More info about authentication - https://github.com/ithouse/lolita/wiki/Authorization-and-authentication
 
-  <% if defined?(Devise) %>
-    <% default_user_class = Devise.mappings.keys.first %>
-    config.user_classes << <%= default_user_class.to_s.camelize %>
-    config.authentication=:authenticate_<%= default_user_class %>!
-  <% end %>
+<% if defined?(Devise) && default_user_class = Devise.mappings.keys.first %>
+  config.user_classes << <%= default_user_class.to_s.camelize %>
+  config.authentication=:authenticate_<%= default_user_class %>!
+<% else %>
+  #= Sample config for Admin user managing Lolita
+  # config.user_classes << Admin
+  # config.authentication = :authenticate_admin!
+<% end %>
+  ## add this if you manage your authorization with CanCan
+  # config.authorization = "CanCan"
 end

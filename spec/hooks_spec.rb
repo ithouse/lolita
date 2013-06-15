@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/simple_spec_helper')
+require 'simple_spec_helper'
 
 
 class MyClass
@@ -51,7 +51,7 @@ describe Lolita::Hooks do
   end
 
   it "should append methods and blocks to callbacks" do
-    MyClass.send(:include,Lolita::Hooks) 
+    MyClass.send(:include,Lolita::Hooks)
     MyClass.add_hook(:after_load)
     MyClass.after_load {}
     MyClass.after_load {}
@@ -60,7 +60,7 @@ describe Lolita::Hooks do
     MyClass.callbacks[:after_load][:blocks].should have(2).items
     MyClass.callbacks[:after_load][:methods].should have(2).items
   end
-    
+
   context "Firing callbacks" do
 
     before(:each) do
@@ -72,7 +72,7 @@ describe Lolita::Hooks do
 
     it "should ran on instance when called on one" do
       MyClass.value(0)
-      MyClass.after_init do 
+      MyClass.after_init do
         self.name="name"
       end
       object=MyClass.new
@@ -135,7 +135,7 @@ describe Lolita::Hooks do
     context "wrap around" do
 
       it "should allow to wrap around when #run receive block" do
-        MyClass.after_load do 
+        MyClass.after_load do
           value("first")
           let_content()
         end
@@ -156,7 +156,7 @@ describe Lolita::Hooks do
     end
 
     context "methods as callbacks" do
-      class MethodTestClass 
+      class MethodTestClass
         include Lolita::Hooks
         add_hook :before_save
         before_save :set_name
@@ -192,48 +192,48 @@ describe Lolita::Hooks do
 
   describe "named callbacks" do
     before(:each) do
-       Lolita::Hooks::NamedHook.add(:components) unless Lolita::Hooks::NamedHook.exist?(:component)
+       Lolita::Hooks::NamedHook.add(:bazingas) unless Lolita::Hooks::NamedHook.exist?(:bazinga)
     end
 
     after(:each) do
-      Lolita::Hooks.components.clear_hooks
+      Lolita::Hooks.bazingas.clear_hooks
     end
 
     it "should add callbacks" do
-      Lolita::Hooks.components.add_hook(:before)
-      Lolita::Hooks.components.hooks.should have(1).hook
+      Lolita::Hooks.bazingas.add_hook(:before)
+      Lolita::Hooks.bazingas.hooks.should have(1).hook
     end
 
     it "should filter by name" do
-      Lolita::Hooks.components.add_hook(:before)
+      Lolita::Hooks.bazingas.add_hook(:before)
       Counter.set(0)
-      Lolita::Hooks.component(:"list").before do
+      Lolita::Hooks.bazinga(:"list").before do
         Counter.set(Counter.get+1)
       end
 
-      Lolita::Hooks.component(:"tab").before do
+      Lolita::Hooks.bazinga(:"tab").before do
         Counter.set(Counter.get+1)
       end
 
-      Lolita::Hooks.component(:"list").run(:before) 
+      Lolita::Hooks.bazinga(:"list").run(:before)
       Counter.get.should == 1
     end
 
     it "should run on each named object when defined for all collection" do
-      Lolita::Hooks.components.add_hook(:after)
+      Lolita::Hooks.bazingas.add_hook(:after)
       Counter.set(0)
-      Lolita::Hooks.components.after do
+      Lolita::Hooks.bazingas.after do
         Counter.set(Counter.get+1)
       end
-      Lolita::Hooks.component(:"list").run(:after)
-      Lolita::Hooks.component(:"tab").run(:after)
+      Lolita::Hooks.bazinga(:"list").run(:after)
+      Lolita::Hooks.bazinga(:"tab").run(:after)
       Counter.get.should == 2
     end
 
     it "should execute run block when no callback block given" do
-      Lolita::Hooks.components.add_hook(:around)
+      Lolita::Hooks.bazingas.add_hook(:around)
       Counter.set(0)
-      Lolita::Hooks.components.run(:around) do
+      Lolita::Hooks.bazingas.run(:around) do
         Counter.set(1)
       end
       Counter.get.should==1
@@ -241,15 +241,15 @@ describe Lolita::Hooks do
 
     it "should run all named hook callbacks when runned on named collection" do
       pending "Need to update functionality to work."
-      Lolita::Hooks.components.add_hook(:after)
+      Lolita::Hooks.bazingas.add_hook(:after)
       Counter.set(0)
-      Lolita::Hooks.component(:"list").after do
+      Lolita::Hooks.bazinga(:"list").after do
         Counter.set(Counter.get+1)
       end
-      Lolita::Hooks.component(:"tab").after do
+      Lolita::Hooks.bazinga(:"tab").after do
         Counter.set(Counter.get+1)
       end
-      Lolita::Hooks.components.run(:after)
+      Lolita::Hooks.bazingas.run(:after)
       Counter.get.should == 2
     end
 

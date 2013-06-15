@@ -11,10 +11,18 @@ module Lolita
       else
         "lolita.models.#{@class_name.underscore.gsub("/",".")}"
       end
-      ::I18n.t("#{name}.#{prefix(options)}")
+      ::I18n.t("#{name}.#{prefix(options)}", default: default_human_name(options))
     end
 
     private
+
+    def default_human_name options = {}
+      if prefix(options) == 'one'
+        @class_name.humanize
+      else
+        ActiveModel::Naming.plural(@klass).humanize
+      end
+    end
 
     def prefix options
       if options[:count]
@@ -30,7 +38,7 @@ module Lolita
   end
 end
 
-Object.class_eval do 
+Object.class_eval do
   def lolita_model_name
     @lolita_model_name ||= Lolita::ModelName.new(self)
   end
