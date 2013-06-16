@@ -3,7 +3,7 @@
 Great Rails CMS, that turns your business logic into good-looking, fully functional workspace.
 Works with Rails 3.2
 
--[![Build Status](https://travis-ci.org/ithouse/lolita.png)](https://travis-ci.org/ithouse/lolita) [![Code Climate](https://codeclimate.com/github/ithouse/lolita.png)](https://codeclimate.com/github/ithouse/lolita)
+[![Build Status](https://travis-ci.org/ithouse/lolita.png)](https://travis-ci.org/ithouse/lolita) [![Code Climate](https://codeclimate.com/github/ithouse/lolita.png)](https://codeclimate.com/github/ithouse/lolita)
 
 ##Demo
 See the demo page at [Demo](http://lolita-demo.ithouse.lv/lolita)
