@@ -1,5 +1,4 @@
 require 'simple_spec_helper'
-require 'ruby-debug'
 
 describe Lolita::Configuration::Tabs do
   let(:klass){Lolita::Configuration::Tabs}
