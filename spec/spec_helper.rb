@@ -17,6 +17,7 @@ Benchmark.bm do |x|
     x.report("Loading rails: ") do
       require 'rails'
       require 'lolita'
+      Lolita.load!
       require 'rails_app/config/environment'
       require 'rspec/rails'
     end

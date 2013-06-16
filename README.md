@@ -1,32 +1,37 @@
 #Lolita
 
-Great Rails CMS, that turns your business logic into good-looking, fully functional workspace. 
-Works with Rails 3.1
+Great Rails CMS, that turns your business logic into good-looking, fully functional workspace.
+Works with Rails 3.2
+
+[![Build Status](https://travis-ci.org/[ithouse]/[lolita].png)](https://travis-ci.org/[ithouse]/[lolita]) [![Code Climate](https://codeclimate.com/github/ithouse/lolita.png)](https://codeclimate.com/github/ithouse/lolita)
+
 ##Demo
-See the demo page at [Demo](http://lolita-demo.ithouse.lv)
+See the demo page at [Demo](http://lolita-demo.ithouse.lv/lolita)
+email: lolita@ithouse.lv
+password: lolita
 
 ##Installation
 
 First add Lolita gem to your Gemfile
-  
-    gem 'lolita', '~> 3.2.0.rc.17'
 
-Then go to your rails project and 
-  
+    gem 'lolita', '~> 3.2.1'
+
+Then go to your rails project and
+
     rails g lolita:install
 
 That will create initializer and copy all assets.
-Also it will call *install* on all added modules to lolita. 
+Also it will call *install* on all added modules to lolita.
 So if you in Gemfile have following
 
-```ruby  
+```ruby
 gem "lolita"
 gem "lolita-file-upload"
 ```
 
 It will also call *lolita_file_upload:install*.
 ##Usage
- 
+
 To make your model use Lolita do like this
 
 ```ruby
@@ -36,8 +41,8 @@ class Post < ActiveRecord::Base
 end
 ```
 
-Then in routes.rb file make resources accessable for lolita with  
-  
+Then in routes.rb file make resources accessable for lolita with
+
     lolita_for :posts
 This will make routes like
   `/lolita/posts`
@@ -74,12 +79,12 @@ Lolita define hooks for RestController and for components.
 ####RestController hooks
 
 There are two kind of hooks for all actions - *before_[action name]* and *after_[action name]*.
-Define callbacks for those hooks outside of controller. This will call User#log_action each time when #destroy 
+Define callbacks for those hooks outside of controller. This will call User#log_action each time when #destroy
 action is requested.
 
 ```ruby
 Lolita::RestController.before_destroy do
-  User.log_action("Going to delete #{params[:id]}") 
+  User.log_action("Going to delete #{params[:id]}")
 end
 ```
 
@@ -120,7 +125,7 @@ end
 ```
 
 That what are inside of blocks depends on place where you define callback if it is in _.rb_ file, than you
-should put HTML in quotes, if in _.erb_ and similar files then there is no need for that. Also blocks with 
+should put HTML in quotes, if in _.erb_ and similar files then there is no need for that. Also blocks with
 Ruby code only return last line, so you should probably define HTML as shown in previous example.
 For _around_ callback if you pass block, then original content will be replaced with that, but if you want
 to let original content inside of your block content than it is done like this with #let_content method.

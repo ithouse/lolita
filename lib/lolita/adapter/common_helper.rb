@@ -37,29 +37,33 @@ module Lolita
           @options[:request]
         end
 
-        def set_nested_criteria
+        def nested_criteria
           nested_hsh = params[:nested]
           if params[:nested] && !params[:nested][:association]
             nested_hsh = nested_hsh.reject{|k,v| [:parent,:path].include?(k.to_sym)}
-            @nested_criteria = @adapter.klass.where(nested_hsh)
+            @adapter.klass.where(nested_hsh)
+          else
+            {}
           end
         end
 
-        def set_ability_criteria
+        def ability_criteria
           if @adapter.klass.respond_to?(:accessible_by)
-            @ability_criteria = @adapter.klass.accessible_by(current_ability)
+            @adapter.klass.accessible_by(current_ability)
+          else
+            {}
           end
         end
 
-        def set_relation
-          @relation = if params[:nested] && params[:nested][:association]
+        def relation
+          if params[:nested] && params[:nested][:association]
             @adapter.find_by_id(hsh[:nested][:id]).send(hsh[:nested][:association])
           else
             @adapter.klass.unscoped
           end
         end
 
-        def set_custom_criteria
+        def custom_criteria
           if @options[:pagination_method]
             if @options[:pagination_method].respond_to?(:each)
               @options[:pagination_method].each do |method_name|
@@ -72,6 +76,8 @@ module Lolita
               @custom_criteria = pagination_scope_for_klass(@options[:pagination_method],@page,@per,@options)
             end
             raise ArgumentError, "Didn't generate any scope from #{@options} page:{page} per:#{@per}" unless @custom_criteria
+          else
+            {}
           end
         end
 
@@ -82,18 +88,9 @@ module Lolita
         end
 
         def create_page
-          set_ability_criteria
-          set_nested_criteria
-          set_relation
-          set_custom_criteria
-
-          page_criteria = @relation
-          page_criteria.merge!(@nested_criteria) if @nested_criteria
-          page_criteria.merge!(@ability_criteria) if @ability_criteria
-          page_criteria.merge!(@custom_criteria) if @custom_criteria
-
+          page_criteria = relation.merge(nested_criteria).merge(ability_criteria).merge(custom_criteria)
           unless page_criteria.respond_to?(:current_page)
-            page_criteria = page_criteria.page(@page).per(@per)
+            page_criteria = page_criteria.order(sorting).page(@page).per(@per)
           end
           page_criteria
         end
@@ -103,6 +100,10 @@ module Lolita
           if controller && controller.respond_to?(:current_ability)
             controller.current_ability
           end
+        end
+
+        def sorting
+          params[:s] ? params[:s].gsub(',',' ').gsub('|',',') : nil
         end
 
       end
@@ -155,8 +156,6 @@ module Lolita
         pagination_builder = PaginationBuilder.new(self,page,per,options)
         pagination_builder.create_page
       end
-
-
 
       def switch_record_state(record, state = nil)
         set_state_for(record)
