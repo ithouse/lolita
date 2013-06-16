@@ -3,7 +3,7 @@
 Great Rails CMS, that turns your business logic into good-looking, fully functional workspace.
 Works with Rails 3.2
 
-[![Build Status](https://travis-ci.org/[ithouse]/[lolita].png)](https://travis-ci.org/[ithouse]/[lolita]) [![Code Climate](https://codeclimate.com/github/ithouse/lolita.png)](https://codeclimate.com/github/ithouse/lolita)
+-[![Build Status](https://travis-ci.org/ithouse/lolita.png)](https://travis-ci.org/ithouse/lolita) [![Code Climate](https://codeclimate.com/github/ithouse/lolita.png)](https://codeclimate.com/github/ithouse/lolita)
 
 ##Demo
 See the demo page at [Demo](http://lolita-demo.ithouse.lv/lolita)
@@ -14,7 +14,7 @@ password: lolita
 
 First add Lolita gem to your Gemfile
 
-    gem 'lolita', '~> 3.2.1'
+    gem 'lolita', '~> 3.2.0.rc.17'
 
 Then go to your rails project and
 
