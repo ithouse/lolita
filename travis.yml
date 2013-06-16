@@ -2,4 +2,7 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0
-gemfile: Gemfile.ci
+gemfile:
+  - Gemfile.ci
+services:
+  - mongodb
