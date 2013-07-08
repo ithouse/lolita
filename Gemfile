@@ -3,11 +3,12 @@ source 'http://rubygems.org'
 gemspec
 
 group :test, :development do
-  gem "debugger"
+  gem "byebug"
   gem "fabrication", "~> 1.3.2"
   gem "rspec", "~> 2.13"
   gem "capybara", "~> 2"
   gem "ffaker", "~> 1"
+  gem "generator_spec", "~> 0.9.0"
 end
 
 gem "simplecov", :require => false, :group => :test
@@ -22,7 +23,7 @@ group :rails do
 end
 
 group :mongoid do
-	gem 'mongo', '~> 1.9.0'
-	gem 'mongoid', '~> 2.7.1'
 	gem 'bson_ext', '~> 1.9.0'
+  gem 'mongo', '~> 1.9.0'
+	gem 'mongoid', '~> 2.7.1'
 end

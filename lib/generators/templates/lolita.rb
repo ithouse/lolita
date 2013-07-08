@@ -1,8 +1,7 @@
 Lolita.setup do |config|
   #= More info about setup - https://github.com/ithouse/lolita/wiki/Lolita-setup
   #= More info about authentication - https://github.com/ithouse/lolita/wiki/Authorization-and-authentication
-
-<% if defined?(Devise) && default_user_class = Devise.mappings.keys.first %>
+<% if defined?(Devise) && Devise.respond_to?(:mappings) && default_user_class = Devise.mappings.keys.first %>
   config.user_classes << <%= default_user_class.to_s.camelize %>
   config.authentication=:authenticate_<%= default_user_class %>!
 <% else %>

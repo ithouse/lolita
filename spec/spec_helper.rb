@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'byebug'
 # require 'simplecov'
 # SimpleCov.start do
 

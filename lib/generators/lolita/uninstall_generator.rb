@@ -7,19 +7,14 @@ module Lolita
 
       desc "Uninstall Lolita and remove all dependencies"
 
-      def ask_to_continue
-        #ask("Do you want to remove initializer, clear routes and remove Lolita from models? [y]es/[n]o")
-      end
       # Remove lolita initializer file
       def remove_initializer
-        if File.exist?(Rails.root + "config/initializers/lolita.rb")
-          remove_file "config/initializers/lolita.rb"
-        end
+        remove_file "config/initializers/lolita.rb"
       end
 
       # Remove all not-commented lines that begins with lolita_for
       def clear_routes
-        gsub_file File.join(Rails.root,"config","routes.rb"), /^\s*#{ROUTE_NAME}.*/ do |match|
+        gsub_file Rails.root.join("config","routes.rb"), /^\s*#{ROUTE_NAME}.*/ do |match|
           match.clear
           match
         end
@@ -28,7 +23,7 @@ module Lolita
       # Remove configuration include line and lolita block or single lolita method call.
       # Block will be removed correctly if it starts with _do_ and ends with _end_. 
       def clear_models
-        Dir[File.join(Rails.root,"app","models","*.rb")].each do |file_name|
+        Dir[Rails.root.join("app","models","*.rb")].each do |file_name|
           matched = false
           gsub_file file_name, /^\s*include\s+#{INCLUDE_MODULE}.*/ do |match|
             matched = true

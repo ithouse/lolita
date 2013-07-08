@@ -10,7 +10,7 @@ module Lolita
 
       def install_modules
         Lolita.modules.each do |module_name|
-          invoke "lolita:#{module_name.to_s.underscore.gsub("/","_").gsub(/^lolita_/,"")}:install"  rescue nil
+          invoke "lolita:#{module_name.to_s.underscore.gsub("/","_").gsub(/^lolita_/,"")}:install" rescue nil
         end
       end
 

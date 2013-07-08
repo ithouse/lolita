@@ -31,3 +31,4 @@ pkg
 *.swp
 .tags
 .gemtags
+.ruby-version
