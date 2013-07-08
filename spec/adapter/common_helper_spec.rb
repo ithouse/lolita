@@ -31,7 +31,8 @@ describe Lolita::Adapter::CommonHelper do
   end
 
   describe Lolita::Adapter::CommonHelper::PaginationBuilder do
-    let(:klass){ double('klass') }
+    let(:unscoped){ double('unscoped') }
+    let(:klass){ double('klass', unscoped: unscoped) }
     let(:adapter){ double('adapter', klass: klass) }
     let(:page){ 1 }
     let(:per){ 5 }
@@ -63,13 +64,13 @@ describe Lolita::Adapter::CommonHelper do
         end
       end
       context "without nested params" do
-        its(:nested_criteria){ should eq({}) }
+        its(:nested_criteria){ should eq(unscoped) }
       end
     end
 
     describe '#ability_criteria' do
       context "without" do
-        its(:ability_criteria){ should eq({}) }
+        its(:ability_criteria){ should eq(unscoped) }
       end
 
       context "with abilities" do

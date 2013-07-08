@@ -43,7 +43,7 @@ module Lolita
             nested_hsh = nested_hsh.reject{|k,v| [:parent,:path].include?(k.to_sym)}
             @adapter.klass.where(nested_hsh)
           else
-            {}
+            @adapter.klass.unscoped
           end
         end
 
@@ -51,13 +51,13 @@ module Lolita
           if @adapter.klass.respond_to?(:accessible_by)
             @adapter.klass.accessible_by(current_ability)
           else
-            {}
+            @adapter.klass.unscoped
           end
         end
 
         def relation
           if params[:nested] && params[:nested][:association]
-            @adapter.find_by_id(hsh[:nested][:id]).send(hsh[:nested][:association])
+            @adapter.find(hsh[:nested][:id]).send(hsh[:nested][:association])
           else
             @adapter.klass.unscoped
           end
@@ -75,9 +75,13 @@ module Lolita
             else
               @custom_criteria = pagination_scope_for_klass(@options[:pagination_method],@page,@per,@options)
             end
-            raise ArgumentError, "Didn't generate any scope from #{@options} page:{page} per:#{@per}" unless @custom_criteria
+            unless @custom_criteria
+              raise ArgumentError, "Didn't generate any scope from #{@options} page:{page} per:#{@per}"
+            else
+              @custom_criteria
+            end
           else
-            {}
+            @adapter.klass.unscoped
           end
         end
 
@@ -152,8 +156,8 @@ module Lolita
       # By default, Lolita::Configuration::List passes request, with current request information.
       # Also it passes <i>:pagination_method</i> that is used to detect if there is special method(-s) in model
       # that should be used for creating page.
-      def paginate(page,per,options ={})
-        pagination_builder = PaginationBuilder.new(self,page,per,options)
+      def paginate(page, per, options = {})
+        pagination_builder = PaginationBuilder.new(self, page, per, options)
         pagination_builder.create_page
       end
 
