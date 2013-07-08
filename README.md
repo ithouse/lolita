@@ -14,7 +14,7 @@ password: lolita
 
 First add Lolita gem to your Gemfile
 
-    gem 'lolita', '~> 3.2.0.rc.17'
+    gem 'lolita', '~> 3.2.1'
 
 Then go to your rails project and
 
