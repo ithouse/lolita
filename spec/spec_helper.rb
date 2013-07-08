@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'bundler/setup'
-require 'byebug'
+unless ENV['CI']
+  require 'byebug'
+end
 # require 'simplecov'
 # SimpleCov.start do
 
