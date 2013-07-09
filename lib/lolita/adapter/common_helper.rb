@@ -39,19 +39,19 @@ module Lolita
 
         def nested_criteria
           nested_hsh = params[:nested]
-          if params[:nested] && !params[:nested][:association]
+          @nested_criteria ||= if params[:nested] && !params[:nested][:association]
             nested_hsh = nested_hsh.reject{|k,v| [:parent,:path].include?(k.to_sym)}
             @adapter.klass.where(nested_hsh)
           else
-            @adapter.klass.unscoped
+            nil
           end
         end
 
         def ability_criteria
-          if @adapter.klass.respond_to?(:accessible_by)
+          @ability_criteria ||= if @adapter.klass.respond_to?(:accessible_by)
             @adapter.klass.accessible_by(current_ability)
           else
-            @adapter.klass.unscoped
+            nil
           end
         end
 
@@ -64,35 +64,28 @@ module Lolita
         end
 
         def custom_criteria
-          if @options[:pagination_method]
-            if @options[:pagination_method].respond_to?(:each)
-              @options[:pagination_method].each do |method_name|
-                @options[:previous_scope] = scope
-                if new_criteria = pagination_criteria_for_klass(method_name,@page,@per,@options)
-                  @custom_criteria = @custom_criteria ? @custom_criteria.merge(new_criteria) : new_criteria
-                end
-              end
-            else
-              @custom_criteria = pagination_scope_for_klass(@options[:pagination_method],@page,@per,@options)
-            end
-            unless @custom_criteria
-              raise ArgumentError, "Didn't generate any scope from #{@options} page:{page} per:#{@per}"
-            else
-              @custom_criteria
-            end
+          @custom_criteria ||= if @options[:pagination_method]
+            pagination_scope_for_klass(@options[:pagination_method], @page, @per, @options)
           else
-            @adapter.klass.unscoped
+            nil
           end
         end
 
-        def pagination_scope_for_klass(method_name,page,per,options)
+        def pagination_scope_for_klass(method_name, page, per, options)
           if @adapter.klass.respond_to?(method_name)
             @adapter.klass.send(method_name,page,per,options)
           end
         end
 
         def create_page
-          page_criteria = relation.merge(nested_criteria).merge(ability_criteria).merge(custom_criteria)
+          page_criteria = ability_criteria ? relation.merge(ability_criteria) : relation
+          page_criteria = if nested_criteria
+            page_criteria.merge(nested_criteria)
+          elsif custom_criteria
+            custom_criteria.merge(page_criteria)
+          else
+            page_criteria
+          end
           unless page_criteria.respond_to?(:current_page)
             page_criteria = page_criteria.order(sorting).page(@page).per(@per)
           end

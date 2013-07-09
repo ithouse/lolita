@@ -27,10 +27,10 @@ describe Lolita::Support::Formatter do
     end
 
     it "should try to call #format method on given value" do
-      formatter=klass.new("M")
-      object=mock(Object)
-      object.stub!(:format).and_return(1)
-      object.stub!(:respond_to?).with(:format).and_return(true)
+      formatter = klass.new("M")
+      object = double
+      object.stub(:format).and_return(1)
+      object.stub(:respond_to?).with(:format).and_return(true)
       formatter.with(object).should == 1
     end
 

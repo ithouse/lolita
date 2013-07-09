@@ -64,13 +64,13 @@ describe Lolita::Adapter::CommonHelper do
         end
       end
       context "without nested params" do
-        its(:nested_criteria){ should eq(unscoped) }
+        its(:nested_criteria){ should be_nil }
       end
     end
 
     describe '#ability_criteria' do
       context "without" do
-        its(:ability_criteria){ should eq(unscoped) }
+        its(:ability_criteria){ should be_nil }
       end
 
       context "with abilities" do
