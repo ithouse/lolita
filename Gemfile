@@ -3,7 +3,9 @@ source 'http://rubygems.org'
 gemspec
 
 group :test, :development do
-  gem 'byebug'
+  unless ENV['CI']
+    gem 'byebug'
+  end
   gem 'fabrication', '~> 1.3.2'
   gem 'rspec', '~> 2.13'
   gem 'capybara', '~> 2'
