@@ -1,5 +1,3 @@
-//= require jquery
-//= require jquery-ui
 $(function(){
   // Submit all forms through Ajax when Save All button clicked.
   $(document).on('click',"button.save-all",function(){

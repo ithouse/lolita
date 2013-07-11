@@ -21,9 +21,10 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<kaminari>, ["~> 0.13"])
   s.add_runtime_dependency(%q<abstract>, ["~> 1"])
   s.add_runtime_dependency(%q<haml>, ["~> 3.0"])
-  s.add_runtime_dependency(%q<activesupport>,["~> 3.2.0"])
-  s.add_runtime_dependency(%q<jquery-rails>, [">= 2.1", "< 3.0"])
-  s.add_runtime_dependency(%q<tinymce-rails>, ["~> 3.5.8"])
+  s.add_runtime_dependency(%q<activesupport>,["~> 4.0"])
+  s.add_runtime_dependency(%q<jquery-rails>, [">= 3.0"])
+  s.add_runtime_dependency(%q<jquery-ui-rails>, [">= 4.0"])
+  s.add_runtime_dependency(%q<tinymce-rails>, [">0"])
   s.add_runtime_dependency(%q<tinymce-rails-config-manager>,[">= 0.1"])
 
   s.files = Dir["{app,config,db,lib,vendor}/**/*"] + ["Rakefile", "README.md"]

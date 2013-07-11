@@ -16,14 +16,14 @@ end
 gem 'simplecov', :require => false, :group => :test
 
 group :rails do
-  gem 'rails' , '~> 3.2.0'
+  gem 'rails' , '~> 4.0.0'
   gem 'rspec-rails', '~> 2.13'
-  gem 'coffee-rails', '~> 3.2.0'
+  gem 'coffee-rails', '>=0'
   gem 'therubyracer', '~> 0.11.4'
 end
 
 group :mongoid do
 	gem 'bson_ext', '~> 1.9.0'
   gem 'mongo', '~> 1.9.0'
-	gem 'mongoid', '~> 2.7.1'
+	gem 'mongoid', '>=0'
 end
