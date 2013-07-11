@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<abstract>, ["~> 1"])
   s.add_runtime_dependency(%q<haml>, ["~> 3.0"])
   s.add_runtime_dependency(%q<activesupport>,["~> 3.2.0"])
+  s.add_runtime_dependency(%q<actionpack>,["~> 3.2.0"])
   s.add_runtime_dependency(%q<jquery-rails>, [">= 2.1", "< 3.0"])
   s.add_runtime_dependency(%q<tinymce-rails>, ["~> 3.5.8"])
   s.add_runtime_dependency(%q<tinymce-rails-config-manager>,[">= 0.1"])
