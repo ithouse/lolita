@@ -2,7 +2,7 @@ module Lolita
   module Version
     MAJOR = 3
     MINOR = 3
-    PATCH = 3
+    PATCH = 4
     BUILD = nil
 
     STRING = [MAJOR, MINOR, PATCH, BUILD].compact.join('.')
