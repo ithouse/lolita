@@ -1,5 +1,5 @@
 - if filter
-  = form_for filter.resource(params), :as => :filter, :html => {:class => "filter"}, :method => :get, :url => request.path do |f|
+  = form_for OpenStruct.new(params[:filter]), :as => :filter, :html => {:class => "filter"}, :method => :get, :url => request.path do |f|
     - current_form(f) do 
       - filter.fields.each do |field|
         .field

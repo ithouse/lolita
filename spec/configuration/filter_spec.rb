@@ -135,33 +135,4 @@ describe Lolita::Configuration::Filter do
       list_conf.paginate(1,request).should have(2).items
     end
   end
-
-  describe "#resource" do
-    let(:filter){ Lolita::Configuration::Filter.new(dbi, :name ) }
-    let(:params){ {} }
-    subject do
-      tags = %w(Android Linux Windows).map{|name| Fabricate(:tag, :name => name )}
-      filter.resource(params)
-    end
-
-    context "reflections" do
-      let(:params){ {:post => {"tag_ids"=>["", Tag.where(:name => 'Android').first.id]}} }
-      let(:filter){ Lolita::Configuration::Filter.new(dbi, :tag ) }
-      it "recognizes" do
-	subject.tags.should have(1).item
-      end
-    end
-
-    context "simple attributes" do
-      let(:params){ {:post => {"title" => "MyName" }} }
-      let(:filter){ Lolita::Configuration::Filter.new(dbi, :title ) }
-      it "recognizes" do
-	subject.title.should eq("MyName")
-      end
-    end
-
-    it "should be persisted" do
-      subject.should be_persisted
-    end
-  end
 end
