@@ -8,7 +8,7 @@ group :test, :development do
   end
   gem 'fabrication', '~> 1.3.2'
   gem 'rspec', '~> 2.13'
-  gem 'capybara', '~> 2'
+  gem 'capybara', '~> 2.2'
   gem 'ffaker', '~> 1'
   gem 'generator_spec', '~> 0.9.0'
 end
