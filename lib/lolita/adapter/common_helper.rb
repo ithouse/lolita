@@ -87,7 +87,7 @@ module Lolita
             page_criteria
           end
           unless page_criteria.respond_to?(:current_page)
-            page_criteria = page_criteria.order(sorting).page(@page).per(@per)
+            page_criteria = page_criteria.send(@adapter.order_method, sorting).page(@page).per(@per)
           end
           page_criteria
         end
@@ -123,7 +123,7 @@ module Lolita
       end
 
       def filter attributes={}
-        klass.where(attributes.reject{|k,v| v.blank? })
+        klass.where(attributes.reject{|_,v| v.nil? || v.to_s == "" })
       end
 
       # Detect if class reflect on association by name
@@ -213,7 +213,6 @@ module Lolita
         end
         record
       end
-
     end
   end
 end

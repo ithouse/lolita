@@ -18,16 +18,17 @@ Gem::Specification.new do |s|
   ]
   s.licenses = ["MIT"]
 
-  s.add_runtime_dependency(%q<kaminari>, ["~> 0.13"])
-  s.add_runtime_dependency(%q<abstract>, ["~> 1"])
-  s.add_runtime_dependency(%q<haml>, ["~> 3.0"])
-  s.add_runtime_dependency(%q<activesupport>,["~> 4.0"])
-  s.add_runtime_dependency(%q<jquery-rails>, [">= 3.0"])
-  s.add_runtime_dependency(%q<jquery-ui-rails>, [">= 4.0"])
-  s.add_runtime_dependency(%q<tinymce-rails>, [">0"])
-  s.add_runtime_dependency(%q<tinymce-rails-config-manager>,[">= 0.1"])
+  s.add_dependency(%q<kaminari>, ["~> 0.15.0"])
+  s.add_dependency(%q<abstract>, ["~> 1.0.0"])
+  s.add_dependency(%q<haml>, [">= 3.0.0", "< 5.0.0"])
+  s.add_dependency(%q<activesupport>, [">= 3.2.0"])
+  s.add_dependency(%q<railties>, [">= 3.2.0"])
+  s.add_dependency(%q<jquery-rails>, [">0"])
+  s.add_dependency(%q<jquery-ui-rails>, [">0"])
+  s.add_dependency(%q<tinymce-rails>, [">= 4.0.0"])
+  s.add_dependency(%q<tinymce-rails-langs>, [">0"])
 
   s.files = Dir["{app,config,db,lib,vendor}/**/*"] + ["Rakefile", "README.md"]
-  s.test_files    = Dir["{spec}/**/*"]
+  s.test_files = Dir["{spec}/**/*"]
   s.require_paths = ["lib"]
 end

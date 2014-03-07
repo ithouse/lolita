@@ -11,6 +11,7 @@ describe Lolita::Generators::UninstallGenerator do
     prepare_destination
     Rails.stub(:root).and_return(Pathname.new(destination_root))
     create_initializer(destination_root)
+    create_tinymce(destination_root)
     create_routesrb(destination_root)
     run_generator
   end
@@ -24,6 +25,15 @@ describe Lolita::Generators::UninstallGenerator do
       end
     }
   end
+
+  specify "removes tinymce.yml config" do
+    destination_root.should have_structure {
+      directory "config" do
+        no_file "tinymce.yml"
+      end
+    }
+  end
+
 
   specify "removes lolita_for from routes.rb" do
     destination_root.should have_structure {
@@ -42,6 +52,12 @@ def create_initializer destination_root
   initializers_dir = File.join(destination_root, 'config', 'initializers')
   FileUtils.mkdir_p(initializers_dir)
   FileUtils.touch(File.join(initializers_dir, 'lolita.rb'))
+end
+
+def create_tinymce destination_root
+  tinymce_dir = File.join(destination_root, 'config')
+  FileUtils.mkdir_p(tinymce_dir)
+  FileUtils.touch(File.join(tinymce_dir, 'tinymce.yml'))
 end
 
 def create_routesrb destination_root

@@ -12,6 +12,21 @@ describe Lolita::Generators::InstallGenerator do
   include GeneratorSpec::TestCase
   destination File.expand_path("../../../tmp", __FILE__)
 
+  context "tinimce config" do
+    before do
+      prepare_destination
+      run_generator
+    end
+
+    specify "copies tinymce.yml configuration" do
+      destination_root.should have_structure {
+        directory "config" do
+          file "tinymce.yml"
+        end
+      }
+    end
+  end
+
   context "without Devise" do
     before do
       prepare_destination

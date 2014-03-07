@@ -2,8 +2,8 @@ module Lolita
   module SystemConfiguration
     class Base
       attr_reader :scope, :modules, :routes, :controllers,:resources
-      attr_accessor :mappings,:default_route,:user_classes,:authentication,:authorization
-      attr_writer :default_locale, :ability_class
+      attr_accessor :mappings, :default_route, :user_classes, :authentication, :authorization
+      attr_writer :default_locale, :ability_class, :tinymce_configuration_set
 
       def initialize(scope)
         @scope=scope
@@ -31,7 +31,7 @@ module Lolita
         end
         Lolita::Navigation::Tree[:"left_side_navigation"]
       end
-      
+
       def ability_class
         @ability_class || (::Ability rescue nil) || raise("No ability class found.")
       end
@@ -59,12 +59,14 @@ module Lolita
           Lolita.default_locale
         end
       end
+
       # Return default locale. First looks for defined default locale for Lolita, when not found than
       # take first of defined #locales for Lolita, if there no defined locales for Lolita, than
       # look for I18n and take default locale from there or if there is no I18n than take :en
       def default_locale
         @default_locale || self.locales.first || (defined?(::I18n) ? ::I18n.default_locale : :en)
       end
+
       # Call (with #call) to route klass
       # And return all names of routes that are needed for resource.
       # When with #add_module routes are defined like 
@@ -95,7 +97,7 @@ module Lolita
           end
         }.flatten.compact.uniq
       end
-        
+
       # Include module in Lolita, don't know why i need this
       def use(module_name)
         Lolita.send(:include,module_name)
@@ -160,9 +162,12 @@ module Lolita
         if options[:path]
           require File.join(options[:path],name.to_s)
         end
-    
       end
-      
+
+      # Should return one of defined configuration set names from tinymce.yml
+      def tinymce_configuration_set
+        @tinymce_configuration_set || :default
+      end
     end
   end
 end

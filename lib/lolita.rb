@@ -1,4 +1,4 @@
-require 'lolita/version'
+require "lolita/version"
 
 module Lolita
 
@@ -71,58 +71,59 @@ module Lolita
   end
 
   def self.load_dependencies!
-    require 'abstract'
-    require 'observer'
-    require 'ostruct'
+    require "abstract"
+    require "observer"
+    require "ostruct"
     require "base64"
-    require 'active_support'
-    require 'active_support/core_ext/numeric/time'
-    require 'active_support/core_ext/date_time/conversions'
-    require 'active_support/concern'
-    require 'active_support/callbacks'
-    require 'active_support/dependencies'
-    require 'active_support/inflector'
+    require "active_support"
+    require "active_support/core_ext/numeric/time"
+    require "active_support/core_ext/date_time/conversions"
+    require "active_support/concern"
+    require "active_support/callbacks"
+    require "active_support/dependencies"
+    require "active_support/inflector"
   end
 
   def self.load_base!
     Dir["#{File.dirname(__FILE__)}/lolita/ruby_ext/**/*.*"].each do |path|
       require path
     end
-    require 'lolita/errors'
-    require 'lolita/utils'
-    require 'lolita/hooks'
-    require 'lolita/mapping'
-    require 'lolita/hooks/named_hook'
-    require 'lolita/system_configuration/base'
-    require 'lolita/system_configuration/application'
-    require 'lolita/extensions/extensions'
+    require "lolita/errors"
+    require "lolita/utils"
+    require "lolita/hooks"
+    require "lolita/mapping"
+    require "lolita/hooks/named_hook"
+    require "lolita/system_configuration/base"
+    require "lolita/system_configuration/application"
+    require "lolita/extensions/extensions"
   end
 
   def self.load_modules!
-    require 'lolita/base'
-    require 'lolita/orm'
-    require 'lolita/configuration'
-    require 'lolita/helpers'
-    require 'lolita/processors/request_processor'
-    require 'lolita/navigation/tree'
-    require 'lolita/navigation/branch'
+    require "lolita/base"
+    require "lolita/orm"
+    require "lolita/configuration"
+    require "lolita/helpers"
+    require "lolita/processors/request_processor"
+    require "lolita/navigation/tree"
+    require "lolita/navigation/branch"
 
-    require 'lolita/test/matchers'
-    require 'lolita/support/formatter'
-    require 'lolita/support/formatter/rails'
+    require "lolita/test/matchers"
+    require "lolita/support/formatter"
+    require "lolita/support/formatter/rails"
 
-    require 'lolita/search/simple'
-    require 'lolita/components/base'
-    require 'lolita/components/configuration/column_component'
+    require "lolita/search/simple"
+    require "lolita/components/base"
+    require "lolita/components/configuration/column_component"
   end
 
   def self.load_rails!
-    require 'kaminari'
-    require 'jquery-rails'
-    require 'tinymce-rails'
-    require 'tinymce-rails-config-manager'
-    require 'lolita/rails/railtie'
-    require 'lolita/rails/engine'
+    require "kaminari"
+    require "jquery-rails"
+    require "jquery-ui-rails"
+    require "tinymce-rails"
+    require "tinymce-rails-langs"
+    require "lolita/rails/railtie"
+    require "lolita/rails/engine"
   end
 
   def self.version
