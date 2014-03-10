@@ -122,7 +122,11 @@ module ActionDispatch::Routing
       if Lolita.application.skip_routes.respond_to?(:call)
         Lolita.application.skip_routes.call
       else
-        Lolita.application.skip_routes || File.basename($0).match(/^rails/) && !caller.detect{|line| line.match(/commands\/(server|console)\.rb/)}
+        if Rails::VERSION::MAJOR == 4
+          Lolita.application.skip_routes || File.basename($0).match(/^rails/) && !caller.detect{|line| line.match(/bin\/rails|server\.rb/) }
+        else
+          Lolita.application.skip_routes || File.basename($0).match(/^rails/) && !caller.detect{|line| line.match(/commands\/(server|console)\.rb/)}
+        end
       end
     end
   end

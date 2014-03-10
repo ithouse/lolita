@@ -12,7 +12,7 @@ class Post
   has_many :comments
   belongs_to :profile
   validates_presence_of :title
-  default_scope order_by([:title, :asc])
+  default_scope -> { order_by([:title, :asc]) }
   accepts_nested_attributes_for :comments, :reject_if => :all_blank
 
   lolita do
