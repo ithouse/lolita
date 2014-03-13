@@ -192,7 +192,7 @@ module Lolita
         Proc.new do
           title Proc.new{::I18n.t("lolita.shared.delete")}
           url Proc.new{|view,record| view.send(:lolita_resource_path,:id => record.id)}
-          html :method => :delete, :confirm => Proc.new{::I18n.t("lolita.list.confirm")}
+          html :method => :delete, :data => { :confirm => Proc.new{::I18n.t("lolita.list.confirm")} }
         end
       end
 
