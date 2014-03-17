@@ -29,7 +29,7 @@ pkg
 .pivotalrc
 .project
 *.swp
-.tags
+.tags*
 tags
 .gemtags
 .ruby-version
