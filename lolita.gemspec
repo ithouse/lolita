@@ -27,7 +27,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<tinymce-rails>, ["~> 3.5.8"])
   s.add_runtime_dependency(%q<tinymce-rails-config-manager>,[">= 0.1"])
 
-  s.files = Dir["{app,config,db,lib,vendor}/**/*"] + ["Rakefile", "README.md"]
-  s.test_files    = Dir["{spec}/**/*"]
+  s.files = `git ls-files`.split($/)
+  s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  s.test_files = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
 end
