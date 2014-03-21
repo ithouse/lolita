@@ -33,3 +33,4 @@ pkg
 tags
 .gemtags
 .ruby-version
+.local.vimrc

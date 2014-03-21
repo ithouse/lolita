@@ -91,6 +91,9 @@ describe Lolita::Configuration::Filter do
 
   describe "Filtering list" do
     let(:list){ Lolita::Configuration::List}
+    let(:request){
+      double('request', headers: {}, params: {})
+    }
 
     it "should filter with default filters" do
       tags = %w(Android Linux Windows).map{|name| Fabricate(:tag, :name => name )}
@@ -101,16 +104,11 @@ describe Lolita::Configuration::Filter do
           field :tags
         end
       end
-      list_conf.paginate(1).should have(3).items
-      request = Object.new
-      request.class_eval do
-        def params
-          {:filter => {:tag_ids => Tag.where(:name => 'Android').first.id}}
-        end
-      end
-      list_conf.paginate(1,request).should have(1).items
+      list_conf.paginate(1, request).should have(3).items
+      request.stub(params: {:filter => {:tag_ids => Tag.where(:name => 'Android').first.id}})
+      list_conf.paginate(1, request).should have(1).items
     end
-    
+
     it "should filter with custom search" do
       tags = %w(Android Linux Windows).map{|name| Fabricate(:tag, :name => name )}
       3.times {|i| Fabricate(:post,:tags => [tags[i]])}
@@ -125,13 +123,8 @@ describe Lolita::Configuration::Filter do
           search :custom_filter
         end
       end
-      list_conf.paginate(1).should have(3).items
-      request = Object.new
-      request.class_eval do
-        def params
-          {:filter => {:tag_ids => Tag.where(:name => 'Android').first.id}}
-        end
-      end
+      list_conf.paginate(1, request).should have(3).items
+      request.stub(params: {:filter => {:tag_ids => Tag.where(:name => 'Android').first.id}})
       list_conf.paginate(1,request).should have(2).items
     end
   end

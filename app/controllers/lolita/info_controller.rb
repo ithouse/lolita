@@ -4,7 +4,7 @@ class Lolita::InfoController < ApplicationController
 
   def index
     if Lolita.mappings.any?
-      if available_mapping = Lolita.mappings.detect{ |name,mapping| authorization_proxy.authorize!(:read, mapping.to) }
+      if available_mapping = Lolita.mappings.detect{ |name,mapping| authorization_proxy.can?(:read, mapping.to) }
         mapping = available_mapping.last
         return redirect_to(lolita_resources_path(mapping))
       end

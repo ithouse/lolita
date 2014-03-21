@@ -4,7 +4,7 @@ gemspec
 
 group :test, :development do
   unless ENV['CI']
-    gem 'byebug'
+    gem 'pry-byebug'
   end
   gem 'fabrication', '~> 1.3.2'
   gem 'rspec', '~> 2.13'

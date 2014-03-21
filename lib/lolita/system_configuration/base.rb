@@ -3,7 +3,7 @@ module Lolita
     class Base
       attr_reader :scope, :modules, :routes, :controllers,:resources
       attr_accessor :mappings,:default_route,:user_classes,:authentication,:authorization
-      attr_writer :default_locale, :ability_class
+      attr_writer :default_locale, :ability_class, :policy_class
 
       def initialize(scope)
         @scope=scope
@@ -31,9 +31,15 @@ module Lolita
         end
         Lolita::Navigation::Tree[:"left_side_navigation"]
       end
-      
+
+      # ability class for CanCan
       def ability_class
         @ability_class || (::Ability rescue nil) || raise("No ability class found.")
+      end
+
+      # policy class for Pundit
+      def policy_class
+        @policy_class || (::LolitaPolicy rescue nil) || raise("No policy class found.")
       end
 
       def locales=(value)
@@ -95,7 +101,7 @@ module Lolita
           end
         }.flatten.compact.uniq
       end
-        
+
       # Include module in Lolita, don't know why i need this
       def use(module_name)
         Lolita.send(:include,module_name)

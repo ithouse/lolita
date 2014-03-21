@@ -1,9 +1,10 @@
 require "#{File.dirname(__FILE__)}/default_adapter"
 require "#{File.dirname(__FILE__)}/cancan_adapter"
+require "#{File.dirname(__FILE__)}/pundit_adapter"
 
 module Lolita
   class NoAuthorizationDefinedError < ArgumentError ; end
-  
+
   module Extensions
     module Authorization
 
@@ -31,7 +32,7 @@ module Lolita
         def current_ability *args
           @adapter.current_ability *args
         end
-        
+
         private
 
         def get_adapter

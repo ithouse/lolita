@@ -1,9 +1,9 @@
 module Lolita
   module Extensions
     module Authorization
-      
+
       class CanCanAdapter
-        
+
         def initialize context, options={}
           raise NameError, "CanCan is not defined" unless defined?(CanCan)
           raise Lolita::NoAuthorizationDefinedError, "Lolita.authorization is not defined" unless Lolita.authorization
@@ -32,7 +32,7 @@ module Lolita
         def authorize! *args
           current_ability && @context && @context.authorize!(*args) || current_ability.authorize!(*args)
         end
-        
+
         private
 
         def set_default_options
