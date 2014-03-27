@@ -1,4 +1,4 @@
-lolita:
+default:
   skin: lolita
   plugins:
     - advlist

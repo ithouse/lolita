@@ -13,5 +13,5 @@ Lolita.setup do |config|
   # config.authorization = "CanCan"
   
   ## TinyMCE configuration - more see https://github.com/spohlenz/tinymce-rails#instructions
-  # config.tinymce_configuration_set = :lolita
+  # config.tinymce_configuration_set = :default
 end

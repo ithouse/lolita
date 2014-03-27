@@ -4,4 +4,5 @@
     = render_component :"lolita/configuration/tab", :display, :tab => tab, :active => index == 0
 - self.current_form = nil
 - tabs.dissociated.each_with_index do |tab,index|
+  /= binding.pry
   = render_component :"lolita/configuration/tab", :display, :tab => tab, :active => false
