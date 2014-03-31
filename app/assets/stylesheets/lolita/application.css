@@ -3,5 +3,5 @@
 *= require lolita/jquery-ui-1.8.16.lolita
 *= require lolita/default
 *= require lolita/style
-*= require_tree ../tinymce/skins/lolita
+*= require_dir ../tinymce/skins/lolita
 */
