@@ -58,12 +58,13 @@ module Lolita
         end
       end
 
-      protected
-
       def is_lolita_resource?
         raise ActionController::UnknownAction unless lolita_mapping
         true
       end
+
+      protected
+
 
       def resource=(new_resource)
         instance_variable_set(:"@#{resource_name}",new_resource)

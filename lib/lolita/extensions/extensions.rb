@@ -25,7 +25,7 @@ module Lolita
         load_extension_proxy(type,context,options)
       end
     end
-    
+
     def load_extension_proxy type,context=self,options={}
       proxy_class = "Lolita::Extensions::#{type.to_s.camelize}::Proxy".constantize
       initialize_arity = proxy_class.instance_method(:initialize).arity

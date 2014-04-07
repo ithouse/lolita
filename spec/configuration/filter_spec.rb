@@ -76,6 +76,10 @@ describe Lolita::Configuration::Filter do
         def params
           {filter: {title: "Big fish"}}
         end
+
+        def headers
+          {}
+        end
       end
       list_conf.paginate(1, request).should have(1).item
     end
@@ -99,6 +103,10 @@ describe Lolita::Configuration::Filter do
         def params
           {filter: {price: 5}}
         end
+
+        def headers
+          {}
+        end
       end
       list_conf.paginate(1,request).should have(1).item
       list_conf.paginate(1,request).first.price.should eq(10)
@@ -107,6 +115,7 @@ describe Lolita::Configuration::Filter do
 
   describe "#resource" do
     let(:filter){ Lolita::Configuration::Filter.new(dbi, :name ) }
+
     let(:params){ {} }
     subject do
       tags = %w(Android Linux Windows).map{|name| Fabricate(:tag, name: name )}

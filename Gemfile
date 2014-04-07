@@ -3,8 +3,8 @@ source "http://rubygems.org"
 gemspec
 
 group :test, :development do
-  unless ENV["CI"]
-    gem "byebug"
+  unless ENV['CI']
+    gem 'pry-byebug'
   end
   gem "fabrication", "~> 2.9.3"
   gem "rspec", "~> 2.14"
@@ -25,6 +25,6 @@ group :rails do
 end
 
 group :mongoid do
-	gem "bson_ext"
-	gem "mongoid", "~> 4.0.0.alpha1"
+  gem "bson_ext"
+  gem "mongoid", "~> 4.0.0.alpha1"
 end

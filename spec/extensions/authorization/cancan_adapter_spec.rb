@@ -71,8 +71,8 @@ describe Lolita::Extensions::Authorization::CanCanAdapter do
     it "should authorize resource" do
       adapter2 = klass.new(nil)
       expect do
-        adapter2.authorize!(:read,Object).should == "ability_response"
-        adapter.authorize!(:read,Object).should == "context_response"
+        adapter2.authorize!(:read, Object).should == "ability_response"
+        adapter.authorize!(:read, Object).should == "context_response"
       end.not_to raise_error
     end
   end

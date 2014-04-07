@@ -7,8 +7,9 @@ module Lolita
         include Lolita::Controllers::InternalHelpers
         include Lolita::Controllers::AuthenticationHelpers
         if Lolita.rails?
-          include Lolita::Controllers::RailsHelpers 
+          include Lolita::Controllers::RailsHelpers
         end
+        attr_accessor :current_ability
       end
     end
 

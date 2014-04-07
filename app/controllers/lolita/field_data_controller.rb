@@ -29,6 +29,10 @@ class Lolita::FieldDataController < ApplicationController
     render :json => data || {}
 	end
 
+  def is_lolita_resource?
+    true
+  end
+
   private
 
   def find_field

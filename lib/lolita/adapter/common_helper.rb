@@ -50,6 +50,8 @@ module Lolita
         def ability_criteria
           @ability_criteria ||= if @adapter.klass.respond_to?(:accessible_by)
             @adapter.klass.accessible_by(current_ability)
+          elsif current_ability.respond_to?(:scope)
+            current_ability.scope
           else
             nil
           end
@@ -93,7 +95,7 @@ module Lolita
         end
 
         def current_ability
-          controller = request.headers["action_controller.instance"]
+          controller = request && request.headers["action_controller.instance"]
           if controller && controller.respond_to?(:current_ability)
             controller.current_ability
           end

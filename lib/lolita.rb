@@ -131,11 +131,11 @@ module Lolita
   end
 
   def self.rails?
-    defined?(::Rails)
+    !!defined?(::Rails)
   end
 
   def self.rails3?
-    defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
+    !!defined?(::Rails) && ::Rails::VERSION::MAJOR == 3
   end
 end
 
