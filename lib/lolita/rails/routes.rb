@@ -122,12 +122,12 @@ module ActionDispatch::Routing
       if Lolita.application.skip_routes.respond_to?(:call)
         Lolita.application.skip_routes.call
       else
-        if Rails::VERSION::MAJOR == 4
-          Lolita.application.skip_routes || File.basename($0).match(/^rails/) && !caller.detect{|line| line.match(/bin\/rails|server\.rb/) }
-        else
-          Lolita.application.skip_routes || File.basename($0).match(/^rails/) && !caller.detect{|line| line.match(/commands\/(server|console)\.rb/)}
-        end
+        Lolita.application.skip_routes || generator_detected?
       end
+    end
+
+    def generator_detected?
+      defined?(Rails::Generators)
     end
   end
 end
