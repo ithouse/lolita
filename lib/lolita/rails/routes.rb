@@ -122,7 +122,7 @@ module ActionDispatch::Routing
       if Lolita.application.skip_routes.respond_to?(:call)
         Lolita.application.skip_routes.call
       else
-        Lolita.application.skip_routes || generator_detected?
+        Lolita.application.skip_routes || File.basename($0).match(/^rails/) && generator_detected?
       end
     end
 
