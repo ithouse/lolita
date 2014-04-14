@@ -64,6 +64,10 @@ module Lolita
         else
           Lolita.default_locale
         end
+        if defined?(::I18n)
+          ::I18n.locale = @locale
+        end
+        @locale
       end
       # Return default locale. First looks for defined default locale for Lolita, when not found than
       # take first of defined #locales for Lolita, if there no defined locales for Lolita, than
