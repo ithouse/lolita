@@ -136,6 +136,12 @@ Lolita::Hooks.component(:"/lolita/configuration/list/display").around do
 end
 ```
 
+##Tests
+To run all specs run rake, it will run all specs for all supported ORM's.
+
+    $ rake
+    
+
 ##License
 
 Lolita is under MIT license. See [LICENSE.txt](https://github.com/ithouse/lolita/blob/master/LICENSE.txt)
