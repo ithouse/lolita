@@ -16,6 +16,10 @@ Benchmark.bm do |x|
     LOLITA_ORM = ENV["LOLITA_ORM"] || :active_record
     require "orm/#{LOLITA_ORM}"
   end
+  if LOLITA_ORM == 'mongoid'
+    require 'kaminari'
+    Kaminari::Hooks.init
+  end
   if ENV["lolita-env"] == "rails"
     x.report("Loading rails: ") do
       require 'rails'
