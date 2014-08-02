@@ -26,6 +26,6 @@ end
 
 group :mongoid do
   gem "bson_ext"
-  gem 'kaminari', git: 'https://github.com/amatsuda/kaminari.git', branch: 'master'
+  gem 'kaminari', '~> 0.16.1'
   gem "mongoid", "~> 4.0.0.alpha1"
 end
