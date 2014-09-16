@@ -2,7 +2,7 @@ module Lolita
   module Controllers
     # This module is included in all controllers and views. UrlHelper provide methods to generate lolita
     # resource paths. As all resources goes to one controller (by default), than it is very difficult to
-    # generate url with <em>:controller</em> and <em>:action</em>. 
+    # generate url with <em>:controller</em> and <em>:action</em>.
     # There are four methods for path:
     # * lolita_resources_path - goes to index action
     # * lolita_resource_path - goes to create, destroy or show, it depends what kind of method is used
@@ -34,7 +34,7 @@ module Lolita
           #     # GET /posts
           #     url_for #=> /posts
           def url_for_with_lolita options = {}
-            if options.is_a?(Hash) && !options[:use_route] && self.respond_to?(:lolita_mapping) && self.lolita_mapping
+            if request && options.is_a?(Hash) && !options[:use_route] && self.respond_to?(:lolita_mapping) && self.lolita_mapping
               controller = options[:controller].to_s
               if Lolita.mappings[lolita_mapping.name].controllers.values.include?(controller)
                 resource_type = {
@@ -47,7 +47,7 @@ module Lolita
                 options = self.send(resource_type[action] || :lolita_resource_path,options)
               end
             end
-            
+
             url_for_without_lolita(options)
           end
           alias_method_chain :url_for, :lolita
@@ -56,7 +56,7 @@ module Lolita
       end
 
       protected
-      
+
       # Path for index.
       def lolita_resources_path(*args)
         options=args.extract_options!
@@ -65,7 +65,7 @@ module Lolita
       end
 
       # Path for show, create and destroy
-      def lolita_resource_path(*args) 
+      def lolita_resource_path(*args)
         options=args.extract_options!
         mapping=args[0]
         send(lolita_resource_name(:mapping=>mapping),options)
@@ -88,7 +88,7 @@ module Lolita
       end
 
       # It return symbol, that represents named route method for path, like <i>lolita_posts_path</i> and so on.
-      # It accepts those options: 
+      # It accepts those options:
       # * <tt>:mapping</tt> - Lolita::Mapping object, that is used to detect name of named route.
       # by default it uses Lolita::InternalHelpers#lolita_mapping.
       # * <tt>:plural</tt> - What kind of named route should use, plural or singular.
@@ -97,7 +97,7 @@ module Lolita
       #     # current mapping is for posts
       #     lolita_resource_name(:action=>:edit) #=> :edit_lolita_post_path
       #     lolita_resource_name(:plural=>true,:action=>:list) #=> :list_lolita_posts_path
-      #     # for different mapping 
+      #     # for different mapping
       #     lolita_resource_name(:mapping=>comments_mapping) #=> :lolita_comment_path
       # This methods is very useful to create your own paths in views.
       def lolita_resource_name(options={}) #TODO test if path is right
