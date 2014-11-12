@@ -1,7 +1,4 @@
-= current_form.text_area field.name, :rows=>(field.rows || 20), :"data-simple"=>field.simple 
-- if @textarea_component_include_tinymce_once.nil? 
-  :javascript
-    $(function(){
-      TinyMCEConfigManager.get().load();
-    })
-- @textarea_component_include_tinymce_once = "done" 
+= current_form.text_area field.name, :rows=>(field.rows || 20), :"data-simple"=>field.simple
+- if @textarea_component_include_tinymce_once.nil?
+  = tinymce Lolita.tinymce_configuration_set, selector: "textarea[data-simple!=true]", language: I18n.locale
+- @textarea_component_include_tinymce_once = "done"

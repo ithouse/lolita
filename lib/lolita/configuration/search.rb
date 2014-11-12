@@ -74,11 +74,11 @@ module Lolita
           self.with.run(query)
         end
       end
-      
-      def update method_name,list,request
+
+      def update method_name, list, request
         if method_name == :paginate && list.search
-          search_criteria = list.search.run(request && request.params[:q] || "",request)
-          page_criteria = if search_criteria.respond_to?(:where) 
+          search_criteria = list.search.run(request && request.params[:q] || "", request)
+          page_criteria = if search_criteria.respond_to?(:where)
             list.page_criteria.merge(search_criteria)
           elsif search_criteria.nil?
             list.page_criteria

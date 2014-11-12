@@ -1,0 +1,22 @@
+default:
+  entity_encoding: "raw"
+  skin: lolita
+  plugins:
+    - advlist
+    - autolink
+    - lists
+    - link
+    - image
+    - charmap
+    - print
+    - preview
+    - anchor
+    - searchreplace
+    - visualblocks
+    - code
+    - fullscreen
+    - table
+    - contextmenu
+    - paste
+    - template
+  toolbar: "styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"

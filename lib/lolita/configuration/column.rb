@@ -25,11 +25,12 @@ module Lolita
     #   end
     # end
     class Column < Lolita::Configuration::Base
-      MAX_TEXT_SIZE = 20
+      
+      MAX_TEXT_SIZE=20
       attr_reader :list_association_name
-      lolita_accessor :name, :title, :type, :options, :sortable, :association
-
-      def initialize(dbi, *args, &block)
+      lolita_accessor :name,:title,:type,:options,:sortable, :association
+      
+      def initialize(dbi,*args,&block)
         set_and_validate_dbi(dbi)
         set_attributes(*args)
         instance_eval(&block) if block_given?
@@ -38,14 +39,14 @@ module Lolita
         detect_association
       end
 
-      def list(*args, &block)
+      def list *args, &block
         if args && args.any? || block_given?
           detect_association
-          list_association = args[0] && @dbi.associations[args[0].to_s.to_sym] || association
+          list_association = args[0] && @dbi.associations[args[0].to_s.to_sym] || self.association
           list_dbi = list_association && Lolita::DBI::Base.create(list_association.klass)
           fail Lolita::UnknownDBPError.new("DBI is not specified for list in column #{self}") unless list_dbi
           @list_association_name = list_association.name
-          Lolita::LazyLoader.lazy_load(self, :@list, Lolita::Configuration::NestedList, list_dbi, self, association_name: list_association.name, &block)
+          Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::NestedList, list_dbi, self, :association_name => list_association.name, &block)
         else
           @list
         end
@@ -54,8 +55,8 @@ module Lolita
       # Return value of column from given record. When record matches foreign key patter, then foreign key is used.
       # In other cases it just ask for attribute with same name as column.
       def value(record)
-        if association
-          if association.macro == :one &&  dbi.klass.respond_to?(:human_attribute_name)
+        if self.association
+          if self.association.macro == :one &&  dbi.klass.respond_to?(:human_attribute_name)
             dbi.klass.human_attribute_name(association.name)
             # dbi.record(record.send(association.name)).title
           elsif dbi.klass.respond_to?(:human_attribute_name)
@@ -64,20 +65,20 @@ module Lolita
             "#{association.name} (#{record.send(association.name).count})"
           end
         else
-          record.send(name)
+          record.send(self.name)
         end
       end
 
-      def formatted_value(record, view)
-        formatter.with(value(record), record, view)
+      def formatted_value(record,view)
+        self.formatter.with(self.value(record), record, view)
       end
 
       # Set/Get title. Getter return title what was set or ask for human_attribute_name to model.
-      def title(new_title = nil)
+      def title(new_title=nil)
         if new_title
           @title = new_title
         end
-        Lolita::Utils.dynamic_string(@title, default: @name && @dbi.klass.human_attribute_name(@name))
+        Lolita::Utils.dynamic_string(@title, :default => @name && @dbi.klass.human_attribute_name(@name))
       end
 
       def sortable?
@@ -86,50 +87,38 @@ module Lolita
 
       # Find if any of received sort options matches this column.
       def current_sort_state(params)
-        @sortable && sort_pairs(params).find { |pair| pair[0] == sort_by_name } || []
+        @sortable && sort_pairs(params).detect{|pair| pair[0]==self.name.to_s} || []
       end
 
       # Return string with sort options for column if column is sortable.
-      def sort_params(params)
+      def sort_params params
         if @sortable
           pairs = sort_pairs(params)
           found_pair = false
-          pairs.each_with_index{|pair, index|
-            if pair[0] == sort_by_name
-              pairs[index][1] = pair[1] == 'asc' ? 'desc' : 'asc'
+          pairs.each_with_index{|pair,index|
+            if pair[0] == self.name.to_s
+              pairs[index][1] = pair[1] == "asc" ? "desc" : "asc"
               found_pair = true
             end
           }
           unless found_pair
-            pairs << [sort_by_name, 'asc']
+            pairs << [self.name.to_s,"asc"]
           end
-          (pairs.map { |pair| pair.join(',') }).join('|')
+          (pairs.map{ |pair| pair.join(",") }).join("|")
         else
-          ''
+          ""
         end
       end
 
-      # returns value to sort by
-      # in default it will be column name, but you can specify it
-      # in field configuration
-      #
-      # === Examples
-      # list do
-      #   field :name, sortable: 'some_table.first_name'
-      # end
-      def sort_by_name
-        @sortable.is_a?(TrueClass) ? name.to_s : @sortable.to_s
-      end
-
       # Create array of sort information from params.
-      def sort_pairs(params)
-        (params[:s] || '').split('|').map { |pair| pair.split(',') }
+      def sort_pairs params
+        (params[:s] || "").split("|").map{|pair| pair.split(",")}
       end
 
       # Define format, for details see Lolita::Support::Formatter and Lolita::Support::Formater::Rails
-      def formatter(value = nil, &block)
+      def formatter(value = nil,&block)
         if block_given?
-          @formatter = Lolita::Support::Formatter.new(value, &block)
+          @formatter = Lolita::Support::Formatter.new(value,&block) 
         elsif value || !@formatter
           if value.kind_of?(Lolita::Support::Formatter)
             @formatter = value
@@ -151,21 +140,21 @@ module Lolita
       def set_attributes(*args)
         options = args ? args.extract_options! : {}
         if args[0].respond_to?(:field)
-          [:name, :type].each do |attr|
-            send(:"#{attr}=", args[0].send(attr))
+          [:name,:type].each do |attr|
+            send(:"#{attr}=",args[0].send(attr))
           end
         elsif args[0]
           self.name = args[0]
         end
-        options.each do |attr_name, value|
-          send(:"#{attr_name}=", value)
+        options.each do |attr_name,value|
+          send(:"#{attr_name}=",value)
         end
       end
-
+      
       private
 
       def detect_association
-        @association ||= dbi.associations[name]
+        @association ||= dbi.associations[self.name]
       end
 
       def normalize_attributes
@@ -173,8 +162,8 @@ module Lolita
       end
 
       def validate
-        fail Lolita::UnknownDBIError.new("DBI is not specified for column #{self}") unless dbi
-        fail ArgumentError.new('Column must have name.') unless name
+        fail Lolita::UnknownDBIError.new("DBI is not specified for column #{self}") unless self.dbi
+        fail ArgumentError.new("Column must have name.") unless self.name
       end
     end
   end

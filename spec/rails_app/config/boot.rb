@@ -1,5 +1,4 @@
 require 'rubygems'
-
 LOLITA_ORM=:mongoid unless defined?(LOLITA_ORM)
 
 # Set up gems listed in the Gemfile.

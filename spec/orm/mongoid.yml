@@ -1,0 +1,6 @@
+test:
+  sessions:
+    default:
+      database: lolita3_test
+      hosts:
+        - localhost:27017

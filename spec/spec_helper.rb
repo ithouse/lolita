@@ -13,8 +13,12 @@ ENV["lolita-env"] = "rails"
 require 'benchmark'
 Benchmark.bm do |x|
   x.report("Loading ORM: ") do
-    LOLITA_ORM=:mongoid
+    LOLITA_ORM = ENV["LOLITA_ORM"] || :active_record
     require "orm/#{LOLITA_ORM}"
+  end
+  if LOLITA_ORM == 'mongoid'
+    require 'kaminari'
+    Kaminari::Hooks.init
   end
   if ENV["lolita-env"] == "rails"
     x.report("Loading rails: ") do
@@ -32,20 +36,9 @@ Benchmark.bm do |x|
   x.report("Loading factories") do
     Dir["#{File.dirname(__FILE__)}/fabricators/**/*_fabricator.rb"].each {|f| require f}
   end
+  Dir["#{File.dirname(__FILE__)}/support/**/*[^_spec].rb"].each {|f| require f}
   RSpec.configure do |config|
     config.mock_with :rspec
-    config.order = 'rand:3455'
-    if LOLITA_ORM==:active_record
-      #config.fixture_path = "#{::Rails.root}/spec/fixtures"
-      config.use_transactional_fixtures = true
-    elsif LOLITA_ORM==:mongoid
-      config.after(:each) do 
-        Mongoid.database.collections.each do |collection|
-          unless collection.name =~ /^system\./
-            collection.remove
-          end
-        end
-      end
-    end
+    config.order = "rand:3455"
   end
 end

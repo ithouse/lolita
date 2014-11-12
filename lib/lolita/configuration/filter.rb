@@ -80,6 +80,14 @@ module Lolita
         end
       end
 
+      def search *args, &block
+        if args && args.any? || block_given?
+          @search = Lolita::Configuration::Search.new(self.dbi,*args, &block)
+        else
+          @search
+        end
+      end
+
       def html_option_for_select field
         {
           :include_blank => ::I18n.t('lolita.filter.include_blank_by_title', :title => field.title)
@@ -111,6 +119,12 @@ module Lolita
         end
       end
 
+      def resource(params)
+      	if klass = fields.any? ? fields.first.dbi.klass : nil
+      	  klass.new(params[klass.to_s.underscore.to_sym]).extend(Module.new{def persisted?; true; end})
+      	end
+      end
+      
     end
   end
 end

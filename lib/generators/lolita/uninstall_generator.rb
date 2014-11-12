@@ -12,6 +12,11 @@ module Lolita
         remove_file "config/initializers/lolita.rb"
       end
 
+      # Remove tinymce.yml config file
+      def remove_tinymce
+        remove_file "config/tinymce.yml"
+      end
+
       # Remove all not-commented lines that begins with lolita_for
       def clear_routes
         gsub_file Rails.root.join("config","routes.rb"), /^\s*#{ROUTE_NAME}.*/ do |match|

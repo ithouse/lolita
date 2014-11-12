@@ -16,17 +16,17 @@ module Lolita
       def resource
         instance_variable_get(:"@#{resource_name}")
       end
-
+      
       def resource_name
-        lolita_mapping.class_name.gsub(/::/, '_').underscore.to_sym
+        lolita_mapping.class_name.underscore.to_sym
       end
-
+      
       def resource_class
         lolita_mapping.to
       end
-
+      
       def lolita_mapping(new_mapping = nil)
-        @lolita_mapping ||= request.env['lolita.mapping']
+        @lolita_mapping ||= request.env["lolita.mapping"]
       end
 
       def current_form=(form)
@@ -44,7 +44,7 @@ module Lolita
       end
 
       def use_mapping(new_mapping)
-        if block_given?
+        if block_given? 
           begin
             @old_mapping = lolita_mapping
             @lolita_mapping = new_mapping
@@ -63,9 +63,12 @@ module Lolita
 
       protected
 
+
       def resource=(new_resource)
-        instance_variable_set(:"@#{resource_name}", new_resource)
+        instance_variable_set(:"@#{resource_name}",new_resource)
       end
+
     end
+
   end
 end

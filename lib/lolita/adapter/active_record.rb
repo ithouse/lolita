@@ -64,7 +64,6 @@ module Lolita
         end
       end
 
-
       # Return all class associations
       def associations
         # is caching ok?
@@ -81,7 +80,7 @@ module Lolita
       class Field
         include Lolita::Adapter::FieldHelper
 
-        attr_reader :field, :name,:options, :type, :adapter
+        attr_reader :field, :name, :options, :type, :adapter
         def initialize(column,adapter)
           @field = column
           raise ArgumentError, "Cannot initialize adapter field for nil" unless @field
@@ -222,6 +221,9 @@ module Lolita
         self.klass.nested_attributes_options
       end
 
+      def order_method
+        :order
+      end
     end
   end
 end

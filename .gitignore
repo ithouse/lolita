@@ -29,8 +29,9 @@ pkg
 .pivotalrc
 .project
 *.swp
-.tags*
+.tags
 tags
+.tags_sorted_by_file
 .gemtags
 .ruby-version
 .local.vimrc

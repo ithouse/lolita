@@ -1,0 +1,37 @@
+sv_SE:
+  lolita:
+    shared:
+      save_notice: Sparats.
+      save_alert: Spara lyckades inte.
+      log_out: Logga ut
+      edit: Redigera
+      delete: Radera
+      and: och
+      powered: Drivs av Lolita (2010-%{year})
+    nested_form:
+      add: "Lägg %{resource_name}"
+    buttons:
+      "save": "Spara"
+      "save&close": "Spara och stäng"
+      "save&new": "Spara och Nytt"
+    tabs:
+      last_save: Senast sparade
+      save: Spara
+      save_all: Spara alla
+      titles:
+        default: Default
+        content: Innehåll
+    list:
+      add_new: Lägg till ny %{name}
+      confirm: Är du säker på att du vill ta bort posten?
+    filter:
+      apply_button: Applicera
+      include_blank_by_title: " -- Filtrera efter %{title} -- "
+    search: "Sök"
+  views:
+    pagination:
+      previous: "&laquo; Föregående"
+      next: "Nästa &raquo;"
+      last: "Senaste"
+      first: "Första"
+      truncate: "..."

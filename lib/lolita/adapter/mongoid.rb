@@ -41,8 +41,8 @@ module Lolita
 
         def macro
           convertator = {
-            :references_many => :many, :references_one => :one, :referenced_in => :one,
-            :references_and_referenced_in_many => :many_to_many, :embeds_one => :one, :embeds_many => :many
+            :has_many => :many, :belongs_to => :one, :has_one => :one,
+            :has_and_belongs_to_many => :many_to_many, :embeds_one => :one, :embeds_many => :many
           }
           convertator[@association.macro]
         end
@@ -236,6 +236,9 @@ module Lolita
         self.klass.relations
       end
 
+      def order_method
+        :order_by
+      end
     end
   end
 end

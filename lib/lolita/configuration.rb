@@ -21,7 +21,7 @@ module Lolita
       def lolita(&block)
         Lolita::LazyLoader.lazy_load(self,:@lolita,Lolita::Configuration::Core,self,&block)
       end
-      
+
       def lolita=(value)
         if value.is_a?(Lolita::Configuration::Core) || value.nil?
           @lolita = value

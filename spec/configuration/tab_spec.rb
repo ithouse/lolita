@@ -164,14 +164,11 @@ describe Lolita::Configuration::Tab do
           default_fields
         end
         field :name => "two"
-        nested_fields_for(:profile) do
-          default_fields
-        end
         field :name => "last"
       end
 
-      tab.fields_in_groups.size.should == 5
-      tab.fields_in_groups[3].first.dbi == Profile
+      tab.fields_in_groups.size.should == 3
+      tab.fields_in_groups[1].first.dbi == Comment
     end
 
   end

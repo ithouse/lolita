@@ -15,7 +15,6 @@ describe Lolita::Configuration::Field do
 
   it "should create field when block given" do
     field=field_class.new(@dbi,:title,:string) do
-  
     end
     field.name.should == :title
   end

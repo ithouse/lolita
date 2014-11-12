@@ -1,8 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 require "action_controller/railtie"
 require "action_mailer/railtie"
-require "active_resource/railtie"
-require "rails/test_unit/railtie"
 require "sprockets/railtie"
 
 Bundler.require(:default, LOLITA_ORM, Rails.env) if defined?(Bundler)
@@ -12,8 +10,11 @@ module RailsApp
 		# Add additional load paths for your own custom dirs
 		config.root = File.expand_path('../..',__FILE__)
 		config.active_support.deprecation=:log
-		#config.autoload_paths.reject!{ |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers views).include?($1) }
-		config.autoload_paths += [ "#{config.root}/app/#{LOLITA_ORM}" ]
+		config.before_initialize do
+      Dir[File.expand_path("../../app/orm/#{LOLITA_ORM}/*.rb", __FILE__)].map do |model|
+        require model
+      end
+    end
 
 		# Configure sensitive parameters which will be filtered from the log file.
 		config.filter_parameters << :password
