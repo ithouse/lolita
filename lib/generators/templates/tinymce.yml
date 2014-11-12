@@ -1,4 +1,5 @@
 default:
+  entity_encoding: "raw"
   skin: lolita
   plugins:
     - advlist
