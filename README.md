@@ -1,20 +1,19 @@
 #Lolita
 
 Great Rails CMS, that turns your business logic into good-looking, fully functional workspace.
-Works with Rails 3.2
+Works with Rails 3.2, 4.0, 4.1
 
 [![Build Status](https://travis-ci.org/ithouse/lolita.png)](https://travis-ci.org/ithouse/lolita) [![Code Climate](https://codeclimate.com/github/ithouse/lolita.png)](https://codeclimate.com/github/ithouse/lolita)
 
-##Demo
-See the demo page at [Demo](http://lolita-demo.ithouse.lv/lolita)
-email: lolita@ithouse.lv
-password: lolita
+## How it looks
 
-##Installation
+![Lolita new document](http://i.imgur.com/coRVhJH.png)
+
+## Installation
 
 First add Lolita gem to your Gemfile
 
-    gem 'lolita', '~> 3.4.0'
+    gem 'lolita', '~> 4.0.0'
 
 Then go to your rails project and
 
@@ -30,7 +29,7 @@ gem "lolita-file-upload"
 ```
 
 It will also call *lolita_file_upload:install*.
-##Usage
+## Usage
 
 To make your model use Lolita do like this
 
@@ -52,7 +51,7 @@ or open `/lolita` and it will redirect to first available resource list view.
 
 For more detailed usage read [Usage](https://github.com/ithouse/lolita/wiki/Usage) at wiki.
 
-###Add authorization to Lolita
+### Add authorization to Lolita
 
 Easiest way to add authentication is with Devise. First install Devise as gem, than add it to your project.
 Make Devise model, lets say, *User*. After that add these lines in */config/initializers/lolita.rb*
@@ -73,10 +72,10 @@ config.authentication = :authenticate_admin
 And than put this method for common use in *ApplicationController* or in some other place that is accessable
 to all controllers.
 
-###Using hooks
+### Using hooks
 
 Lolita define hooks for RestController and for components.
-####RestController hooks
+#### RestController hooks
 
 There are two kind of hooks for all actions - *before_[action name]* and *after_[action name]*.
 Define callbacks for those hooks outside of controller. This will call User#log_action each time when #destroy
@@ -103,7 +102,7 @@ class PostController < Lolita::RestController
 end
 ```
 
-####Component hooks
+#### Component hooks
 
 Components have three hooks - *before*, *after* and *around*.
 Component hooks are different from controller hooks with names. Each component has it's own name, that is used to
@@ -136,12 +135,12 @@ Lolita::Hooks.component(:"/lolita/configuration/list/display").around do
 end
 ```
 
-##Tests
+## Tests
 To run all specs run rake, it will run all specs for all supported ORM's.
 
     $ rake
     
 
-##License
+## License
 
 Lolita is under MIT license. See [LICENSE.txt](https://github.com/ithouse/lolita/blob/master/LICENSE.txt)
