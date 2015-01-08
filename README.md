@@ -13,7 +13,7 @@ Works with Rails 3.2, 4.0, 4.1
 
 First add Lolita gem to your Gemfile
 
-    gem 'lolita', '~> 4.0.0'
+    gem 'lolita', '~> 4.0.1'
 
 Then go to your rails project and
 

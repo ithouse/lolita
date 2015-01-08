@@ -34,8 +34,6 @@ module ActionDispatch::Routing
     #     lolita_for :galleries
     #     # lolita_for try to call :lolita_gallery in Mapper class
     def lolita_for *resources
-
-      return if migrating? || generating?
       options = resources.extract_options!
 
       options[:as]          ||= @scope[:as]     if @scope[:as].present?
@@ -85,6 +83,10 @@ module ActionDispatch::Routing
       Lolita.common_routes(all_resource_classes).each do |route_name|
         send(:"lolita_#{route_name}_route")
       end
+      # rescues sql exception when migration for new model is executed
+    rescue ActiveRecord::StatementInvalid
+      Rails.logger.debug "Executing lolita_for got an error: #{$!}"
+      nil
     end
 
     protected
@@ -109,22 +111,6 @@ module ActionDispatch::Routing
     end
 
     private
-
-    def migrating?
-      if Lolita.application.skip_routes.respond_to?(:call)
-        Lolita.application.skip_routes.call
-      else
-        File.basename($0).match(/^rake/) && (ARGV.detect{|arg| arg.to_s.match(/db|apartment/)})
-      end
-    end
-
-    def generating?
-      if Lolita.application.skip_routes.respond_to?(:call)
-        Lolita.application.skip_routes.call
-      else
-        Lolita.application.skip_routes || File.basename($0).match(/^rails/) && generator_detected?
-      end
-    end
 
     def generator_detected?
       defined?(Rails::Generators)
