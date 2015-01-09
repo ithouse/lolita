@@ -9,4 +9,4 @@
     - self.current_form = old_form
   - if nested_form.expandable? && !nested_form.update_only?
     %p
-      =link_to_add_fields ::I18n.t("lolita.nested_form.add", :resource_name => nested_form.klass.lolita_model_name.human.downcase), current_form, nested_form 
+      =link_to_add_fields ::I18n.t("lolita.nested_form.add", :resource_name => nested_form.klass.lolita_model_name.human.underscore), current_form, nested_form 
