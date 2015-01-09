@@ -6,14 +6,20 @@ ActiveSupport.on_load(:action_controller) {
   include Lolita::Extensions
 }
 ActiveSupport.on_load(:action_view) {
+  if Rails::VERSION::MAJOR < 4
+    include Lolita::Controllers::UrlHelpers
+  end
   include Lolita::Controllers::ComponentHelpers
   include Lolita::Controllers::RailsHelpers
   include Lolita::Extensions
 }
 
-module ActionView
-  module RoutingUrlFor
-    include Lolita::Controllers::UrlHelpers
+
+if Rails::VERSION::MAJOR >= 4
+  module ActionView
+    module RoutingUrlFor
+      include Lolita::Controllers::UrlHelpers
+    end
   end
 end
 

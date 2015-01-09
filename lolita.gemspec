@@ -18,15 +18,15 @@ Gem::Specification.new do |s|
   ]
   s.licenses = ["MIT"]
 
-  s.add_dependency(%q<kaminari>, [">= 0.16.1"])
+  s.add_dependency(%q<kaminari>, ["~> 0.16"])
   s.add_dependency(%q<abstract>, ["~> 1.0.0"])
   s.add_dependency(%q<haml>, [">= 3.0.0", "< 5.0.0"])
   s.add_dependency(%q<activesupport>, [">= 3.2.0"])
   s.add_dependency(%q<railties>, [">= 3.2.0"])
   s.add_dependency(%q<jquery-rails>, [">0"])
   s.add_dependency(%q<jquery-ui-rails>, [">0"])
-  s.add_dependency(%q<tinymce-rails>, [">= 4.0.0"])
-  s.add_dependency(%q<tinymce-rails-langs>, [">0"])
+  s.add_dependency(%q<tinymce-rails>, ["~> 4.1"])
+  s.add_dependency(%q<tinymce-rails-langs>, ["~> 4.0"])
 
   s.files = `git ls-files`.split($/)
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
