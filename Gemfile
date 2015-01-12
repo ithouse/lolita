@@ -12,7 +12,7 @@ group :test, :development do
   gem 'ffaker', '~> 1'
   gem 'generator_spec', '~> 0.9.0'
   gem 'sqlite3'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '~> 1.3.0'
 end
 
 gem 'simplecov', require: false, group: :test
