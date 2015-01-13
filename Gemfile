@@ -18,10 +18,10 @@ end
 gem 'simplecov', require: false, group: :test
 
 group :rails do
-  gem 'rails', '~> 4.1.0'
-  gem 'rspec-rails', '~> 2.14'
-  gem 'coffee-rails', '~> 4.0.1'
-  gem 'therubyracer', '~> 0.12.0'
+  gem "rails" , "~> 4.2.0"
+  gem "rspec-rails", "~> 2.14"
+  gem "coffee-rails", "~> 4.0.1"
+  gem "therubyracer", "~> 0.12.0"
 end
 
 group :mongoid do

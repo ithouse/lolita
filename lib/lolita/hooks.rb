@@ -102,7 +102,7 @@ module Lolita
 
       def run(&block)
         if !@options[:once] || (@options[:once] && !self.class.runned?(@options[:once],@hook_name))
-          self.class.singleton_hook(@options[:once],@hook_name)
+          self.class.singleton_hook(@options[:once] || Object,@hook_name)
           result = nil
           in_hooks_scope(@options[:scope],@options[:run_scope]) do
             callback = get_callback(@hook_name)
