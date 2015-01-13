@@ -165,7 +165,7 @@ module Lolita
       private
 
       def detect_association
-        @association ||= dbi.associations[name]
+        @association ||= dbi.associations[self.name.to_s]
       end
 
       def normalize_attributes

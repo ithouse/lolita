@@ -55,7 +55,7 @@ module Lolita
         unless @associations
           @associations = {}
           klass.relations.each{|name,association|
-            @associations[name.to_sym] = Association.new(association,self)
+            @associations[name.to_s] = Association.new(association,self)
           }
         end
         @associations

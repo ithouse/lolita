@@ -31,7 +31,7 @@ describe Lolita::Configuration::Field do
 #      Lolita::Configuration::Field.new(@dbi,:noname)
 #    }.should raise_error Lolita::FieldNameError
   end
-  
+
   it "should always set field title if not specified" do
     field=field_class.new(@dbi,:title)
     field.title.size.should > 0
