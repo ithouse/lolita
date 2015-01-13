@@ -31,5 +31,10 @@ module Lolita
       Haml.init_rails(binding)
       Haml::Template.options[:format] = :html5
     end
+    initializer 'precompile', group: :all do |app|
+      app.config.assets.precompile += %w(tinymce/skins/lolita/*)
+      app.config.assets.precompile += %w(tinymce/skins/lolita/font/*)
+      app.config.assets.precompile += %w(tinymce/skins/lolita/img/*)
+    end
   end
 end
