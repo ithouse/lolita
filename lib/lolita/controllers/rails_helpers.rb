@@ -46,10 +46,9 @@ module Lolita
       end
 
       def resource_with_attributes(current_resource,attributes={})
-        attributes||=resource_attributes
-        attributes.each{|key,value|
-          current_resource.send(:"#{key}=",value)
-        }
+        attributes ||= ActionController::Parameters.new(resource_attributes)
+        attributes.permit!
+        current_resource.attributes = attributes
         current_resource
       end
 
