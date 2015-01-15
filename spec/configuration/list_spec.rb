@@ -102,11 +102,11 @@ describe Lolita::Configuration::List do
       dummy_association = double("dummy_association")
       dummy_association.stub(:klass).and_return(Object)
       dummy_association.stub(:name).and_return("name")
-      dbp.stub(:associations).and_return({:dummy_association => dummy_association})
+      dbp.stub(:associations).and_return({'dummy_association' => dummy_association})
 
       nested_list = double("nested_list")
       Lolita::Configuration::NestedList.should_receive(:new).with(nested_dbp,list,{:association_name => "name"}).and_return(nested_list)
-      list.list :dummy_association
+      list.list 'dummy_association'
       list.list.should eq(nested_list)
     end
 

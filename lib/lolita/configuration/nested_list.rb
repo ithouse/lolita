@@ -2,14 +2,14 @@ module Lolita
   class ParentNotAListError < ArgumentError ; end
 
   module Configuration
-    
+
     class NestedList < Lolita::Configuration::List
       attr_accessor :parent,:association_name
 
       def initialize dbi,parent,options={},&block
         init_nested_list_attributes(parent)
         set_and_validate_dbi(dbi)
-        set_list_attributes do 
+        set_list_attributes do
           set_attributes(options)
           self.instance_eval(&block) if block_given?
         end
@@ -28,7 +28,7 @@ module Lolita
             self.parent.dbi.klass
           else
             dbi.klass
-          end 
+          end
           @mapping = Lolita::Mapping.new(:"#{mapping_class.to_s.downcase.pluralize}") || false
         end
         @mapping
@@ -88,7 +88,7 @@ module Lolita
       def init_nested_list_attributes parent
         @parent = parent
       end
-      
+
       def validate
         msg = "#{parent.class} must be kind of Lolita::Configuration::List or Lolita::Configuration::Column"
         raise(Lolita::ParentNotAListError, msg) unless [
