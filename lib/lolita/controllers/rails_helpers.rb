@@ -46,9 +46,8 @@ module Lolita
       end
 
       def resource_with_attributes(current_resource,attributes={})
-        attributes ||= ActionController::Parameters.new(resource_attributes)
-        attributes.permit!
-        current_resource.attributes = attributes
+        permitted_attributes = ActionController::Parameters.new(attributes || resource_attributes).permit!
+        current_resource.attributes = permitted_attributes
         current_resource
       end
 
