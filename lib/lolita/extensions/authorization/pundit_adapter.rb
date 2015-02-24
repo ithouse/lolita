@@ -59,7 +59,7 @@ module Lolita
           if is_instance?(record)
             record
           elsif is_module?(record)
-            Object.new
+            record.to_s.to_sym
           else
             record.new
           end
