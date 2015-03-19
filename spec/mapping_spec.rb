@@ -25,5 +25,14 @@ describe Lolita::Mapping do
 			mapping.url_name.should == "my_admin_posts"
 		end
 	end
+
+  it 'should create ' do
+    tree = Lolita::Navigation::Tree.new(:"left_side_navigation")
+    Lolita::Navigation::Tree.remember(tree)
+
+    described_class.new(:dashboard).add_to_navigation_tree
+    described_class.new(:data_import).add_to_navigation_tree
+    expect(Lolita.navigation.branches.size).to eq(2)
+  end
 end
 
