@@ -26,7 +26,7 @@ describe Lolita::Mapping do
 		end
 	end
 
-  it 'should create ' do
+  it 'should add headless navigation items to tree' do
     tree = Lolita::Navigation::Tree.new(:"left_side_navigation")
     Lolita::Navigation::Tree.remember(tree)
 
