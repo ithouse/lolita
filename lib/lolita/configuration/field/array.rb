@@ -12,8 +12,8 @@ module Lolita
       # of these. 
       class Array < Lolita::Configuration::Field::Base
         include Lolita::Hooks
-        MAX_RECORD_COUNT = 100
-        
+        MAX_RECORD_COUNT = 300
+
         add_hook :after_association_loaded
 
         lolita_accessor :text_method,:value_method,:association,:include_blank
@@ -23,7 +23,7 @@ module Lolita
           @include_blank=true
           super
           self.find_dbi_field unless self.dbi_field
-          
+
           @association ||= self.dbi_field ? self.dbi_field.association : detect_association
           self.run(:after_association_loaded)
           self.builder = detect_builder unless @builder
