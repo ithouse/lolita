@@ -128,7 +128,7 @@ module Lolita
           @name = @field.name
           @type = type_cast(@field.type)
           @options = {
-            :primary => @field.primary,
+            :primary => @adapter.klass.primary_key == @field.name,
             :native_type => @field.type.to_s
           }
         end
