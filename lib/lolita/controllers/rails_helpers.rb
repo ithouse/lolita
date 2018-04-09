@@ -7,11 +7,11 @@ module Lolita
         if self.ancestors.include?(ActionController::Base)
           helpers = %w(resource resource_name use_mapping
                        resource_class lolita_mapping show_response current_form current_form=)
-          hide_action *helpers
+          #hide_action *helpers
 
           helper_method *helpers
-          prepend_before_filter :is_lolita_resource?
-          prepend_around_filter :switch_locale
+          prepend_before_action :is_lolita_resource?
+          prepend_around_action :switch_locale
         end
       end
 
@@ -46,7 +46,8 @@ module Lolita
       end
 
       def resource_with_attributes(current_resource,attributes={})
-        permitted_attributes = ActionController::Parameters.new(attributes || resource_attributes).permit!
+        attributes_hash = attributes.respond_to?(:to_unsafe_hash) ? attributes.to_unsafe_hash : attributes
+        permitted_attributes = ActionController::Parameters.new(attributes_hash || resource_attributes).permit!
         current_resource.attributes = permitted_attributes
         current_resource
       end
