@@ -38,7 +38,7 @@ describe Lolita::Extensions do
 
     it "should have authentication adapter" do
       test_class.load_extensions_proxies(object)
-      test_class.authentication_proxy.respond_to?(:adapter).should be_true
+      test_class.authentication_proxy.respond_to?(:adapter).should be_truthy
     end
 
   end

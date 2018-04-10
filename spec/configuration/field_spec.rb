@@ -45,12 +45,12 @@ describe Lolita::Configuration::Field do
 
   it "should detect if field is nested in" do
     field=field_class.new(@dbi2,:body,:nested_in=>@dbi)
-    field.nested?.should be_true
+    field.nested?.should be_truthy
   end
 
   it "should detect if field is nested in given class" do
     field=field_class.new(@dbi2,:body,:nested_in=>@dbi)
-    field.nested_in?(@dbi.klass).should be_true
+    field.nested_in?(@dbi.klass).should be_truthy
   end
 
   it "should detect type and create field with specified type" do
@@ -64,7 +64,7 @@ describe Lolita::Configuration::Field do
     field.type.should == "boolean"
   end
 
-  it "should change field type for association columns if custom type is given" do
+  xit "should change field type for association columns if custom type is given" do
     pending
   end
 
@@ -91,15 +91,15 @@ describe Lolita::Configuration::Field do
     field3 = factory_class.add(@dbi, :title, :string)
     field4 = factory_class.add(@dbi, :title, :string, :on => Proc.new{|rec| rec.title == "title"})
     record = @dbi.klass.new
-    field.match_state_of?(record).should be_true
-    field2.match_state_of?(record).should_not be_true
-    field3.match_state_of?(record).should be_true
-    field4.match_state_of?(record).should_not be_true
+    field.match_state_of?(record).should be_truthy
+    field2.match_state_of?(record).should_not be_truthy
+    field3.match_state_of?(record).should be_truthy
+    field4.match_state_of?(record).should_not be_truthy
     record2 = @dbi.klass.create!(:title => "title")
-    field.match_state_of?(record2).should_not be_true
-    field2.match_state_of?(record2).should be_true
-    field3.match_state_of?(record2).should be_true
-    field4.match_state_of?(record2).should be_true
+    field.match_state_of?(record2).should_not be_truthy
+    field2.match_state_of?(record2).should be_truthy
+    field3.match_state_of?(record2).should be_truthy
+    field4.match_state_of?(record2).should be_truthy
   end
 
   it "should match :read state for record" do
@@ -108,9 +108,9 @@ describe Lolita::Configuration::Field do
     field3 = factory_class.add(@dbi,:title,:string)
     record = @dbi.klass.new
     @dbi.switch_record_state(record,:read)
-    field.match_state_of?(record).should_not be_true
-    field2.match_state_of?(record).should be_true
-    field3.match_state_of?(record).should be_true
+    field.match_state_of?(record).should_not be_truthy
+    field2.match_state_of?(record).should be_truthy
+    field3.match_state_of?(record).should be_truthy
   end
 
 end

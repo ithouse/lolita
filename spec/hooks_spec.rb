@@ -93,7 +93,7 @@ describe Lolita::Hooks do
         value(true)
       end
       MyClass.run(:after_load)
-      MyClass.value.should be_true
+      MyClass.value.should be_truthy
     end
 
     it "should have named run method" do

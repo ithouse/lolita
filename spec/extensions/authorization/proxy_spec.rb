@@ -21,19 +21,19 @@ describe Lolita::Extensions::Authorization::Proxy do
   end
 
   it "should have #can?" do
-    proxy.respond_to?(:can?).should be_true
+    proxy.respond_to?(:can?).should be_truthy
   end
   
   it "should have #cannot?" do
-    proxy.respond_to?(:cannot?).should be_true
+    proxy.respond_to?(:cannot?).should be_truthy
   end
 
   it "should have #authorize!" do
-    proxy.respond_to?(:authorize!).should be_true
+    proxy.respond_to?(:authorize!).should be_truthy
   end
 
   it "should have #current_ability" do
-    proxy.respond_to?(:current_ability).should be_true
+    proxy.respond_to?(:current_ability).should be_truthy
   end
 
   describe 'Connecting adapter' do

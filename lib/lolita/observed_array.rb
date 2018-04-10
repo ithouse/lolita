@@ -62,6 +62,10 @@ module Lolita
       collection_variable.each{|collection_element| yield collection_element}
     end
 
+    def blank?
+      collection_variable.blank?
+    end
+
     private
 
     def collection_variable

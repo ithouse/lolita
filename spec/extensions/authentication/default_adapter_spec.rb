@@ -15,11 +15,11 @@ describe Lolita::Extensions::Authentication::DefaultAdapter do
   end
 
   it "should not be signed in" do
-    adapter.user_signed_in?.should be_false
+    adapter.user_signed_in?.should be_falsey
   end
 
   it "should authenticate user" do
-    adapter.authenticate_user!.should be_true
+    adapter.authenticate_user!.should be_truthy
   end
 
   describe 'Integration with proxy' do

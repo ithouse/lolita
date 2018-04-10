@@ -60,9 +60,9 @@ describe Lolita::Configuration::Column do
 
   it "should allow to add formatter as attribute with Lolita::Support instance" do
     column.formatter = Lolita::Support::Formatter.new("%s")
-    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_false
+    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_falsey
     column.formatter = "%s"
-    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_true
+    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_truthy
   end
 
   it "should allow to add formatter as block with Lolita::Support instance" do
@@ -72,14 +72,14 @@ describe Lolita::Configuration::Column do
       type String
       formatter Lolita::Support::Formatter.new("%s")
     end
-    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_false
+    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_falsey
     column=Lolita::Configuration::Column.new(dbi) do
       name "col1"
       title "Col one"
       type String
       formatter "%s"
     end    
-    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_true
+    column.formatter.is_a?(Lolita::Support::Formatter::Rails).should be_truthy
   end
 
   it "should make default formater not defined" do

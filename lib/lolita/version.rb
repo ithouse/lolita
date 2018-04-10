@@ -1,7 +1,7 @@
 module Lolita
   module Version
     MAJOR = 4
-    MINOR = 2
+    MINOR = 5
     PATCH = 0
     BUILD = nil
 

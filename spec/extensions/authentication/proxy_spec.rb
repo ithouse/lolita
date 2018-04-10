@@ -11,11 +11,11 @@ describe Lolita::Extensions::Authentication::Proxy do
   end
 
   it "should have #current_user" do
-    proxy.respond_to?(:current_user).should be_true
+    proxy.respond_to?(:current_user).should be_truthy
   end
   
   it "should have #user_signed_in?" do
-    proxy.respond_to?(:user_signed_in?).should be_true
+    proxy.respond_to?(:user_signed_in?).should be_truthy
   end
 
   it "should have #adapter" do
@@ -23,19 +23,19 @@ describe Lolita::Extensions::Authentication::Proxy do
   end
 
   it "should have #authenticate_user!" do
-    proxy.respond_to?(:authenticate_user!).should be_true
+    proxy.respond_to?(:authenticate_user!).should be_truthy
   end
 
   it "should have #sign_out_path" do
-    proxy.respond_to?(:sign_out_path).should be_true
+    proxy.respond_to?(:sign_out_path).should be_truthy
   end
 
   it "should have #sign_out_via" do
-    proxy.respond_to?(:sign_out_via).should be_true
+    proxy.respond_to?(:sign_out_via).should be_truthy
   end
 
   it "should have #edit_path" do
-    proxy.respond_to?(:edit_path).should be_true
+    proxy.respond_to?(:edit_path).should be_truthy
   end
 
   describe 'Connecting adapter' do

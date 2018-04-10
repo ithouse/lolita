@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'rspec/its'
 unless ENV['CI']
   require 'pry-byebug'
 end

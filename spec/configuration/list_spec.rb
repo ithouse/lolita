@@ -42,7 +42,7 @@ describe Lolita::Configuration::List do
 
   it "should accept block and eval it" do
     block = Proc.new{}
-    klass.any_instance.should_receive(:instance_eval).with(&block)
+    klass.any_instance.should_receive(:instance_eval).with(no_args,&block)
     klass.new(dbp,&block)
   end
 
@@ -57,7 +57,7 @@ describe Lolita::Configuration::List do
   end
 
   it "should populate actions with two default ones" do
-    list.actions.should have(2).items
+    expect(list.actions).to have(2).items
   end
 
   it "should initialize attribute and eval block after default attributes is initialized" do
@@ -72,7 +72,7 @@ describe Lolita::Configuration::List do
   end
 
   it "should allow to add action with name, options and block" do
-    action = stub(:name => :name)
+    action = OpenStruct.new(:name => :name)
     Lolita::Configuration::Action.stub(:new).and_return(action)
     block = Proc.new{}
     list.action :do_stuff, {:key => :value}, &block
@@ -86,9 +86,10 @@ describe Lolita::Configuration::List do
     end
 
     it "should return @list when no args and/or block received" do
-      dummy_list = stub
+      dummy_list = [1,2,3]
       list.instance_variable_set(:@list, dummy_list)
-      list.list.should eq(dummy_list)
+      
+      expect(list.list).to eq(dummy_list)
     end
 
     it "should check for association and raise error when none is found" do
@@ -170,7 +171,7 @@ describe Lolita::Configuration::List do
     end
 
     it "should iterate through all possible columns and create column with each value" do
-      list.should_receive(:column).exactly(3).times.and_return(stub())
+      expect(list).to receive(:column).exactly(3).times
       list.columns= [1,2,3]
     end
   end
@@ -201,11 +202,11 @@ describe Lolita::Configuration::List do
   end
 
   it "should determine if there is filter defined for list by checking class" do
-    list.filter?.should_not be_true
+    list.filter?.should_not be_truthy
     filter = double("filter")
     filter.stub(:is_a?).with(Lolita::Configuration::Filter).and_return(true)
     list.instance_variable_set(:@filter,filter)
-    list.filter?.should be_true
+    list.filter?.should be_truthy
   end
 
   describe "#filter" do

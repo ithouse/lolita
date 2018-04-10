@@ -9,7 +9,7 @@ describe Lolita::Register do
   end
 
   it "should set new key" do
-    register.set(:test, 1).should be_true
+    register.set(:test, 1).should be_truthy
   end
 
   it "should get key" do
@@ -26,7 +26,7 @@ describe Lolita::Register do
   end
 
   it "should set key with options" do
-    register.set(:test, 1, :foo => :bar).should be_true
+    register.set(:test, 1, :foo => :bar).should be_truthy
   end
   
   context "filter" do
