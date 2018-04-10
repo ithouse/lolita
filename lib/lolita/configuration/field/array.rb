@@ -12,7 +12,7 @@ module Lolita
       # of these.
       class Array < Lolita::Configuration::Field::Base
         include Lolita::Hooks
-        MAX_RECORD_COUNT = 100
+        MAX_RECORD_COUNT = 300
 
         add_hook :after_association_loaded
 

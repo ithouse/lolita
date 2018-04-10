@@ -17,7 +17,7 @@ module Lolita
   # what controller to use, what model is related with it and so on. This is used to generate urls and paths.
   # Also eahc request containers information with mapping related to it.
   class Mapping
-    attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:as,:controllers
+    attr_reader :class_name,:path,:singular,:plural,:path_prefix,:module,:as,:controllers,:ref
     attr_reader :visible, :only, :append_to, :title
     alias :name :singular
     
@@ -74,7 +74,7 @@ module Lolita
           end
           tree = parent_branch.children
         end
-        unless tree.branches.detect{|b| b.object.is_a?(Lolita::Mapping) && b.object.to==self.to}
+        unless tree.branches.detect{|b| b.object.is_a?(Lolita::Mapping) && b.object.ref == self.ref}
           tree.append(self, :title => @title)
         end
       end
