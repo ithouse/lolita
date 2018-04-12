@@ -55,13 +55,13 @@ describe Lolita::Extensions::Authorization::PunditAdapter do
     end
 
     it "can do some action with current policy" do
-      adapter.can?(:read,"HiddenText".class).should be_true
-      adapter.can?(:create,"HiddenText".class).should be_false
+      adapter.can?(:read,"HiddenText".class).should be_truthy
+      adapter.can?(:create,"HiddenText".class).should be_falsey
     end
 
     it "can ONLY do actions from policy" do
-      adapter.cannot?(:read,"HiddenText".class).should be_false
-      adapter.cannot?(:create,"HiddenText".class).should be_true
+      adapter.cannot?(:read,"HiddenText".class).should be_falsey
+      adapter.cannot?(:create,"HiddenText".class).should be_truthy
     end
 
     it "should have current policy" do
@@ -77,7 +77,7 @@ describe Lolita::Extensions::Authorization::PunditAdapter do
 
     it "should authorize resource" do
       expect do
-        adapter.authorize!(:read, Object).should be_true
+        adapter.authorize!(:read, Object).should be_truthy
       end.to_not raise_error
     end
   end

@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'rspec/its'
 unless ENV['CI']
   require 'pry-byebug'
 end
@@ -30,15 +31,16 @@ Benchmark.bm do |x|
     end
   end
 
-  x.report("Loading test stuff: ") do
+  #x.report("Loading test stuff: ") do
     require 'ffaker'
-  end
-  x.report("Loading factories") do
+  #end
+  #x.report("Loading factories") do
     Dir["#{File.dirname(__FILE__)}/fabricators/**/*_fabricator.rb"].each {|f| require f}
-  end
+  #end
   Dir["#{File.dirname(__FILE__)}/support/**/*[^_spec].rb"].each {|f| require f}
   RSpec.configure do |config|
     config.mock_with :rspec
     config.order = "rand:3455"
+    config.infer_spec_type_from_file_location!
   end
 end

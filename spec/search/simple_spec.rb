@@ -16,7 +16,7 @@ describe Lolita::Search::Simple do
   describe "#run" do
     let(:search){Lolita::Search::Simple.new(dbi)}
 
-    it "should run default search when no search method is provided" do
+    xit "should run default search when no search method is provided" do
       pending "think that map_reduce should be fixed"
       Fabricate(:post,:title => "moonwalker")
       search = Lolita::Search::Simple.new(dbi)

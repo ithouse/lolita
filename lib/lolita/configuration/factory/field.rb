@@ -11,7 +11,7 @@ module Lolita
         # *<tt>third</tt> - Pass dbi_field
         #   Field.add(dbi,:dbi_field => dbi.fields.first)
         def create(dbi,*args,&block)
-          
+
           options = args ? args.extract_options! : {}
           dbi_field = options[:dbi_field]
           name = args[0] || options[:name] || (dbi_field ? dbi_field.name : nil)
@@ -19,9 +19,9 @@ module Lolita
           dbi_field ||= dbi.field_by_association(name)
           association ||= detect_association(dbi,name)
 
-          type = args[1] || options[:type] || 
+          type = args[1] || options[:type] ||
             (association ? :array : nil ) ||
-            (dbi_field ? dbi_field.type : nil) || 
+            (dbi_field ? dbi_field.type : nil) ||
             :string
           options[:dbi_field] = dbi_field
           if !name || !type
@@ -35,14 +35,14 @@ module Lolita
         alias :add :create
 
         def detect_association(dbi,name)
-          dbi.associations[name.to_sym]
+          dbi.associations[name.to_s]
         end
 
         def field_class(name)
           ("Lolita::Configuration::Field::"+name.to_s.camelize).constantize
         end
-      end 
-      
+      end
+
       end
     end
   end

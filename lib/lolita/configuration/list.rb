@@ -32,7 +32,7 @@ module Lolita
       # Allow to crate nested list for list
       def list(*args, &block)
         if args && args.any? || block_given?
-          association = dbi.associations[args[0].to_s.to_sym]
+          association = dbi.associations[args[0].to_s]
           association_dbi = association && Lolita::DBI::Base.create(association.klass)
           raise Lolita::UnknownDBPError.new("No DBI specified for list sublist") unless association_dbi
           Lolita::LazyLoader.lazy_load(self,:@list,Lolita::Configuration::NestedList,association_dbi, self, :association_name => association.name,&block)

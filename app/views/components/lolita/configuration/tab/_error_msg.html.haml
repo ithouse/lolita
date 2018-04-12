@@ -3,12 +3,12 @@
     - errors = resource.errors.keys.collect do |k|
       - title = if k.to_s.match(/\./)
         - assoc_name, attr_name = k.to_s.split(".")
-        - if tab.fields.by_name(attr_name.to_sym)
-          - klass = resource.lolita.dbi.reflect_on_association(assoc_name.to_sym).klass
+        - if tab.fields.by_name(attr_name.to_s)
+          - klass = resource.lolita.dbi.reflect_on_association(assoc_name.to_s).klass
           - klass.human_attribute_name(attr_name).downcase
-      - elsif tab.fields.by_name(k.to_sym)
+      - elsif tab.fields.by_name(k.to_s)
         - resource.class.human_attribute_name(k)
-      - elsif assoc = resource.lolita.dbi.reflect_on_association(k.to_sym)
+      - elsif assoc = resource.lolita.dbi.reflect_on_association(k.to_s)
         - assoc.klass.lolita_model_name.human
       - if title && resource.errors[k] && resource.errors[k].respond_to?(:any?) && resource.errors[k].any?
         - "#{title.to_s.capitalize}: #{resource.errors[k].join(" #{::I18n.t("lolita.shared.and")} ")}"

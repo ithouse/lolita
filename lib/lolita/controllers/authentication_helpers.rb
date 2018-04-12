@@ -5,7 +5,7 @@ module Lolita
       extend ActiveSupport::Concern
       included do
         if Lolita.rails?
-          before_filter :authenticate_lolita_user!
+          before_action :authenticate_lolita_user!
         end
       end
 

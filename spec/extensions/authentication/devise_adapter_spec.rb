@@ -62,11 +62,11 @@ describe Lolita::Extensions::Authentication::DeviseAdapter do
   end
 
   it "should not be signed in" do
-    adapter.user_signed_in?.should be_true
+    adapter.user_signed_in?.should be_truthy
   end
 
   it "should authenticate user" do
-    adapter.authenticate_user!.should be_true
+    adapter.authenticate_user!.should be_truthy
   end
 
   it "should have sign_out_via method" do

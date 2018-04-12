@@ -50,7 +50,8 @@ module Lolita
 
             url_for_without_lolita(options)
           end
-          alias_method_chain :url_for, :lolita
+          alias_method :url_for_without_lolita, :url_for
+          alias_method :url_for, :url_for_with_lolita
 
         end
       end
@@ -102,7 +103,7 @@ module Lolita
       # This methods is very useful to create your own paths in views.
       def lolita_resource_name(options={}) #TODO test if path is right
         options.assert_valid_keys(:mapping,:plural,:action)
-        mapping=(options[:mapping]||lolita_mapping)
+        mapping=options[:mapping].respond_to?(:plural) ? options[:mapping] : lolita_mapping
         name=!options[:plural] ? mapping.name : mapping.plural
         name="#{mapping.path}_#{name}"
         addon = if mapping.plural == mapping.singular && options[:plural]

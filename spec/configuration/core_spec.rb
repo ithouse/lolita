@@ -34,7 +34,7 @@ describe Lolita::Configuration::Core do
 
   it "should eval block on instance when block is given" do 
     proc = Proc.new{ "result" }
-    klass.any_instance.should_receive(:instance_eval).with(&proc).once
+    klass.any_instance.should_receive(:instance_eval).with(no_args, &proc).once
     klass.new(Object,&proc)
   end
 

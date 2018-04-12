@@ -13,11 +13,11 @@ describe Lolita::Extensions::Authorization::DefaultAdapter do
   context "current user" do
 
     it "can do all" do
-      adapter.can?(:read,Object.new).should be_true
+      adapter.can?(:read,Object.new).should be_truthy
     end
 
     it "cannot do nothing" do
-      adapter.cannot?([]).should be_false
+      adapter.cannot?([]).should be_falsey
     end
 
     it "should not have current ability" do

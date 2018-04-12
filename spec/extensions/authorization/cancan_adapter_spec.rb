@@ -55,13 +55,13 @@ describe Lolita::Extensions::Authorization::CanCanAdapter do
   context "current user" do
 
     it "can do some action with current abilities" do
-      adapter.can?(:read,"HiddenText".class).should be_true
-      adapter.can?(:create,"HiddenText".class).should be_false
+      adapter.can?(:read,"HiddenText".class).should be_truthy
+      adapter.can?(:create,"HiddenText".class).should be_falsey
     end
 
     it "can ONLY do actions from abilities" do
-      adapter.cannot?(:read,"HiddenText".class).should be_false
-      adapter.cannot?(:create,"HiddenText".class).should be_true
+      adapter.cannot?(:read,"HiddenText".class).should be_falsey
+      adapter.cannot?(:create,"HiddenText".class).should be_truthy
     end
 
     it "should have current ability" do

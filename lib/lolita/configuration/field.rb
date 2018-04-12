@@ -11,7 +11,7 @@ module Lolita
     #   form there are fields from profile that can be manipulated when user is changed or created.
     # * <tt>options</tt> - specific options for different type of fields, see Lolita::Configuration::FieldExtensions for details
     # * <tt>html_options</tt> - used to change field HTML output,like class or style etc.
-    # 
+    #
     # To define field in ORM class through lolita configuration block
     # ====Example
     #     lolita do
@@ -19,7 +19,7 @@ module Lolita
     #         field :email
     #         field :user_id, :type=>"string"
     #         field :body do
-    #            title "Full text" 
+    #            title "Full text"
     #            html_options :class=>"full_text"
     #         end
     #       end
@@ -33,7 +33,7 @@ module Lolita
         lolita_accessor :name,:title,:on,:field_set, :nested_form,:nested_for,:options, :html_options
         attr_reader :dbi,:nested_in
         attr_accessor :dbi_field
-        
+
         def initialize dbi,name,*args, &block
           @dbi=dbi
           self.name = name
@@ -49,7 +49,7 @@ module Lolita
           set_default_values
           validate
         end
-        
+
         def title(new_title = nil)
           if new_title
             @title = new_title
@@ -89,15 +89,15 @@ module Lolita
         end
 
         def nested_in=(dbi)
-          if !self.dbi.associations_class_names.include?(dbi.klass.to_s) && !dbi.associations_class_names.include?(self.dbi.klass.to_s) 
+          if !self.dbi.associations_class_names.include?(dbi.klass.to_s) && !dbi.associations_class_names.include?(self.dbi.klass.to_s)
             raise Lolita::ReferenceError, "There is no association between #{self.dbi.klass} and #{dbi.klass}"
           end
           if !dbi.is_a?(Lolita::DBI::Base) && !dbi.class.to_s.match(/Lolita::Adapter/)
-            raise ArgumentError, "Field can be nested only in Lolita::DBI::Base object." 
+            raise ArgumentError, "Field can be nested only in Lolita::DBI::Base object."
           end
           @nested_in=dbi
         end
-        
+
         def nested?
           !self.nested_in.nil?
         end
@@ -109,12 +109,16 @@ module Lolita
             self.nested_in && self.nested_in.klass==dbi_or_class
           end
         end
-      
+
         def set_attributes(attributes)
           excluded_keys = [:name,:type]
           attributes.each{|attr,value|
             unless excluded_keys.include?(attr.to_sym)
-              self.send(:"#{attr}=",value)
+              if attr == :dbi_field
+                self.dbi_field = value
+              else
+                self.send(:"#{attr}=",value)
+              end
             end
           }
         end
@@ -126,8 +130,8 @@ module Lolita
         end
 
         private
-       
-        def builder_local_variable_name 
+
+        def builder_local_variable_name
           :field
         end
 

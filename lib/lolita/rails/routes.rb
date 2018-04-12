@@ -11,7 +11,8 @@ module ActionDispatch::Routing
       Lolita.run(:after_routes_loaded)
     end
 
-    alias_method_chain :draw, :lolita
+    alias_method :draw_without_lolita, :draw
+    alias_method :draw, :draw_with_lolita
   end
 
   class Mapper
@@ -103,11 +104,18 @@ module ActionDispatch::Routing
     end
 
     def with_lolita_exclusive_scope new_path,new_as
-      old_as, old_path, old_module = @scope[:as], @scope[:path], @scope[:module]
-      @scope[:as], @scope[:path], @scope[:module] = new_as, new_path, nil
+      current_scope = @scope.dup
+
+      exclusive = { as: new_as, path: new_path, module: nil }
+
+      if @scope.respond_to? :new
+        @scope = @scope.new exclusive
+      else
+        exclusive.each_pair { |key, value| @scope[key] = value }
+      end
       yield
     ensure
-      @scope[:as], @scope[:path], @scope[:module] = old_as, old_path, old_module
+      @scope = current_scope
     end
 
     private

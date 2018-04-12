@@ -1,15 +1,15 @@
 module Lolita
   module Configuration
     module Field
-      # Fields with Array is used to 
-      # * create select for belongs_to association or 
+      # Fields with Array is used to
+      # * create select for belongs_to association or
       # * has_and_belongs_to_many field for selecting all associated objects or
       # * for polymorphic belongs_to associations
       # ==Polymorphic builder (:polymorphic)
       # Create two select boxes one of all related classes and second with related records for that class.
       # Related classes can have <em>polymorphic_select_name</em> instance method, that is used to populate second
       # select with visible values by default it calles <em>text_method</em>. It will fallback first content column. Class should respond to one
-      # of these. 
+      # of these.
       class Array < Lolita::Configuration::Field::Base
         include Lolita::Hooks
         MAX_RECORD_COUNT = 300
@@ -74,7 +74,7 @@ module Lolita
           @association_values
         end
 
-        # Collect values for polymorphic association, you may pass 
+        # Collect values for polymorphic association, you may pass
         # * <tt>:klass</tt> - class that's records are used
         # * <tt>:record</tt> - record class that has polymorphic association. It is used to call to detect related object class.
         def polymorphic_association_values(options={})
@@ -129,7 +129,7 @@ module Lolita
 
         def detect_association
           unless @association
-            dbi.associations[self.name.to_sym]
+            dbi.associations[self.name.to_s]
           else
             @association
           end

@@ -7,10 +7,10 @@ class Post
   field :price, type: BigDecimal
   field :published_at, type: DateTime, default: -> { Time.now }
   field :expire_date, type: Date
-  belongs_to :category
+  belongs_to :category, optional: true
   has_and_belongs_to_many :tags
   has_many :comments
-  belongs_to :profile
+  belongs_to :profile, optional: true
   validates_presence_of :title
   default_scope -> { order_by([:title, :asc]) }
   accepts_nested_attributes_for :comments, :reject_if => :all_blank

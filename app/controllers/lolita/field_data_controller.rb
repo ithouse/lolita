@@ -1,7 +1,7 @@
 class Lolita::FieldDataController < ApplicationController
   include Lolita::Controllers::AuthenticationHelpers
 
-  before_filter :find_field, :except => [:autocomplete_field]
+  before_action :find_field, :except => [:autocomplete_field]
 
   def array_polymorphic
     klass = params[:class].camelize.constantize

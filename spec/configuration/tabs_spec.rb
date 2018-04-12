@@ -14,13 +14,13 @@ describe Lolita::Configuration::Tabs do
 
   it "should eval block when given" do
     block = Proc.new{}
-    klass.any_instance.should_receive(:instance_eval).with(&block)
+    klass.any_instance.should_receive(:instance_eval).with(no_args,&block)
     klass.new(dbp,&block)
   end
 
   it "should initialize default attributes when instance is created" do
     tabs = klass.new(dbp)
-    tabs.should be_empty
+    tabs.should be_blank
     tabs.tab_types.should eq([:content])
   end
 

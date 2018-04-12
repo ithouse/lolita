@@ -1,5 +1,5 @@
 test:
-  sessions:
+  clients:
     default:
       database: lolita3_test
       hosts:

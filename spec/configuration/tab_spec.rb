@@ -133,7 +133,7 @@ describe Lolita::Configuration::Tab do
           default_fields
         end
       end
-      tab.fields.last.nested?.should be_true
+      tab.fields.last.nested?.should be_truthy
     end
   
     it "should return nested fields for specified class" do

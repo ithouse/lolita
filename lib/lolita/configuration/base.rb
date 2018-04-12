@@ -1,6 +1,6 @@
 module Lolita
   module Configuration
-    # This is superclass of other configuration classes, that is used to configure different parts of resource. 
+    # This is superclass of other configuration classes, that is used to configure different parts of resource.
     class Base
       include Lolita::Builder
       attr_reader :dbi
@@ -30,7 +30,11 @@ module Lolita
       def set_attributes(*args)
         options = args && args.extract_options! || {}
         options.each do |attr_name,value|
-          self.send("#{attr_name}=".to_sym,value)
+          if attr_name == :association_name
+            self.association_name = value
+          else
+            self.send("#{attr_name}=".to_sym,value)
+          end
         end
       end
 

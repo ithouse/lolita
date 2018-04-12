@@ -4,7 +4,7 @@ class Post < ActiveRecord::Base
   has_and_belongs_to_many :tags
   has_many :comments, dependent: :destroy
   belongs_to :profile
-  validate :title, presence: true
+  validates :title, presence: true
   default_scope -> { order("title") }
   accepts_nested_attributes_for :comments, reject_if: :all_blank
 
