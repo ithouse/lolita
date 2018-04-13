@@ -1,1 +1,1 @@
-= paginate page,{:theme => "lolita", :params => params}.merge(defined?(extra_params) && extra_params || {})
+= paginate page,{:theme => "lolita", :params => params.permit!}.merge(defined?(extra_params) && extra_params || {})

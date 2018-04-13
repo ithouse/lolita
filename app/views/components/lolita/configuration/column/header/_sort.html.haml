@@ -3,4 +3,4 @@
 - direction_indicator = raw(sort_mapping[column.current_sort_state(new_params)[1]])
 - new_params[:s] = column.sort_params(new_params)
 
-= link_to raw("#{column.title.to_s.capitalize} #{direction_indicator}"), lolita_resources_path(new_params)
+= link_to raw("#{column.title.to_s.capitalize} #{direction_indicator}"), lolita_resources_path(new_params.permit!.to_hash)
