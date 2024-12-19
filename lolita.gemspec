@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency(%q<kaminari>, [">= 1.0.0"])
   s.add_dependency(%q<abstract>, ["~> 1.0.0"])
-  s.add_dependency(%q<haml>, [">= 3.0.0", "< 5.0.0"])
+  s.add_dependency(%q<haml>, [">= 3.0.0"])
   s.add_dependency(%q<activesupport>, [">= 3.2.0"])
   s.add_dependency(%q<railties>, [">= 3.2.0"])
   s.add_dependency(%q<jquery-rails>, [">0"])
