@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
   s.add_dependency(%q<railties>, [">= 3.2.0"])
   s.add_dependency(%q<jquery-rails>, [">0"])
   s.add_dependency(%q<jquery-ui-rails>, [">0"])
-  s.add_dependency(%q<tinymce-rails>, ["~> 4.1"])
-  s.add_dependency(%q<tinymce-rails-langs>, ["~> 4.0"])
+  s.add_dependency(%q<tinymce-rails>, ["~> 5.0"])
+  s.add_dependency(%q<tinymce-rails-langs>, ["~> 5.0"])
 
   s.files = `git ls-files`.split($/)
   s.executables = s.files.grep(%r{^bin/}) { |f| File.basename(f) }

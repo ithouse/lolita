@@ -37,7 +37,7 @@ Benchmark.bm do |x|
   #x.report("Loading factories") do
     Dir["#{File.dirname(__FILE__)}/fabricators/**/*_fabricator.rb"].each {|f| require f}
   #end
-  Dir["#{File.dirname(__FILE__)}/support/**/*[^_spec].rb"].each {|f| require f}
+  Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
   RSpec.configure do |config|
     config.mock_with :rspec
     config.order = "rand:3455"

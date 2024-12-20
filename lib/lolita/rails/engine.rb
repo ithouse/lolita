@@ -28,7 +28,7 @@ module Lolita
     config.lolita = Lolita
     config.i18n.load_path += Dir[File.join(Lolita.root,'config', 'locales','default', '*.{yml}')]
     config.before_initialize do
-      Haml.init_rails(binding)
+      # Haml.init_rails(binding)
       Haml::Template.options[:format] = :html5
     end
     initializer 'precompile', group: :all do |app|
