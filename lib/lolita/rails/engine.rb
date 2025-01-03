@@ -33,9 +33,7 @@ module Lolita
     end
     initializer 'precompile', group: :all do |app|
       app.config.assets.precompile += %w(lolita/*)
-      app.config.assets.precompile += %w(tinymce/skins/lolita/*)
-      app.config.assets.precompile += %w(tinymce/skins/lolita/font/*)
-      app.config.assets.precompile += %w(tinymce/skins/lolita/img/*)
+      app.config.assets.precompile << "lolita-manifest.js" # Sprockets 4 manifest
     end
   end
 end
